@@ -42,4 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function ownedVideos()
+    {
+        return $this->hasMany(Video::class, 'owner');
+    }
+
+    // Relationship with VideoLikeDislike
+    public function likedDislikedVideos()
+    {
+        return $this->hasMany(VideoLikeDislike::class);
+    }
 }
