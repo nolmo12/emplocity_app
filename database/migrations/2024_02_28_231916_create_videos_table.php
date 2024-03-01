@@ -18,16 +18,12 @@ return new class extends Migration
     {
 
         Schema::create('videos', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
+            $table->id(); 
             $table->string('reference_code');
-            $table->string('description');
             $table->string('thumbnail');
             $table->string('video');
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Status::class)->constrained();
-            $table->integer('views')->default(0);
-
             $table->timestamps();
         });
 

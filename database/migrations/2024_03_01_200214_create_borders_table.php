@@ -3,8 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
-use App\Models\Video;
 
 return new class extends Migration
 {
@@ -13,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('comments', function (Blueprint $table) {
+        Schema::create('borders', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
-            $table->bigInteger('parent');
-            $table->foreignId(Video::class)->constrained('videos');
-            $table->foreignId(User::class)->constrained('users');
+            $table->string('type');
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('comments');
+        Schema::dropIfExists('border');
     }
 };
