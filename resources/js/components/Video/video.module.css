@@ -1,0 +1,8 @@
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 5px;
+    background-color: #f4f4f4;
+}
