@@ -9,3 +9,15 @@ header img {
     width: 3rem;
     height: 3rem;
 }
+
+#register {
+    position: absolute;
+    left: 10%;
+    top: 0;
+}
+
+#login {
+    position: absolute;
+    left: 10%;
+    top: 5%;
+}

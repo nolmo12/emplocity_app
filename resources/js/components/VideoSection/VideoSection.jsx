@@ -1,3 +1,4 @@
+import React from "react";
 import Video from "../Video/Video";
 import styles from "./videoSection.module.css";
 export default function VideoSection() {

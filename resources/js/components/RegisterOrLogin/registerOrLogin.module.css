@@ -1,0 +1,25 @@
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: solid 1px black;
+    padding: 5px;
+    width: 50%;
+}
+
+form img {
+    width: 10rem;
+    height: 10rem;
+    position: relative;
+    left: 40%;
+}
+
+form a {
+    text-align: center;
+}

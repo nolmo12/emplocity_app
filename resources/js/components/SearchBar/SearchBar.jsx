@@ -1,4 +1,5 @@
-import loop from "../images/loop.png";
+import React from "react";
+import loop from "./loop.png";
 export default function SearchBar() {
     return (
         <div>
