@@ -1,0 +1,13 @@
+#videoSection {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 80%;
+}
+
+h2 {
+    position: absolute;
+    bottom: 43rem;
+    left: 15rem;
+    width: 100%;
+}
