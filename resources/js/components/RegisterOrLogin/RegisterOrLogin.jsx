@@ -30,14 +30,14 @@ export default function RegisterOrLogin({ componentType }) {
                         value={registeredData.email}
                         onChange={(e) => handleInuptEmail(e)}
                     ></input>
-                    {isLogin && <p>Forgot email?</p>}
+                    {isLogin && <a href="example.com">Forgot email?</a>}
                     <input
                         type="password"
                         placeholder="Password"
                         value={registeredData.password}
                         onChange={(e) => handleInputPassword(e)}
                     ></input>
-                    {isLogin && <p>Forgot password?</p>}
+                    {isLogin && <a href="example.com">Forgot password?</a>}
 
                     {isRegister && <button>Register</button>}
                     {isLogin && <button>Login</button>}
