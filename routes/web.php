@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +17,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
-
-Route::get('sets/store', function () {
-    return "Hello world";
 });
