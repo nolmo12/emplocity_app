@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Route;
 
 /*
