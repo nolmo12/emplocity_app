@@ -1,5 +1,6 @@
 import { useState } from "react";
 import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ReactDOM from "react-dom/client";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
@@ -8,32 +9,67 @@ function Main() {
     const [isRegister, setIsRegister] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
 
-    function handleRegisterClick() {
-        setIsRegister(true);
-        setIsLogin(false);
-    }
-
-    function handleLoginClick() {
-        setIsRegister(false);
-        setIsLogin(true);
-    }
-
-    const componentType = isRegister ? "register" : "login";
-
     return (
-        <>
-            {isRegister && <RegisterOrLogin componentType={componentType} />}
-            {isLogin && <RegisterOrLogin componentType={componentType} />}
-            {!isRegister && !isLogin && (
-                <>
-                    <Header
-                        onRegisterClick={handleRegisterClick}
-                        onLoginClick={handleLoginClick}
-                    />
-                    <MainContent />
-                </>
-            )}
-        </>
+        <Router>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <>
+                            <Header /> <MainContent />
+                        </>
+                    }
+                ></Route>
+                <Route
+                    path="/register"
+                    element={<RegisterOrLogin componentType="register" />}
+                />
+                <Route
+                    path="/login"
+                    element={<RegisterOrLogin componentType="login" />}
+                />
+            </Routes>
+        </Router>
+        // <Router>
+        //     <Routes>
+        //         <Route path="/">
+        //             {isRegister && (
+        //                 <Route
+        //                     path="/"
+        //                     element={
+        //                         <RegisterOrLogin
+        //                             componentType={componentType}
+        //                         />
+        //                     }
+        //                 />
+        //             )}
+        //             {isLogin && (
+        //                 <Route
+        //                     path="/"
+        //                     element={
+        //                         <RegisterOrLogin
+        //                             componentType={componentType}
+        //                         />
+        //                     }
+        //                 />
+        //             )}
+        //             {!isRegister && !isLogin && (
+        //                 <Route
+        //                     path="/"
+        //                     element={
+        //                         <>
+        //                             <Header
+        //                                 onRegisterClick={handleRegisterClick}
+        //                                 onLoginClick={handleLoginClick}
+        //                             />
+        //                             <MainContent />
+        //                         </>
+        //                     }
+        //                 />
+        //             )}
+        //         </Route>
+        //     </Routes>
+        // </Router>
     );
 }
 
