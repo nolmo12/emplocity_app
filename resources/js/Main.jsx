@@ -30,46 +30,6 @@ function Main() {
                 />
             </Routes>
         </Router>
-        // <Router>
-        //     <Routes>
-        //         <Route path="/">
-        //             {isRegister && (
-        //                 <Route
-        //                     path="/"
-        //                     element={
-        //                         <RegisterOrLogin
-        //                             componentType={componentType}
-        //                         />
-        //                     }
-        //                 />
-        //             )}
-        //             {isLogin && (
-        //                 <Route
-        //                     path="/"
-        //                     element={
-        //                         <RegisterOrLogin
-        //                             componentType={componentType}
-        //                         />
-        //                     }
-        //                 />
-        //             )}
-        //             {!isRegister && !isLogin && (
-        //                 <Route
-        //                     path="/"
-        //                     element={
-        //                         <>
-        //                             <Header
-        //                                 onRegisterClick={handleRegisterClick}
-        //                                 onLoginClick={handleLoginClick}
-        //                             />
-        //                             <MainContent />
-        //                         </>
-        //                     }
-        //                 />
-        //             )}
-        //         </Route>
-        //     </Routes>
-        // </Router>
     );
 }
 

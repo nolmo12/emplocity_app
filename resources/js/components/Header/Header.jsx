@@ -1,12 +1,10 @@
 import React from "react";
-import { useRef, forwardRef, useImperativeHandle } from "react";
 import tempLogo from "./tempLogo.png";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
 import SearchBar from "../SearchBar/SearchBar";
 import styles from "./header.module.css";
-export default function Header({ onRegisterClick, onLoginClick }) {
-    const navigate = useNavigate();
+export default function Header() {
     return (
         <>
             <header>
@@ -14,12 +12,13 @@ export default function Header({ onRegisterClick, onLoginClick }) {
                 <SearchBar />
                 <img src={tempIcon} alt="Icon"></img>
             </header>
-            <button onClick={() => navigate("/register")} id={styles.register}>
-                Register
-            </button>
-            <button onClick={() => navigate("/login")} id={styles.login}>
-                Login
-            </button>
+            <Link to="/register">
+                <button id={styles.register}>Register</button>
+            </Link>
+
+            <Link to="/login">
+                <button id={styles.login}>Login</button>
+            </Link>
         </>
     );
 }
