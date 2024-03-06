@@ -38,28 +38,60 @@ form a {
     font-size:18px;
     margin-top: 0%;
     font-size:1em;
+    padding-bottom:1em;
+    color:#4949db;
+}
+
+form a:hover {
+    text-decoration: underline;
+    color:#7474e1;
 }
 
 form input {
     background-color: white;
     border: solid 2px #A0A0A0;
-    border-radius:4px;
+    border-radius: 4px;
     width: 70%;
     height: 2rem;
-    align-self: center;
     font-size: 1em;
-    margin-top:5%;
+    margin-top: 5%;
+    padding-left:2em;
 }
 
 form button {
-    background-color: #FCA311;
-    border: solid 2px white;
+    background-color: white;
+    border: solid 2px #A0A0A0;
     border-radius:10px;
     align-self: center;
-    width:35%;
-    height: 1.5rem;
+    width:50%;
+    height: 2rem;
     font-size: 16px;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     margin-top:5%;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
 }
+
+form button:hover {
+    background-color: #F0F0F0;
+}
+
+form button:active {
+    transform: scale(0.95);
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+}
+
+.logIcon {
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: 8px; 
+    left:12%;
+    top:0.5em;
+}
+
+
 

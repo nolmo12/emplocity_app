@@ -3,6 +3,8 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
+import mailIcon from "./mailIcon.png";
+import lockIcon from "./lockIcon.png";
 import styles from "./registerOrLogin.module.css";
 // import AuthProvider, { AuthContext } from "../AuthProvider";
 export default function RegisterOrLogin({ componentType }) {
@@ -63,24 +65,6 @@ export default function RegisterOrLogin({ componentType }) {
             <form data-testid="form" onSubmit={handleSubmit}>
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
-                </Link>
-
-                <input
-                    type="text"
-                    placeholder="Email"
-                    value={registeredData.email}
-                    onChange={(e) => handleInuptEmail(e)}
-                ></input>
-                {isLogin && <a data-testid="forgotEmail">Forgot email?</a>}
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={registeredData.password}
-                    onChange={(e) => handleInputPassword(e)}
-                ></input>
-                {isLogin && (
-                    <a data-testid="forgotPassword">Forgot password?</a>
-                )}
 
                 {isRegister && <button>Register</button>}
                 {isLogin && <button>Login</button>}
