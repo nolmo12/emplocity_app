@@ -2,6 +2,7 @@ import { useState } from "react";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ReactDOM from "react-dom/client";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterOrLogin from "./components/RegisterOrLogin/RegisterOrLogin";
@@ -28,6 +29,10 @@ function Main() {
                     path="/login"
                     element={<RegisterOrLogin componentType="login" />}
                 />
+                <Route
+                    path="/forgotPassword"
+                    element={<ForgotPassword />}
+                ></Route>
             </Routes>
         </Router>
     );
