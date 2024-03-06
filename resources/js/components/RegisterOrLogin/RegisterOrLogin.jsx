@@ -6,6 +6,8 @@ import tempIcon from "./ico.png";
 import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
 import styles from "./registerOrLogin.module.css";
+import Cookies from "js-cookie";
+
 // import AuthProvider, { AuthContext } from "../AuthProvider";
 export default function RegisterOrLogin({ componentType }) {
     const [registeredData, setRegisteredData] = useState({
@@ -38,9 +40,9 @@ export default function RegisterOrLogin({ componentType }) {
         e.preventDefault();
         let url;
         if (type === "login") {
-            url = "http://127.0.0.1:8000/api/auth/login";
-            
-            navigate("/logged");
+            axios.get('/sanctum/csrf-cookie').then(response => {
+                url = "http://127.0.0.1:8000/api/auth/login";
+            });
         } else if (type === "register") {
             url = "http://127.0.0.1:8000/api/auth/register";
         } else {
