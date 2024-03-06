@@ -4,22 +4,24 @@ export default function Popular() {
         <div>
             <h1>Popular</h1>
             <ul>
-                <img src="img"></img>Influencer1
-            </ul>
-            <ul>
-                <img src="img"></img>Influencer2
-            </ul>
-            <ul>
-                <img src="img"></img>Influencer3
-            </ul>
-            <ul>
-                <img src="img"></img>Influencer4
-            </ul>
-            <ul>
-                <img src="img"></img>Influencer5
-            </ul>
-            <ul>
-                <img src="img"></img>Influencer6
+                <li>
+                    <img src="img"></img>Influencer1
+                </li>
+                <li>
+                    <img src="img"></img>Influencer2
+                </li>
+                <li>
+                    <img src="img"></img>Influencer3
+                </li>
+                <li>
+                    <img src="img"></img>Influencer4
+                </li>
+                <li>
+                    <img src="img"></img>Influencer5
+                </li>
+                <li>
+                    <img src="img"></img>Influencer6
+                </li>
             </ul>
         </div>
     );

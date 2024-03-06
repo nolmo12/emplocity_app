@@ -22,3 +22,6 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 Route::get('/{any?}', function () {
     return view('welcome');
 });
+
+
+
