@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import tempIcon from "./ico.png";
 import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
@@ -15,11 +16,10 @@ export default function RegisterOrLogin({ componentType }) {
         password: "",
         repeatPassword: "",
     });
-    // const [tempFlag, setTempFlag] = useState(false);
-    // const { isLogged, setIsLogged } = useContext(AuthContext);
+    const navigate = useNavigate();
+    const csrf = () => axios.get("/sanctum/csrf-cookie");
     const isRegister = componentType === "register";
     const isLogin = componentType === "login";
-    const navigate = useNavigate();
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -40,46 +40,35 @@ export default function RegisterOrLogin({ componentType }) {
         e.preventDefault();
         let url;
         if (type === "login") {
-            axios.get('/sanctum/csrf-cookie').then(response => {
-                url = "http://127.0.0.1:8000/api/auth/login";
-            });
+            url = "http://127.0.0.1:8000/api/auth/login";
+            
+            navigate("/logged");
         } else if (type === "register") {
             url = "http://127.0.0.1:8000/api/auth/register";
         } else {
             throw new Error(`Invalid type: ${type}`);
         }
+        await handleFetchApi(e, url, registeredData);
+    };
+
+    const handleFetchApi = async (e, url, data) => {
+        e.preventDefault();
+        await csrf();
         try {
             const response = await axios.post(url, {
                 email: registeredData.email,
                 password: registeredData.password,
             });
+            setRegisteredData({
+                email: "",
+                password: "",
+                repeatPassword: "",
+            });
         } catch (er) {
-            console.log("Error polski", er);
+            console.log(er);
         }
     };
 
-    //Function to check user is Logged in
-    function chcekIsLogged() {
-        if (tempFlag) {
-            if (!localStorage.getItem("user")) {
-                const user = {
-                    email: registeredData.email,
-                    password: registeredData.password,
-                };
-                localStorage.setItem("user", JSON.stringify(user));
-            } else {
-                const user = JSON.parse(localStorage.getItem("user"));
-                if (
-                    user.email === registeredData.email &&
-                    user.password === registeredData.password &&
-                    componentType === "login"
-                ) {
-                    console.log("LOGGED IN");
-                    // setIsLogged(true);
-                }
-            }
-        }
-    }
     return (
         <main>
             <form
@@ -119,15 +108,13 @@ export default function RegisterOrLogin({ componentType }) {
                 {isRegister && <button>Register</button>}
                 {isLogin && <button>Login</button>}
                 {isRegister && (
-                    <Link to="/login">
-                        <a data-testid="fromRegisterToLogin">
-                            I already have an account
-                        </a>
+                    <Link to="/login" data-testid="fromRegisterToLogin">
+                        I already have an account
                     </Link>
                 )}
                 {isLogin && (
-                    <Link to="/register">
-                        <a data-testid="fromLoginToRegister">Create account</a>
+                    <Link to="/register" data-testid="fromLoginToRegister">
+                        Create account
                     </Link>
                 )}
             </form>
