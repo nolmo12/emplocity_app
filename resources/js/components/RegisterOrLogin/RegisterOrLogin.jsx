@@ -26,12 +26,10 @@ export default function RegisterOrLogin({ componentType }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.get(
-                "http://127.0.0.1:8000/sets/store"
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/auth/register",
+                registeredData
             );
-            setTempFlag(true);
-            console.log(response.data);
-            chcekIsLogged();
         } catch (er) {
             console.log("Error polski", er);
         }
