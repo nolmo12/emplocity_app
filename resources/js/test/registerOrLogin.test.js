@@ -25,24 +25,6 @@ describe("RegisterOrLogin component test", () => {
         fireEvent.change(inputElement, { target: { value: "example@.com" } });
         expect(inputElement.value).toBe("example@.com");
     });
-    test("is Forgot email? visiable for Register", () => {
-        render(
-            <Router>
-                <RegisterOrLogin componentType="register" />
-            </Router>
-        );
-        const forgotEmailElement = screen.queryByTestId("forgotEmail");
-        expect(forgotEmailElement).not.toBeInTheDocument();
-    });
-    test("is Forgot email? visiable for Login", () => {
-        render(
-            <Router>
-                <RegisterOrLogin componentType="login" />
-            </Router>
-        );
-        const forgotEmailElement = screen.queryByTestId("forgotEmail");
-        expect(forgotEmailElement).toBeInTheDocument();
-    });
     test("password input changes when user types", () => {
         render(
             <Router>

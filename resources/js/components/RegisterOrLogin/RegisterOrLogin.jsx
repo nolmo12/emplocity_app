@@ -82,7 +82,6 @@ export default function RegisterOrLogin({ componentType }) {
                     value={registeredData.email}
                     onChange={(e) => handleInuptEmail(e)}
                 ></input>
-                {isLogin && <a data-testid="forgotEmail">Forgot email?</a>}
                 <input
                     type="password"
                     placeholder="Password"
@@ -98,7 +97,9 @@ export default function RegisterOrLogin({ componentType }) {
                     ></input>
                 )}
                 {isLogin && (
-                    <a data-testid="forgotPassword">Forgot password?</a>
+                    <Link to="/forgotPassword">
+                        <a data-testid="forgotPassword">Forgot password?</a>
+                    </Link>
                 )}
 
                 {isRegister && <button>Register</button>}
