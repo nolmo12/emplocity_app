@@ -6,6 +6,7 @@ import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterOrLogin from "./components/RegisterOrLogin/RegisterOrLogin";
+import TempLogin from "./components/TempLogin/TempLogin";
 function Main() {
     const [isRegister, setIsRegister] = useState(false);
     const [isLogin, setIsLogin] = useState(false);
@@ -33,6 +34,7 @@ function Main() {
                     path="/forgotPassword"
                     element={<ForgotPassword />}
                 ></Route>
+                <Route path="/logged" element={<TempLogin />}></Route>
             </Routes>
         </Router>
     );

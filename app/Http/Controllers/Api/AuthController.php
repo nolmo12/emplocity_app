@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,7 @@ class AuthController extends Controller
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required'
             ]);
+            error_log($validateUser->errors());
 
             if($validateUser->fails()){
                 return response()->json([
@@ -100,7 +102,8 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-
+            $request->session()->regenerate();
+            
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',

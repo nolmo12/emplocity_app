@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
@@ -13,10 +13,11 @@ export default function RegisterOrLogin({ componentType }) {
         password: "",
         repeatPassword: "",
     });
-    const [tempFlag, setTempFlag] = useState(false);
+    // const [tempFlag, setTempFlag] = useState(false);
     // const { isLogged, setIsLogged } = useContext(AuthContext);
     const isRegister = componentType === "register";
     const isLogin = componentType === "login";
+    const navigate = useNavigate();
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -33,16 +34,23 @@ export default function RegisterOrLogin({ componentType }) {
         });
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, type) => {
         e.preventDefault();
+        let url;
+        if (type === "login") {
+            url = "http://127.0.0.1:8000/api/auth/login";
+            
+            navigate("/logged");
+        } else if (type === "register") {
+            url = "http://127.0.0.1:8000/api/auth/register";
+        } else {
+            throw new Error(`Invalid type: ${type}`);
+        }
         try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/register",
-                {
-                    email: registeredData.email,
-                    password: registeredData.password,
-                }
-            );
+            const response = await axios.post(url, {
+                email: registeredData.email,
+                password: registeredData.password,
+            });
         } catch (er) {
             console.log("Error polski", er);
         }
@@ -70,13 +78,41 @@ export default function RegisterOrLogin({ componentType }) {
             }
         }
     }
-
     return (
         <main>
-            <form data-testid="form" onSubmit={handleSubmit}>
+            <form
+                data-testid="form"
+                onSubmit={(e) => handleSubmit(e, componentType)}
+            >
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
+                </Link>
 
+                <input
+                    type="text"
+                    placeholder="Email"
+                    value={registeredData.email}
+                    onChange={(e) => handleInuptEmail(e)}
+                ></input>
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={registeredData.password}
+                    onChange={(e) => handleInputPassword(e)}
+                ></input>
+                {isRegister && (
+                    <input
+                        type="password"
+                        placeholder="Repeat password"
+                        value={registeredData.repeatPassword}
+                        onChange={(e) => handleInputRepeatPassword(e)}
+                    ></input>
+                )}
+                {isLogin && (
+                    <Link to="/forgotPassword">
+                        <a data-testid="forgotPassword">Forgot password?</a>
+                    </Link>
+                )}
 
                 {isRegister && <button>Register</button>}
                 {isLogin && <button>Login</button>}
