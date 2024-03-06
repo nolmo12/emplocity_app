@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useContext } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
@@ -9,6 +9,7 @@ export default function RegisterOrLogin({ componentType }) {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
+        repeatPassword: "",
     });
     const [tempFlag, setTempFlag] = useState(false);
     // const { isLogged, setIsLogged } = useContext(AuthContext);
@@ -23,12 +24,22 @@ export default function RegisterOrLogin({ componentType }) {
         setRegisteredData({ ...registeredData, password: e.target.value });
     }
 
+    function handleInputRepeatPassword(e) {
+        setRegisteredData({
+            ...registeredData,
+            repeatPassword: e.target.value,
+        });
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/api/auth/register",
-                registeredData
+                {
+                    email: registeredData.email,
+                    password: registeredData.password,
+                }
             );
         } catch (er) {
             console.log("Error polski", er);
@@ -78,6 +89,14 @@ export default function RegisterOrLogin({ componentType }) {
                     value={registeredData.password}
                     onChange={(e) => handleInputPassword(e)}
                 ></input>
+                {isRegister && (
+                    <input
+                        type="password"
+                        placeholder="Repeat password"
+                        value={registeredData.repeatPassword}
+                        onChange={(e) => handleInputRepeatPassword(e)}
+                    ></input>
+                )}
                 {isLogin && (
                     <a data-testid="forgotPassword">Forgot password?</a>
                 )}
