@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Route;
+use App\Actions\Fortify\CreateNewUser;
+use App\Http\Controllers\UserController;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/{any?}', function () {
     return view('welcome');
 });
