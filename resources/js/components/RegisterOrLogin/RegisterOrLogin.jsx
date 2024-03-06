@@ -1,14 +1,21 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
 import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
 import styles from "./registerOrLogin.module.css";
+// import AuthProvider, { AuthContext } from "../AuthProvider";
 export default function RegisterOrLogin({ componentType }) {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
     });
+    const [tempFlag, setTempFlag] = useState(false);
+    // const { isLogged, setIsLogged } = useContext(AuthContext);
+    const isRegister = componentType === "register";
+    const isLogin = componentType === "login";
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -18,44 +25,62 @@ export default function RegisterOrLogin({ componentType }) {
         setRegisteredData({ ...registeredData, password: e.target.value });
     }
 
-    const isRegister = componentType === "register";
-    const isLogin = componentType === "login";
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post(
+                "http://127.0.0.1:8000/api/auth/register",
+                registeredData
+            );
+        } catch (er) {
+            console.log("Error polski", er);
+        }
+    };
+
+    //Function to check user is Logged in
+    function chcekIsLogged() {
+        if (tempFlag) {
+            if (!localStorage.getItem("user")) {
+                const user = {
+                    email: registeredData.email,
+                    password: registeredData.password,
+                };
+                localStorage.setItem("user", JSON.stringify(user));
+            } else {
+                const user = JSON.parse(localStorage.getItem("user"));
+                if (
+                    user.email === registeredData.email &&
+                    user.password === registeredData.password &&
+                    componentType === "login"
+                ) {
+                    console.log("LOGGED IN");
+                    // setIsLogged(true);
+                }
+            }
+        }
+    }
 
     return (
-        <>
-            <main>
-                <form>
+        <main>
+            <form data-testid="form" onSubmit={handleSubmit}>
+                <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
-                    <div className={styles.inputContainer}>
-                        <img src={mailIcon} alt="mailIcon" className={styles.logIcon}></img>
-                        <input
-                            type="text"
-                            placeholder="Email"
-                            value={registeredData.email}
-                            onChange={(e) => handleInuptEmail(e)}
-                        ></input>
-                    </div>
-                    {isLogin && <a href="example.com">Forgot email?</a>}
 
-                    <div className={styles.inputContainer}>
-                        <img src={lockIcon} alt="lockIcon" className={styles.logIcon}></img>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={registeredData.password}
-                            onChange={(e) => handleInputPassword(e)}
-                        ></input>
-                    </div>
-                    {isLogin && <a href="example.com">Forgot password?</a>}
-
-                    {isRegister && <button>Register</button>}
-                    {isLogin && <button>Login</button>}
-                    {isRegister && (
-                        <a href="example.com">I already have an account</a>
-                    )}
-                    {isLogin && <a href="example1.com">Create account</a>}
-                </form>
-            </main>
-        </>
+                {isRegister && <button>Register</button>}
+                {isLogin && <button>Login</button>}
+                {isRegister && (
+                    <Link to="/login">
+                        <a data-testid="fromRegisterToLogin">
+                            I already have an account
+                        </a>
+                    </Link>
+                )}
+                {isLogin && (
+                    <Link to="/register">
+                        <a data-testid="fromLoginToRegister">Create account</a>
+                    </Link>
+                )}
+            </form>
+        </main>
     );
 }

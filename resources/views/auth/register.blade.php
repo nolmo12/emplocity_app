@@ -23,6 +23,7 @@
     </head>
     <body class="antialiased">
         <div id="root"></div>
-    
+    @viteReactRefresh
+    @vite('resources/js/app.js')
     </body>
 </html>
