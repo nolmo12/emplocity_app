@@ -1,22 +1,28 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
-import axios from "axios";
+import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
 import styles from "./registerOrLogin.module.css";
-import Cookies from "js-cookie";
-
-// import AuthProvider, { AuthContext } from "../AuthProvider";
+import useAuthContext from "../AuthContext";
 export default function RegisterOrLogin({ componentType }) {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
         repeatPassword: "",
     });
-    const navigate = useNavigate();
-    const csrf = () => axios.get("/sanctum/csrf-cookie");
+    const { login } = useAuthContext();
+    const { register } = useAuthContext();
+    const { user, getUser } = useAuthContext();
+
+    useEffect(() => {
+        if (!user) {
+            getUser();
+        }
+    }, []);
+
     const isRegister = componentType === "register";
     const isLogin = componentType === "login";
 
@@ -47,29 +53,39 @@ export default function RegisterOrLogin({ componentType }) {
         } else {
             throw new Error(`Invalid type: ${type}`);
         }
-        await handleFetchApi(e, url, registeredData);
+        await handleFetchApi(e, url);
     };
 
-    const handleFetchApi = async (e, url, data) => {
+    const handleFetchApi = async (e, url) => {
         e.preventDefault();
-        await csrf();
-        try {
-            const response = await axios.post(url, {
-                email: registeredData.email,
-                password: registeredData.password,
-            });
-            setRegisteredData({
-                email: "",
-                password: "",
-                repeatPassword: "",
-            });
-        } catch (er) {
-            console.log(er);
+        if (url === "http://127.0.0.1:8000/api/auth/login") {
+            login(registeredData.email, registeredData.password);
+        } else if (url === "http://127.0.0.1:8000/api/auth/register") {
+            register(
+                registeredData.email,
+                registeredData.password,
+                registeredData.repeatPassword
+            );
         }
+        // await csrf();
+        // try {
+        //     const response = await axios.post(url, {
+        //         email: registeredData.email,
+        //         password: registeredData.password,
+        //     });
+        //     setRegisteredData({
+        //         email: "",
+        //         password: "",
+        //         repeatPassword: "",
+        //     });
+        // } catch (er) {
+        //     console.log(er);
+        // }
     };
 
     return (
         <main>
+            {user?.email}
             <form
                 data-testid="form"
                 onSubmit={(e) => handleSubmit(e, componentType)}

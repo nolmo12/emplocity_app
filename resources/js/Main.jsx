@@ -7,35 +7,35 @@ import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterOrLogin from "./components/RegisterOrLogin/RegisterOrLogin";
 import TempLogin from "./components/TempLogin/TempLogin";
+import { AuthProvider } from "./components/AuthContext";
 function Main() {
-    const [isRegister, setIsRegister] = useState(false);
-    const [isLogin, setIsLogin] = useState(false);
-
     return (
         <Router>
-            <Routes>
-                <Route
-                    path="/"
-                    element={
-                        <>
-                            <Header /> <MainContent />
-                        </>
-                    }
-                ></Route>
-                <Route
-                    path="/register"
-                    element={<RegisterOrLogin componentType="register" />}
-                />
-                <Route
-                    path="/login"
-                    element={<RegisterOrLogin componentType="login" />}
-                />
-                <Route
-                    path="/forgotPassword"
-                    element={<ForgotPassword />}
-                ></Route>
-                <Route path="/logged" element={<TempLogin />}></Route>
-            </Routes>
+            <AuthProvider>
+                <Routes>
+                    <Route
+                        path="/"
+                        element={
+                            <>
+                                <Header /> <MainContent />
+                            </>
+                        }
+                    ></Route>
+                    <Route
+                        path="/register"
+                        element={<RegisterOrLogin componentType="register" />}
+                    />
+                    <Route
+                        path="/login"
+                        element={<RegisterOrLogin componentType="login" />}
+                    />
+                    <Route
+                        path="/forgotPassword"
+                        element={<ForgotPassword />}
+                    ></Route>
+                    <Route path="/logged" element={<TempLogin />}></Route>
+                </Routes>
+            </AuthProvider>
         </Router>
     );
 }
