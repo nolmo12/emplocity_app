@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\AuthController;
 
 /*
@@ -18,6 +19,9 @@ use App\Http\Controllers\Api\AuthController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/users', [UserController::class, 'show']);
+Route::get('/user/token/{id}', [UserController::class, 'tokens']);
 
 Route::group([], function () {
     Route::post('/auth/register', [AuthController::class, 'createUser']);
