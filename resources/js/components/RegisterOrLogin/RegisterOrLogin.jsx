@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import tempIcon from "./ico.png";
 import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
@@ -47,6 +46,8 @@ export default function RegisterOrLogin({ componentType }) {
         let url;
         if (type === "login") {
             url = "http://127.0.0.1:8000/api/auth/login";
+            
+            navigate("/logged");
         } else if (type === "register") {
             url = "http://127.0.0.1:8000/api/auth/register";
         } else {
