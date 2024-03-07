@@ -3,6 +3,7 @@ header {
     justify-content: space-between;
     width: 100%;
     height: 15vh;
+    background-color:orange;
 }
 
 header img {
