@@ -15,6 +15,7 @@ export default function RegisterOrLogin({ componentType }) {
         repeatPassword: "",
     });
     const { login } = useAuthContext();
+    const { register } = useAuthContext();
     const { user, getUser } = useAuthContext();
 
     useEffect(() => {
@@ -58,6 +59,12 @@ export default function RegisterOrLogin({ componentType }) {
         e.preventDefault();
         if (url === "http://127.0.0.1:8000/api/auth/login") {
             login(registeredData.email, registeredData.password);
+        } else if (url === "http://127.0.0.1:8000/api/auth/register") {
+            register(
+                registeredData.email,
+                registeredData.password,
+                registeredData.repeatPassword
+            );
         }
         // await csrf();
         // try {
