@@ -1,7 +1,8 @@
 import React from "react";
+import styles from "./popular.module.css";
 export default function Popular() {
     return (
-        <div>
+        <div id={styles.Popular}>
             <h1>Popular</h1>
             <ul>
                 <li>
@@ -21,6 +22,18 @@ export default function Popular() {
                 </li>
                 <li>
                     <img src="img"></img>Influencer6
+                </li>
+                <li>
+                    <img src="img"></img>Influencer7
+                </li>
+                <li>
+                    <img src="img"></img>Influencer8
+                </li>
+                <li>
+                    <img src="img"></img>Influencer9
+                </li>
+                <li>
+                    <img src="img"></img>Influencer10
                 </li>
             </ul>
         </div>

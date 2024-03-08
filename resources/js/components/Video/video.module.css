@@ -6,3 +6,67 @@ section {
     padding: 5px 5px 5px 5px;
     background-color: #f4f4f4;
 }
+
+section:hover {
+    background-color: #E5E5E5;
+    cursor: pointer;
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
+section:active {
+    transform: scale(0.95);
+}
+
+#title {
+    font-weight: 700;
+}
+
+#author {
+    font-weight: 400;
+}
+
+#views {
+    font-weight: 400;
+    float:right;
+}
+
+#date {
+    font-weight: 400;
+}
+
+#likes {
+    font-weight: 400;
+    float:right;
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    #video {
+        width: 10em;
+        height: 10em;
+    }
+
+    iframe {
+        width:99%;
+        height:70%;
+    }
+
+    #title, #author, #views, #date, #likes {
+        font-size:0.5em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #video {
+        width: 10em;
+        height: 10em;
+    }
+
+    iframe {
+        width:99%;
+        height:70%;
+    }
+
+    #title, #author, #views, #date, #likes {
+        font-size:0.5em;
+    }
+}
