@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import axios from "../axios";
 import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
@@ -7,26 +7,25 @@ import mailIcon from "./mailIcon.png";
 import lockIcon from "./lockIcon.png";
 import styles from "./registerOrLogin.module.css";
 import useAuthContext from "../AuthContext";
+
 export default function RegisterOrLogin({ componentType }) {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
         repeatPassword: "",
     });
-    const { login } = useAuthContext();
-    const { register } = useAuthContext();
-    const { user, getUser } = useAuthContext();
+
+    const navigate = useNavigate();
+    const { login, register, user, logout } = useAuthContext();
 
     useEffect(() => {
-        if (!user) {
-            getUser();
+        if (user) {
+            // If the user is available, you can perform actions here
+            console.log("User:", user);
         }
-    }, []);
+    }, [user]);
 
-    const isRegister = componentType === "register";
-    const isLogin = componentType === "login";
-
-    function handleInuptEmail(e) {
+    function handleInputEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
     }
 
@@ -46,7 +45,6 @@ export default function RegisterOrLogin({ componentType }) {
         let url;
         if (type === "login") {
             url = "http://127.0.0.1:8000/api/auth/login";
-            
             navigate("/logged");
         } else if (type === "register") {
             url = "http://127.0.0.1:8000/api/auth/register";
@@ -67,71 +65,64 @@ export default function RegisterOrLogin({ componentType }) {
                 registeredData.repeatPassword
             );
         }
-        // await csrf();
-        // try {
-        //     const response = await axios.post(url, {
-        //         email: registeredData.email,
-        //         password: registeredData.password,
-        //     });
-        //     setRegisteredData({
-        //         email: "",
-        //         password: "",
-        //         repeatPassword: "",
-        //     });
-        // } catch (er) {
-        //     console.log(er);
-        // }
+    };
+
+    const handleLogout = async (e) => {
+        e.preventDefault();
+
+        try {
+            await axios.post("/api/auth/logout");
+            logout(); // Call the logout function from the auth context
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
     };
 
     return (
         <main>
-            {user?.email}
-            <form
-                data-testid="form"
-                onSubmit={(e) => handleSubmit(e, componentType)}
-            >
+            <form onSubmit={(e) => handleSubmit(e, componentType)}>
                 <Link to="/">
-                    <img src={tempIcon} alt="Icon"></img>
+                    <img src={tempIcon} alt="Icon" />
                 </Link>
-
                 <input
                     type="text"
                     placeholder="Email"
                     value={registeredData.email}
-                    onChange={(e) => handleInuptEmail(e)}
-                ></input>
+                    onChange={handleInputEmail}
+                />
                 <input
                     type="password"
                     placeholder="Password"
                     value={registeredData.password}
-                    onChange={(e) => handleInputPassword(e)}
-                ></input>
-                {isRegister && (
+                    onChange={handleInputPassword}
+                />
+                {componentType === "register" && (
                     <input
                         type="password"
                         placeholder="Repeat password"
                         value={registeredData.repeatPassword}
-                        onChange={(e) => handleInputRepeatPassword(e)}
-                    ></input>
+                        onChange={handleInputRepeatPassword}
+                    />
                 )}
-                {isLogin && (
+                {componentType === "login" && (
                     <Link to="/forgotPassword">
-                        <a data-testid="forgotPassword">Forgot password?</a>
+                        <a>Forgot password?</a>
                     </Link>
                 )}
 
-                {isRegister && <button>Register</button>}
-                {isLogin && <button>Login</button>}
-                {isRegister && (
-                    <Link to="/login" data-testid="fromRegisterToLogin">
-                        I already have an account
-                    </Link>
+                {componentType === "register" ? (
+                    <button>Register</button>
+                ) : (
+                    <button>Login</button>
                 )}
-                {isLogin && (
-                    <Link to="/register" data-testid="fromLoginToRegister">
-                        Create account
-                    </Link>
+                {componentType === "register" ? (
+                    <Link to="/login">I already have an account</Link>
+                ) : (
+                    <Link to="/register">Create account</Link>
                 )}
+            </form>
+            <form onSubmit={handleLogout}>
+                <button id={styles.register}>Logout</button>
             </form>
         </main>
     );
