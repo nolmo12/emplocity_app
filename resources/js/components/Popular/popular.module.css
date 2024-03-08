@@ -1,0 +1,54 @@
+#Popular {
+    position:relative;
+    top:-15%;
+    left:-10%;
+    border: ridge 2px #060c1a;
+}
+
+#Popular li {
+    margin-bottom:1.5em;
+    list-style-type: none;
+}
+
+#Popular li:hover {
+    background-color: #101b33;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border-radius:10px;
+}
+
+#Popular li:active {
+    transform: scale(0.95);
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    #Popular {
+        position:relative;
+        width: 30%;
+        height:10%;
+        top:-32rem;
+        left:0.3em;
+        font-size:0.5em;
+    }
+
+    #Popular li {
+        width: 5%;
+        height:10%;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #Popular {
+        position:relative;
+        width: 20%;
+        height:10%;
+        top:-6rem;
+        font-size:0.7em;
+    }
+
+    #Popular li {
+        width: 10%;
+        height:10%;
+    }
+}
+

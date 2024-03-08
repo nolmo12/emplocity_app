@@ -8,9 +8,9 @@ export default function Header() {
     return (
         <>
             <header>
-                <img src={tempLogo} alt="Logo"></img>
+                <img src={tempLogo} alt="Logo" id={styles.imgLogo}></img>
                 <SearchBar />
-                <img src={tempIcon} alt="Icon"></img>
+                <img src={tempIcon} alt="Icon" id={styles.imgIcon}></img>
             </header>
             <Link to="/register">
                 <button id={styles.register}>Register</button>
