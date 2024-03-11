@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('languange_video', function (Blueprint $table) {
+        Schema::create('language_video', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Language::class)->constrained();
             $table->foreignIdFor(Video::class)->constrained();

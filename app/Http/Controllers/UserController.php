@@ -12,13 +12,6 @@ class UserController extends Controller
     {
         return User::all();
     }
-
-    public function tokens($id)
-    {
-        $user = $this->find($id);
-        return $user->tokens;
-    }
-
     public function find($id)
     {
         return User::find($id);
