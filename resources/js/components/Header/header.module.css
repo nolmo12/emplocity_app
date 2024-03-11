@@ -2,23 +2,123 @@ header {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    height: 15vh;
+    height: 10vh;
     background-color:orange;
 }
 
 header img {
     width: 3rem;
     height: 3rem;
+    top:5%;
+}
+
+#imgLogo
+{
+    position:relative;
+    left:1em;
+    top:10%;
+}
+
+#imgIcon
+{
+    position:relative;
+    right:1em;
+    top:10%;
+}
+
+#register, #login {
+    position: absolute;
+    width: 5%; 
+    height: 2em;
+    margin-bottom: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #A0A0A0;
+    background-color: white;
+    right: 4%;
 }
 
 #register {
-    position: absolute;
-    left: 5%;
-    top: 1%;
+    top: 2%;
 }
 
 #login {
-    position: absolute;
-    left: 5%;
     top: 5%;
+}
+
+#login:hover, #register:hover {
+    background-color: #F0F0F0;
+}
+
+#login:active, #register:active {
+    transform: scale(0.95);
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    #register{
+        font-size:0.7em;
+        width:4rem;
+        height:2em;
+        top:5em;
+        right:25%;
+    }
+
+    #login{
+        font-size:0.7em;
+        width:4rem;
+        height:2em;
+        top:5em;
+        right:5%;
+    }
+
+    #imgLogo {
+        position:relative;
+        left:1em;
+        top:10%;
+        width:2em;
+        height:2em;
+    }
+
+    #imgIcon {
+        position:relative;
+        right:1em;
+        top:10%;
+        width:2em;
+        height:2em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #register{
+        font-size:0.5em;
+        width:4rem;
+        height:2em;
+        top:2.5em;
+        right:20%;
+    }
+
+    #login{
+        font-size:0.5em;
+        width:4rem;
+        height:2em;
+        top:2.5em;
+        right:10%;
+    }
+
+    #imgLogo {
+        position:relative;
+        left:1em;
+        top:10%;
+        width:1.5em;
+        height:1.5em;
+    }
+
+    #imgIcon {
+        position:relative;
+        right:1em;
+        top:10%;
+        width:1.5em;
+        height:1.5em;
+    }
+
 }
