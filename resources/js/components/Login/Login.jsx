@@ -23,7 +23,7 @@ export default function Login() {
     const handleSubmit = () => {
         try {
             http.post(
-                "/api/login",
+                "/auth/login",
                 {
                     email: loginData.email,
                     password: loginData.password,
@@ -37,10 +37,7 @@ export default function Login() {
     };
     return (
         <main>
-            <form
-                data-testid="form"
-                onSubmit={(e) => handleSubmit(e, componentType)}
-            >
+            <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
                 </Link>

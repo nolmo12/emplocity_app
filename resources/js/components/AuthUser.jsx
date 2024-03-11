@@ -3,8 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 export default function AuthUser() {
     const navigate = useNavigate();
-    const [token, setToken] = useState(getToken());
-    const [user, setUser] = useState(getUser());
 
     const getToken = () => {
         const tempToken = sessionStorage.getItem("token");
@@ -17,6 +15,9 @@ export default function AuthUser() {
         const userInfo = JSON.parse(tempUser);
         return userInfo;
     };
+
+    const [token, setToken] = useState(getToken());
+    const [user, setUser] = useState(getUser());
 
     const saveToken = (token, user) => {
         sessionStorage.setItem("token", JSON.stringify(token));

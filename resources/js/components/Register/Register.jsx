@@ -28,7 +28,14 @@ export default function Register() {
 
     const handleSubmit = async () => {
         try {
-            const response = await axios.post("/api/register", registeredData);
+            const response = await axios.post(
+                "http://127.0.0.1:8000/auth/register",
+                {
+                    email: registeredData.email,
+                    password: registeredData.password,
+                    repeatPassword: registeredData.repeatPassword,
+                }
+            );
         } catch (e) {
             console.log(e);
         }
@@ -36,7 +43,7 @@ export default function Register() {
 
     return (
         <main>
-            <form data-testid="form" onSubmit={handleSubmit}>
+            <form data-testid="form" onSubmit={() => handleSubmit()}>
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
                 </Link>
