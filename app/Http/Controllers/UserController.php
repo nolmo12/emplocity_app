@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
@@ -11,10 +12,8 @@ class UserController extends Controller
     {
         return User::all();
     }
-
-    public function tokens($id)
+    public function find($id)
     {
-        $user = User::find($id);
-        return $user->tokens;
+        return User::find($id);
     }
 }
