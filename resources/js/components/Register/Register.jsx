@@ -4,12 +4,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
+import AuthUser from "../AuthUser";
 export default function Register() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
         repeatPassword: "",
     });
+
+    const { http } = AuthUser();
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
