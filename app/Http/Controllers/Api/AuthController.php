@@ -18,7 +18,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return User 
      */
-    public function createUser(Request $request)
+    public function register(Request $request)
     {
         try {
             //Validated
@@ -85,7 +85,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return User
      */
-    public function loginUser(Request $request)
+    public function login(Request $request)
     {
         try {
             $validateUser = Validator::make($request->all(), 
@@ -114,14 +114,15 @@ class AuthController extends Controller
 
             $user = Auth::user();
             
-            return response()->json([
+            return response()
+            ->json([
                 'status' => 'success',
                 'user' => $user,
                 'authorisation' => [
                     'token' => $token,
                     'type' => 'bearer',
                 ]
-            ]);
+                ]);
 
         } catch (\Throwable $th) {
             return response()->json([
@@ -129,6 +130,7 @@ class AuthController extends Controller
                 'message' => $th->getMessage()
             ], 500);
         }
+        
     }
 
     public function logout()

@@ -103,4 +103,30 @@ class AuthTest extends TestCase
             
         ]);
     }
+
+    public function testLogout()
+    {
+        $email = fake()->unique()->email();
+    
+        $this->post('/api/auth/register', [
+            'email' => $email,
+            'password' => 'password123',
+            'repeatPassword' => 'password123'
+        ]);
+    
+        $response = $this->post('/api/auth/login', [
+            'email' => $email,
+            'password' => 'password123',
+        ]);
+    
+        $token = $response->json('authorisation.token');
+    
+        $this->assertNotEmpty($token);
+    
+        $logoutResponse = $this->withHeader('Authorization', 'Bearer ' . $token)
+                              ->post('/api/auth/logout');
+    
+        $logoutResponse->assertStatus(200);
+    }
+    
 }
