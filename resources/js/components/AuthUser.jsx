@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -41,11 +40,4 @@ export default function AuthUser() {
         getUser,
         http,
     };
-=======
-import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-export default function AuthUser() {
-    // TUTAJ
->>>>>>> Stashed changes
 }
