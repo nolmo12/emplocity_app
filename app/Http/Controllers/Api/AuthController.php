@@ -26,7 +26,7 @@ class AuthController extends Controller
             [
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required',
-                'repeatPassword' => 'required'
+                'repeatPassword' => 'required|same:password'
             ]);
             error_log($validateUser->errors());
 

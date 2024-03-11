@@ -20,12 +20,6 @@ Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('/users', [UserController::class, 'show']);
-    Route::get('/{id}', [UserController::class, 'find']);
-    Route::get('/tokens/{id}', [UserController::class, 'tokens']);
-});
-
 
 
 Route::prefix('auth')->group(function () {
