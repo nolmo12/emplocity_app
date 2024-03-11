@@ -26,10 +26,11 @@ export default function Register() {
         });
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/auth/register",
+                "http://127.0.0.1:8000/api/auth/register",
                 {
                     email: registeredData.email,
                     password: registeredData.password,
@@ -43,7 +44,7 @@ export default function Register() {
 
     return (
         <main>
-            <form data-testid="form" onSubmit={() => handleSubmit()}>
+            <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
                 </Link>
