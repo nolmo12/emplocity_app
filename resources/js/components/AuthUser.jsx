@@ -1,12 +1,31 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
 export default function AuthUser() {
     const [token, setToken] = useState();
 
+    const getToken = () => {
+        const token = Cookies.get("token");
+        if (token) {
+            const decodedToken = jwtDecode(token);
+        }
+        return token;
+    };
+
+    const getExpiredTime = () => {
+        const token = Cookies.get("token");
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            return decodedToken.exp;
+        }
+        return null;
+    };
+
     const saveToken = (tempToken, time) => {
-        const date = new Date();
-        date.setTime(date.getTime() + time * 100000);
+        const date = new Date(); // time from api
+        date.setTime(date.getTime() + time * 5000);
         Cookies.set("token", tempToken, {
             path: "/",
             expires: date,
@@ -17,18 +36,6 @@ export default function AuthUser() {
     const logout = () => {
         Cookies.remove("token");
         setToken(null);
-    };
-
-    const getToken = () => {
-        const token = Cookies.get("token");
-        return token;
-    };
-
-    const refreshToken = () => {
-        const token = Cookies.get("token");
-        if (token) {
-            setToken(token);
-        }
     };
 
     const http = axios.create({
@@ -42,6 +49,7 @@ export default function AuthUser() {
         setToken: saveToken,
         logout,
         getToken,
+        getExpiredTime,
         token,
         http,
     };

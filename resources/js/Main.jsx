@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    useActionData,
+} from "react-router-dom";
 import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
@@ -7,26 +12,10 @@ import Register from "./components/Register/Register";
 import Login from "./components/Login/Login";
 import TempLogin from "./components/TempLogin/TempLogin";
 import AuthUser from "./components/AuthUser";
-
+import jwtRefresh from "./components/jwtRefresh";
 function Main() {
-    // localStorage.clear();
-    const { getToken, token } = AuthUser();
-
-    // if (!getToken()) {
-    //     return (
-    //         <Routes>
-    //             <Route
-    //                 path="/"
-    //                 element={
-    //                     <>
-    //                         <Header /> <MainContent />
-    //                     </>
-    //                 }
-    //             ></Route>
-    //         </Routes>
-    //     );
-    // }
-
+    const { httpAuth, refreshToken } = jwtRefresh();
+    refreshToken();
     return (
         <Routes>
             <Route
