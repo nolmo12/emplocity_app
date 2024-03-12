@@ -4,12 +4,15 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
+import AuthUser from "../AuthUser";
 export default function Register() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
         repeatPassword: "",
     });
+
+    const { http } = AuthUser();
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -26,10 +29,11 @@ export default function Register() {
         });
     }
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/auth/register",
+                "http://127.0.0.1:8000/api/auth/register",
                 {
                     email: registeredData.email,
                     password: registeredData.password,
@@ -43,7 +47,7 @@ export default function Register() {
 
     return (
         <main>
-            <form data-testid="form" onSubmit={() => handleSubmit()}>
+            <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
                 </Link>

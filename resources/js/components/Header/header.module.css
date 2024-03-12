@@ -26,49 +26,58 @@ header img {
     top:10%;
 }
 
-#register, #login {
+#menu {
+    list-style: none;
     position: absolute;
-    width: 5%; 
-    height: 2em;
-    margin-bottom: 1em;
+    right: 6rem;
+    top:-1em;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+#menu li {
+    margin-bottom:-1.7em;
+}
+
+#menu button {
+    position: relative;
+    width:5em;
+    height:2em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
-    border: solid 2px #A0A0A0;
+    border: none;
     background-color: white;
-    right: 4%;
 }
 
 #register {
-    top: 2%;
+    top: 1em;
 }
 
 #login {
-    top: 5%;
+    top: 3em;
 }
 
-#login:hover, #register:hover {
+#logout {
+    top: 5em;
+}
+
+#login:hover, #register:hover, #logout:hover {
     background-color: #F0F0F0;
 }
 
-#login:active, #register:active {
+#login:active, #register:active, #logout:active {
     transform: scale(0.95);
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
-    #register{
-        font-size:0.7em;
-        width:4rem;
+    #menu button {
+        left:2em;
+        position: relative;
+        width:5.5em;
         height:2em;
-        top:5em;
-        right:25%;
-    }
-
-    #login{
-        font-size:0.7em;
-        width:4rem;
-        height:2em;
-        top:5em;
-        right:5%;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        border: none;
+        background-color: white;
     }
 
     #imgLogo {
@@ -89,20 +98,14 @@ header img {
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
-    #register{
-        font-size:0.5em;
-        width:4rem;
+    #menu button {
+        left:2em;
+        position: relative;
+        width:5.5em;
         height:2em;
-        top:2.5em;
-        right:20%;
-    }
-
-    #login{
-        font-size:0.5em;
-        width:4rem;
-        height:2em;
-        top:2.5em;
-        right:10%;
+        transition: background-color 0.3s ease, transform 0.1s ease;
+        border: none;
+        background-color: white;
     }
 
     #imgLogo {

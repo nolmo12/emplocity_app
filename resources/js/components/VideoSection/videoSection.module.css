@@ -5,25 +5,31 @@
     flex-wrap: wrap;
     width: 70%;
     color: black;
+    background-color: #101b32;
     left:5%;
-    top:-10%;
-    border: ridge 2px #060c1a;
+    border: inset 2px #060c1a; 
+    padding-bottom:1em;
+    padding-right:1em;
 }
 
 h2 {
-    position: relative;
+    position: absolute;
+    top: -1.5em;
+    left: 0;
     width: 100%;
-    color:white;
+    color: white;
+    margin: 0;
 }
 
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #videoSection {
-        width: 50%;
-        height:50%;
+        width: 10em;
+        height:85em;
         left: 5%;
-        top:5%;
+        top:1em;
         margin-top:5%;
+        padding-bottom:0;
     }
 
     h2 {
@@ -33,11 +39,13 @@ h2 {
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #videoSection {
-        width: 50%;
+        width: 60%;
         height:50%;
         left: 5%;
         top:5%;
         margin-top:3%;
+        padding-bottom:0;
+        padding-right:0;
     }
 
     h2 {
