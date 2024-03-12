@@ -49,7 +49,7 @@ export default function Register() {
         <main>
             <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
-                    <img src={tempIcon} alt="Icon"></img>
+                    <img src={tempIcon} data-testid="logo" alt="Icon"></img>
                 </Link>
 
                 <input
@@ -74,9 +74,7 @@ export default function Register() {
 
                 <button>Register</button>
 
-                <Link to="/login" data-testid="fromRegisterToLogin">
-                    I already have an account
-                </Link>
+                <Link to="/login">I already have an account</Link>
             </form>
         </main>
     );

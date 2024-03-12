@@ -1,10 +1,12 @@
 import React from "react";
+import { useEffect } from "react";
 import tempLogo from "./tempLogo.png";
 import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
 import SearchBar from "../SearchBar/SearchBar";
 import styles from "./header.module.css";
 import AuthUser from "../AuthUser";
+
 export default function Header() {
     const { getToken, logout } = AuthUser();
     return (
