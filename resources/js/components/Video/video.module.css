@@ -5,4 +5,96 @@ section {
     margin: 5px 5px 5px 5px;
     padding: 5px 5px 5px 5px;
     background-color: #f4f4f4;
+    width:12rem;
+    height:12rem;
+}
+
+#video {
+    width:12rem;
+    height:12em;
+}
+
+iframe {
+    width:12rem;
+    height:70%;
+    top:-5%;
+}
+
+section:hover {
+    background-color: #E5E5E5;
+    cursor: pointer;
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
+section:active {
+    transform: scale(0.95);
+}
+
+#title, #author, #views, #date, #likes {
+    font-size:0.7em;
+}
+
+#title {
+    font-weight: 700;
+}
+
+#author {
+    font-weight: 400;
+}
+
+#views {
+    font-weight: 400;
+    float:right;
+}
+
+#date {
+    font-weight: 400;
+}
+
+#likes {
+    font-weight: 400;
+    float:right;
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    section {
+        height:9em;
+        margin-bottom:-5em;
+        margin-top:-6em;
+    }
+
+    #video {
+        width: 9em;
+        height: 9em;
+    }
+
+    iframe {
+        width:95%;
+        height:70%;
+    }
+
+    #title, #author, #views, #date, #likes {
+        font-size:0.5em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    section {
+        height:80%;
+    }
+
+
+    #video {
+        width: 12em;
+        height: 12em;
+    }
+
+    iframe {
+        width:99%;
+        height:70%;
+    }
+
+    #title, #author, #views, #date, #likes {
+        font-size:0.5em;
+    }
 }

@@ -1,4 +1,54 @@
-input {
+#searchBarLoop {
+    position: relative; 
+    display: inline-block; 
+}
+
+#searchBar {
     width: 40rem;
     height: 1.5rem;
+    top:1rem;
+    border: solid 2px #A0A0A0;
+    border-radius: 15px;
+    padding-left: 2em; 
+    position: relative; 
+}
+
+#searchLoop {
+    height: 1.2em;
+    width: 1.5em;
+    position: absolute; 
+    top: 1.8rem; 
+    transform: translateY(-50%); 
+    right: 10px; 
+    cursor:pointer;
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    #searchBar {
+        width: 90%;
+        height:20%;
+    }
+
+    #searchLoop {
+        left:95%;
+        top:35%;
+        width:1em;
+        height:1em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #searchBar {
+        top:0.5em;
+        left:-2em;
+        width: 150%;
+        height:30%;
+    }
+
+    #searchLoop {
+        left:17.5em;
+        top:1em;
+        width:0.6em;
+        height:0.6em;
+    }
 }
