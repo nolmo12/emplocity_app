@@ -28,7 +28,7 @@ export default function Login() {
         })
             .then((res) => {
                 const tempToken = res.data.authorisation.token;
-                setToken(tempToken);
+                setToken(tempToken, 10);
                 navigate("/"); // Redirect to user account page
             })
             .catch((error) => {

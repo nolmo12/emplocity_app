@@ -12,13 +12,20 @@ function Main() {
     // localStorage.clear();
     const { getToken, token } = AuthUser();
 
-    if (!getToken()) {
-        return (
-            <Routes>
-                <Route path="/login" element={<Login />}></Route>
-            </Routes>
-        );
-    }
+    // if (!getToken()) {
+    //     return (
+    //         <Routes>
+    //             <Route
+    //                 path="/"
+    //                 element={
+    //                     <>
+    //                         <Header /> <MainContent />
+    //                     </>
+    //                 }
+    //             ></Route>
+    //         </Routes>
+    //     );
+    // }
 
     return (
         <Routes>
