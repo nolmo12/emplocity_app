@@ -1,10 +1,11 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
 import AuthUser from "../AuthUser";
 export default function Login() {
+    const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -21,7 +22,6 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
         http.post("/api/auth/login", {
             email: loginData.email,
             password: loginData.password,
@@ -29,6 +29,7 @@ export default function Login() {
             .then((res) => {
                 const tempToken = res.data.authorisation.token;
                 setToken(tempToken);
+                navigate("/"); // Redirect to user account page
             })
             .catch((error) => {
                 console.log(error);
