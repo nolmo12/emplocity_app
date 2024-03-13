@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -143,13 +144,10 @@ class AuthController extends Controller
 
     public function refresh()
     {
+        $cookie = Cookie::make('token', Auth::refresh(), 15, null, null, false, true);
         return response()->json([
             'status' => 'success',
             'user' => Auth::user(),
-            'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ]);
+        ])->withCookie($cookie);
     }
 }
