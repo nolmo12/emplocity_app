@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
 import authUser from "../authUser";
+import { set } from "immutable";
 export default function Login() {
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
@@ -27,9 +28,8 @@ export default function Login() {
             password: loginData.password,
         })
             .then((res) => {
-                const tempToken = res.data.authorisation.token;
-                setToken(tempToken, 10);
-                navigate("/"); // Redirect to user account page
+                setToken(res.data.authorisation.token, 500);
+                navigate("/");
             })
             .catch((error) => {
                 console.log(error);

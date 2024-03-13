@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-export default function AuthUser() {
+export default function authUser() {
     const [token, setToken] = useState();
 
     const getToken = () => {
@@ -33,6 +33,7 @@ export default function AuthUser() {
         baseURL: "http://127.0.0.1:8000",
         headers: {
             "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
     });
 

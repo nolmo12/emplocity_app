@@ -1,7 +1,7 @@
 import axios from "axios";
-import AuthUser from "./AuthUser";
+import authUser from "./authUser";
 export default function useRefresh() {
-    const { setToken } = AuthUser();
+    const { setToken } = authUser();
 
     const refresh = async () => {
         const response = await axios.post("/api/auth/refresh", {
