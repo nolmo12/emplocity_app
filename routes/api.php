@@ -31,3 +31,4 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
+
