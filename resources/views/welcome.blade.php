@@ -22,11 +22,6 @@
          @vite('resources/js/app.js')
     </head>
     <body class="antialiased">
-        @if(auth()->user())
-        <p>Zalogowany</p>
-        @else
-        <p>Nie zalogowany</p>
-        @endif
         <div id="root"></div>
     
     </body>

@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -113,16 +115,13 @@ class AuthController extends Controller
             }
 
             $user = Auth::user();
-            
-            return response()
-            ->json([
+
+            $cookie = Cookie::make('token', $token, 15, null, null, false, true);
+
+            return response()->json([
                 'status' => 'success',
                 'user' => $user,
-                'authorisation' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
-                ]);
+            ])->withCookie($cookie);
 
         } catch (\Throwable $th) {
             return response()->json([
