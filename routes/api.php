@@ -28,3 +28,6 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
 });
+Route::post('/test', function(){
+    return response()->json(['message' => 'refreshed']);
+});

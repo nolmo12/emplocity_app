@@ -14,15 +14,6 @@ export default function AuthUser() {
         return token;
     };
 
-    const getExpiredTime = () => {
-        const token = Cookies.get("token");
-        if (token) {
-            const decodedToken = jwtDecode(token);
-            return decodedToken.exp;
-        }
-        return null;
-    };
-
     const saveToken = (tempToken, time) => {
         const date = new Date(); // time from api
         date.setTime(date.getTime() + time * 5000);
@@ -49,7 +40,6 @@ export default function AuthUser() {
         setToken: saveToken,
         logout,
         getToken,
-        getExpiredTime,
         token,
         http,
     };

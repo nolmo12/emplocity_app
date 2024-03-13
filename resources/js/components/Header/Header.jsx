@@ -1,4 +1,5 @@
-
+import React from "react";
+import { useState, useRef } from "react";
 import tempLogo from "./tempLogo.png";
 import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
@@ -9,10 +10,41 @@ import AuthUser from "../AuthUser";
 export default function Header() {
     const { getToken, logout } = AuthUser();
     const [showMenu, setShowMenu] = useState(false);
+    const [isLogged, setIsLogged] = useState(false);
+
+    if (getToken() && isLogged === false) {
+        setIsLogged(true);
+    }
+    if (!getToken() && isLogged === true) {
+        setIsLogged(false);
+    }
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
     };
+
+    const loginElement = (
+        <Link to="/login">
+            <button id={styles.login}>Login</button>
+        </Link>
+    );
+
+    const logoutElement = (
+        <li>
+            <button onClick={logout} id={styles.login}>
+                Logout
+            </button>
+        </li>
+        // styles from styles.logout Logout
+    );
+
+    const registerElement = (
+        <li>
+            <Link to="/register">
+                <button id={styles.register}>Register</button>
+            </Link>
+        </li>
+    );
 
     return (
         <>
@@ -28,21 +60,8 @@ export default function Header() {
             </header>
             {showMenu && (
                 <ul id={styles.menu}>
-                    <li>
-                        <Link to="/register">
-                            <button id={styles.register}>Register</button>
-                        </Link>
-                    </li>
-                    {!getToken() && (
-                        <li>
-                            <Link to="/login">
-                                <button id={styles.login}>Login</button>
-                            </Link>
-                        </li>
-                    )}
-                    <li>
-                        <button onClick={logout} id={styles.logout}>Logout</button>
-                    </li>
+                    {!isLogged && registerElement}
+                    {isLogged ? logoutElement : loginElement}
                 </ul>
             )}
         </>
