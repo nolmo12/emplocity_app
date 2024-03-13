@@ -1,18 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
-import AuthUser from "../AuthUser";
+import authUser from "../authUser";
 export default function Register() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
         repeatPassword: "",
     });
+    const navigate = useNavigate();
 
-    const { http } = AuthUser();
+    const { http } = authUser();
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -40,6 +41,7 @@ export default function Register() {
                     repeatPassword: registeredData.repeatPassword,
                 }
             );
+            navigate("/");
         } catch (e) {
             console.log(e);
         }
@@ -49,7 +51,7 @@ export default function Register() {
         <main>
             <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
-                    <img src={tempIcon} alt="Icon"></img>
+                    <img src={tempIcon} data-testid="logo" alt="Icon"></img>
                 </Link>
 
                 <input
@@ -74,9 +76,7 @@ export default function Register() {
 
                 <button>Register</button>
 
-                <Link to="/login" data-testid="fromRegisterToLogin">
-                    I already have an account
-                </Link>
+                <Link to="/login">I already have an account</Link>
             </form>
         </main>
     );

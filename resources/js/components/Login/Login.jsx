@@ -3,14 +3,14 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
-import AuthUser from "../AuthUser";
+import authUser from "../authUser";
 export default function Login() {
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
     });
-    const { http, setToken, token, getToken } = AuthUser();
+    const { http, setToken, token, getToken } = authUser();
 
     function handleInuptEmail(e) {
         setLoginData({ ...loginData, email: e.target.value });
@@ -40,7 +40,7 @@ export default function Login() {
         <main>
             <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
-                    <img src={tempIcon} alt="Icon"></img>
+                    <img src={tempIcon} data-testid="logo" alt="Icon"></img>
                 </Link>
 
                 <input

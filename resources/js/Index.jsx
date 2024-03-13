@@ -14,9 +14,5 @@ function Index() {
 if (document.getElementById("root")) {
     const root = ReactDOM.createRoot(document.getElementById("root"));
 
-    root.render(
-        <React.StrictMode>
-            <Index />
-        </React.StrictMode>
-    );
+    root.render(<Index />);
 }
