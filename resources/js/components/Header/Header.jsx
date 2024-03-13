@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import tempIcon from "./ico.png";
 import SearchBar from "../SearchBar/SearchBar";
 import styles from "./header.module.css";
-import AuthUser from "../AuthUser";
+import authUser from "../authUser";
 
 export default function Header() {
-    const { getToken, logout } = AuthUser();
+    const { getToken, logout } = authUser();
     const [showMenu, setShowMenu] = useState(false);
     const [isLogged, setIsLogged] = useState(false);
 

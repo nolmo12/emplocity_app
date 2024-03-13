@@ -1,18 +1,19 @@
 import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
-import AuthUser from "../AuthUser";
+import authUser from "../authUser";
 export default function Register() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
         repeatPassword: "",
     });
+    const navigate = useNavigate();
 
-    const { http } = AuthUser();
+    const { http } = authUser();
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -40,6 +41,7 @@ export default function Register() {
                     repeatPassword: registeredData.repeatPassword,
                 }
             );
+            navigate("/");
         } catch (e) {
             console.log(e);
         }

@@ -18,15 +18,24 @@ import { createMemoryHistory } from "history";
 import Register from "../components/Register/Register";
 import Login from "../components/Login/Login";
 import axios from "axios";
+import authUser from "../components/authUser";
 import { useNavigate } from "react-router-dom";
-jest.mock("axios");
-
-describe("Register component test", () => {
+jest.mock("axios", () => ({
+    __esModule: true,
+    default: {
+        post: jest.fn(),
+        create: jest.fn(() => ({
+            post: jest.fn(),
+        })),
+    },
+}));
+jest.mock("../components/authUser");
+describe("Login component test", () => {
     test("logo takes user to home page", () => {
         const history = createMemoryHistory();
         render(
             <Router>
-                <Register />
+                <Login />
             </Router>
         );
         const logoElement = screen.getByTestId("logo");
@@ -36,7 +45,7 @@ describe("Register component test", () => {
     test("email input changes when user types", () => {
         render(
             <Router>
-                <Register />
+                <Login />
             </Router>
         );
         const inputElement = screen.getByPlaceholderText("Email");
@@ -46,51 +55,41 @@ describe("Register component test", () => {
     test("password input changes when user types", () => {
         render(
             <Router>
-                <Register />
+                <Login />
             </Router>
         );
         const inputElement = screen.getByPlaceholderText("Password");
         fireEvent.change(inputElement, { target: { value: "123456" } });
         expect(inputElement.value).toBe("123456");
     });
-    test("repeat password input changes when user types", () => {
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
-        const inputElement = screen.getByPlaceholderText("Repeat password");
-        fireEvent.change(inputElement, { target: { value: "123456" } });
-        expect(inputElement.value).toBe("123456");
-    });
     test("send form data with inputs", async () => {
-        axios.post.mockResolvedValue({});
+        const mockPost = jest.fn().mockResolvedValue({});
+        authUser.mockReturnValue({
+            http: { post: mockPost },
+            setToken: jest.fn(),
+            token: "",
+            getToken: jest.fn(),
+        });
+
         render(
             <Router>
-                <Register />
+                <Login />
             </Router>
         );
+
         const formElement = screen.getByTestId("form");
         const emailInputElement = screen.getByPlaceholderText("Email");
         const passwordInputElement = screen.getByPlaceholderText("Password");
-        const repeatPasswordInputElement =
-            screen.getByPlaceholderText("Repeat password");
 
         fireEvent.change(emailInputElement, {
-            target: { value: "example@.com" },
+            target: { value: "123@wp.pl" },
         });
-        fireEvent.change(passwordInputElement, { target: { value: "123456" } });
-        fireEvent.change(repeatPasswordInputElement, {
-            target: { value: "123456" },
-        });
+        fireEvent.change(passwordInputElement, { target: { value: "123" } });
+
         fireEvent.submit(formElement);
-        expect(axios.post).toHaveBeenCalledWith(
-            "http://127.0.0.1:8000/api/auth/register",
-            {
-                email: "example@.com",
-                password: "123456",
-                repeatPassword: "123456",
-            }
-        );
+
+        await waitFor(() => {
+            expect(mockPost).toHaveBeenCalledTimes(1);
+        });
     });
 });
