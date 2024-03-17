@@ -22,6 +22,8 @@
          @vite('resources/js/app.js')
     </head>
     <body class="antialiased">
+
+
         <div id="root"></div>
     
     </body>

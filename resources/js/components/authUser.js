@@ -3,9 +3,9 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-export default function AuthUser() {
+export default function authUser() {
     const [token, setToken] = useState();
-
+    const [isLogged, setIsLogged] = useState(false);
     const getToken = () => {
         const token = Cookies.get("token");
         if (token) {
@@ -32,9 +32,16 @@ export default function AuthUser() {
     const http = axios.create({
         baseURL: "http://127.0.0.1:8000",
         headers: {
-            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
         },
     });
+
+    if (getToken() && isLogged === false) {
+        setIsLogged(true);
+    }
+    if (!getToken() && isLogged === true) {
+        setIsLogged(false);
+    }
 
     return {
         setToken: saveToken,
@@ -42,5 +49,6 @@ export default function AuthUser() {
         getToken,
         token,
         http,
+        isLogged,
     };
 }

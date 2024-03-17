@@ -8,16 +8,8 @@ import styles from "./header.module.css";
 import authUser from "../authUser";
 
 export default function Header() {
-    const { getToken, logout } = authUser();
+    const { getToken, logout, isLogged } = authUser();
     const [showMenu, setShowMenu] = useState(false);
-    const [isLogged, setIsLogged] = useState(false);
-
-    if (getToken() && isLogged === false) {
-        setIsLogged(true);
-    }
-    if (!getToken() && isLogged === true) {
-        setIsLogged(false);
-    }
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -64,6 +56,7 @@ export default function Header() {
                     {isLogged ? logoutElement : loginElement}
                 </ul>
             )}
+            {isLogged ? <p>Zalogowany</p> : <p>Niezalogowany</p>}
         </>
     );
 }
