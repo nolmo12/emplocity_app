@@ -1,21 +1,30 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
+    const [isValid, setIsValid] = useState(true);
+    const [message, setMessage] = useState("");
+    const navigate = useNavigate();
     function handleInputEmail(e) {
         setEmail(e.target.value);
     }
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault(); // wait for backend
+        if (isValid) {
+            setMessage(
+                "Email will be sent, you will be redirected to the login page"
+            );
+            setInterval(() => {
+                navigate("/login");
+            }, 4000);
+        }
     };
-    function test() {
-        console.log(email);
-    }
+
     return (
         <main>
-            <form onSubmit={test}>
+            <form onSubmit={handleSubmit}>
                 <Link to="/">
                     <img src={tempIcon} alt="Icon"></img>
                 </Link>
@@ -24,6 +33,7 @@ export default function ForgotPassword() {
                     onChange={(e) => handleInputEmail(e)}
                     placeholder="Email"
                 ></input>
+                {message && <p>{message}</p>}
                 <button>Send</button>
             </form>
         </main>

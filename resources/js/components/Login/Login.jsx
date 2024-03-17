@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
@@ -11,7 +11,12 @@ export default function Login() {
         email: "",
         password: "",
     });
-    const { http, setToken, token, getToken } = authUser();
+    const { http, setToken, getToken, isLogged } = authUser();
+    useEffect(() => {
+        if (isLogged) {
+            navigate("/");
+        }
+    }, [isLogged]);
 
     function handleInuptEmail(e) {
         setLoginData({ ...loginData, email: e.target.value });
