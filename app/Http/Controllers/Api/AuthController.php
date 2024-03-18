@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -96,11 +97,34 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
 
+            //Custom http codes for validation errors
+            //Starts at 46x
+            //461 => email error
+            //462 => password error
+
             if($validateUser->fails()){
+                $errors = $validateUser->errors();
+                $formattedErrors = [];
+                foreach ($errors->all() as $error)
+                {
+                    $code = 0;
+                    if(str_contains($error, 'email'))
+                    {
+                        $code = 461;
+                    }
+                    if(str_contains($error, 'password'))
+                    {
+                        $code = 462;
+                    }
+
+                    $formattedErrors[] = [
+                        $code => $error
+                    ];
+                }
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
-                    'errors' => $validateUser->errors()
+                    'errors' => $formattedErrors
                 ], 401);
             }
 
@@ -115,8 +139,6 @@ class AuthController extends Controller
             }
 
             $user = Auth::user();
-
-            $cookie = Cookie::make('token', $token, 15, null, null, false, true);
 
             return response()
             ->json([
@@ -156,5 +178,23 @@ class AuthController extends Controller
                 'type' => 'bearer',
             ]
         ]);
+    }
+
+    /**
+     * Login The User
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function forgotPassword(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+ 
+        $status = Password::sendResetLink(
+            $request->only('email')
+        );
+     
+        return $status === Password::RESET_LINK_SENT
+                    ? back()->with(['status' => __($status)])
+                    : back()->withErrors(['email' => __($status)]);
     }
 }

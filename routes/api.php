@@ -28,6 +28,9 @@ Route::prefix('auth')->group(function () {
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('auth:api');
+    Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])
+    ->middleware('guest')
+    ->name('password.email');
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
