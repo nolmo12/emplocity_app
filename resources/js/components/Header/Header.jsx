@@ -12,7 +12,9 @@ export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
 
     const toggleMenu = () => {
-        setShowMenu(!showMenu);
+        if (!isLogged) {
+            setShowMenu(!showMenu);
+        }
     };
 
     const loginElement = (

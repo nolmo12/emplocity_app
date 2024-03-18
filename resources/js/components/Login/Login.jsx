@@ -34,7 +34,7 @@ export default function Login() {
         })
             .then((res) => {
                 setToken(res.data.authorisation.token, 500);
-                navigate("/");
+                navigate("/account");
             })
             .catch((error) => {
                 console.log(error);

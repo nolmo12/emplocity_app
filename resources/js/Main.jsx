@@ -15,10 +15,19 @@ function Main() {
                 path="/"
                 element={
                     <>
-                        <Header /> <MainContent />
+                        <Header /> <MainContent userIsLogged={false} />
                     </>
                 }
             ></Route>
+            <Route
+                path="/account"
+                element={
+                    <>
+                        <Header />
+                        <MainContent userIsLogged={true} />
+                    </>
+                }
+            />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
