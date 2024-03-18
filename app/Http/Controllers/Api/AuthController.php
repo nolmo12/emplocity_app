@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -61,6 +62,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
+            // user registered event
+            event(new Registered($user));
 
             $token = Auth::attempt($request->only(['email', 'password']));
 
