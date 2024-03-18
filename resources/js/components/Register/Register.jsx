@@ -1,10 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Message from "../Message/Message";
+import authUser from "../authUser";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
-import authUser from "../authUser";
+
 export default function Register() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
@@ -12,7 +14,7 @@ export default function Register() {
         repeatPassword: "",
     });
     const navigate = useNavigate();
-
+    const [emailVerfication, setEmailVerfication] = useState(false);
     const { http } = authUser();
 
     function handleInuptEmail(e) {
@@ -41,7 +43,7 @@ export default function Register() {
                     repeatPassword: registeredData.repeatPassword,
                 }
             );
-            navigate("/");
+            setEmailVerfication(true);
         } catch (e) {
             console.log(e);
         }
@@ -49,35 +51,39 @@ export default function Register() {
 
     return (
         <main>
-            <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
-                <Link to="/">
-                    <img src={tempIcon} data-testid="logo" alt="Icon"></img>
-                </Link>
+            {emailVerfication ? (
+                <Message message="Email verification sent" />
+            ) : (
+                <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
+                    <Link to="/">
+                        <img src={tempIcon} data-testid="logo" alt="Icon"></img>
+                    </Link>
 
-                <input
-                    type="text"
-                    placeholder="Email"
-                    value={registeredData.email}
-                    onChange={(e) => handleInuptEmail(e)}
-                ></input>
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={registeredData.password}
-                    onChange={(e) => handleInputPassword(e)}
-                ></input>
+                    <input
+                        type="text"
+                        placeholder="Email"
+                        value={registeredData.email}
+                        onChange={(e) => handleInuptEmail(e)}
+                    ></input>
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={registeredData.password}
+                        onChange={(e) => handleInputPassword(e)}
+                    ></input>
 
-                <input
-                    type="password"
-                    placeholder="Repeat password"
-                    value={registeredData.repeatPassword}
-                    onChange={(e) => handleInputRepeatPassword(e)}
-                ></input>
+                    <input
+                        type="password"
+                        placeholder="Repeat password"
+                        value={registeredData.repeatPassword}
+                        onChange={(e) => handleInputRepeatPassword(e)}
+                    ></input>
 
-                <button>Register</button>
+                    <button>Register</button>
 
-                <Link to="/login">I already have an account</Link>
-            </form>
+                    <Link to="/login">I already have an account</Link>
+                </form>
+            )}
         </main>
     );
 }

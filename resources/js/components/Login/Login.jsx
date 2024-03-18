@@ -1,10 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import authUser from "../authUser";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
-import authUser from "../authUser";
-import { set } from "immutable";
+
 export default function Login() {
     const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
@@ -34,7 +34,7 @@ export default function Login() {
         })
             .then((res) => {
                 setToken(res.data.authorisation.token, 500);
-                navigate("/");
+                navigate("/account");
             })
             .catch((error) => {
                 console.log(error);

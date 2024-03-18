@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./popular.module.css";
+
 export default function Popular() {
     return (
         <div id={styles.Popular}>

@@ -2,10 +2,11 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-
+import { useNavigate } from "react-router-dom";
 export default function authUser() {
     const [token, setToken] = useState();
     const [isLogged, setIsLogged] = useState(false);
+    const navigate = useNavigate();
     const getToken = () => {
         const token = Cookies.get("token");
         if (token) {
@@ -27,6 +28,7 @@ export default function authUser() {
     const logout = () => {
         Cookies.remove("token");
         setToken(null);
+        navigate("/");
     };
 
     const http = axios.create({
