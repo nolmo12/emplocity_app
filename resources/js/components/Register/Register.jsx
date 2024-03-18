@@ -13,8 +13,8 @@ export default function Register() {
         password: "",
         repeatPassword: "",
     });
-    const navigate = useNavigate();
     const [emailVerfication, setEmailVerfication] = useState(false);
+    const navigate = useNavigate();
     const { http } = authUser();
 
     function handleInuptEmail(e) {

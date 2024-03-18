@@ -6,12 +6,13 @@ import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
 
 export default function Login() {
-    const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
     });
+    const navigate = useNavigate();
     const { http, setToken, getToken, isLogged } = authUser();
+
     useEffect(() => {
         if (isLogged) {
             navigate("/");

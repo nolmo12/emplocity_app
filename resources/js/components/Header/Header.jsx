@@ -8,10 +8,10 @@ import tempLogo from "./tempLogo.png";
 import styles from "./header.module.css";
 
 export default function Header() {
-    const { getToken, logout, isLogged } = authUser();
     const [showMenu, setShowMenu] = useState(false);
+    const { getToken, logout, isLogged } = authUser();
 
-    const toggleMenu = () => {
+    const handleToggleMenu = () => {
         if (!isLogged) {
             setShowMenu(!showMenu);
         }
@@ -49,7 +49,7 @@ export default function Header() {
                     src={tempIcon}
                     alt="Icon"
                     id={styles.imgIcon}
-                    onClick={toggleMenu}
+                    onClick={handleToggleMenu}
                 ></img>
             </header>
             {showMenu && (
