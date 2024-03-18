@@ -1,5 +1,6 @@
 import React from "react";
 import authUser from "../authUser";
+
 export default function Settings() {
     const { logout } = authUser();
     return (

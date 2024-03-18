@@ -1,11 +1,11 @@
 import React from "react";
-import { useState, useRef } from "react";
-import tempLogo from "./tempLogo.png";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import tempIcon from "./ico.png";
 import SearchBar from "../SearchBar/SearchBar";
-import styles from "./header.module.css";
 import authUser from "../authUser";
+import tempIcon from "./ico.png";
+import tempLogo from "./tempLogo.png";
+import styles from "./header.module.css";
 
 export default function Header() {
     const { getToken, logout, isLogged } = authUser();

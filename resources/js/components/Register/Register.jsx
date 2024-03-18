@@ -1,11 +1,12 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import Message from "../Message/Message";
+import authUser from "../authUser";
 import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
-import authUser from "../authUser";
-import Message from "../Message/Message";
+
 export default function Register() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
