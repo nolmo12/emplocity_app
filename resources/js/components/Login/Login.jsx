@@ -10,6 +10,7 @@ export default function Login() {
         email: "",
         password: "",
     });
+    
     const navigate = useNavigate();
     const { http, setToken, getToken, isLogged } = authUser();
 
