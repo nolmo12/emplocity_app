@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import tempIcon from "./ico.png";
+import styles from "./forgotPassword.module.css";
 export default function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [isValid, setIsValid] = useState(true);

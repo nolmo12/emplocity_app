@@ -31,9 +31,9 @@
 
     #searchLoop {
         left:95%;
-        top:35%;
-        width:1em;
-        height:1em;
+        top:1.6em;
+        width:0.7em;
+        height:0.7em;
     }
 }
 
@@ -46,8 +46,8 @@
     }
 
     #searchLoop {
-        left:17.5em;
-        top:1em;
+        left:17.1em;
+        top:1.1em;
         width:0.6em;
         height:0.6em;
     }

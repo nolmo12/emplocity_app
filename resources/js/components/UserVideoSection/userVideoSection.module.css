@@ -1,0 +1,126 @@
+#UserVideoSection {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    width: 55%;
+    color: white;
+    background-color: #101b32;
+    left: -3em;
+    top: -6em;
+    border: inset 2px #060c1a; 
+    padding-bottom: 1em;
+}   
+
+#UserVideoSection th {
+    width: 25%;
+    padding-right: 3em;
+    padding-left: 3em;
+    font-weight: 600;
+}
+
+#UserVideoSection td {
+    text-align: center;
+    width: 25%;
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    #UserVideoSection {
+        width: 15em;
+        height: 85em;
+        left: -1em;
+        top: 1em;
+        margin-top: 5%;
+        padding-bottom: 0;
+        align-items: flex-start;
+    }
+    
+    #UserVideoSection th {
+        display: block;
+        width: 15%;
+        padding-right: 0em;
+        padding-left: 0em;
+        margin-bottom: 2em;
+    }
+
+    #UserVideoSection .tdContent {
+        left:5em;
+        top:-20.6em;
+    }
+    
+    #UserVideoSection td {
+        display: block;
+        width:70%;
+        margin-bottom: 2em;
+        float: right; 
+        clear: right; 
+        position:relative;
+        top:-18em;
+        left:3em;
+    }
+
+    #VideoHeader {
+        padding-bottom:7em;
+    }
+
+    #UserVideoSection section {
+        height: 9em;
+        width: 8em;
+        margin-bottom: 2em;
+    }
+
+    #video {
+        width: 8em;
+        height: 8em;
+    }
+
+    iframe {
+        width: 95%;
+        height: 70%;
+    }
+
+    #title, #author, #views, #date, #likes {
+        font-size: 0.5em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #UserVideoSection {
+        width: 30em;
+        height: 50em;
+        left: -1em;
+        top: 1em;
+        margin-top: 5%;
+        padding-bottom: 0;
+        align-items: flex-start;
+    }
+    
+    #UserVideoSection th {
+        display: block;
+        width: 15%;
+        padding-right: 0em;
+        padding-left: 0em;
+        margin-bottom: 2em;
+    }
+
+    #UserVideoSection .tdContent {
+        left:16em;
+        top:-28.3em;
+    }
+    
+    #UserVideoSection td {
+        display: block;
+        width:70%;
+        margin-bottom: 2em;
+        float: right; 
+        clear: right; 
+        position:relative;
+        top:-27.5em;
+        left:12em;
+    }
+
+    #VideoHeader {
+        padding-bottom:10em;
+    }
+}
+
+

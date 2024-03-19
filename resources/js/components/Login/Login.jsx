@@ -49,12 +49,14 @@ export default function Login() {
                 </Link>
 
                 <input
+                    id={styles.Email}
                     type="text"
                     placeholder="Email"
                     value={loginData.email}
                     onChange={(e) => handleInuptEmail(e)}
                 ></input>
                 <input
+                    id={styles.Password}
                     type="password"
                     placeholder="Password"
                     value={loginData.password}

@@ -60,12 +60,14 @@ export default function Register() {
                     </Link>
 
                     <input
+                        id={styles.Email}
                         type="text"
                         placeholder="Email"
                         value={registeredData.email}
                         onChange={(e) => handleInuptEmail(e)}
                     ></input>
                     <input
+                        id={styles.Password}
                         type="password"
                         placeholder="Password"
                         value={registeredData.password}
@@ -73,6 +75,7 @@ export default function Register() {
                     ></input>
 
                     <input
+                        id={styles.RepeatPassword}
                         type="password"
                         placeholder="Repeat password"
                         value={registeredData.repeatPassword}

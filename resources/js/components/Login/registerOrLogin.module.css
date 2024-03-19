@@ -46,12 +46,28 @@ form a:hover {
 }
 
 form input {
-    width: 90%; 
+    width: 75%; 
     height:2.5em;
     margin: 0 auto;
     margin-bottom: 1em; 
     border: solid 2px #A0A0A0;
+}
 
+form #Email {
+    background-image: url('./mailIcon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-left: 3em;
+    background-position: 0.1em center;
+}
+
+form #Password {
+    background-image: url('./iconLock.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 0.5em center;
+    padding-left: 3em;
+    background-size:1.5em;
 }
 
 form button {
