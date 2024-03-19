@@ -19,6 +19,7 @@ import Register from "../components/Register/Register";
 import Login from "../components/Login/Login";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import styles from "../components/Register/registerOrLogin.module.css";
 jest.mock("axios");
 
 describe("Register component test", () => {
@@ -63,7 +64,14 @@ describe("Register component test", () => {
         fireEvent.change(inputElement, { target: { value: "123456" } });
         expect(inputElement.value).toBe("123456");
     });
-    test("send form data with inputs", async () => {
+    test("email input changes class based on state", () => {
+        const { getByPlaceholderText } = render(
+            <Router>
+                <Register />
+            </Router>
+        );
+    });
+    test("send form data with correct inputs", async () => {
         axios.post.mockResolvedValue({});
         render(
             <Router>
@@ -92,5 +100,41 @@ describe("Register component test", () => {
                 repeatPassword: "123456",
             }
         );
+        expect(emailInputElement).not.toHaveClass("invalid");
+        expect(passwordInputElement).not.toHaveClass("invalid");
+        expect(repeatPasswordInputElement).not.toHaveClass("invalid");
+    });
+    test("send form data with incorrect inputs", async () => {
+        axios.post.mockResolvedValue({});
+        render(
+            <Router>
+                <Register />
+            </Router>
+        );
+        const formElement = screen.getByTestId("form");
+        const emailInputElement = screen.getByPlaceholderText("Email");
+        const passwordInputElement = screen.getByPlaceholderText("Password");
+        const repeatPasswordInputElement =
+            screen.getByPlaceholderText("Repeat password");
+
+        fireEvent.change(emailInputElement, {
+            target: { value: "e.com" },
+        });
+        fireEvent.change(passwordInputElement, { target: { value: "" } });
+        fireEvent.change(repeatPasswordInputElement, {
+            target: { value: "123456" },
+        });
+        fireEvent.submit(formElement);
+        expect(axios.post).toHaveBeenCalledWith(
+            "http://127.0.0.1:8000/api/auth/register",
+            {
+                email: "e.com",
+                password: "",
+                repeatPassword: "123456",
+            }
+        );
+        expect(emailInputElement).toHaveClass(styles.invalid);
+        expect(passwordInputElement).toHaveClass(styles.invalid);
+        expect(repeatPasswordInputElement).toHaveClass(styles.invalid);
     });
 });
