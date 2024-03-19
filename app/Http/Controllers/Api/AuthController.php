@@ -4,16 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 
+use App\Helpers\ValidateHelper;
+/**
+ * AuthController class which controlls everything related to authentication.
+ */
 class AuthController extends Controller
 {
     /**
@@ -33,11 +34,16 @@ class AuthController extends Controller
             ]);
             error_log($validateUser->errors());
 
-            if($validateUser->fails()){
+            if($validateUser->fails())
+            {
+                $errors = $validateUser->errors();
+                $formattedErrors = ValidateHelper::getAllErrorCodes($errors);
+
+
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
-                    'errors' => $validateUser->errors()
+                    'errors' => $formattedErrors
                 ], 401);
             }
 
@@ -97,30 +103,12 @@ class AuthController extends Controller
                 'password' => 'required'
             ]);
 
-            //Custom http codes for validation errors
-            //Starts at 46x
-            //461 => email error
-            //462 => password error
-
-            if($validateUser->fails()){
+            if($validateUser->fails())
+            {
                 $errors = $validateUser->errors();
-                $formattedErrors = [];
-                foreach ($errors->all() as $error)
-                {
-                    $code = 0;
-                    if(str_contains($error, 'email'))
-                    {
-                        $code = 461;
-                    }
-                    if(str_contains($error, 'password'))
-                    {
-                        $code = 462;
-                    }
+                $formattedErrors = ValidateHelper::getAllErrorCodes($errors);
 
-                    $formattedErrors[] = [
-                        $code => $error
-                    ];
-                }
+
                 return response()->json([
                     'status' => false,
                     'message' => 'validation error',
@@ -181,7 +169,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Login The User
+     * Send forgot password email
      * @param Request $request
      * @return RedirectResponse
      */
