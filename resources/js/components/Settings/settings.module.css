@@ -1,76 +1,65 @@
-#Popular {
+#Settings {
     position: relative;
-    top: -3em;
-    left: -1em;
+    top: -7em;
+    left: -10em;
     overflow-y: auto; 
     max-height: 450px; 
     overflow-x: hidden;
 }
 
-#Popular li {
-    margin-bottom:1.5em;
-    list-style-type: none;
-}
-
-#Popular h1 {
-    margin-top:0;
+#Settings h1 {
     margin-bottom:0.5em;
 }
 
-#Popular li:hover {
+#Settings li {
+    margin-bottom:1em;
+}
+
+#Settings li:hover {
     background-color: #101b33;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border-radius:10px;
 }
 
-#Popular li:active {
+#Settings li:active {
     transform: scale(0.95);
 }
 
-#Popular::-webkit-scrollbar {
-    width: 0.2em;
-}
-
-#Popular::-webkit-scrollbar-thumb {
-    background-color: #808080; 
-    border-radius: 6px; 
-}
-
-#Popular::-webkit-scrollbar-track {
-    background-color: #f1f1f1; 
-    border-radius: 6px; 
+#Settings img {
+    width:1em;
+    height:1em;
+    margin-right:0.3em;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
-    #Popular {
+    #Settings {
         position:relative;
         width: 30%;
         height:10%;
-        top:-29rem;
-        left:0.3em;
+        top:-35rem;
+        left:1em;
         font-size:0.5em;
     }
 
-    #Popular li {
-        width: 5%;
+    #Settings li {
+        width: 50%;
         height:10%;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
-    #Popular {
+    #Settings {
         position:relative;
         width: 20%;
         height:10%;
-        top:-12rem;
+        top:-16rem;
         left:-4rem;
         font-size:0.7em;
     }
 
-    #Popular li {
-        width: 10%;
+    #Settings li {
+        width: 80%;
         height:10%;
     }
 }
-

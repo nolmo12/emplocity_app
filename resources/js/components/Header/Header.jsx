@@ -5,6 +5,8 @@ import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
 import tempIcon from "./ico.png";
 import tempLogo from "./tempLogo.png";
+import iconLogin from "./iconLogin.png";
+import iconRegister from "./iconRegister.png";
 import styles from "./header.module.css";
 
 export default function Header() {
@@ -19,7 +21,7 @@ export default function Header() {
 
     const loginElement = (
         <Link to="/login">
-            <button id={styles.login}>Login</button>
+            <button id={styles.login}><img src={iconLogin}></img>Login</button>
         </Link>
     );
 
@@ -35,7 +37,7 @@ export default function Header() {
     const registerElement = (
         <li>
             <Link to="/register">
-                <button id={styles.register}>Register</button>
+                <button id={styles.register}><img src={iconRegister}></img>Register</button>
             </Link>
         </li>
     );

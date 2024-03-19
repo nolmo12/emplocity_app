@@ -54,6 +54,32 @@ form input {
 
 }
 
+form #Email {
+    background-image: url('./mailIcon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-left: 3em;
+    background-position: 0.1em center;
+}
+
+form #Password {
+    background-image: url('./iconLock.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 0.5em center;
+    padding-left: 3em;
+    background-size:1.5em;
+}
+
+form #RepeatPassword {
+    background-image: url('./iconConfirmLock.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 0.5em center;
+    padding-left: 3em;
+    background-size:1.5em;
+}
+
 form button {
     width: 50%; 
     height: 2em;

@@ -39,12 +39,20 @@ header img {
 
 #menu button {
     position: relative;
-    width: 5em;
+    width: 6em;
     height: 2em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: none;
     background-color: white;
+    text-align:left;
+}
+
+#menu img {
+    width:1em;
+    height:1em;
+    margin-right:0.3em;
+    margin-left:0.1em;
 }
 
 #register {
@@ -75,7 +83,7 @@ header img {
     #menu button {
         left: 2em;
         position: relative;
-        width: 5.5em;
+        width: 6em;
         height: 2em;
         transition: background-color 0.3s ease, transform 0.1s ease;
         border: none;
@@ -103,7 +111,7 @@ header img {
     #menu button {
         left: 2em;
         position: relative;
-        width: 5.5em;
+        width: 6em;
         height: 2em;
         transition: background-color 0.3s ease, transform 0.1s ease;
         border: none;
