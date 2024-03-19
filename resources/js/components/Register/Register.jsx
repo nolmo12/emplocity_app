@@ -13,8 +13,13 @@ export default function Register() {
         password: "",
         repeatPassword: "",
     });
-    const navigate = useNavigate();
+    const [emailValidation, setEmailValidation] = useState(false);
+    const [passwordValidation, setPasswordValidation] = useState(false);
+    const [repeatPasswordValidation, setRepeatPasswordValidation] =
+        useState(false);
     const [emailVerfication, setEmailVerfication] = useState(false);
+    const navigate = useNavigate();
+
     const { http } = authUser();
 
     function handleInuptEmail(e) {
@@ -45,7 +50,23 @@ export default function Register() {
             );
             setEmailVerfication(true);
         } catch (e) {
-            console.log(e);
+            setEmailValidation(false);
+            setPasswordValidation(false);
+            setRepeatPasswordValidation(false);
+            const errors = e.response.data.errors;
+            errors.forEach((errorObj) => {
+                Object.entries(errorObj).forEach(([key, value]) => {
+                    if (key == 461) {
+                        setEmailValidation(true);
+                    }
+                    if (key == 462) {
+                        setPasswordValidation(true);
+                    }
+                    if (key == 463) {
+                        setRepeatPasswordValidation(true);
+                    }
+                });
+            });
         }
     };
 
@@ -61,26 +82,43 @@ export default function Register() {
 
                     <input
                         id={styles.Email}
+                        className={emailValidation ? styles.invalid : ""}
                         type="text"
                         placeholder="Email"
                         value={registeredData.email}
                         onChange={(e) => handleInuptEmail(e)}
                     ></input>
+
+                    {emailValidation ? (
+                        <p>Invalid or used by other user</p>
+                    ) : (
+                        ""
+                    )}
                     <input
                         id={styles.Password}
+                        className={passwordValidation ? styles.invalid : ""}
                         type="password"
                         placeholder="Password"
                         value={registeredData.password}
                         onChange={(e) => handleInputPassword(e)}
                     ></input>
 
+                    {passwordValidation ? <p>Invalid password</p> : ""}
                     <input
                         id={styles.RepeatPassword}
+                        className={
+                            repeatPasswordValidation ? styles.invalid : ""
+                        }
                         type="password"
                         placeholder="Repeat password"
                         value={registeredData.repeatPassword}
                         onChange={(e) => handleInputRepeatPassword(e)}
                     ></input>
+                    {repeatPasswordValidation ? (
+                        <p>Not the same as password</p>
+                    ) : (
+                        ""
+                    )}
 
                     <button>Register</button>
 

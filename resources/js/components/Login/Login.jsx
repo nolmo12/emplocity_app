@@ -6,17 +6,20 @@ import tempIcon from "./ico.png";
 import styles from "./registerOrLogin.module.css";
 
 export default function Login() {
-    const navigate = useNavigate();
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
     });
+    const [loginValidation, setLoginValidation] = useState(false);
     const { http, setToken, getToken, isLogged } = authUser();
-    useEffect(() => {
-        if (isLogged) {
-            navigate("/");
-        }
-    }, [isLogged]);
+
+    const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     if (isLogged) {
+    //         navigate("/");
+    //     }
+    // }, [isLogged]);
 
     function handleInuptEmail(e) {
         setLoginData({ ...loginData, email: e.target.value });
@@ -28,6 +31,7 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoginValidation(false);
         http.post("/api/auth/login", {
             email: loginData.email,
             password: loginData.password,
@@ -38,6 +42,7 @@ export default function Login() {
             })
             .catch((error) => {
                 console.log(error);
+                setLoginValidation(true);
             });
     };
 
@@ -62,7 +67,7 @@ export default function Login() {
                     value={loginData.password}
                     onChange={(e) => handleInputPassword(e)}
                 ></input>
-
+                {loginValidation ? <p>Invalid email or password</p> : ""}
                 <Link to="/forgotPassword">
                     <a data-testid="forgotPassword">Forgot password?</a>
                 </Link>

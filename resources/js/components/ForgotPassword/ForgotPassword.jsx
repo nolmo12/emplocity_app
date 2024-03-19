@@ -8,9 +8,11 @@ export default function ForgotPassword() {
     const [isValid, setIsValid] = useState(true);
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
+
     function handleInputEmail(e) {
         setEmail(e.target.value);
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault(); // wait for backend
         if (isValid) {

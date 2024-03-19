@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
+import fetchImgFromStorage from "../fetchImgFromStorage";
 import tempIcon from "./ico.png";
 import tempLogo from "./tempLogo.png";
 import iconLogin from "./iconLogin.png";
@@ -10,8 +11,9 @@ import iconRegister from "./iconRegister.png";
 import styles from "./header.module.css";
 
 export default function Header() {
-    const { getToken, logout, isLogged } = authUser();
     const [showMenu, setShowMenu] = useState(false);
+    const { getToken, logout, isLogged } = authUser();
+    const { fetchImage } = fetchImgFromStorage();
 
     const toggleMenu = () => {
         if (!isLogged) {
@@ -21,7 +23,9 @@ export default function Header() {
 
     const loginElement = (
         <Link to="/login">
-            <button id={styles.login}><img src={iconLogin}></img>Login</button>
+            <button id={styles.login}>
+                <img src={iconLogin}></img>Login
+            </button>
         </Link>
     );
 
@@ -37,7 +41,9 @@ export default function Header() {
     const registerElement = (
         <li>
             <Link to="/register">
-                <button id={styles.register}><img src={iconRegister}></img>Register</button>
+                <button id={styles.register}>
+                    <img src={iconRegister}></img>Register
+                </button>
             </Link>
         </li>
     );
@@ -60,7 +66,6 @@ export default function Header() {
                     {isLogged ? logoutElement : loginElement}
                 </ul>
             )}
-            {isLogged ? <p>Zalogowany</p> : <p>Niezalogowany</p>}
         </>
     );
 }
