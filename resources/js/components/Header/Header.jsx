@@ -49,7 +49,7 @@ export default function Header() {
         <Link to="/login">
             <button id={styles.login}>
                 {iconLoginPath && <img src={iconLoginPath}></img>}
-                Register
+                Login
             </button>
         </Link>
     );
@@ -68,7 +68,7 @@ export default function Header() {
             <Link to="/register">
                 <button id={styles.register}>
                     {iconRegisterPath && <img src={iconRegisterPath}></img>}
-                    Login
+                    Register
                 </button>
             </Link>
         </li>
