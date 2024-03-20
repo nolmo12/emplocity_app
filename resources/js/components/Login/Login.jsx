@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
-import tempIcon from "./ico.png";
+import fetchImage from "../fetchImgFromStorage";
 import styles from "./registerOrLogin.module.css";
 
 export default function Login() {
@@ -11,15 +11,22 @@ export default function Login() {
         password: "",
     });
     const [loginValidation, setLoginValidation] = useState(false);
+    const [iconPath, setIconPath] = useState("");
     const { http, setToken, getToken, isLogged } = authUser();
 
     const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     if (isLogged) {
-    //         navigate("/");
-    //     }
-    // }, [isLogged]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const iconPath = await fetchImage("ico.png");
+                setIconPath(iconPath);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
 
     function handleInuptEmail(e) {
         setLoginData({ ...loginData, email: e.target.value });
@@ -50,7 +57,7 @@ export default function Login() {
         <main>
             <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
-                    <img src={tempIcon} data-testid="logo" alt="Icon"></img>
+                    {iconPath && <img src={iconPath} alt="Icon"></img>}
                 </Link>
 
                 <input

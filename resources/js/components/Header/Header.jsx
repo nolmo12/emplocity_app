@@ -1,19 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
-import fetchImgFromStorage from "../fetchImgFromStorage";
-import tempIcon from "./ico.png";
-import tempLogo from "./tempLogo.png";
-import iconLogin from "./iconLogin.png";
-import iconRegister from "./iconRegister.png";
+import fetchImage from "../fetchImgFromStorage";
 import styles from "./header.module.css";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
+    const [iconPath, setIconPath] = useState("");
+    const [iconLoginPath, setIconLoginPath] = useState("");
+    const [iconRegisterPath, setIconRegisterPath] = useState("");
+    const [tempLogoPath, setTempLogoPath] = useState("");
     const { getToken, logout, isLogged } = authUser();
-    const { fetchImage } = fetchImgFromStorage();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [
+                    iconPath,
+                    iconLoginPath,
+                    iconRegisterPath,
+                    tempLogoPath,
+                ] = await Promise.all([
+                    fetchImage("ico.png"),
+                    fetchImage("iconLogin.png"),
+                    fetchImage("iconRegister.png"),
+                    fetchImage("tempLogo.png"),
+                ]);
+                setIconPath(iconPath);
+                setIconLoginPath(iconLoginPath);
+                setIconRegisterPath(iconRegisterPath);
+                setTempLogoPath(tempLogoPath);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
 
     const toggleMenu = () => {
         if (!isLogged) {
@@ -24,7 +48,8 @@ export default function Header() {
     const loginElement = (
         <Link to="/login">
             <button id={styles.login}>
-                <img src={iconLogin}></img>Login
+                {iconLoginPath && <img src={iconLoginPath}></img>}
+                Register
             </button>
         </Link>
     );
@@ -42,7 +67,8 @@ export default function Header() {
         <li>
             <Link to="/register">
                 <button id={styles.register}>
-                    <img src={iconRegister}></img>Register
+                    {iconRegisterPath && <img src={iconRegisterPath}></img>}
+                    Login
                 </button>
             </Link>
         </li>
@@ -51,14 +77,22 @@ export default function Header() {
     return (
         <>
             <header>
-                <img src={tempLogo} alt="Logo" id={styles.imgLogo}></img>
+                {tempLogoPath && (
+                    <img
+                        src={tempLogoPath}
+                        alt="Logo"
+                        id={styles.imgLogo}
+                    ></img>
+                )}
                 <SearchBar />
-                <img
-                    src={tempIcon}
-                    alt="Icon"
-                    id={styles.imgIcon}
-                    onClick={toggleMenu}
-                ></img>
+                {iconPath && (
+                    <img
+                        src={iconPath}
+                        alt="Icon"
+                        id={styles.imgIcon}
+                        onClick={toggleMenu}
+                    ></img>
+                )}
             </header>
             {showMenu && (
                 <ul id={styles.menu}>

@@ -1,40 +1,78 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import authUser from "../authUser";
 import styles from "./settings.module.css";
-import iconAccSettings from "./iconAccountSettings.png";
-import iconUpload from "./iconUpload.png";
-import iconHistory from "./iconHistory.png";
-import iconLike from "./iconLike.png";
-import iconShop from "./iconShop.png";
-import iconHelp from "./iconHelp.png";
-import iconLogout from "./iconLogout.png";
+import fetchImage from "../fetchImgFromStorage";
 
 export default function Settings() {
+    const [iconAccountSettingsPath, setIconAccountSettingsPath] = useState("");
+    const [iconUploadPath, setIconUploadPath] = useState("");
+    const [iconHistoryPath, setIconHistoryPath] = useState("");
+    const [iconLikePath, setIconLikePath] = useState("");
+    const [iconShopPath, setIconShopPath] = useState("");
+    const [iconHelpPath, setIconHelpPath] = useState("");
+    const [iconLogoutPath, setIconLogoutPath] = useState("");
+
     const { logout } = authUser();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [
+                    iconAccountSettingsPath,
+                    iconUploadPath,
+                    iconHistoryPath,
+                    iconLikePath,
+                    iconShopPath,
+                    iconHelpPath,
+                    iconLogoutPath,
+                ] = await Promise.all([
+                    fetchImage("iconAccountSettings.png"),
+                    fetchImage("iconUpload.png"),
+                    fetchImage("iconHistory.png"),
+                    fetchImage("iconLike.png"),
+                    fetchImage("iconShop.png"),
+                    fetchImage("iconHelp.png"),
+                    fetchImage("iconLogout.png"),
+                ]);
+                setIconAccountSettingsPath(iconAccountSettingsPath);
+                setIconUploadPath(iconUploadPath);
+                setIconHistoryPath(iconHistoryPath);
+                setIconLikePath(iconLikePath);
+                setIconShopPath(iconShopPath);
+                setIconHelpPath(iconHelpPath);
+                setIconLogoutPath(iconLogoutPath);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
+
     return (
         <div id={styles.Settings}>
             <h1>Settings</h1>
             <ul>
                 <li>
-                    <img src={iconAccSettings}></img>Account settings
+                    <img src={iconAccountSettingsPath}></img>Account settings
                 </li>
                 <li>
-                    <img src={iconUpload}></img>Upload
+                    <img src={iconUploadPath}></img>Upload
                 </li>
                 <li>
-                    <img src={iconHistory}></img>History
+                    <img src={iconHistoryPath}></img>History
                 </li>
                 <li>
-                    <img src={iconLike}></img>Liked videos
+                    <img src={iconLikePath}></img>Liked videos
                 </li>
                 <li>
-                    <img src={iconShop}></img>Shop
+                    <img src={iconShopPath}></img>Shop
                 </li>
                 <li>
-                    <img src={iconHelp}></img>Help
+                    <img src={iconHelpPath}></img>Help
                 </li>
                 <li onClick={logout}>
-                    <img src={iconLogout}></img>Logout
+                    <img src={iconLogoutPath}></img>Logout
                 </li>
             </ul>
         </div>
