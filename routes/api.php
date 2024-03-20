@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\StorageController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +35,27 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
+
+
+// This route is responsible for displaying the email verification notice view.
+// It is only accessible to authenticated users (as indicated by the 'auth' middleware).
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+
+// This route is responsible for handling the email verification process.
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    error_log("a");
+    $request->fulfill();
+
+    return redirect('');
+})->middleware(['auth'])->name('verification.verify');
+
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 

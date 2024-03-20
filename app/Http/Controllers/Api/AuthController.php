@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Auth\Events\Registered;
 
 use App\Helpers\ValidateHelper;
 /**
@@ -68,6 +69,8 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
+            // user registered event
+            event(new Registered($user));
 
             $token = Auth::attempt($request->only(['email', 'password']));
 
