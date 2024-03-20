@@ -1,10 +1,10 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Message from "../Message/Message";
 import authUser from "../authUser";
-import tempIcon from "./ico.png";
+import fetchImage from "../fetchImgFromStorage";
 import styles from "./registerOrLogin.module.css";
 
 export default function Register() {
@@ -18,9 +18,22 @@ export default function Register() {
     const [repeatPasswordValidation, setRepeatPasswordValidation] =
         useState(false);
     const [emailVerfication, setEmailVerfication] = useState(false);
+    const [iconPath, setIconPath] = useState("");
     const navigate = useNavigate();
 
     const { http } = authUser();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const iconPath = await fetchImage("ico.png");
+                setIconPath(iconPath);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchData();
+    }, []);
 
     function handleInuptEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
@@ -77,7 +90,7 @@ export default function Register() {
             ) : (
                 <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                     <Link to="/">
-                        <img src={tempIcon} data-testid="logo" alt="Icon"></img>
+                        {iconPath && <img src={iconPath} alt="Icon"></img>}
                     </Link>
 
                     <input
