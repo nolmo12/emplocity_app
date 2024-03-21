@@ -5,7 +5,7 @@ use Illuminate\Support\MessageBag;
 class ValidateHelper
 {
     /**
-    * Custom http codes for validation errors.
+    * Custom codes for validation errors.
     * Starts at 46x:
     * 461 => email error,
     * 462 => password error,
