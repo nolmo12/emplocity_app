@@ -77,21 +77,27 @@ export default function Header() {
     return (
         <>
             <header>
-                {tempLogoPath && (
+                {tempLogoPath ? (
                     <img
                         src={tempLogoPath}
                         alt="Logo"
+                        data-testid="tempLogo"
                         id={styles.imgLogo}
                     ></img>
+                ) : (
+                    <p data-testid="loadingTempLogoPath"></p>
                 )}
                 <SearchBar />
-                {iconPath && (
+                {iconPath ? (
                     <img
                         src={iconPath}
                         alt="Icon"
+                        data-testid="icon"
                         id={styles.imgIcon}
                         onClick={toggleMenu}
                     ></img>
+                ) : (
+                    <p data-testid="loadingIconPath"></p>
                 )}
             </header>
             {showMenu && (

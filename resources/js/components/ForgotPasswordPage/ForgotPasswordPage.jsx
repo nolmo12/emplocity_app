@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
 
-export default function ForgotPassword() {
+export default function ForgotPasswordPage() {
     const [email, setEmail] = useState("");
     const [isValid, setIsValid] = useState(true);
     const [message, setMessage] = useState("");

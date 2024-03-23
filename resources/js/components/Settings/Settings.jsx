@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import styles from "./settings.module.css";
 import fetchImage from "../fetchImgFromStorage";
@@ -57,7 +58,7 @@ export default function Settings() {
                     <img src={iconAccountSettingsPath}></img>Account settings
                 </li>
                 <li>
-                    <img src={iconUploadPath}></img>Upload
+                    <img src={iconUploadPath}></img><Link to="/upload">Upload</Link>
                 </li>
                 <li>
                     <img src={iconHistoryPath}></img>History
