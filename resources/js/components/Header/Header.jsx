@@ -101,7 +101,7 @@ export default function Header() {
                 )}
             </header>
             {showMenu && (
-                <ul id={styles.menu}>
+                <ul id={styles.menu} data-testid="ulMenu">
                     {!isLogged && registerElement}
                     {isLogged ? logoutElement : loginElement}
                 </ul>

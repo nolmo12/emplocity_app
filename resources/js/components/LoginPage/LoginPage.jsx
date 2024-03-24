@@ -57,7 +57,9 @@ export default function LoginPage() {
         <main>
             <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
-                    {iconPath && <img src={iconPath} alt="Icon"></img>}
+                    {iconPath && (
+                        <img src={iconPath} data-testid="icon" alt="Icon"></img>
+                    )}
                 </Link>
 
                 <input
