@@ -5,7 +5,7 @@ import styles from "./userVideoSection.module.css";
 export default function UserVideoSection() {
     return (
         <div id={styles.UserVideoSection}>
-            <table>
+            <table data-testid="userVideoTable">
                 <tr>
                     <th id={styles.VideoHeader}>My video</th>
                     <th>Date</th>

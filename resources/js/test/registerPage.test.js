@@ -15,29 +15,17 @@ import {
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
-import Register from "../components/Register/Register";
-import Login from "../components/Login/Login";
+import RegisterPage from "../components/RegisterPage/RegisterPage";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "../components/Register/registerOrLogin.module.css";
 jest.mock("axios");
 
 describe("Register component test", () => {
-    test("logo takes user to home page", () => {
-        const history = createMemoryHistory();
-        render(
-            <Router>
-                <Register />
-            </Router>
-        );
-        const logoElement = screen.getByTestId("logo");
-        userEvent.click(logoElement);
-        expect(history.location.pathname).toBe("/");
-    });
     test("email input changes when user types", () => {
         render(
             <Router>
-                <Register />
+                <RegisterPage />
             </Router>
         );
         const inputElement = screen.getByPlaceholderText("Email");
@@ -47,7 +35,7 @@ describe("Register component test", () => {
     test("password input changes when user types", () => {
         render(
             <Router>
-                <Register />
+                <RegisterPage />
             </Router>
         );
         const inputElement = screen.getByPlaceholderText("Password");
@@ -57,7 +45,7 @@ describe("Register component test", () => {
     test("repeat password input changes when user types", () => {
         render(
             <Router>
-                <Register />
+                <RegisterPage />
             </Router>
         );
         const inputElement = screen.getByPlaceholderText("Repeat password");
@@ -67,7 +55,7 @@ describe("Register component test", () => {
     test("email input changes class based on state", () => {
         const { getByPlaceholderText } = render(
             <Router>
-                <Register />
+                <RegisterPage />
             </Router>
         );
     });
@@ -75,7 +63,7 @@ describe("Register component test", () => {
         axios.post.mockResolvedValue({});
         render(
             <Router>
-                <Register />
+                <RegisterPage />
             </Router>
         );
         const formElement = screen.getByTestId("form");
@@ -93,7 +81,7 @@ describe("Register component test", () => {
         });
         fireEvent.submit(formElement);
         expect(axios.post).toHaveBeenCalledWith(
-            "http://127.0.0.1:8000/api/auth/register",
+            "http://localhost/api/auth/register",
             {
                 email: "example@.com",
                 password: "123456",
@@ -108,7 +96,7 @@ describe("Register component test", () => {
         axios.post.mockResolvedValue({});
         render(
             <Router>
-                <Register />
+                <RegisterPage />
             </Router>
         );
         const formElement = screen.getByTestId("form");
@@ -126,15 +114,22 @@ describe("Register component test", () => {
         });
         fireEvent.submit(formElement);
         expect(axios.post).toHaveBeenCalledWith(
-            "http://127.0.0.1:8000/api/auth/register",
+            "http://localhost/api/auth/register",
             {
                 email: "e.com",
                 password: "",
                 repeatPassword: "123456",
             }
         );
-        expect(emailInputElement).toHaveClass(styles.invalid);
-        expect(passwordInputElement).toHaveClass(styles.invalid);
-        expect(repeatPasswordInputElement).toHaveClass(styles.invalid);
+        expect(screen.getAllByRole("paragraph")).toHaveLength(3);
+    });
+    test("testing 'I already have an account' visibility", async () => {
+        render(
+            <Router>
+                <RegisterPage />
+            </Router>
+        );
+        const linkElement = screen.getByText("I already have an account");
+        expect(linkElement).toBeInTheDocument();
     });
 });

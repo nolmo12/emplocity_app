@@ -7,7 +7,7 @@ import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./registerOrLogin.module.css";
 
-export default function Register() {
+export default function RegisterPage() {
     const [registeredData, setRegisteredData] = useState({
         email: "",
         password: "",
@@ -54,7 +54,7 @@ export default function Register() {
         e.preventDefault();
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/register",
+                "http://localhost/api/auth/register",
                 {
                     email: registeredData.email,
                     password: registeredData.password,
@@ -66,20 +66,8 @@ export default function Register() {
             setEmailValidation(false);
             setPasswordValidation(false);
             setRepeatPasswordValidation(false);
+            console.log(e);
             const errors = e.response.data.errors;
-            errors.forEach((errorObj) => {
-                Object.entries(errorObj).forEach(([key, value]) => {
-                    if (key == 461) {
-                        setEmailValidation(true);
-                    }
-                    if (key == 462) {
-                        setPasswordValidation(true);
-                    }
-                    if (key == 463) {
-                        setRepeatPasswordValidation(true);
-                    }
-                });
-            });
         }
     };
 

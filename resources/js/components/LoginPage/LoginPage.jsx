@@ -5,7 +5,7 @@ import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./registerOrLogin.module.css";
 
-export default function Login() {
+export default function LoginPage() {
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -57,7 +57,9 @@ export default function Login() {
         <main>
             <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
                 <Link to="/">
-                    {iconPath && <img src={iconPath} alt="Icon"></img>}
+                    {iconPath && (
+                        <img src={iconPath} data-testid="icon" alt="Icon"></img>
+                    )}
                 </Link>
 
                 <input

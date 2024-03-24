@@ -32,7 +32,7 @@ export default function authUser() {
     };
 
     const http = axios.create({
-        baseURL: "http://127.0.0.1:8000",
+        baseURL: "http://localhost",
         headers: {
             Authorization: `Bearer ${token}`,
         },
