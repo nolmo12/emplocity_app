@@ -1,23 +1,33 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, act } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import Header from "../components/Header/Header";
 import fetchImage from "../components/fetchImgFromStorage";
-import userEvent from "@testing-library/user-event";
 jest.mock("../components/fetchImgFromStorage");
-
+const fixActAwaitWarning = () => {
+    beforeAll(() => {
+        global.Promise = global.nativePromise;
+    });
+    afterAll(() => {
+        global.Promise = global.polyfilledPromise;
+    });
+};
 describe("HeaderPage component test", () => {
-    test("testing loading resources", () => {
+    test("testing loading resources", async () => {
         render(
             <Router>
                 <Header />
             </Router>
         );
-        const iconPath = screen.getByTestId("loadingIconPath");
-        expect(iconPath).toBeInTheDocument();
-        const loadingTempLogoPath = screen.getByTestId("loadingTempLogoPath");
-        expect(loadingTempLogoPath).toBeInTheDocument();
+        await act(async () => {
+            const iconPath = screen.getByTestId("loadingIconPath");
+            expect(iconPath).toBeInTheDocument();
+            const loadingTempLogoPath = screen.getByTestId(
+                "loadingTempLogoPath"
+            );
+            expect(loadingTempLogoPath).toBeInTheDocument();
+        });
     });
 
     test("testing showMenu visibility", async () => {
@@ -28,6 +38,7 @@ describe("HeaderPage component test", () => {
                 <Header />
             </Router>
         );
+
         await screen.findByTestId("icon");
         const iconElement = screen.getByTestId("icon");
         expect(screen.queryByRole("ul")).not.toBeInTheDocument();
@@ -45,6 +56,7 @@ describe("HeaderPage component test", () => {
                 <Header />
             </Router>
         );
+
         await screen.findByTestId("icon");
         const iconElement = screen.getByTestId("icon");
         expect(iconElement).toBeInTheDocument();
