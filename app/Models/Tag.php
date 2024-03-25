@@ -4,14 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Tag extends Model
 {
     use HasFactory;
 
-    public function videos()
+    public function videos(): MorphToMany
     {
-        return $this->belongsToMany(Video::class);
+        return $this->morphedByMany(Video::class, 'taggable');
+    }
+
+    public function reports(): MorphToMany
+    {
+        return $this->morphedByMany(Report::class, 'taggable');
     }
     
 }

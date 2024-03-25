@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\StorageController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Password;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 });
 
 
-
+//AUTHENTICATION
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -37,6 +38,7 @@ Route::prefix('auth')->group(function () {
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
 
 
+//EMAIL VERIFICATION
 Route::prefix('email')->group(function () {
     Route::get('/verify', function () {
         return view('auth.verify-email');
@@ -56,3 +58,16 @@ Route::prefix('email')->group(function () {
         return back()->with('message', 'Verification link sent!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 });
+
+//Password recovery
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+ 
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+ 
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+})->middleware('guest')->name('password.email');
