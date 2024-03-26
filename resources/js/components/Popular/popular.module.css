@@ -1,20 +1,24 @@
 #Popular {
-    position: relative;
-    top: -3em;
-    left: -1em;
+    position: absolute;
+    top: 10%; 
+    left: 5%; 
+    width: 15%; 
     overflow-y: auto; 
     max-height: 450px; 
     overflow-x: hidden;
+    transform: translate(-5%, 5%); 
 }
 
 #Popular li {
     margin-bottom:1.5em;
+    width:75%;
     list-style-type: none;
 }
 
 #Popular h1 {
     margin-top:0;
     margin-bottom:0.5em;
+    font-weight:600;
 }
 
 #Popular li:hover {
