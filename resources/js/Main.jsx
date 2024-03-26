@@ -1,6 +1,9 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
+
+import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
+
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import Register from "./components/Register/Register";
@@ -9,13 +12,14 @@ import authUser from "./components/authUser";
 
 function Main() {
     const { getToken, isLogged } = authUser();
+
     return (
         <Routes>
             <Route
                 path="/"
                 element={
                     <>
-                        <Header /> <MainContent userIsLogged={false} />
+                        <Header /> <MainContent contentType="guest" />
                     </>
                 }
             ></Route>
@@ -24,13 +28,34 @@ function Main() {
                 element={
                     <>
                         <Header />
-                        <MainContent userIsLogged={true} />
+                        <MainContent contentType="logged" />
                     </>
                 }
             />
+
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
+
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route
+                path="/forgotPassword"
+                element={<ForgotPasswordPage componentType={false} />}
+            ></Route>
+            <Route
+                path="/reset-password"
+                element={<ResetPasswordPage />}
+            ></Route>
+            <Route path="/upload" element={<UploadPage />}></Route>
+            <Route
+                path="/search-result"
+                element={<>
+                <Header />
+                <MainContent contentType="result" />
+                </>}
+            ></Route>
+
         </Routes>
     );
 }

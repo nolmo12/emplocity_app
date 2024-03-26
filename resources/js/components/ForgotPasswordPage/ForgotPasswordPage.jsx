@@ -1,15 +1,22 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import authUser from "../authUser";
+import Message from "../Message/Message";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
+import { http } from "msw";
 
 export default function ForgotPasswordPage() {
-    const [email, setEmail] = useState("");
-    const [isValid, setIsValid] = useState(true);
-    const [message, setMessage] = useState("");
+    const [loginData, setLoginData] = useState({
+        email: "",
+        password: "",
+        repeatPassword: "",
+    });
+    const [emailValidation, setEmailValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const navigate = useNavigate();
+    const { http } = authUser();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,24 +31,33 @@ export default function ForgotPasswordPage() {
     }, []);
 
     function handleInputEmail(e) {
-        setEmail(e.target.value);
+        setLoginData({ ...loginData, email: e.target.value });
     }
 
-    const handleSubmit = async (e) => {
+    function handleInputPassword(e) {
+        setLoginData({ ...loginData, password: e.target.value });
+    }
+
+    function handleInputRepeatPassword(e) {
+        setLoginData({ ...loginData, repeatPassword: e.target.value });
+    }
+
+    const handleSendEmail = async (e) => {
         e.preventDefault(); // wait for backend
-        if (isValid) {
-            setMessage(
-                "Email will be sent, you will be redirected to the login page"
-            );
-            setInterval(() => {
-                navigate("/login");
-            }, 4000);
+        try {
+            http.post("/api/auth/forgot-password", {
+                email: loginData.email,
+            });
+            console.log(loginData.email);
+        } catch (error) {
+            setEmailValidation(true);
+            console.log(error);
         }
     };
 
     return (
         <main>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => handleSendEmail(e)}>
                 <Link to="/">
                     {iconPath && <img src={iconPath} alt="Icon"></img>}
                 </Link>
@@ -50,7 +66,7 @@ export default function ForgotPasswordPage() {
                     onChange={(e) => handleInputEmail(e)}
                     placeholder="Email"
                 ></input>
-                {message && <p>{message}</p>}
+                {emailValidation ? <p>Invalid email</p> : ""}
                 <button>Send</button>
             </form>
         </main>

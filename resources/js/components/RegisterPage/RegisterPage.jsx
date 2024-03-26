@@ -1,9 +1,8 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Message from "../Message/Message";
-import authUser from "../authUser";
+import useValidation from "../useValidation";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./registerOrLogin.module.css";
 
@@ -13,15 +12,10 @@ export default function RegisterPage() {
         password: "",
         repeatPassword: "",
     });
-    const [emailValidation, setEmailValidation] = useState(false);
-    const [passwordValidation, setPasswordValidation] = useState(false);
-    const [repeatPasswordValidation, setRepeatPasswordValidation] =
-        useState(false);
-    const [emailVerfication, setEmailVerfication] = useState(false);
+    const [emailVerification, setEmailVerification] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const navigate = useNavigate();
-
-    const { http } = authUser();
+    const [validationInfo, setValidationInfo] = useState(null);
+    const { validateForm } = useValidation();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -35,7 +29,7 @@ export default function RegisterPage() {
         fetchData();
     }, []);
 
-    function handleInuptEmail(e) {
+    function handleInputEmail(e) {
         setRegisteredData({ ...registeredData, email: e.target.value });
     }
 
@@ -61,65 +55,77 @@ export default function RegisterPage() {
                     repeatPassword: registeredData.repeatPassword,
                 }
             );
-            setEmailVerfication(true);
-        } catch (e) {
-            setEmailValidation(false);
-            setPasswordValidation(false);
-            setRepeatPasswordValidation(false);
-            console.log(e);
-            const errors = e.response.data.errors;
+            setEmailVerification(true);
+        } catch (error) {
+            console.log(error);
+            const errors = error.response.data.errors;
+            const validationResult = validateForm("register", errors);
+            setValidationInfo(validationResult);
         }
     };
 
     return (
         <main>
-            {emailVerfication ? (
+            {emailVerification ? (
                 <Message message="Email verification sent" />
             ) : (
-                <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
+                <form data-testid="form" onSubmit={handleSubmit}>
                     <Link to="/">
-                        {iconPath && <img src={iconPath} alt="Icon"></img>}
+                        {iconPath && <img src={iconPath} alt="Icon" />}
                     </Link>
 
                     <input
                         id={styles.Email}
-                        className={emailValidation ? styles.invalid : ""}
+                        className={
+                            validationInfo && validationInfo.emailValidation
+                                ? styles.invalid
+                                : ""
+                        }
                         type="text"
                         placeholder="Email"
                         value={registeredData.email}
-                        onChange={(e) => handleInuptEmail(e)}
-                    ></input>
+                        onChange={handleInputEmail}
+                    />
 
-                    {emailValidation ? (
+                    {validationInfo && validationInfo.emailValidation && (
                         <p>Invalid or used by other user</p>
-                    ) : (
-                        ""
                     )}
+
                     <input
                         id={styles.Password}
-                        className={passwordValidation ? styles.invalid : ""}
+                        className={
+                            validationInfo && validationInfo.passwordValidation
+                                ? styles.invalid
+                                : ""
+                        }
                         type="password"
                         placeholder="Password"
                         value={registeredData.password}
-                        onChange={(e) => handleInputPassword(e)}
-                    ></input>
+                        onChange={handleInputPassword}
+                    />
 
-                    {passwordValidation ? <p>Invalid password</p> : ""}
+                    {validationInfo && validationInfo.passwordValidation && (
+                        <p>Invalid password</p>
+                    )}
+
                     <input
                         id={styles.RepeatPassword}
                         className={
-                            repeatPasswordValidation ? styles.invalid : ""
+                            validationInfo &&
+                            validationInfo.repeatPasswordValidation
+                                ? styles.invalid
+                                : ""
                         }
                         type="password"
                         placeholder="Repeat password"
                         value={registeredData.repeatPassword}
-                        onChange={(e) => handleInputRepeatPassword(e)}
-                    ></input>
-                    {repeatPasswordValidation ? (
-                        <p>Not the same as password</p>
-                    ) : (
-                        ""
-                    )}
+                        onChange={handleInputRepeatPassword}
+                    />
+
+                    {validationInfo &&
+                        validationInfo.repeatPasswordValidation && (
+                            <p>Not same as password</p>
+                        )}
 
                     <button>Register</button>
 

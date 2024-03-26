@@ -5,6 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 export default function authUser() {
     const [token, setToken] = useState();
+    const [csrfToken, setCsrfToken] = useState();
     const [isLogged, setIsLogged] = useState(false);
     const navigate = useNavigate();
     const getToken = () => {
@@ -12,6 +13,11 @@ export default function authUser() {
         if (token) {
             const decodedToken = jwtDecode(token);
         }
+        return token;
+    };
+
+    const getCsrfToken = () => {
+        const token = Cookies.get("XSRF-TOKEN");
         return token;
     };
 
@@ -52,5 +58,6 @@ export default function authUser() {
         token,
         http,
         isLogged,
+        getCsrfToken,
     };
 }
