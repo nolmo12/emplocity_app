@@ -14,6 +14,7 @@ export default function ForgotPasswordPage() {
         password: "",
         repeatPassword: "",
     });
+    const [passwordWasSent, setPasswordWasSent] = useState(false);
     const [emailValidation, setEmailValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
     const { http } = authUser();
@@ -48,7 +49,7 @@ export default function ForgotPasswordPage() {
             http.post("/api/auth/forgot-password", {
                 email: loginData.email,
             });
-            console.log(loginData.email);
+            setPasswordWasSent(true);
         } catch (error) {
             setEmailValidation(true);
             console.log(error);
@@ -57,7 +58,7 @@ export default function ForgotPasswordPage() {
 
     return (
         <main>
-            <form onSubmit={(e) => handleSendEmail(e)}>
+            {passwordWasSent ? (<Message message="Check your mail" />) : (<form onSubmit={(e) => handleSendEmail(e)}>
                 <Link to="/">
                     {iconPath && <img src={iconPath} alt="Icon"></img>}
                 </Link>
@@ -68,7 +69,8 @@ export default function ForgotPasswordPage() {
                 ></input>
                 {emailValidation ? <p>Invalid email</p> : ""}
                 <button>Send</button>
-            </form>
+            </form>)}
+            
         </main>
     );
 }

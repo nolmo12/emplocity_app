@@ -47,7 +47,7 @@ export default function SearchBar() {
                     onKeyDown={(e) => handleKeyDown(e)}
                     id={styles.searchBar}
                 ></input>
-            <FontAwesomeIcon icon={faSearch} id={styles.searchLoop}/>
+            <FontAwesomeIcon icon={faSearch} onClick={handleClick} id={styles.searchLoop}/>
             
             </div>
                 
