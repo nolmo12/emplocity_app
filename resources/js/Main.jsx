@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
-import RecoveryPasswordPage from "./components/RecoveryPasswordPage/RecoveryPasswordPage";
+import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
@@ -35,7 +35,7 @@ function Main() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage componentType={false}/>}></Route>
-            <Route path="/reset-password/:token" element={<ResetPasswordPage />}></Route>
+            <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
             <Route path="/upload" element={<UploadPage />}></Route>
             
         </Routes>
