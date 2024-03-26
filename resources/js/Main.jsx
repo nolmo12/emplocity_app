@@ -1,11 +1,10 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
+import ForgotPassword from "./components/ForgotPassword/ForgotPassword";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
-import RegisterPage from "./components/RegisterPage/RegisterPage";
-import LoginPage from "./components/LoginPage/LoginPage";
-import UploadPage from "./components/UploadPage/UploadPage";
+import Register from "./components/Register/Register";
+import Login from "./components/Login/Login";
 import authUser from "./components/authUser";
 
 function Main() {
@@ -29,10 +28,9 @@ function Main() {
                     </>
                 }
             />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgotPassword" element={<ForgotPasswordPage />}></Route>
-            <Route path="/upload" element={<UploadPage />}></Route>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgotPassword" element={<ForgotPassword />}></Route>
         </Routes>
     );
 }

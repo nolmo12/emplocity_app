@@ -5,7 +5,7 @@ export default function Popular() {
     return (
         <div id={styles.Popular}>
             <h1>Popular</h1>
-            <ul data-testid="guestVideoList">
+            <ul>
                 <li>
                     <img src="img"></img>Influencer1
                 </li>
