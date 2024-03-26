@@ -1,25 +1,32 @@
 #searchBarLoop {
-    position: relative; 
+    position: absolute; 
     display: inline-block; 
+    top:2%;
+    height:6%;
+    transform: translateY(-10%); 
+    left:40%;
 }
 
 #searchBar {
-    width: 40rem;
-    height: 1.5rem;
-    top:1rem;
+    width: 200%;
+    height: 50%;
+    top: 20%;
+    left:-10%;
     border: solid 2px #A0A0A0;
     border-radius: 15px;
-    padding-left: 2em; 
-    position: relative; 
+    padding-left: 2em;
+    position: relative;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4); 
+    transform: translate(-20%, 20%);   
 }
 
 #searchLoop {
-    height: 1.2em;
-    width: 1.5em;
-    position: absolute; 
-    top: 1.8rem; 
-    transform: translateY(-50%); 
-    right: 10px; 
+    height: 25%;
+    width: 25%;
+    position: relative; 
+    left:100%;
+    top:-15%;
+    transform: translateX(125%);
     cursor:pointer;
 }
 
