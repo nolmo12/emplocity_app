@@ -28,7 +28,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 });
 
 
-//AUTHENTICATION
+
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -40,6 +40,8 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
+
+
 
 //Move this to controllers some time into the future
 //EMAIL VERIFICATION

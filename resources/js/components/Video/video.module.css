@@ -2,26 +2,29 @@ section {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 0.7em; 
     margin: 1em;
     padding: 1em;
     background-color: #f4f4f4;
-    width: 15%; /* Zmiana jednostki na procentową */
-    height: 35%; /* Zmiana jednostki na procentową */
+    width: 15%; 
+    height: 35%; 
     color: black;
     text-align: left;
+    border-radius:6px;
 }
 
 #video {
-    width: 100%; /* Zmiana jednostki na procentową */
-    height: 95%; /* Automatyczne skalowanie proporcji */
+    width: 100%; 
+    height: 95%; 
 }
 
 iframe {
-    width: 118%;
-    left:-10%; /* Zmiana jednostki na procentową */
-    height: 75%; /* Możesz dostosować do swoich potrzeb */
-    top:-13%;
+    width: 111%;
+    left:-7%; 
+    height: 70%; 
+    top:-10%;
     position: relative;
+    border:none;
 }
 
 section:hover {
@@ -34,49 +37,41 @@ section:active {
     transform: scale(0.95);
 }
 
-#title,
-#author,
-#views,
-#date,
-#likes {
-    font-size: 0.7em; /* Zmiana jednostki na procentową */
+.videoInfo {
+    font-weight: 400;
     position:relative;
     top:-10%;
     left:-5%;
+    margin-bottom:1%;
 }
 
 #title {
     font-weight: 700;
 }
 
-#author {
-    font-weight: 400;
-}
-
 #views {
-    font-weight: 400;
     float: right;
-}
-
-#date {
-    font-weight: 400;
+    left:5%;
 }
 
 #likes {
-    font-weight: 400;
     float: right;
+    left:5%;
 }
+
+
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     section {
-        height:9em;
-        margin-bottom:-5em;
+        width:27%;
+        height:12%;
+        margin-bottom:-4em;
         margin-top:-6em;
     }
 
     #video {
-        width: 9em;
-        height: 9em;
+        width: 100%;
+        height: 100%;
     }
 
     iframe {
@@ -84,28 +79,28 @@ section:active {
         height:70%;
     }
 
-    #title, #author, #views, #date, #likes {
-        font-size:0.5em;
+    .videoInfo {
+        font-size:0.7em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     section {
-        height:80%;
+        height:30%;
     }
 
 
     #video {
-        width: 12em;
-        height: 12em;
+        width: 100%;
+        height: 40%;
     }
 
     iframe {
-        width:99%;
+        width:115%;
         height:70%;
     }
 
-    #title, #author, #views, #date, #likes {
-        font-size:0.5em;
+    .videoInfo {
+        font-size:0.8em;
     }
 }
