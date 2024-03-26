@@ -34,7 +34,6 @@ export default function Header() {
     }, []);
 
     const toggleMenu = () => {
-        console.log(isLogged);
         if (!isLogged) {
             setShowMenu(!showMenu);
         }
@@ -116,24 +115,30 @@ export default function Header() {
     return (
         <>
             <header>
-                {tempLogoPath && (
+            {tempLogoPath ? (
                     <img
                         src={tempLogoPath}
                         alt="Logo"
+                        data-testid="tempLogo"
                         id={styles.imgLogo}
                     ></img>
+                ) : (
+                    <p data-testid="loadingTempLogoPath"></p>
                 )}
                 <SearchBar />
-                {iconPath && (
+                {iconPath ? (
                     <img
                         src={iconPath}
                         alt="Icon"
+                        data-testid="icon"
                         id={styles.imgIcon}
                         onClick={toggleMenu}
                     ></img>
+                ) : (
+                    <p data-testid="loadingIconPath"></p>
                 )}
             </header>
-                <ul id={styles.menu} className={showMenu ? styles.menuVisible : ''}>
+                <ul id={styles.menu} data-testid="ulMenu" className={showMenu ? styles.menuVisible : ''}>
                     {!isLogged && registerElement}
                     {isLogged ? logoutElement : loginElement}
                     {uploadElement}

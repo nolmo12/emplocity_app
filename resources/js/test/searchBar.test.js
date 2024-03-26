@@ -13,13 +13,4 @@ describe("SearchBar component test", () => {
         const inputElement = screen.getByRole("textbox");
         expect(inputElement).toBeInTheDocument();
     });
-    test("testing <img> render", () => {
-        render(
-            <Router>
-                <SearchBar />
-            </Router>
-        );
-        const imgElement = screen.getByRole("img");
-        expect(imgElement).toBeInTheDocument();
-    });
 });

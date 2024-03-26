@@ -7,13 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 export default function SearchBar() {
- main
-
-    return (
-        <div id={styles.searchBarLoop}>
-            <input type="text" id={styles.searchBar}></input>
-            <FontAwesomeIcon icon={faSearch} id={styles.searchLoop}/>
-
+        
     const [loopPath, setLoopPath] = useState("");
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
@@ -45,22 +39,19 @@ export default function SearchBar() {
     };
 
     return (
+        
         <div id={styles.searchBarLoop}>
-                <input
+            <input
                     type="text"
                     onChange={(e) => handleChange(e)}
                     onKeyDown={(e) => handleKeyDown(e)}
                     id={styles.searchBar}
                 ></input>
-            {loopPath && (
-                <img
-                onClick={handleClick}
-                    src={loopPath}
-                    alt="SearchLoop"
-                    id={styles.searchLoop}
-                ></img>
-            )}
+            <FontAwesomeIcon icon={faSearch} id={styles.searchLoop}/>
+            
+            </div>
+                
 
-        </div>
+        
     );
 }
