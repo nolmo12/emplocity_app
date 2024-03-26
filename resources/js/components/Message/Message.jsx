@@ -5,7 +5,7 @@ export default function Message({ message }) {
     const navigate = useNavigate();
 
     const handleSubmit = () => {
-        navigate("/login");
+        navigate("/");
     };
 
     return (

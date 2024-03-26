@@ -10,6 +10,8 @@ import authUser from "./components/authUser";
 
 function Main() {
     const { getToken, isLogged } = authUser();
+
+    
     return (
         <Routes>
             <Route
@@ -31,8 +33,9 @@ function Main() {
             />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgotPassword" element={<ForgotPasswordPage />}></Route>
+            <Route path="/forgotPassword" element={<ForgotPasswordPage componentType={false}/>}></Route>
             <Route path="/upload" element={<UploadPage />}></Route>
+            
         </Routes>
     );
 }
