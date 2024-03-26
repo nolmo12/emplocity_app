@@ -12,14 +12,13 @@ import authUser from "./components/authUser";
 function Main() {
     const { getToken, isLogged } = authUser();
 
-    // http://127.0.0.1/api/reset-password?token=5e58529ad4cc026665d286c5f4f6491722bff295ccaa532b8b94c2bd9237a1f0
     return (
         <Routes>
             <Route
                 path="/"
                 element={
                     <>
-                        <Header /> <MainContent userIsLogged={false} />
+                        <Header /> <MainContent contentType="guest" />
                     </>
                 }
             ></Route>
@@ -28,16 +27,28 @@ function Main() {
                 element={
                     <>
                         <Header />
-                        <MainContent userIsLogged={true} />
+                        <MainContent contentType="logged" />
                     </>
                 }
             />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgotPassword" element={<ForgotPasswordPage componentType={false}/>}></Route>
-            <Route path="/reset-password" element={<ResetPasswordPage />}></Route>
+            <Route
+                path="/forgotPassword"
+                element={<ForgotPasswordPage componentType={false} />}
+            ></Route>
+            <Route
+                path="/reset-password"
+                element={<ResetPasswordPage />}
+            ></Route>
             <Route path="/upload" element={<UploadPage />}></Route>
-            
+            <Route
+                path="/search-result"
+                element={<>
+                <Header />
+                <MainContent contentType="result" />
+                </>}
+            ></Route>
         </Routes>
     );
 }

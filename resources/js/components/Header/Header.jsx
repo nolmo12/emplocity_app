@@ -40,6 +40,7 @@ export default function Header() {
     }, []);
 
     const toggleMenu = () => {
+        console.log(isLogged);
         if (!isLogged) {
             setShowMenu(!showMenu);
         }
