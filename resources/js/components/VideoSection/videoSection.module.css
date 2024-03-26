@@ -3,8 +3,8 @@
     position:absolute;
     align-items: center;
     flex-wrap: wrap;
-    width: 70%;
-    height:70%;
+    width: 73.5%;
+    height:73%;
     color: black;
     background-color: #101b32;
     left:10%;
@@ -28,10 +28,10 @@ h2 {
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #videoSection {
-        width: 10em;
-        height:85em;
-        left: 5%;
-        top:1em;
+        width: 50%;
+        height:100%;
+        left: 30%;
+        top:15%;
         margin-top:5%;
         padding-bottom:0;
     }
@@ -43,10 +43,10 @@ h2 {
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #videoSection {
-        width: 60%;
-        height:50%;
+        width: 75%;
+        height:90%;
         left: 5%;
-        top:5%;
+        top: 10%;
         margin-top:3%;
         padding-bottom:0;
         padding-right:0;
