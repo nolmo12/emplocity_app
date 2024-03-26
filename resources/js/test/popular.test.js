@@ -20,6 +20,6 @@ describe("Popular component test", () => {
             </Router>
         );
         const ulElements = screen.getAllByRole("listitem");
-        expect(ulElements.length).toBe(6);
+        expect(ulElements.length).toBe(10);
     });
 });
