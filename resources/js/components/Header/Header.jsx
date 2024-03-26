@@ -5,12 +5,12 @@ import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./header.module.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus, faSignInAlt, faUpload, faUser, faHistory, faQuestionCircle  } from '@fortawesome/free-solid-svg-icons';
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const [iconLoginPath, setIconLoginPath] = useState("");
-    const [iconRegisterPath, setIconRegisterPath] = useState("");
     const [tempLogoPath, setTempLogoPath] = useState("");
     const { getToken, logout, isLogged } = authUser();
 
@@ -19,18 +19,12 @@ export default function Header() {
             try {
                 const [
                     iconPath,
-                    iconLoginPath,
-                    iconRegisterPath,
                     tempLogoPath,
                 ] = await Promise.all([
                     fetchImage("ico.png"),
-                    fetchImage("iconLogin.png"),
-                    fetchImage("iconRegister.png"),
                     fetchImage("tempLogo.png"),
                 ]);
                 setIconPath(iconPath);
-                setIconLoginPath(iconLoginPath);
-                setIconRegisterPath(iconRegisterPath);
                 setTempLogoPath(tempLogoPath);
             } catch (error) {
                 console.error(error);
@@ -49,7 +43,7 @@ export default function Header() {
     const loginElement = (
         <Link to="/login">
             <button id={styles.login}>
-                {iconLoginPath && <img src={iconLoginPath}></img>}
+                <FontAwesomeIcon icon={faSignInAlt} className={styles.imgMenu}/>
                 Login
             </button>
         </Link>
@@ -57,7 +51,7 @@ export default function Header() {
 
     const logoutElement = (
         <li>
-            <button onClick={logout} id={styles.login}>
+            <button onClick={logout} id={styles.login} >
                 Logout
             </button>
         </li>
@@ -68,8 +62,52 @@ export default function Header() {
         <li>
             <Link to="/register">
                 <button id={styles.register}>
-                    {iconRegisterPath && <img src={iconRegisterPath}></img>}
+                    <FontAwesomeIcon icon={faUserPlus} className={styles.imgMenu}/>
                     Register
+                </button>
+            </Link>
+        </li>
+    );
+
+    const uploadElement = (
+        <li>
+            <Link to="/">
+                <button id={styles.upload}>
+                    <FontAwesomeIcon icon={faUpload} className={styles.imgMenu}/>
+                    Upload
+                </button>
+            </Link>
+        </li>
+    );
+
+    const accountElement = (
+        <li>
+            <Link to="/">
+                <button id={styles.account}>
+                    <FontAwesomeIcon icon={faUser} className={styles.imgMenu}/>
+                    Account
+                </button>
+            </Link>
+        </li>
+    );
+
+    const historyElement = (
+        <li>
+            <Link to="/">
+                <button id={styles.history}>
+                    <FontAwesomeIcon icon={faHistory} className={styles.imgMenu}/>
+                    History
+                </button>
+            </Link>
+        </li>
+    );
+
+    const helpElement = (
+        <li>
+            <Link to="/">
+                <button id={styles.help}>
+                    <FontAwesomeIcon icon={faQuestionCircle} className={styles.imgMenu}/>
+                    Help
                 </button>
             </Link>
         </li>
@@ -78,35 +116,32 @@ export default function Header() {
     return (
         <>
             <header>
-                {tempLogoPath ? (
+                {tempLogoPath && (
                     <img
                         src={tempLogoPath}
                         alt="Logo"
-                        data-testid="tempLogo"
                         id={styles.imgLogo}
                     ></img>
-                ) : (
-                    <p data-testid="loadingTempLogoPath"></p>
                 )}
                 <SearchBar />
-                {iconPath ? (
+                {iconPath && (
                     <img
                         src={iconPath}
                         alt="Icon"
-                        data-testid="icon"
                         id={styles.imgIcon}
                         onClick={toggleMenu}
                     ></img>
-                ) : (
-                    <p data-testid="loadingIconPath"></p>
                 )}
             </header>
-            {showMenu && (
-                <ul id={styles.menu} data-testid="ulMenu">
+                <ul id={styles.menu} className={showMenu ? styles.menuVisible : ''}>
                     {!isLogged && registerElement}
                     {isLogged ? logoutElement : loginElement}
+                    {uploadElement}
+                    {accountElement}
+                    {historyElement}
+                    {helpElement}
                 </ul>
-            )}
+
         </>
     );
 }

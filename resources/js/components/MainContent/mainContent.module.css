@@ -15,13 +15,13 @@ main {
 @media screen and (max-width: 800px) and (orientation: portrait){
     main {
         width:100%;
-        height:100%;
+        height:120vh;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     main {
         width:100%;
-        height:100%;
+        height:100vh;
     }
 }
