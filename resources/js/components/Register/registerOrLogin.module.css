@@ -1,0 +1,130 @@
+* {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #14213d;
+}
+
+form {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: solid 2px black;
+    border-radius: 6px;
+    background-color: rgba(229, 229, 229, 0.8);
+    padding: 5%;
+    width: 30%;
+    max-width: 300px;
+}
+
+form img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    margin-bottom: 1em;
+}
+
+form a {
+    text-align: center;
+    text-decoration: none;
+    font-size: 1em;
+    margin-top: 0%;
+    margin-bottom: 1em;
+    color: #4949db;
+}
+
+form a:hover {
+    text-decoration: underline;
+    color: #7474e1;
+}
+
+form input {
+    width: 90%;
+    height: 2.5em;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    border: solid 2px #a0a0a0;
+}
+
+form #Email {
+    background-image: url("./mailIcon.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding-left: 3em;
+    background-position: 0.1em center;
+}
+
+form #Password {
+    background-image: url("./iconLock.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 0.5em center;
+    padding-left: 3em;
+    background-size: 1.5em;
+}
+
+form #RepeatPassword {
+    background-image: url("./iconConfirmLock.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 0.5em center;
+    padding-left: 3em;
+    background-size: 1.5em;
+}
+
+form button {
+    width: 50%;
+    height: 2em;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-bottom: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+}
+
+form button:hover {
+    background-color: #f0f0f0;
+}
+
+form button:active {
+    transform: scale(0.95);
+}
+
+.invalid {
+    border: 1px solid red;
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait) {
+    form {
+        width: 90%;
+    }
+
+    form img {
+        width: 40%;
+    }
+}
+
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    form {
+        width: 30%;
+        height: 70%;
+    }
+
+    form input,
+    form button {
+        width: 60%;
+    }
+
+    form img {
+        width: 40%;
+    }
+}

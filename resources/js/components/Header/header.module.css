@@ -22,6 +22,7 @@ header img {
     position: relative;
     right: 1em;
     top: 10%;
+    cursor: pointer;
 }
 
 #menu {
@@ -31,6 +32,14 @@ header img {
     top: 2em;
     transform: translateY(-50%);
     z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease; 
+    visibility: hidden; 
+}
+
+#menu.menuVisible {
+    opacity: 1;
+    visibility: visible; 
 }
 
 #menu li {
@@ -45,7 +54,7 @@ header img {
     cursor: pointer;
     border: none;
     background-color: white;
-    text-align:left;
+    text-align: left;
 }
 
 #menu img {
