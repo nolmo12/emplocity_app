@@ -6,7 +6,6 @@ import authUser from "../authUser";
 import Message from "../Message/Message";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
-import { http } from "msw";
 
 export default function ForgotPasswordPage() {
     const [loginData, setLoginData] = useState({
@@ -57,18 +56,28 @@ export default function ForgotPasswordPage() {
 
     return (
         <main>
-            <form onSubmit={(e) => handleSendEmail(e)}>
-                <Link to="/">
-                    {iconPath && <img src={iconPath} alt="Icon"></img>}
-                </Link>
-                <input
-                    type="text"
-                    onChange={(e) => handleInputEmail(e)}
-                    placeholder="Email"
-                ></input>
-                {emailValidation ? <p>Invalid email</p> : ""}
-                <button>Send</button>
-            </form>
+            {passwordWasSent ? (
+                <Message message="Check your mail" />
+            ) : (
+                <form onSubmit={(e) => handleSendEmail(e)}>
+                    <Link to="/">
+                        {iconPath && (
+                            <img
+                                src={iconPath}
+                                data-testid="icon"
+                                alt="Icon"
+                            ></img>
+                        )}
+                    </Link>
+                    <input
+                        type="text"
+                        onChange={(e) => handleInputEmail(e)}
+                        placeholder="Email"
+                    ></input>
+                    {emailValidation ? <p>Invalid email</p> : ""}
+                    <button>Send</button>
+                </form>
+            )}
         </main>
     );
 }
