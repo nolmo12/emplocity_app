@@ -6,6 +6,8 @@ import authUser from "../authUser";
 import Message from "../Message/Message";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 export default function ForgotPasswordPage() {
     const [loginData, setLoginData] = useState({
@@ -57,11 +59,10 @@ export default function ForgotPasswordPage() {
 
     return (
         <main>
-
             {passwordWasSent ? (
-                <Message message="Check your mail" />
+                <Message message="Link sent. Check your mail." className={styles.Message}/>
             ) : (
-                <form onSubmit={(e) => handleSendEmail(e)}>
+                <form onSubmit={(e) => handleSendEmail(e)} className={styles.formForgotPass}>
                     <Link to="/">
                         {iconPath && (
                             <img
@@ -71,30 +72,18 @@ export default function ForgotPasswordPage() {
                             ></img>
                         )}
                     </Link>
-                    <input
-                        type="text"
-                        onChange={(e) => handleInputEmail(e)}
-                        placeholder="Email"
-                    ></input>
+                    <div>
+                        <FontAwesomeIcon icon={faEnvelope} className={styles.mailIcon}/>
+                        <input
+                            type="text"
+                            onChange={(e) => handleInputEmail(e)}
+                            placeholder="Email"
+                        ></input>
+                    </div>
                     {emailValidation ? <p>Invalid email</p> : ""}
                     <button>Send</button>
                 </form>
             )}
-
-            {passwordWasSent ? (<Message message="Check your mail" />) : (<form onSubmit={(e) => handleSendEmail(e)}>
-                <Link to="/">
-                    {iconPath && <img src={iconPath} alt="Icon"></img>}
-                </Link>
-                <input
-                    type="text"
-                    onChange={(e) => handleInputEmail(e)}
-                    placeholder="Email"
-                ></input>
-                {emailValidation ? <p>Invalid email</p> : ""}
-                <button>Send</button>
-            </form>)}
-            
-
         </main>
     );
 }
