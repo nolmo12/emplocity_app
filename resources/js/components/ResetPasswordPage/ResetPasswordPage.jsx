@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
+import Message from "../Message/Message";
 import authUser from "../authUser";
 import styles from "./registerOrLogin.module.css";
 
@@ -12,6 +13,8 @@ export default function ResetPasswordPage() {
         repeatPassword: "",
         token: "",
     });
+    const [isReset, setIsReset] = useState(false)
+    const [passwordValidation, setPasswordValidation] = useState(false);
     const [searchParams] = useSearchParams();
 
     useEffect(() => {
@@ -44,13 +47,15 @@ export default function ResetPasswordPage() {
                 password: data.password,
                 repeatPassword: data.repeatPassword,
             });
+            setIsReset(true);
         } catch (error) {
+            passwordValidation(true)
             console.log(error);
         }
     };
     return (
         <main>
-            <form onSubmit={handleSubmit}>
+            {isReset ? (<Message message="Password was change" className={styles.Message}/>) : <form onSubmit={handleSubmit}>
                 <h1>Enter your new password</h1>
                 <input
                     id={styles.Password}
@@ -66,8 +71,10 @@ export default function ResetPasswordPage() {
                     value={data.repeatPassword}
                     onChange={(e) => handleInputRepeatPassword(e)}
                 ></input>
+                {passwordValidation ? <p>The password must contain at least 8 characters</p> : ""}
                 <button>Reset</button>
-            </form>
+            </form>}
+            
         </main>
     );
 }
