@@ -36,12 +36,6 @@ function Main() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/forgotPassword" element={<ForgotPasswordPage />}></Route>
 
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route
-                path="/forgotPassword"
-                element={<ForgotPasswordPage componentType={false} />}
-            ></Route>
             <Route
                 path="/reset-password"
                 element={<ResetPasswordPage />}

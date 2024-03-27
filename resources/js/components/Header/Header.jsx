@@ -5,8 +5,15 @@ import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./header.module.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserPlus, faSignInAlt, faUpload, faUser, faHistory, faQuestionCircle  } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faUserPlus,
+    faSignInAlt,
+    faUpload,
+    faUser,
+    faHistory,
+    faQuestionCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
@@ -17,10 +24,7 @@ export default function Header() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [
-                    iconPath,
-                    tempLogoPath,
-                ] = await Promise.all([
+                const [iconPath, tempLogoPath] = await Promise.all([
                     fetchImage("ico.png"),
                     fetchImage("tempLogo.png"),
                 ]);
@@ -42,7 +46,10 @@ export default function Header() {
     const loginElement = (
         <Link to="/login">
             <button id={styles.login}>
-                <FontAwesomeIcon icon={faSignInAlt} className={styles.imgMenu}/>
+                <FontAwesomeIcon
+                    icon={faSignInAlt}
+                    className={styles.imgMenu}
+                />
                 Login
             </button>
         </Link>
@@ -50,7 +57,7 @@ export default function Header() {
 
     const logoutElement = (
         <li>
-            <button onClick={logout} id={styles.login} >
+            <button onClick={logout} id={styles.login}>
                 Logout
             </button>
         </li>
@@ -61,7 +68,10 @@ export default function Header() {
         <li>
             <Link to="/register">
                 <button id={styles.register}>
-                    <FontAwesomeIcon icon={faUserPlus} className={styles.imgMenu}/>
+                    <FontAwesomeIcon
+                        icon={faUserPlus}
+                        className={styles.imgMenu}
+                    />
                     Register
                 </button>
             </Link>
@@ -70,9 +80,12 @@ export default function Header() {
 
     const uploadElement = (
         <li>
-            <Link to="/">
+            <Link to="/upload">
                 <button id={styles.upload}>
-                    <FontAwesomeIcon icon={faUpload} className={styles.imgMenu}/>
+                    <FontAwesomeIcon
+                        icon={faUpload}
+                        className={styles.imgMenu}
+                    />
                     Upload
                 </button>
             </Link>
@@ -83,7 +96,7 @@ export default function Header() {
         <li>
             <Link to="/">
                 <button id={styles.account}>
-                    <FontAwesomeIcon icon={faUser} className={styles.imgMenu}/>
+                    <FontAwesomeIcon icon={faUser} className={styles.imgMenu} />
                     Account
                 </button>
             </Link>
@@ -94,7 +107,10 @@ export default function Header() {
         <li>
             <Link to="/">
                 <button id={styles.history}>
-                    <FontAwesomeIcon icon={faHistory} className={styles.imgMenu}/>
+                    <FontAwesomeIcon
+                        icon={faHistory}
+                        className={styles.imgMenu}
+                    />
                     History
                 </button>
             </Link>
@@ -105,7 +121,10 @@ export default function Header() {
         <li>
             <Link to="/">
                 <button id={styles.help}>
-                    <FontAwesomeIcon icon={faQuestionCircle} className={styles.imgMenu}/>
+                    <FontAwesomeIcon
+                        icon={faQuestionCircle}
+                        className={styles.imgMenu}
+                    />
                     Help
                 </button>
             </Link>
@@ -115,7 +134,7 @@ export default function Header() {
     return (
         <>
             <header>
-            {tempLogoPath ? (
+                {tempLogoPath ? (
                     <img
                         src={tempLogoPath}
                         alt="Logo"
@@ -138,15 +157,18 @@ export default function Header() {
                     <p data-testid="loadingIconPath"></p>
                 )}
             </header>
-                <ul id={styles.menu} data-testid="ulMenu" className={showMenu ? styles.menuVisible : ''}>
-                    {!isLogged && registerElement}
-                    {isLogged ? logoutElement : loginElement}
-                    {uploadElement}
-                    {accountElement}
-                    {historyElement}
-                    {helpElement}
-                </ul>
-
+            <ul
+                id={styles.menu}
+                data-testid="ulMenu"
+                className={showMenu ? styles.menuVisible : ""}
+            >
+                {!isLogged && registerElement}
+                {isLogged ? logoutElement : loginElement}
+                {uploadElement}
+                {accountElement}
+                {historyElement}
+                {helpElement}
+            </ul>
         </>
     );
 }
