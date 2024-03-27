@@ -11,7 +11,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-
+use App\Http\Controllers\Auth\VerificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -27,6 +27,8 @@ Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('users', [UserController::class, 'getUsersData']);
+Route::get('user/{id}', [UserController::class, 'getUserData']);
 
 
 Route::prefix('auth')->group(function () {
@@ -37,11 +39,10 @@ Route::prefix('auth')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword'])
     ->middleware('guest')
     ->name('password.email');
+    Route::get('/user-data', [UserController::class, 'getUserData']);
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
-
-
 
 //Move this to controllers some time into the future
 //EMAIL VERIFICATION
@@ -50,13 +51,9 @@ Route::prefix('email')->group(function () {
         return view('auth.verify-email');
     })->middleware('auth')->name('verification.notice');
     
-    Route::get('/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-        error_log("a");
-        $request->fulfill();
-    
-        return redirect('');
-    })->middleware(['auth'])->name('verification.verify');
-    
+    Route::get('/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware(['auth'])
+        ->name('verification.verify');
     
     Route::post('/verification-notification', function (Request $request) {
         $request->user()->sendEmailVerificationNotification();
