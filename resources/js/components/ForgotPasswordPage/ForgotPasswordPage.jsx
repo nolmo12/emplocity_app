@@ -57,7 +57,6 @@ export default function ForgotPasswordPage() {
 
     return (
         <main>
-
             {passwordWasSent ? (
                 <Message message="Check your mail" />
             ) : (
@@ -80,21 +79,6 @@ export default function ForgotPasswordPage() {
                     <button>Send</button>
                 </form>
             )}
-
-            {passwordWasSent ? (<Message message="Check your mail" />) : (<form onSubmit={(e) => handleSendEmail(e)}>
-                <Link to="/">
-                    {iconPath && <img src={iconPath} alt="Icon"></img>}
-                </Link>
-                <input
-                    type="text"
-                    onChange={(e) => handleInputEmail(e)}
-                    placeholder="Email"
-                ></input>
-                {emailValidation ? <p>Invalid email</p> : ""}
-                <button>Send</button>
-            </form>)}
-            
-
         </main>
     );
 }
