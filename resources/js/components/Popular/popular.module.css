@@ -3,9 +3,6 @@
     top: 10%; 
     left: 5%; 
     width: 15%; 
-    overflow-y: auto; 
-    max-height: 450px; 
-    overflow-x: hidden;
     transform: translate(-5%, 5%); 
 }
 
@@ -32,19 +29,6 @@
     transform: scale(0.95);
 }
 
-#Popular::-webkit-scrollbar {
-    width: 0.2em;
-}
-
-#Popular::-webkit-scrollbar-thumb {
-    background-color: #808080; 
-    border-radius: 6px; 
-}
-
-#Popular::-webkit-scrollbar-track {
-    background-color: #f1f1f1; 
-    border-radius: 6px; 
-}
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #Popular {

@@ -53,6 +53,14 @@ form input {
     border: solid 2px #a0a0a0;
 }
 
+form p {
+    color: black;
+    margin-top:-1em;
+    margin-bottom:1em;
+    text-align:center;
+    font-size:0.8em;
+}
+
 form #Email {
     background-image: url("./mailIcon.png");
     background-size: contain;
