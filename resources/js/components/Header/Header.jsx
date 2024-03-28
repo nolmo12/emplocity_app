@@ -13,6 +13,7 @@ import {
     faUser,
     faHistory,
     faQuestionCircle,
+    faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
@@ -58,6 +59,10 @@ export default function Header() {
     const logoutElement = (
         <li>
             <button onClick={logout} id={styles.login}>
+                <FontAwesomeIcon
+                    icon={faSignOutAlt}
+                    className={styles.imgMenu}
+                />
                 Logout
             </button>
         </li>
@@ -96,7 +101,10 @@ export default function Header() {
         <li>
             <Link to="/">
                 <button id={styles.account}>
-                    <FontAwesomeIcon icon={faUser} className={styles.imgMenu} />
+                    <FontAwesomeIcon 
+                        icon={faUser} 
+                        className={styles.imgMenu} 
+                    />
                     Account
                 </button>
             </Link>

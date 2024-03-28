@@ -23,6 +23,23 @@
     width: 25%;
 }
 
+.videoInfo {
+    font-weight: 400;
+    position:relative;
+    top:-10%;
+    left:-5%;
+    margin-bottom:1%;
+}
+
+#title {
+    font-weight: 700;
+}
+
+#views, #likes {
+    float: right;
+    left:5%;
+}
+
 @media screen and (max-width: 800px) and (orientation: portrait){
     #UserVideoSection {
         width: 15em;
@@ -78,8 +95,8 @@
         height: 70%;
     }
 
-    #title, #author, #views, #date, #likes {
-        font-size: 0.5em;
+    .videoInfo {
+        font-size:0.7em;
     }
 }
 
@@ -120,6 +137,10 @@
 
     #VideoHeader {
         padding-bottom:10em;
+    }
+
+    .videoInfo {
+        font-size:0.8em;
     }
 }
 

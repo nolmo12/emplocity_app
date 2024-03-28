@@ -26,7 +26,7 @@
     transform: scale(0.95);
 }
 
-#Settings img {
+#Settings .settingsIcon {
     width:1em;
     height:1em;
     margin-right:0.3em;
