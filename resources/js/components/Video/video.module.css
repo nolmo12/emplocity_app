@@ -49,16 +49,10 @@ section:active {
     font-weight: 700;
 }
 
-#views {
+#views, #likes {
     float: right;
     left:5%;
 }
-
-#likes {
-    float: right;
-    left:5%;
-}
-
 
 
 @media screen and (max-width: 800px) and (orientation: portrait){

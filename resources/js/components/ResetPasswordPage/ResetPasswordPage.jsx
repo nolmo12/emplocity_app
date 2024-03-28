@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import Message from "../Message/Message";
 import authUser from "../authUser";
-import styles from "./registerOrLogin.module.css";
+import styles from "./resetPasswordPage.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {    
+    faLock,
+    faCheckCircle
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function ResetPasswordPage() {
     const { http, getCsrfToken } = authUser();
@@ -58,22 +63,28 @@ export default function ResetPasswordPage() {
                     className={styles.Message}
                 />
             ) : (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className={styles.resetForm}>
                     <h1>Enter your new password</h1>
-                    <input
-                        id={styles.Password}
-                        type="password"
-                        placeholder="Password"
-                        value={data.password}
-                        onChange={(e) => handleInputPassword(e)}
-                    ></input>
-                    <input
-                        id={styles.repeatPassword}
-                        type="password"
-                        placeholder="Repeat password"
-                        value={data.repeatPassword}
-                        onChange={(e) => handleInputRepeatPassword(e)}
-                    ></input>
+                    <div>
+                        <FontAwesomeIcon icon={faLock} className={styles.resetPassIcon}/>
+                        <input
+                            id={styles.Password}
+                            type="password"
+                            placeholder="Password"
+                            value={data.password}
+                            onChange={(e) => handleInputPassword(e)}
+                        ></input>
+                    </div>
+                    <div>
+                        <FontAwesomeIcon icon={faLock} className={styles.resetPassIcon}/>
+                        <input
+                            id={styles.repeatPassword}
+                            type="password"
+                            placeholder="Repeat password"
+                            value={data.repeatPassword}
+                            onChange={(e) => handleInputRepeatPassword(e)}
+                        ></input>
+                    </div>
                     {passwordValidation ? (
                         <p>The password must contain at least 8 characters</p>
                     ) : (

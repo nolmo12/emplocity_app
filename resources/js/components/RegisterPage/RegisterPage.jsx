@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import Message from "../Message/Message";
 import useValidation from "../useValidation";
 import fetchImage from "../fetchImgFromStorage";
-import styles from "./registerOrLogin.module.css";
+import styles from "./registerPage.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {    
+    faEnvelope,
+    faLock
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function RegisterPage() {
     const [registeredData, setRegisteredData] = useState({
@@ -69,58 +74,67 @@ export default function RegisterPage() {
             {emailVerification ? (
                 <Message message="Email verification sent" />
             ) : (
-                <form data-testid="form" onSubmit={handleSubmit}>
+                <form data-testid="form" onSubmit={handleSubmit} className={styles.registerForm}>
                     <Link to="/">
                         {iconPath && <img src={iconPath} alt="Icon" />}
                     </Link>
 
-                    <input
-                        id={styles.Email}
-                        className={
-                            validationInfo && validationInfo.emailValidation
-                                ? styles.invalid
-                                : ""
-                        }
-                        type="text"
-                        placeholder="Email"
-                        value={registeredData.email}
-                        onChange={handleInputEmail}
-                    />
+                    <div>
+                        <FontAwesomeIcon icon={faEnvelope} className={styles.registerMailIcon}/>
+                        <input
+                            id={styles.Email}
+                            className={
+                                validationInfo && validationInfo.emailValidation
+                                    ? styles.invalid
+                                    : ""
+                            }
+                            type="text"
+                            placeholder="Email"
+                            value={registeredData.email}
+                            onChange={handleInputEmail}
+                        />
+                    </div>
 
                     {validationInfo && validationInfo.emailValidation && (
                         <p>Invalid or used by other user</p>
                     )}
 
-                    <input
-                        id={styles.Password}
-                        className={
-                            validationInfo && validationInfo.passwordValidation
-                                ? styles.invalid
-                                : ""
-                        }
-                        type="password"
-                        placeholder="Password"
-                        value={registeredData.password}
-                        onChange={handleInputPassword}
-                    />
+                    <div>
+                        <FontAwesomeIcon icon={faLock} className={styles.registerPassIcon}/>
+                        <input
+                            id={styles.Password}
+                            className={
+                                validationInfo && validationInfo.passwordValidation
+                                    ? styles.invalid
+                                    : ""
+                            }
+                            type="password"
+                            placeholder="Password"
+                            value={registeredData.password}
+                            onChange={handleInputPassword}
+                        />
+                    </div>
 
                     {validationInfo && validationInfo.passwordValidation && (
                         <p>Invalid password</p>
                     )}
 
-                    <input
-                        id={styles.RepeatPassword}
-                        className={
-                            validationInfo &&
-                            validationInfo.repeatPasswordValidation
-                                ? styles.invalid
-                                : ""
-                        }
-                        type="password"
-                        placeholder="Repeat password"
-                        value={registeredData.repeatPassword}
-                        onChange={handleInputRepeatPassword}
-                    />
+                    <div>
+                        <FontAwesomeIcon icon={faLock} className={styles.registerPassIcon}/>
+                        <input
+                            id={styles.RepeatPassword}
+                            className={
+                                validationInfo &&
+                                validationInfo.repeatPasswordValidation
+                                    ? styles.invalid
+                                    : ""
+                            }
+                            type="password"
+                            placeholder="Repeat password"
+                            value={registeredData.repeatPassword}
+                            onChange={handleInputRepeatPassword}
+                        />
+                    </div>
 
                     {validationInfo &&
                         validationInfo.repeatPasswordValidation && (
