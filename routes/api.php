@@ -47,12 +47,7 @@ Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
 //Move this to controllers some time into the future
 //EMAIL VERIFICATION
 Route::prefix('email')->group(function () {
-    Route::get('/verify', function () {
-        return view('auth.verify-email');
-    })->middleware('auth')->name('verification.notice');
-    
     Route::get('/verify/{id}/{hash}', [VerificationController::class, 'verify'])
-        ->middleware(['auth'])
         ->name('verification.verify');
     
     Route::post('/verification-notification', function (Request $request) {
