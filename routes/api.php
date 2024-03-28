@@ -8,10 +8,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\StorageController;
-use App\Http\Controllers\Api\AuthController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\VerificationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -77,12 +77,20 @@ Route::post('/forgot-password', function (Request $request) {
 
 
 Route::post('/reset-password', function (Request $request) {
-    $request->validate([
+    $validateData = Validator::make($request->all(), [
         'token' => 'required',
         'email' => 'required|email',
         'password' => 'required|min:8',
         'repeatPassword' => 'required|same:password'
     ]);
+
+    if($validateData->fails())
+    {
+        return response()->json([
+            'status' => false,
+            'message' => 'validation error'
+        ], 401);
+    }
  
     $status = Password::reset(
         $request->only('email', 'password', 'password_confirmation', 'token'),
