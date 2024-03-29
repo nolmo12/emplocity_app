@@ -2,50 +2,51 @@
     display: flex;
     position: relative;
     flex-wrap: wrap;
-    width: 55%;
+    width: 80%;
+    height: 90%;
     color: white;
     background-color: #101b32;
-    left: -3em;
-    top: -6em;
+    left: 9%;
     border: inset 2px #060c1a; 
-    padding-bottom: 1em;
+    padding-bottom: 1.5em;
+    align-items: flex-start; 
 }   
 
+#UserVideoSection table {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    table-layout: fixed; 
+}
+
+#UserVideoSection th,
+#UserVideoSection td {
+    width: 30%; 
+    min-width: 100px; 
+    padding: 0.5em; 
+    box-sizing: border-box; 
+    word-wrap: break-word; 
+    font-size: 1em; 
+}
+
 #UserVideoSection th {
-    width: 25%;
-    padding-right: 3em;
-    padding-left: 3em;
     font-weight: 600;
 }
 
 #UserVideoSection td {
     text-align: center;
-    width: 25%;
 }
 
-.videoInfo {
-    font-weight: 400;
-    position:relative;
-    top:-10%;
-    left:-5%;
-    margin-bottom:1%;
-}
-
-#title {
-    font-weight: 700;
-}
-
-#views, #likes {
-    float: right;
-    left:5%;
+#UserVideoSection section {
+    width: 60%;
+    transform: translateX(20%);
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #UserVideoSection {
-        width: 15em;
-        height: 85em;
-        left: -1em;
-        top: 1em;
+        width:65%;
+        height:95%;
+        left: -1%;
         margin-top: 5%;
         padding-bottom: 0;
         align-items: flex-start;
@@ -54,74 +55,27 @@
     #UserVideoSection th {
         display: block;
         width: 15%;
-        padding-right: 0em;
         padding-left: 0em;
         margin-bottom: 2em;
+        font-size:1em;
     }
 
-    #UserVideoSection .tdContent {
-        left:5em;
-        top:-20.6em;
-    }
-    
-    #UserVideoSection td {
-        display: block;
-        width:70%;
-        margin-bottom: 2em;
-        float: right; 
-        clear: right; 
-        position:relative;
-        top:-18em;
-        left:3em;
-    }
-
-    #VideoHeader {
-        padding-bottom:7em;
+    #UserVideoSection #VideoHeader {
+        margin-bottom:6em;
     }
 
     #UserVideoSection section {
+        left:-15%;
+        position:relative;
         height: 9em;
         width: 8em;
         margin-bottom: 2em;
     }
 
-    #video {
-        width: 8em;
-        height: 8em;
-    }
-
-    iframe {
-        width: 95%;
-        height: 70%;
-    }
-
-    .videoInfo {
-        font-size:0.7em;
-    }
-}
-
-@media screen and (max-width: 800px) and (orientation: landscape){
-    #UserVideoSection {
-        width: 30em;
-        height: 50em;
-        left: -1em;
-        top: 1em;
-        margin-top: 5%;
-        padding-bottom: 0;
-        align-items: flex-start;
-    }
-    
-    #UserVideoSection th {
-        display: block;
-        width: 15%;
-        padding-right: 0em;
-        padding-left: 0em;
-        margin-bottom: 2em;
-    }
-
     #UserVideoSection .tdContent {
-        left:16em;
-        top:-28.3em;
+        left:10%;
+        top:-24.8em;
+        position:relative;
     }
     
     #UserVideoSection td {
@@ -131,17 +85,33 @@
         float: right; 
         clear: right; 
         position:relative;
-        top:-27.5em;
-        left:12em;
+        top:-21em;
+        left:2em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #UserVideoSection {
+        width: 70%;
+        height: 90%;
+        left: -5%;
+        top: -5%;
+        margin-top: 5%;
+        padding-bottom: 0;
+        align-items: flex-start;
+        font-size:0.5em;
     }
 
-    #VideoHeader {
-        padding-bottom:10em;
+    #UserVideoSection section {
+        width: 60%;
+        height:15em;
+        transform: translateX(15%);
     }
 
-    .videoInfo {
-        font-size:0.8em;
+    #UserVideoSection td {
+        height:12em;
     }
+
 }
 
 

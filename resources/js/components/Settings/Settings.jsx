@@ -76,7 +76,7 @@ export default function Settings() {
                         icon={faUpload}
                         className={styles.settingsIcon}
                     />
-                    <Link to="/upload">Upload</Link>
+                    <Link to="/upload" className={styles.link}>Upload</Link>
                 </li>
                 <li>
                     <FontAwesomeIcon
