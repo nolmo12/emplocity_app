@@ -50,15 +50,15 @@ describe("resetPasswordPage component test", () => {
         });
         expect(repeatPasswordInput.value).toBe("password");
     });
-    // test("testing submit click", async () => {
-    //     render(
-    //         <Router>
-    //             <ResetPasswordPage />
-    //         </Router>
-    //     );
-    //     const buttonElement = screen.getByText("Reset");
-    //     await act(async () => {
-    //         fireEvent.click(buttonElement);
-    //     });
-    // });
+    test("testing submit click", async () => {
+        render(
+            <Router>
+                <ResetPasswordPage />
+            </Router>
+        );
+        const buttonElement = screen.getByText("Reset");
+        await act(async () => {
+            fireEvent.click(buttonElement);
+        });
+    });
 });

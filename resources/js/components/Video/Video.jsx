@@ -6,11 +6,11 @@ export default function Video() {
         <section>
             <div id={styles.video}>
                 <iframe></iframe>
-                <div id={styles.title}> title </div>
-                <div id={styles.author}> author </div>
-                <div id={styles.views}> views </div>
-                <div id={styles.date}> date </div>
-                <div id={styles.likes}> likes </div>
+                <div id={styles.title} className={styles.videoInfo}> title </div>
+                <div className={styles.videoInfo}> author </div>
+                <div id={styles.views} className={styles.videoInfo}> views </div>
+                <div className={styles.videoInfo}> date </div>
+                <div id={styles.likes} className={styles.videoInfo}> likes </div>
             </div>
         </section>
     );

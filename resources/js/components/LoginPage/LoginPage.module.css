@@ -1,18 +1,4 @@
-* {
-    font-family: "Montserrat", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500;
-    font-style: normal;
-}
-
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #14213d;
-}
-
-form {
+.loginForm {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -24,14 +10,14 @@ form {
     max-width: 300px;
 }
 
-form img {
+.loginForm img {
     width: 100%;
     max-width: 200px;
     height: auto;
     margin-bottom: 1em;
 }
 
-form a {
+.loginForm a {
     text-align: center;
     text-decoration: none;
     font-size: 1em;
@@ -40,46 +26,36 @@ form a {
     color: #4949db;
 }
 
-form a:hover {
+.loginForm a:hover {
     text-decoration: underline;
     color: #7474e1;
 }
 
-form input {
-    width: 90%;
+.loginForm input {
+    width: 75%;
     height: 2.5em;
     margin: 0 auto;
     margin-bottom: 1em;
     border: solid 2px #a0a0a0;
+    padding-left:2.5em;
 }
 
-form #Email {
-    background-image: url("./mailIcon.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    padding-left: 3em;
-    background-position: 0.1em center;
+.loginForm .loginMailIcon, .loginForm .loginPassIcon  {
+    color:black;
+    position:relative;
+    left:1.6em;
+    top:0.1em;
 }
 
-form #Password {
-    background-image: url("./iconLock.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 0.5em center;
-    padding-left: 3em;
-    background-size: 1.5em;
+.loginForm p {
+    color: black;
+    margin-top:-1em;
+    margin-bottom:1em;
+    text-align:center;
+    font-size:0.8em;
 }
 
-form #RepeatPassword {
-    background-image: url("./iconConfirmLock.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: 0.5em center;
-    padding-left: 3em;
-    background-size: 1.5em;
-}
-
-form button {
+.loginForm button {
     width: 50%;
     height: 2em;
     margin: 0 auto;
@@ -91,11 +67,11 @@ form button {
     background-color: white;
 }
 
-form button:hover {
+.loginForm button:hover {
     background-color: #f0f0f0;
 }
 
-form button:active {
+.loginForm button:active {
     transform: scale(0.95);
 }
 
@@ -104,27 +80,27 @@ form button:active {
 }
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
-    form {
+    .loginForm {
         width: 90%;
     }
 
-    form img {
+    .loginForm img {
         width: 40%;
     }
 }
 
 @media only screen and (max-width: 800px) and (orientation: landscape) {
-    form {
+    .loginForm {
         width: 30%;
         height: 70%;
     }
 
-    form input,
-    form button {
+    .loginForm input,
+    .loginForm button {
         width: 60%;
     }
 
-    form img {
+    .loginForm img {
         width: 40%;
     }
 }

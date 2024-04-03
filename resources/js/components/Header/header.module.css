@@ -22,15 +22,27 @@ header img {
     position: relative;
     right: 1em;
     top: 10%;
+    cursor: pointer;
 }
 
 #menu {
     list-style: none;
     position: absolute;
-    right: 6rem;
-    top: 2em;
+    right: 1em;
+    top: 3em;
     transform: translateY(-50%);
     z-index: 2;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease, all 0.5s ease-in-out; 
+    transform-origin: left top;
+    transform: scaleY(0);
+    visibility: hidden; 
+}
+
+#menu.menuVisible {
+    opacity: 1;
+    transform: scaleY(1);
+    visibility: visible; 
 }
 
 #menu li {
@@ -45,10 +57,10 @@ header img {
     cursor: pointer;
     border: none;
     background-color: white;
-    text-align:left;
+    text-align: left;
 }
 
-#menu img {
+#menu .imgMenu {
     width:1em;
     height:1em;
     margin-right:0.3em;
@@ -63,25 +75,42 @@ header img {
     top: 3em;
 }
 
-#logout {
+#upload {
+    top: 3em;
+}
+
+#account {
     top: 5em;
+}
+
+#history {
+    top: 7em;
+}
+
+#help {
+    top:9em;
 }
 
 #login:hover,
 #register:hover,
-#logout:hover {
+#upload:hover,
+#account:hover,
+#history:hover,
+#help:hover {
     background-color: #f0f0f0;
 }
 
 #login:active,
 #register:active,
-#logout:active {
+#upload:active,
+#account:active,
+#history:active,
+#help:active {
     transform: scale(0.95);
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
     #menu button {
-        left: 2em;
         position: relative;
         width: 6em;
         height: 2em;
@@ -105,11 +134,11 @@ header img {
         width: 2em;
         height: 2em;
     }
+
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
     #menu button {
-        left: 2em;
         position: relative;
         width: 6em;
         height: 2em;

@@ -1,0 +1,54 @@
+.postSendMessage {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: solid 2px black;
+    border-radius: 6px;
+    background-color: rgba(229, 229, 229, 0.8);
+    padding: 5%;
+    width: 15%;
+    max-width: 300px;
+    color:black;
+}
+
+.postSendMessage p {
+    text-align:center;
+    margin-bottom:1em;
+}
+
+.postSendMessage button {
+    width: 50%;
+    height: 2em;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+}
+
+.postSendMessage button:hover {
+    background-color: #f0f0f0;
+}
+
+.postSendMessage button:active {
+    transform: scale(0.95);
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait) {
+    .postSendMessage {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .postSendMessage {
+        width: 30%;
+        height: 70%;
+    }
+
+    .postSendMessage button {
+        width: 60%;
+    }
+}
