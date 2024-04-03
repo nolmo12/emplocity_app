@@ -1,0 +1,89 @@
+.uploadForm {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: solid 2px black;
+    border-radius: 6px;
+    background-color: rgba(229, 229, 229, 0.8);
+    padding: 5%;
+    width: 30%;
+    max-width: 300px;
+}
+
+.uploadForm input {
+    width: 90%;
+    height: 2.5em;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    padding-left:2.5em;
+    border: solid 2px #a0a0a0;
+}
+
+.uploadForm button {
+    width: 50%;
+    height: 2em;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+}
+
+.uploadForm button:hover {
+    background-color: #f0f0f0;
+}
+
+.uploadForm button:active {
+    transform: scale(0.95);
+}
+
+.uploadForm .uploadIcon {
+    color:black;
+    width:12em;
+    height:12em;
+    margin-bottom:2em;
+    align-self:center;
+}
+
+.uploadForm .uploadFormIcon {
+    color:black;
+    left:0.7em;
+    top:1.7em;
+    position:relative;
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait) {
+    .uploadForm {
+        width: 90%;
+    }
+
+    .uploadForm .uploadIcon {
+        width: 40%;
+        height: 40%;
+    }
+}
+
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .uploadForm {
+        width: 30%;
+        height: 70%;
+    }
+
+    .uploadForm input,
+    .uploadForm button {
+        width: 60%;
+    }
+
+    .uploadForm .uploadIcon {
+        width: 40%;
+    }
+
+    .uploadForm .uploadFormIcon {
+        top:-1%;
+        left:10%;
+    }
+
+}

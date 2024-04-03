@@ -1,20 +1,21 @@
 #Popular {
-    position: relative;
-    top: -3em;
-    left: -1em;
-    overflow-y: auto; 
-    max-height: 450px; 
-    overflow-x: hidden;
+    position: absolute;
+    top: 10%; 
+    left: 5%; 
+    width: 15%; 
+    transform: translate(-5%, 5%); 
 }
 
 #Popular li {
     margin-bottom:1.5em;
+    width:75%;
     list-style-type: none;
 }
 
 #Popular h1 {
     margin-top:0;
     margin-bottom:0.5em;
+    font-weight:600;
 }
 
 #Popular li:hover {
@@ -28,32 +29,19 @@
     transform: scale(0.95);
 }
 
-#Popular::-webkit-scrollbar {
-    width: 0.2em;
-}
-
-#Popular::-webkit-scrollbar-thumb {
-    background-color: #808080; 
-    border-radius: 6px; 
-}
-
-#Popular::-webkit-scrollbar-track {
-    background-color: #f1f1f1; 
-    border-radius: 6px; 
-}
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #Popular {
         position:relative;
         width: 30%;
-        height:10%;
-        top:-29rem;
-        left:0.3em;
+        height:90%;
+        top:-7%;
+        left:-25%;
         font-size:0.5em;
     }
 
     #Popular li {
-        width: 5%;
+        width: 80%;
         height:10%;
     }
 }
@@ -62,14 +50,14 @@
     #Popular {
         position:relative;
         width: 20%;
-        height:10%;
-        top:-12rem;
-        left:-4rem;
-        font-size:0.7em;
+        height:80%;
+        top:-13%;
+        left:-35%;
+        font-size:0.6em;
     }
 
     #Popular li {
-        width: 10%;
+        width: 70%;
         height:10%;
     }
 }

@@ -96,6 +96,32 @@ describe("LoginPage component test", () => {
             expect(createAccount).toBeInTheDocument();
         });
     });
+    test("testing user typing in email input", async () => {
+        render(
+            <Router>
+                <LoginPage />
+            </Router>
+        );
+        const emailInput = screen.getByPlaceholderText("Email");
+        await act(async () => {
+            fireEvent.change(emailInput, { target: { value: "example@.com" } });
+        });
+        expect(emailInput).toHaveValue("example@.com");
+    });
+    test("testing user typing in password input", async () => {
+        render(
+            <Router>
+                <LoginPage />
+            </Router>
+        );
+        const passwordInput = screen.getByPlaceholderText("Password");
+        await act(async () => {
+            fireEvent.change(passwordInput, {
+                target: { value: "password12" },
+            });
+        });
+        expect(passwordInput).toHaveValue("password12");
+    });
     // test("testing form submit", async () => {
     //     render(
     //         <Router>

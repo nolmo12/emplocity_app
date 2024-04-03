@@ -3,7 +3,12 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
-import styles from "./registerOrLogin.module.css";
+import styles from "./LoginPage.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {    
+    faEnvelope,
+    faLock
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function LoginPage() {
     const [loginData, setLoginData] = useState({
@@ -55,27 +60,34 @@ export default function LoginPage() {
 
     return (
         <main>
-            <form data-testid="form" onSubmit={(e) => handleSubmit(e)}>
+            <form data-testid="form" onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
                 <Link to="/">
                     {iconPath && (
                         <img src={iconPath} data-testid="icon" alt="Icon"></img>
                     )}
                 </Link>
+                
+                <div>
+                    <FontAwesomeIcon icon={faEnvelope} className={styles.loginMailIcon}/>
+                    <input
+                        id={styles.Email}
+                        type="text"
+                        placeholder="Email"
+                        value={loginData.email}
+                        onChange={(e) => handleInuptEmail(e)}
+                    ></input>
+                </div>
 
-                <input
-                    id={styles.Email}
-                    type="text"
-                    placeholder="Email"
-                    value={loginData.email}
-                    onChange={(e) => handleInuptEmail(e)}
-                ></input>
-                <input
-                    id={styles.Password}
-                    type="password"
-                    placeholder="Password"
-                    value={loginData.password}
-                    onChange={(e) => handleInputPassword(e)}
-                ></input>
+                <div>
+                    <FontAwesomeIcon icon={faLock} className={styles.loginPassIcon}/>
+                    <input
+                        id={styles.Password}
+                        type="password"
+                        placeholder="Password"
+                        value={loginData.password}
+                        onChange={(e) => handleInputPassword(e)}
+                    ></input>
+                </div>
                 {loginValidation ? <p>Invalid email or password</p> : ""}
                 <Link to="/forgotPassword">
                     <a data-testid="forgotPassword">Forgot password?</a>

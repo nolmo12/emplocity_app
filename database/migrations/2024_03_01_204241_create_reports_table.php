@@ -14,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Video::class)->constrained();
             $table->string('type');
             $table->string('description');
+            $table->integer('reportable_id');
+            $table->string('reportable_type');
             $table->timestamps();
         });
     }

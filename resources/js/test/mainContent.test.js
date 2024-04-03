@@ -9,7 +9,7 @@ describe("MainContent component test", () => {
     test("testing user account content", async () => {
         render(
             <Router>
-                <MainContent userIsLogged={true} />
+                <MainContent contentType="logged" />
             </Router>
         );
         await act(async () => {
@@ -25,7 +25,7 @@ describe("MainContent component test", () => {
     test("testing guest account content", async () => {
         render(
             <Router>
-                <MainContent userIsLogged={false} />
+                <MainContent contentType="guest" />
             </Router>
         );
         await act(async () => {

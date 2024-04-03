@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import Popular from "../components/Popular/Popular";
 describe("Popular component test", () => {
-    test("Popular-text render", () => {
+    test("testing Popular-text render", () => {
         render(
             <Router>
                 <Popular />
@@ -13,14 +13,13 @@ describe("Popular component test", () => {
         const h1Element = screen.getByText("Popular");
         expect(h1Element).toBeInTheDocument();
     });
-    test("<ul> element render", () => {
+    test("testing <ul> render", () => {
         render(
             <Router>
                 <Popular />
             </Router>
         );
-        const ulElement = screen.getByTestId("guestVideoList");
-        const liElements = ulElement.getElementsByTagName("li");
-        expect(liElements.length).toBe(10);
+        const ulElements = screen.getAllByRole("listitem");
+        expect(ulElements.length).toBe(10);
     });
 });

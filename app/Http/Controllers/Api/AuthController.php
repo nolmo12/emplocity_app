@@ -11,7 +11,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
-
 use App\Helpers\ValidateHelper;
 /**
  * AuthController class which controlls everything related to authentication.
@@ -129,8 +128,18 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = Auth::user();
+            error_log(Auth::user()->email_verified_at);
+            
+            if (!Auth::user()->email_verified_at)
+            {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Your email is not verified. Please verify your email before logging in.',
+                ], 401);
+            }
 
+            $user = Auth::user();
+            
             return response()
             ->json([
                 'status' => 'success',

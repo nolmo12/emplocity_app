@@ -8,6 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
@@ -59,6 +60,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function likedDislikedVideos()
     {
         return $this->hasMany(VideoLikeDislike::class);
+    }
+
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
     }
 
     public function getJWTIdentifier()

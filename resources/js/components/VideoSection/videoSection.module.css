@@ -1,33 +1,36 @@
 #videoSection {
     display: flex;
-    position:relative;
+    position:absolute;
     align-items: center;
     flex-wrap: wrap;
-    width: 70%;
+    width: 73.5%;
+    height:73%;
     color: black;
     background-color: #101b32;
-    left:5%;
+    left:10%;
     border: inset 2px #060c1a; 
     padding-bottom:1em;
     padding-right:1em;
+    transform: translate(20%, 5%); 
 }
 
 h2 {
     position: absolute;
-    top: -1.5em;
+    top: -10%;
     left: 0;
     width: 100%;
     color: white;
     margin: 0;
+    font-weight:600;
 }
 
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #videoSection {
-        width: 10em;
-        height:85em;
-        left: 5%;
-        top:1em;
+        width: 50%;
+        height:100%;
+        left: 30%;
+        top:15%;
         margin-top:5%;
         padding-bottom:0;
     }
@@ -39,10 +42,10 @@ h2 {
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #videoSection {
-        width: 60%;
-        height:50%;
+        width: 75%;
+        height:90%;
         left: 5%;
-        top:5%;
+        top: 10%;
         margin-top:3%;
         padding-bottom:0;
         padding-right:0;

@@ -14,6 +14,11 @@ class Video extends Model
         return $this->belongsTo(User::class, 'owner');
     }
 
+    public function reports()
+    {
+        return $this->morphMany(Report::class, 'reportable');
+    }
+
     // Relationship with VideoLikeDislike
     public function likesDislikes()
     {
@@ -21,9 +26,9 @@ class Video extends Model
     }
 
     // Relationship with Tags
-    public function tags()
+    public function tags(): MorphToMany
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     // Relationship with Status

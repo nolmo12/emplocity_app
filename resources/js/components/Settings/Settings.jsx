@@ -4,6 +4,16 @@ import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import styles from "./settings.module.css";
 import fetchImage from "../fetchImgFromStorage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faUpload,
+    faUser,
+    faHistory,
+    faQuestionCircle,
+    faThumbsUp,
+    faStore,
+    faSignOutAlt
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
     const [iconAccountSettingsPath, setIconAccountSettingsPath] = useState("");
@@ -55,26 +65,53 @@ export default function Settings() {
             <h1>Settings</h1>
             <ul data-testid="settingsList">
                 <li>
-                    <img src={iconAccountSettingsPath}></img>Account settings
+                    <FontAwesomeIcon 
+                        icon={faUser} 
+                        className={styles.settingsIcon} 
+                    />
+                    Account settings
                 </li>
                 <li>
-                    <img src={iconUploadPath}></img>
-                    <Link to="/upload">Upload</Link>
+                    <FontAwesomeIcon
+                        icon={faUpload}
+                        className={styles.settingsIcon}
+                    />
+                    <Link to="/upload" className={styles.link}>Upload</Link>
                 </li>
                 <li>
-                    <img src={iconHistoryPath}></img>History
+                    <FontAwesomeIcon
+                        icon={faHistory}
+                        className={styles.settingsIcon}
+                    />
+                    History
                 </li>
                 <li>
-                    <img src={iconLikePath}></img>Liked videos
+                    <FontAwesomeIcon
+                        icon={faThumbsUp}
+                        className={styles.settingsIcon}
+                    />
+                    Liked videos
                 </li>
                 <li>
-                    <img src={iconShopPath}></img>Shop
+                    <FontAwesomeIcon
+                        icon={faStore}
+                        className={styles.settingsIcon}
+                    />
+                    Shop
                 </li>
                 <li>
-                    <img src={iconHelpPath}></img>Help
+                    <FontAwesomeIcon
+                        icon={faQuestionCircle}
+                        className={styles.settingsIcon}
+                    />
+                    Help
                 </li>
                 <li onClick={logout}>
-                    <img src={iconLogoutPath}></img>Logout
+                    <FontAwesomeIcon
+                        icon={faSignOutAlt}
+                        className={styles.settingsIcon}
+                    />
+                    Logout
                 </li>
             </ul>
         </div>
