@@ -7,7 +7,8 @@ import Message from "../Message/Message";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function ForgotPasswordPage() {
     const [loginData, setLoginData] = useState({
@@ -60,20 +61,31 @@ export default function ForgotPasswordPage() {
     return (
         <main>
             {passwordWasSent ? (
-                <Message message="Link sent. Check your mail." className={styles.Message}/>
+                <Message
+                    message="Link sent. Check your mail."
+                    className={styles.Message}
+                />
             ) : (
-                <form onSubmit={(e) => handleSendEmail(e)} className={styles.formForgotPass}>
+                <form
+                    onSubmit={(e) => handleSendEmail(e)}
+                    className={styles.formForgotPass}
+                >
                     <Link to="/">
-                        {iconPath && (
+                        {iconPath ? (
                             <img
                                 src={iconPath}
                                 data-testid="icon"
                                 alt="Icon"
                             ></img>
+                        ) : (
+                            <ClipLoader color="#000" />
                         )}
                     </Link>
                     <div>
-                        <FontAwesomeIcon icon={faEnvelope} className={styles.mailIcon}/>
+                        <FontAwesomeIcon
+                            icon={faEnvelope}
+                            className={styles.mailIcon}
+                        />
                         <input
                             type="text"
                             onChange={(e) => handleInputEmail(e)}

@@ -13,8 +13,9 @@ import {
     faUser,
     faHistory,
     faQuestionCircle,
-    faSignOutAlt
+    faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
@@ -39,9 +40,7 @@ export default function Header() {
     }, []);
 
     const toggleMenu = () => {
-        if (!isLogged) {
-            setShowMenu(!showMenu);
-        }
+        setShowMenu(!showMenu);
     };
 
     const loginElement = (
@@ -99,12 +98,9 @@ export default function Header() {
 
     const accountElement = (
         <li>
-            <Link to="/">
+            <Link to="/account">
                 <button id={styles.account}>
-                    <FontAwesomeIcon 
-                        icon={faUser} 
-                        className={styles.imgMenu} 
-                    />
+                    <FontAwesomeIcon icon={faUser} className={styles.imgMenu} />
                     Account
                 </button>
             </Link>
@@ -127,7 +123,7 @@ export default function Header() {
 
     const helpElement = (
         <li>
-            <Link to="/">
+            <Link to="/help">
                 <button id={styles.help}>
                     <FontAwesomeIcon
                         icon={faQuestionCircle}
@@ -150,7 +146,7 @@ export default function Header() {
                         id={styles.imgLogo}
                     ></img>
                 ) : (
-                    <p data-testid="loadingTempLogoPath"></p>
+                    <ClipLoader color="#000" />
                 )}
                 <SearchBar />
                 {iconPath ? (
@@ -162,21 +158,32 @@ export default function Header() {
                         onClick={toggleMenu}
                     ></img>
                 ) : (
-                    <p data-testid="loadingIconPath"></p>
+                    <ClipLoader color="#000" />
                 )}
             </header>
-            <ul
-                id={styles.menu}
-                data-testid="ulMenu"
-                className={showMenu ? styles.menuVisible : ""}
-            >
-                {!isLogged && registerElement}
-                {isLogged ? logoutElement : loginElement}
-                {uploadElement}
-                {accountElement}
-                {historyElement}
-                {helpElement}
-            </ul>
+            {showMenu && isLogged && (
+                <ul
+                    id={styles.menu}
+                    className={styles.menuVisible}
+                    data-testid="ulMenu"
+                >
+                    {logoutElement}
+                    {accountElement}
+                </ul>
+            )}
+            {showMenu && !isLogged && (
+                <ul
+                    id={styles.menu}
+                    className={styles.menuVisible}
+                    data-testid="ulMenu"
+                >
+                    {registerElement}
+                    {loginElement}
+                    {uploadElement}
+                    {historyElement}
+                    {helpElement}
+                </ul>
+            )}
         </>
     );
 }

@@ -13,4 +13,15 @@ describe("SearchBar component test", () => {
         const inputElement = screen.getByRole("textbox");
         expect(inputElement).toBeInTheDocument();
     });
+    test("testing user typing in the input", () => {
+        render(
+            <Router>
+                <SearchBar />
+            </Router>
+        );
+        const inputElement = screen.getByRole("textbox");
+        expect(inputElement).toBeInTheDocument();
+        inputElement.value = "test";
+        expect(inputElement.value).toBe("test");
+    });
 });

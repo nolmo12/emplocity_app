@@ -14,22 +14,6 @@ const fixActAwaitWarning = () => {
     });
 };
 describe("HeaderPage component test", () => {
-    test("testing loading resources", async () => {
-        render(
-            <Router>
-                <Header />
-            </Router>
-        );
-        await act(async () => {
-            const iconPath = screen.getByTestId("loadingIconPath");
-            expect(iconPath).toBeInTheDocument();
-            const loadingTempLogoPath = screen.getByTestId(
-                "loadingTempLogoPath"
-            );
-            expect(loadingTempLogoPath).toBeInTheDocument();
-        });
-    });
-
     test("testing showMenu visibility", async () => {
         const data = "icon.png";
         fetchImage.mockResolvedValue(data);

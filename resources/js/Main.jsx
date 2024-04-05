@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import UploadPage from "./components/UploadPage/UploadPage"
+import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import Header from "./components/Header/Header";
@@ -34,7 +34,10 @@ function Main() {
 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/forgotPassword" element={<ForgotPasswordPage />}></Route>
+            <Route
+                path="/forgotPassword"
+                element={<ForgotPasswordPage />}
+            ></Route>
 
             <Route
                 path="/reset-password"
@@ -43,12 +46,22 @@ function Main() {
             <Route path="/upload" element={<UploadPage />}></Route>
             <Route
                 path="/search-result"
-                element={<>
-                <Header />
-                <MainContent contentType="result" />
-                </>}
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="result" />
+                    </>
+                }
             ></Route>
-
+            <Route
+                path="/help"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="help" />
+                    </>
+                }
+            />
         </Routes>
     );
 }
