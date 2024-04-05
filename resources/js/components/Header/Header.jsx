@@ -45,7 +45,7 @@ export default function Header() {
 
     const loginElement = (
         <Link to="/login">
-            <button id={styles.login}>
+            <button id={styles.login} onClick={toggleMenu}>
                 <FontAwesomeIcon
                     icon={faSignInAlt}
                     className={styles.imgMenu}
@@ -56,8 +56,8 @@ export default function Header() {
     );
 
     const logoutElement = (
-        <li>
-            <button onClick={logout} id={styles.login}>
+        <li onClick={toggleMenu}>
+            <button onClick={logout} id={styles.logout}>
                 <FontAwesomeIcon
                     icon={faSignOutAlt}
                     className={styles.imgMenu}
@@ -69,7 +69,7 @@ export default function Header() {
     );
 
     const registerElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/register">
                 <button id={styles.register}>
                     <FontAwesomeIcon
@@ -83,7 +83,7 @@ export default function Header() {
     );
 
     const uploadElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/upload">
                 <button id={styles.upload}>
                     <FontAwesomeIcon
@@ -97,7 +97,7 @@ export default function Header() {
     );
 
     const accountElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/account">
                 <button id={styles.account}>
                     <FontAwesomeIcon icon={faUser} className={styles.imgMenu} />
@@ -108,7 +108,7 @@ export default function Header() {
     );
 
     const historyElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/">
                 <button id={styles.history}>
                     <FontAwesomeIcon
@@ -122,7 +122,7 @@ export default function Header() {
     );
 
     const helpElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/help">
                 <button id={styles.help}>
                     <FontAwesomeIcon
@@ -161,29 +161,18 @@ export default function Header() {
                     <ClipLoader color="#000" />
                 )}
             </header>
-            {showMenu && isLogged && (
-                <ul
-                    id={styles.menu}
-                    className={styles.menuVisible}
-                    data-testid="ulMenu"
-                >
-                    {logoutElement}
-                    {accountElement}
-                </ul>
-            )}
-            {showMenu && !isLogged && (
-                <ul
-                    id={styles.menu}
-                    className={styles.menuVisible}
-                    data-testid="ulMenu"
-                >
-                    {registerElement}
-                    {loginElement}
-                    {uploadElement}
-                    {historyElement}
-                    {helpElement}
-                </ul>
-            )}
+            <ul
+                id={styles.menu}
+                data-testid="ulMenu"
+                className={showMenu ? styles.menuVisible : ""}
+            >
+                {!isLogged && registerElement}
+                {isLogged ? logoutElement : loginElement}
+                {uploadElement}
+                {accountElement}
+                {historyElement}
+                {helpElement}
+            </ul>
         </>
     );
 }
