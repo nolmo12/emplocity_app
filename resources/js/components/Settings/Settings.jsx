@@ -1,9 +1,7 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import styles from "./settings.module.css";
-import fetchImage from "../fetchImgFromStorage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faUpload,
@@ -12,62 +10,20 @@ import {
     faQuestionCircle,
     faThumbsUp,
     faStore,
-    faSignOutAlt
+    faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
-    const [iconAccountSettingsPath, setIconAccountSettingsPath] = useState("");
-    const [iconUploadPath, setIconUploadPath] = useState("");
-    const [iconHistoryPath, setIconHistoryPath] = useState("");
-    const [iconLikePath, setIconLikePath] = useState("");
-    const [iconShopPath, setIconShopPath] = useState("");
-    const [iconHelpPath, setIconHelpPath] = useState("");
-    const [iconLogoutPath, setIconLogoutPath] = useState("");
-
     const { logout } = authUser();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [
-                    iconAccountSettingsPath,
-                    iconUploadPath,
-                    iconHistoryPath,
-                    iconLikePath,
-                    iconShopPath,
-                    iconHelpPath,
-                    iconLogoutPath,
-                ] = await Promise.all([
-                    fetchImage("iconAccountSettings.png"),
-                    fetchImage("iconUpload.png"),
-                    fetchImage("iconHistory.png"),
-                    fetchImage("iconLike.png"),
-                    fetchImage("iconShop.png"),
-                    fetchImage("iconHelp.png"),
-                    fetchImage("iconLogout.png"),
-                ]);
-                setIconAccountSettingsPath(iconAccountSettingsPath);
-                setIconUploadPath(iconUploadPath);
-                setIconHistoryPath(iconHistoryPath);
-                setIconLikePath(iconLikePath);
-                setIconShopPath(iconShopPath);
-                setIconHelpPath(iconHelpPath);
-                setIconLogoutPath(iconLogoutPath);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, []);
 
     return (
         <div id={styles.Settings}>
             <h1>Settings</h1>
             <ul data-testid="settingsList">
                 <li>
-                    <FontAwesomeIcon 
-                        icon={faUser} 
-                        className={styles.settingsIcon} 
+                    <FontAwesomeIcon
+                        icon={faUser}
+                        className={styles.settingsIcon}
                     />
                     Account settings
                 </li>
@@ -76,7 +32,9 @@ export default function Settings() {
                         icon={faUpload}
                         className={styles.settingsIcon}
                     />
-                    <Link to="/upload" className={styles.link}>Upload</Link>
+                    <Link to="/upload" className={styles.link}>
+                        Upload
+                    </Link>
                 </li>
                 <li>
                     <FontAwesomeIcon
@@ -104,7 +62,9 @@ export default function Settings() {
                         icon={faQuestionCircle}
                         className={styles.settingsIcon}
                     />
-                    Help
+                    <Link to="/help" className={styles.link}>
+                        Help
+                    </Link>
                 </li>
                 <li onClick={logout}>
                     <FontAwesomeIcon

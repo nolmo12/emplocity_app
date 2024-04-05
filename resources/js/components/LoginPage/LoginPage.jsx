@@ -5,10 +5,8 @@ import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {    
-    faEnvelope,
-    faLock
-} from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function LoginPage() {
     const [loginData, setLoginData] = useState({
@@ -60,15 +58,24 @@ export default function LoginPage() {
 
     return (
         <main>
-            <form data-testid="form" onSubmit={(e) => handleSubmit(e)} className={styles.loginForm}>
+            <form
+                data-testid="form"
+                onSubmit={(e) => handleSubmit(e)}
+                className={styles.loginForm}
+            >
                 <Link to="/">
-                    {iconPath && (
+                    {iconPath ? (
                         <img src={iconPath} data-testid="icon" alt="Icon"></img>
+                    ) : (
+                        <ClipLoader color="#000"></ClipLoader>
                     )}
                 </Link>
-                
+
                 <div>
-                    <FontAwesomeIcon icon={faEnvelope} className={styles.loginMailIcon}/>
+                    <FontAwesomeIcon
+                        icon={faEnvelope}
+                        className={styles.loginMailIcon}
+                    />
                     <input
                         id={styles.Email}
                         type="text"
@@ -79,7 +86,10 @@ export default function LoginPage() {
                 </div>
 
                 <div>
-                    <FontAwesomeIcon icon={faLock} className={styles.loginPassIcon}/>
+                    <FontAwesomeIcon
+                        icon={faLock}
+                        className={styles.loginPassIcon}
+                    />
                     <input
                         id={styles.Password}
                         type="password"

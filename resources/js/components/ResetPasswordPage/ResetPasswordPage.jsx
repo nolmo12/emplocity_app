@@ -5,10 +5,7 @@ import Message from "../Message/Message";
 import authUser from "../authUser";
 import styles from "./resetPasswordPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {    
-    faLock,
-    faCheckCircle
-} from '@fortawesome/free-solid-svg-icons';
+import { faLock, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function ResetPasswordPage() {
     const { http, getCsrfToken } = authUser();
@@ -51,7 +48,7 @@ export default function ResetPasswordPage() {
                 setIsReset(true);
             })
             .catch((error) => {
-                console.log(error);
+                console.log(error.response);
                 setPasswordValidation(true);
             });
     };
@@ -66,7 +63,10 @@ export default function ResetPasswordPage() {
                 <form onSubmit={handleSubmit} className={styles.resetForm}>
                     <h1>Enter your new password</h1>
                     <div>
-                        <FontAwesomeIcon icon={faLock} className={styles.resetPassIcon}/>
+                        <FontAwesomeIcon
+                            icon={faLock}
+                            className={styles.resetPassIcon}
+                        />
                         <input
                             id={styles.Password}
                             type="password"
@@ -76,7 +76,10 @@ export default function ResetPasswordPage() {
                         ></input>
                     </div>
                     <div>
-                        <FontAwesomeIcon icon={faLock} className={styles.resetPassIcon}/>
+                        <FontAwesomeIcon
+                            icon={faLock}
+                            className={styles.resetPassIcon}
+                        />
                         <input
                             id={styles.repeatPassword}
                             type="password"
@@ -86,7 +89,9 @@ export default function ResetPasswordPage() {
                         ></input>
                     </div>
                     {passwordValidation ? (
-                        <p>The password must contain at least 8 characters</p>
+                        <p data-testid="passwordRequirements">
+                            The password must contain at least 8 characters
+                        </p>
                     ) : (
                         ""
                     )}

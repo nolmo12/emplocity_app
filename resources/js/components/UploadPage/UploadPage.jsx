@@ -1,29 +1,14 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import fetchImage from "../fetchImgFromStorage";
 import styles from "./uploadPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
+import {
     faUpload,
     faFilm,
     faTags,
-    faAlignLeft
+    faAlignLeft,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadPage() {
-    const [uploadIconPath, setUploadIconPath] = useState("");
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const uploadIconPath = await fetchImage("upload.png");
-                setUploadIconPath(uploadIconPath);
-            } catch (error) {
-                console.error(error);
-            }
-        };
-        fetchData();
-    }, []);
     const handleDrop = (e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
@@ -53,35 +38,26 @@ export default function UploadPage() {
                 />
                 <div>
                     <FontAwesomeIcon
-                        icon={faFilm} 
+                        icon={faFilm}
                         className={styles.uploadFormIcon}
                     />
-                    <input
-                        type="text"
-                        placeholder="Title"
-                    ></input>
+                    <input type="text" placeholder="Title"></input>
                 </div>
 
                 <div>
-                    <FontAwesomeIcon 
+                    <FontAwesomeIcon
                         icon={faTags}
                         className={styles.uploadFormIcon}
                     />
-                    <input
-                        type="text"
-                        placeholder="Tags"
-                    ></input>
+                    <input type="text" placeholder="Tags"></input>
                 </div>
 
                 <div>
-                    <FontAwesomeIcon 
+                    <FontAwesomeIcon
                         icon={faAlignLeft}
-                        className={styles.uploadFormIcon} 
+                        className={styles.uploadFormIcon}
                     />
-                    <input
-                        type="textarea"
-                        placeholder="Description"
-                    ></input>
+                    <input type="textarea" placeholder="Description"></input>
                 </div>
 
                 <button>Submit</button>
