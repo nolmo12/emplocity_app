@@ -1,7 +1,6 @@
 import React from "react";
-import { Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import authUser from "../authUser";
 import Message from "../Message/Message";
 import fetchImage from "../fetchImgFromStorage";
@@ -46,7 +45,7 @@ export default function ForgotPasswordPage() {
     }
 
     const handleSendEmail = async (e) => {
-        e.preventDefault(); // wait for backend
+        e.preventDefault();
         try {
             http.post("/api/auth/forgot-password", {
                 email: loginData.email,

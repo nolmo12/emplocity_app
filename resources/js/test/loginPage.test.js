@@ -12,9 +12,10 @@ import LoginPage from "../components/LoginPage/LoginPage";
 import fetchImage from "../components/fetchImgFromStorage";
 import { Route } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import { http } from "../components/authUser";
+import config from "../config";
 import Cookies from "js-cookie";
-const url = "http://127.0.0.1:8000/api/auth/login";
+
+const url = `${config().baseUrl}/api/auth/login`;
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
 var mock = new MockAdapter(axios);

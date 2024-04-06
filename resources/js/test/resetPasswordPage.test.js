@@ -9,11 +9,12 @@ import {
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import ResetPasswordPage from "../components/ResetPasswordPage/ResetPasswordPage";
-import authUser from "../components/authUser";
+import config from "../config";
+
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
 var mock = new MockAdapter(axios);
-const url = "http://127.0.0.1:8000/api/reset-password";
+const url = `${config().baseUrl}/api/auth/reset-password`;
 
 describe("resetPasswordPage component test", () => {
     test("testing `Enter your new password` rendering", () => {
