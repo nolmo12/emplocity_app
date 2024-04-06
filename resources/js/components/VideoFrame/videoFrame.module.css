@@ -1,0 +1,165 @@
+.videoFrameDiv {
+    position:relative;
+    width:80%;
+    height:80%;
+}
+
+.videoFrame {
+    width:75%;
+    height:100%;
+    left:5%;
+}
+
+.videoFrameInfo {
+    position:relative;
+    left:5%;
+    top:-10%;
+    width:75%;
+    font-size:0.7em;
+}
+
+.videoFrameInfoTitle {
+    width:80%;
+}
+
+.videoFrameInfoDesc {
+    height:10vh;
+}
+
+.videoFrameIcon {
+    float:right;
+    height:3em;
+    width:3em;
+    margin-left:1em;
+}
+
+.videoFrameIconTD {
+    float:right;
+    height:3em;
+    width:3em;
+    margin-left:1em;
+    transform: scaleX(-1);
+}
+
+.videoFrameReccomend {
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.videoFrameReccomend section {
+    height:30%;
+    width:50%;
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait){
+    .videoFrameDiv {
+        position:relative;
+        width:150%;
+        height:50%;
+        top:-15%;
+        left:20%;
+    }
+
+    .videoFrame {
+        width:23em;
+        height:60%;
+        left:27%;
+        top:-15%;
+    }
+
+    .videoFrameInfo {
+        position:relative;
+        width:50em;
+        left:27%;
+        top:-10%;
+        width:75%;
+        font-size:0.5em;
+    }
+
+    .videoFrameIcon {
+        position:relative;
+        right:-30%;
+    }
+
+    .videoFrameIconTD {
+        position:relative;
+        right:-30%;
+    }
+
+    .videoFrameReccomend {
+        position:relative;
+        display: flex;
+        bottom:30%;
+        flex-direction:row;
+        align-items: flex-end;
+        left:-50%;
+        width:30em;
+        height:90%;
+    }
+
+    .videoFrameReccomend section {
+        height:20%;
+        width:7em;
+    }
+
+    .videoFrameReccomend iframe {
+        width:115%;
+        height:11em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    .videoFrameDiv {
+        position:relative;
+        width:100%;
+        height:80%;
+        top:5%;
+        left:0%;
+    }
+
+    .videoFrame {
+        width:100%;
+        height:80%;
+        top:-15%;
+    }
+
+    .videoFrameInfo {
+        position:relative;
+        width:100%;
+        top:-10%;
+        width:75%;
+        font-size:0.5em;
+    }
+
+    .videoFrameIcon {
+        position:relative;
+        right:-35%;
+    }
+
+    .videoFrameIconTD {
+        position:relative;
+        right:-35%;
+    }
+
+    .videoFrameReccomend {
+        position:relative;
+        display: flex;
+        flex-direction:column;
+        align-items: flex-end;
+        width:30em;
+        height:100%;
+    }
+
+    .videoFrameReccomend section {
+        height:20%;
+        width:7em;
+        font-size:0.6em;
+    }
+
+    .videoFrameReccomend iframe {
+        width:115%;
+        height:5em;
+    }
+}
