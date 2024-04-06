@@ -3,13 +3,12 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import RegisterPage from "../components/RegisterPage/RegisterPage";
-import fetchImage from "../components/fetchImgFromStorage";
-import authUser from "../components/authUser";
-const url = "http://127.0.0.1:8000/api/auth/register";
+import config from "../config";
+
+const url = `${config().baseUrl}/api/auth/register`;
 var axios = require("axios");
 var MockAdapter = require("axios-mock-adapter");
 var mock = new MockAdapter(axios);
-mock.onPost("/api/auth/register").reply(200);
 
 describe("Register component test", () => {
     test("email input changes when user types", async () => {
@@ -85,7 +84,7 @@ describe("Register component test", () => {
         const expectedData = {
             email: "exam.com",
             password: "123456",
-            repeatPassword: "12345",
+            repeatPassword: "123456",
         };
 
         mock.onPost(url).reply((config) => {
@@ -109,7 +108,7 @@ describe("Register component test", () => {
             await axios.post(url, {
                 email: "exam.com",
                 password: "123456",
-                repeatPassword: "12345",
+                repeatPassword: "123456",
             });
         } catch (error) {
             expect(error.response.status).toBe(401);

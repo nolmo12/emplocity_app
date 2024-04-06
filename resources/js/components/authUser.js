@@ -3,11 +3,15 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import config from "../config";
+
 export default function authUser() {
     const [token, setToken] = useState();
     const [csrfToken, setCsrfToken] = useState();
     const [isLogged, setIsLogged] = useState(false);
     const navigate = useNavigate();
+    const { tempBaseUrl } = config();
+
     const getToken = () => {
         const token = Cookies.get("token");
         if (token) {
@@ -38,7 +42,7 @@ export default function authUser() {
     };
 
     const http = axios.create({
-        baseURL: "http://127.0.0.1:8000",
+        baseURL: tempBaseUrl,
         headers: {
             Authorization: `Bearer ${token}`,
         },

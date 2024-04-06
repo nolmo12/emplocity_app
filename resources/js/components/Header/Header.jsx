@@ -139,12 +139,14 @@ export default function Header() {
         <>
             <header>
                 {tempLogoPath ? (
-                    <img
-                        src={tempLogoPath}
-                        alt="Logo"
-                        data-testid="tempLogo"
-                        id={styles.imgLogo}
-                    ></img>
+                    <Link to="/">
+                        <img
+                            src={tempLogoPath}
+                            alt="Logo"
+                            data-testid="tempLogo"
+                            id={styles.imgLogo}
+                        ></img>
+                    </Link>
                 ) : (
                     <ClipLoader color="#000" />
                 )}
