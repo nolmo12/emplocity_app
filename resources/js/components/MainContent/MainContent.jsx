@@ -1,6 +1,7 @@
 import React from "react";
 import Popular from "../Popular/Popular";
 import VideoSection from "../VideoSection/VideoSection";
+import VideoFrame from "../VideoFrame/VideoFrame";
 import SearchResult from "../SearchResult/SearchResult";
 import HelpPage from "../HelpPage/HelpPage";
 import Settings from "../Settings/Settings";
@@ -34,6 +35,13 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <HelpPage />
+            </main>
+        );
+    } else if (contentType === "video") {
+        view = (
+            <main>
+                <VideoFrame />
+                {/* <VideoSection /> */}
             </main>
         );
     }
