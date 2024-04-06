@@ -9,11 +9,6 @@ export default function VideoSection() {
             <Video />
             <Video />
             <Video />
-            <Video />
-            <Video />
-            <Video />
-            <Video />
-            <Video />
         </div>
     );
 }

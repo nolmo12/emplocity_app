@@ -1,13 +1,13 @@
 import React from "react";
-import { Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import authUser from "../authUser";
 import Message from "../Message/Message";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function ForgotPasswordPage() {
     const [loginData, setLoginData] = useState({
@@ -45,7 +45,7 @@ export default function ForgotPasswordPage() {
     }
 
     const handleSendEmail = async (e) => {
-        e.preventDefault(); // wait for backend
+        e.preventDefault();
         try {
             http.post("/api/auth/forgot-password", {
                 email: loginData.email,
@@ -60,20 +60,31 @@ export default function ForgotPasswordPage() {
     return (
         <main>
             {passwordWasSent ? (
-                <Message message="Link sent. Check your mail." className={styles.Message}/>
+                <Message
+                    message="Link sent. Check your mail."
+                    className={styles.Message}
+                />
             ) : (
-                <form onSubmit={(e) => handleSendEmail(e)} className={styles.formForgotPass}>
+                <form
+                    onSubmit={(e) => handleSendEmail(e)}
+                    className={styles.formForgotPass}
+                >
                     <Link to="/">
-                        {iconPath && (
+                        {iconPath ? (
                             <img
                                 src={iconPath}
                                 data-testid="icon"
                                 alt="Icon"
                             ></img>
+                        ) : (
+                            <ClipLoader color="#000" />
                         )}
                     </Link>
                     <div>
-                        <FontAwesomeIcon icon={faEnvelope} className={styles.mailIcon}/>
+                        <FontAwesomeIcon
+                            icon={faEnvelope}
+                            className={styles.mailIcon}
+                        />
                         <input
                             type="text"
                             onChange={(e) => handleInputEmail(e)}

@@ -3,13 +3,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Message from "../Message/Message";
 import useValidation from "../useValidation";
+import authUser from "../authUser";
 import fetchImage from "../fetchImgFromStorage";
 import styles from "./registerPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {    
-    faEnvelope,
-    faLock
-} from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function RegisterPage() {
     const [registeredData, setRegisteredData] = useState({
@@ -20,6 +19,7 @@ export default function RegisterPage() {
     const [emailVerification, setEmailVerification] = useState(false);
     const [iconPath, setIconPath] = useState("");
     const [validationInfo, setValidationInfo] = useState(null);
+    const { http } = authUser();
     const { validateForm } = useValidation();
 
     useEffect(() => {
@@ -52,14 +52,11 @@ export default function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(
-                "http://127.0.0.1:8000/api/auth/register",
-                {
-                    email: registeredData.email,
-                    password: registeredData.password,
-                    repeatPassword: registeredData.repeatPassword,
-                }
-            );
+            http.post("/api/auth/register", {
+                email: registeredData.email,
+                password: registeredData.password,
+                repeatPassword: registeredData.repeatPassword,
+            });
             setEmailVerification(true);
         } catch (error) {
             console.log(error);
@@ -74,13 +71,24 @@ export default function RegisterPage() {
             {emailVerification ? (
                 <Message message="Email verification sent" />
             ) : (
-                <form data-testid="form" onSubmit={handleSubmit} className={styles.registerForm}>
+                <form
+                    data-testid="form"
+                    onSubmit={handleSubmit}
+                    className={styles.registerForm}
+                >
                     <Link to="/">
-                        {iconPath && <img src={iconPath} alt="Icon" />}
+                        {iconPath ? (
+                            <img src={iconPath} alt="Icon" />
+                        ) : (
+                            <ClipLoader color="#000" />
+                        )}
                     </Link>
 
                     <div>
-                        <FontAwesomeIcon icon={faEnvelope} className={styles.registerMailIcon}/>
+                        <FontAwesomeIcon
+                            icon={faEnvelope}
+                            className={styles.registerMailIcon}
+                        />
                         <input
                             id={styles.Email}
                             className={
@@ -100,11 +108,15 @@ export default function RegisterPage() {
                     )}
 
                     <div>
-                        <FontAwesomeIcon icon={faLock} className={styles.registerPassIcon}/>
+                        <FontAwesomeIcon
+                            icon={faLock}
+                            className={styles.registerPassIcon}
+                        />
                         <input
                             id={styles.Password}
                             className={
-                                validationInfo && validationInfo.passwordValidation
+                                validationInfo &&
+                                validationInfo.passwordValidation
                                     ? styles.invalid
                                     : ""
                             }
@@ -120,7 +132,10 @@ export default function RegisterPage() {
                     )}
 
                     <div>
-                        <FontAwesomeIcon icon={faLock} className={styles.registerPassIcon}/>
+                        <FontAwesomeIcon
+                            icon={faLock}
+                            className={styles.registerPassIcon}
+                        />
                         <input
                             id={styles.RepeatPassword}
                             className={
@@ -138,7 +153,9 @@ export default function RegisterPage() {
 
                     {validationInfo &&
                         validationInfo.repeatPasswordValidation && (
-                            <p>Not same as password</p>
+                            <p data-testid="notSameAsPassword">
+                                Not same as password
+                            </p>
                         )}
 
                     <button>Register</button>

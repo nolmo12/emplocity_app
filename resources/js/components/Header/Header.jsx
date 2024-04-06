@@ -13,8 +13,9 @@ import {
     faUser,
     faHistory,
     faQuestionCircle,
-    faSignOutAlt
+    faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
@@ -39,14 +40,12 @@ export default function Header() {
     }, []);
 
     const toggleMenu = () => {
-        if (!isLogged) {
-            setShowMenu(!showMenu);
-        }
+        setShowMenu(!showMenu);
     };
 
     const loginElement = (
         <Link to="/login">
-            <button id={styles.login}>
+            <button id={styles.login} onClick={toggleMenu}>
                 <FontAwesomeIcon
                     icon={faSignInAlt}
                     className={styles.imgMenu}
@@ -57,8 +56,8 @@ export default function Header() {
     );
 
     const logoutElement = (
-        <li>
-            <button onClick={logout} id={styles.login}>
+        <li onClick={toggleMenu}>
+            <button onClick={logout} id={styles.logout}>
                 <FontAwesomeIcon
                     icon={faSignOutAlt}
                     className={styles.imgMenu}
@@ -70,7 +69,7 @@ export default function Header() {
     );
 
     const registerElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/register">
                 <button id={styles.register}>
                     <FontAwesomeIcon
@@ -84,7 +83,7 @@ export default function Header() {
     );
 
     const uploadElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/upload">
                 <button id={styles.upload}>
                     <FontAwesomeIcon
@@ -98,13 +97,10 @@ export default function Header() {
     );
 
     const accountElement = (
-        <li>
-            <Link to="/">
+        <li onClick={toggleMenu}>
+            <Link to="/account">
                 <button id={styles.account}>
-                    <FontAwesomeIcon 
-                        icon={faUser} 
-                        className={styles.imgMenu} 
-                    />
+                    <FontAwesomeIcon icon={faUser} className={styles.imgMenu} />
                     Account
                 </button>
             </Link>
@@ -112,7 +108,7 @@ export default function Header() {
     );
 
     const historyElement = (
-        <li>
+        <li onClick={toggleMenu}>
             <Link to="/">
                 <button id={styles.history}>
                     <FontAwesomeIcon
@@ -126,8 +122,8 @@ export default function Header() {
     );
 
     const helpElement = (
-        <li>
-            <Link to="/">
+        <li onClick={toggleMenu}>
+            <Link to="/help">
                 <button id={styles.help}>
                     <FontAwesomeIcon
                         icon={faQuestionCircle}
@@ -143,14 +139,16 @@ export default function Header() {
         <>
             <header>
                 {tempLogoPath ? (
-                    <img
-                        src={tempLogoPath}
-                        alt="Logo"
-                        data-testid="tempLogo"
-                        id={styles.imgLogo}
-                    ></img>
+                    <Link to="/">
+                        <img
+                            src={tempLogoPath}
+                            alt="Logo"
+                            data-testid="tempLogo"
+                            id={styles.imgLogo}
+                        ></img>
+                    </Link>
                 ) : (
-                    <p data-testid="loadingTempLogoPath"></p>
+                    <ClipLoader color="#000" />
                 )}
                 <SearchBar />
                 {iconPath ? (
@@ -162,7 +160,7 @@ export default function Header() {
                         onClick={toggleMenu}
                     ></img>
                 ) : (
-                    <p data-testid="loadingIconPath"></p>
+                    <ClipLoader color="#000" />
                 )}
             </header>
             <ul

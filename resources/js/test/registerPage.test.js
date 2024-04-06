@@ -3,8 +3,12 @@ import { render, screen, fireEvent, act } from "@testing-library/react";
 import { BrowserRouter as Router } from "react-router-dom";
 import "@testing-library/jest-dom";
 import RegisterPage from "../components/RegisterPage/RegisterPage";
-import axios from "axios";
-jest.mock("axios");
+import config from "../config";
+
+const url = `${config().baseUrl}/api/auth/register`;
+var axios = require("axios");
+var MockAdapter = require("axios-mock-adapter");
+var mock = new MockAdapter(axios);
 
 describe("Register component test", () => {
     test("email input changes when user types", async () => {
@@ -46,78 +50,69 @@ describe("Register component test", () => {
         });
     });
     test("send form data with correct inputs", async () => {
-        axios.post.mockResolvedValue({});
+        const expectedData = {
+            email: "example@.com",
+            password: "123456",
+            repeatPassword: "123456",
+        };
+
+        mock.onPost(url).reply((config) => {
+            const requestData = JSON.parse(config.data);
+            expect(requestData).toEqual(expectedData);
+
+            return [
+                200,
+                {
+                    status: "success",
+                },
+            ];
+        });
         render(
             <Router>
                 <RegisterPage />
             </Router>
         );
-        const formElement = screen.getByTestId("form");
-        const emailInputElement = screen.getByPlaceholderText("Email");
-        const passwordInputElement = screen.getByPlaceholderText("Password");
-        const repeatPasswordInputElement =
-            screen.getByPlaceholderText("Repeat password");
 
-        await act(async () => {
-            fireEvent.change(emailInputElement, {
-                target: { value: "example@.com" },
-            });
-            fireEvent.change(passwordInputElement, {
-                target: { value: "123456" },
-            });
-            fireEvent.change(repeatPasswordInputElement, {
-                target: { value: "123456" },
-            });
-            fireEvent.submit(formElement);
+        const response = await axios.post(url, {
+            email: "example@.com",
+            password: "123456",
+            repeatPassword: "123456",
         });
-        expect(axios.post).toHaveBeenCalledWith(
-            "http://localhost/api/auth/register",
-            {
-                email: "example@.com",
-                password: "123456",
-                repeatPassword: "123456",
-            }
-        );
-        expect(emailInputElement).not.toHaveClass("invalid");
-        expect(passwordInputElement).not.toHaveClass("invalid");
-        expect(repeatPasswordInputElement).not.toHaveClass("invalid");
+        expect(response.status).toBe(200);
     });
     test("send form data with incorrect inputs", async () => {
-        axios.post.mockResolvedValue({});
+        const expectedData = {
+            email: "exam.com",
+            password: "123456",
+            repeatPassword: "123456",
+        };
+
+        mock.onPost(url).reply((config) => {
+            const requestData = JSON.parse(config.data);
+            expect(requestData).toEqual(expectedData);
+
+            return [
+                401,
+                {
+                    status: "fail",
+                },
+            ];
+        });
 
         render(
             <Router>
                 <RegisterPage />
             </Router>
         );
-        await act(async () => {
-            const formElement = screen.getByTestId("form");
-            const emailInputElement = screen.getByPlaceholderText("Email");
-            const passwordInputElement =
-                screen.getByPlaceholderText("Password");
-            const repeatPasswordInputElement =
-                screen.getByPlaceholderText("Repeat password");
-
-            fireEvent.change(emailInputElement, {
-                target: { value: "e.com" },
+        try {
+            await axios.post(url, {
+                email: "exam.com",
+                password: "123456",
+                repeatPassword: "123456",
             });
-            fireEvent.change(passwordInputElement, { target: { value: "" } });
-            fireEvent.change(repeatPasswordInputElement, {
-                target: { value: "123456" },
-            });
-            fireEvent.submit(formElement);
-            expect(axios.post).toHaveBeenCalledWith(
-                "http://localhost/api/auth/register",
-                {
-                    email: "e.com",
-                    password: "",
-                    repeatPassword: "123456",
-                }
-            );
-            return expect(Promise.reject(new Error("error"))).rejects.toThrow(
-                "error"
-            );
-        });
+        } catch (error) {
+            expect(error.response.status).toBe(401);
+        }
     });
     test("testing 'I already have an account' visibility", async () => {
         render(

@@ -48,10 +48,6 @@ describe("forgotPasswordPage component test", () => {
         expect(emailInput.value).toBe("example@wp.pl");
     });
     test("testing send click", async () => {
-        const http = axios.create({
-            baseURL: "http://localhost",
-        });
-        http.post.mockResolvedValue({});
         render(
             <Router>
                 <ForgotPasswordPage />
@@ -59,6 +55,8 @@ describe("forgotPasswordPage component test", () => {
         );
 
         const buttonElement = screen.getByText("Send");
-        fireEvent.click(buttonElement);
+        await act(async () => {
+            fireEvent.click(buttonElement);
+        });
     });
 });

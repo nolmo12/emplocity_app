@@ -1,7 +1,9 @@
 import React from "react";
 import Popular from "../Popular/Popular";
 import VideoSection from "../VideoSection/VideoSection";
+import VideoFrame from "../VideoFrame/VideoFrame";
 import SearchResult from "../SearchResult/SearchResult";
+import HelpPage from "../HelpPage/HelpPage";
 import Settings from "../Settings/Settings";
 import UserVideoSection from "../UserVideoSection/UserVideoSection";
 import styles from "./mainContent.module.css";
@@ -27,6 +29,19 @@ export default function MainContent({ contentType }) {
             <main>
                 <Popular />
                 <SearchResult />
+            </main>
+        );
+    } else if (contentType === "help") {
+        view = (
+            <main>
+                <HelpPage />
+            </main>
+        );
+    } else if (contentType === "video") {
+        view = (
+            <main>
+                <VideoFrame />
+                {/* <VideoSection /> */}
             </main>
         );
     }
