@@ -1,28 +1,24 @@
 import React from "react";
-import { fireEvent, render, screen, act } from "@testing-library/react";
+import {
+    fireEvent,
+    render,
+    screen,
+    act,
+    waitFor,
+} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import LoginPage from "../components/LoginPage/LoginPage";
 import fetchImage from "../components/fetchImgFromStorage";
 import { Route } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
-import axios from "axios";
 import { http } from "../components/authUser";
 import Cookies from "js-cookie";
-
-jest.mock("axios");
+const url = "http://127.0.0.1:8000/api/auth/login";
+var axios = require("axios");
+var MockAdapter = require("axios-mock-adapter");
+var mock = new MockAdapter(axios);
 jest.mock("../components/fetchImgFromStorage");
-jest.mock("../components/authUser", () => ({
-    __esModule: true,
-    default: jest.fn(() => ({
-        http: {
-            post: jest.fn(),
-        },
-        setToken: jest.fn(),
-        getToken: jest.fn(),
-        isLogged: false,
-    })),
-}));
 
 describe("LoginPage component test", () => {
     test("testing icon visibility", async () => {
@@ -122,24 +118,67 @@ describe("LoginPage component test", () => {
         });
         expect(passwordInput).toHaveValue("password12");
     });
-    // test("testing form submit", async () => {
-    //     render(
-    //         <Router>
-    //             <LoginPage />
-    //         </Router>
-    //     );
-    //     const emailInput = screen.getByPlaceholderText("Email");
-    //     const passwordInput = screen.getByPlaceholderText("Password");
-    //     const form = screen.getByTestId("form");
-    //     await act(async () => {
-    //         fireEvent.change(emailInput, { target: { value: "exam@gm.com" } });
-    //         fireEvent.change(passwordInput, {
-    //             target: { value: "password12" },
-    //         });
-    //     });
-    //     expect(fireEvent.submit(form)).toHaveBeenCalledWith("/api/auth/login", {
-    //         email: "exam@gm.com",
-    //         password: "password12",
-    //     }); // poprawa
-    // });
+    test("testing form submit success", async () => {
+        const expectedData = {
+            email: "example@.com",
+            password: "password12",
+            repeatPassword: "password12",
+        };
+        mock.onPost(url).reply((config) => {
+            const requestData = JSON.parse(config.data);
+            expect(requestData).toEqual(expectedData);
+            return [200, { status: "success" }];
+        });
+        render(
+            <Router>
+                <LoginPage />
+            </Router>
+        );
+
+        const buttonElement = screen.getByText("Login");
+        await act(async () => {
+            fireEvent.click(buttonElement);
+        });
+        await waitFor(async () => {
+            const response = await axios.post(url, {
+                email: "example@.com",
+                password: "password12",
+                repeatPassword: "password12",
+            });
+            expect(response.status).toBe(200);
+        });
+    });
+    test("testing form submit fail", async () => {
+        const expectedData = {
+            email: "examp",
+            password: "password12",
+            repeatPassword: "pass",
+        };
+        mock.onPost(url).reply((config) => {
+            const requestData = JSON.parse(config.data);
+            expect(requestData).toEqual(expectedData);
+            return [401, { status: "fail" }];
+        });
+        render(
+            <Router>
+                <LoginPage />
+            </Router>
+        );
+
+        const buttonElement = screen.getByText("Login");
+        await act(async () => {
+            fireEvent.click(buttonElement);
+        });
+        await waitFor(async () => {
+            try {
+                await axios.post(url, {
+                    email: "examp",
+                    password: "password12",
+                    repeatPassword: "pass",
+                });
+            } catch (e) {
+                expect(e.response.status).toBe(401);
+            }
+        });
+    });
 });
