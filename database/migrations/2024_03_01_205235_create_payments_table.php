@@ -17,7 +17,6 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->string('transaction_id')->unique();
-            $table->foreignIdFor(Status::class)->constrained();
             $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Border::class)->constrained();
             $table->decimal('amount', 10, 2);

@@ -2,12 +2,19 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Report;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Video extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'thumbnail', 'video', 'user_id', 'tags'
+    ];
 
     public function owner()
     {
@@ -34,13 +41,13 @@ class Video extends Model
     // Relationship with Status
     public function status()
     {
-        return $this->belongsTo(Status::class);
+        return $this->hasOne('App\Models\Video', 'status');
     }
 
     // Relationship with Languages
     public function languages()
     {
-        return $this->hasMany(Language::class);
+        return $this->belongsToMany(Language::class);
     }
 
     // Relationship with Comments

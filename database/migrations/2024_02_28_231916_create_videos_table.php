@@ -20,18 +20,17 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id(); 
             $table->string('reference_code');
-            $table->string('thumbnail');
+            $table->string('thumbnail')->nullable();
             $table->string('video');
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(Status::class)->constrained();
+            $table->foreignIdFor(User::class)->nullable()->constrained();
             $table->timestamps();
         });
 
         Schema::create('video_likes_dislikes', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained();
-            $table->foreignId(Video::class)->constrained('videos');
-            $table->boolean('is_like'); // true for like, false for dislike
+            $table->foreignIdFor(Video::class)->constrained();
+            $table->boolean('is_like');
 
             $table->timestamps();
         });

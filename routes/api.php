@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
+use App\Http\Controllers\VideoController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\StorageController;
@@ -104,3 +105,7 @@ Route::post('/reset-password', function (Request $request) {
                 ? redirect('http://localhost/login')->with('status', __($status))
                 : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
+
+Route::prefix('video')->group(function () {
+    Route::post('/upload', [VideoController::class, 'store']);
+});

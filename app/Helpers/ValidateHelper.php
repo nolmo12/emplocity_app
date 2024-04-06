@@ -11,7 +11,7 @@ class ValidateHelper
     * 462 => password error,
     * 463 => passwords don't match each other
     */
-    static function getAllErrorCodes(MessageBag $errors) : array
+    static function getAllAuthErrorCodes(MessageBag $errors) : array
     {
         $formattedErrors = [];
         foreach ($errors->all() as $error)
@@ -30,6 +30,21 @@ class ValidateHelper
                 $code = 463;
             }
     
+            $formattedErrors[] = [
+                $code => $error
+                ];
+            }
+    
+            return $formattedErrors;
+    }
+
+    static function getAllVideoErrorCodes(MessageBag $errors) : array
+    {
+        $formattedErrors = [];
+        $code = 0;
+        foreach ($errors->all() as $error)
+        {
+            $code++;    
             $formattedErrors[] = [
                 $code => $error
                 ];
