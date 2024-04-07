@@ -10,6 +10,10 @@ class Tag extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name'
+    ];
+
     public function videos(): MorphToMany
     {
         return $this->morphedByMany(Video::class, 'taggable');

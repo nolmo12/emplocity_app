@@ -9,8 +9,8 @@ class Language extends Model
 {
     use HasFactory;
 
-    public function video()
+    public function videos()
     {
-        return $this->belongsTo(Video::class);
+        return $this->belongsToMany(Video::class);
     }
 }

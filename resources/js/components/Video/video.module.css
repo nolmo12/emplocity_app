@@ -1,4 +1,4 @@
-section {
+.videoSection {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -27,13 +27,13 @@ iframe {
     border:none;
 }
 
-section:hover {
+.videoSection:hover {
     background-color: #e5e5e5;
     cursor: pointer;
     transition: background-color 0.5s ease, transform 0.3s ease;
 }
 
-section:active {
+.videoSection:active {
     transform: scale(0.95);
 }
 
@@ -56,7 +56,7 @@ section:active {
 
 
 @media screen and (max-width: 800px) and (orientation: portrait){
-    section {
+    .videoSection {
         width:27%;
         height:12%;
         margin-bottom:-4em;
@@ -79,7 +79,7 @@ section:active {
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
-    section {
+    .videoSection {
         height:30%;
     }
 

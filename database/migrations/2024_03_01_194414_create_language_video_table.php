@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('language_video', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Language::class)->constrained();
-            $table->foreignIdFor(Video::class)->constrained();
-            $table->string('title');
-            $table->string('description');
+            $table->foreignIdFor(Video::class)->nullable()->constrained();
+            $table->string('title')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
