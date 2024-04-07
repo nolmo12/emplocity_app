@@ -4,7 +4,7 @@ import styles from "./video.module.css";
 
 export default function Video() {
     return (
-        <section>
+        <section className={styles.videoSection}>
             <Link to="/video:id">
                 <div id={styles.video}>
                     <iframe src="https://www.youtube.com/embed/VIDEO_ID"></iframe>

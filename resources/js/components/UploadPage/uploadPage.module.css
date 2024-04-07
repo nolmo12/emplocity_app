@@ -10,6 +10,40 @@
     max-width: 300px;
 }
 
+.thumbnailInput[type="file"] {
+    width: 90%;
+    height: 2.5em;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    padding-left: 2.5em;
+    border: none;
+}
+
+.thumbnailInput[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.thumbnailInput[type="file"]::before {
+    content: 'Select file'; 
+    display: inline-block;
+    background-color: white;
+    color: black; 
+    padding: 8px 20px; 
+    border-radius: 5px;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.thumbnailInput[type="file"]:hover::before {
+    background: #f0f0f0;
+}
+
+.thumbnailInput[type="file"]:active::before {
+    transform: scale(0.95);
+}
+
+
 .uploadForm input {
     width: 90%;
     height: 2.5em;
@@ -19,12 +53,27 @@
     border: solid 2px #a0a0a0;
 }
 
+
+.uploadForm h2 {
+    text-align: center;
+    color:black;
+    margin-bottom:0.5em;
+}
+
+.uploadForm select {
+    width: 50%;
+    height: 2.5em;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    border: solid 2px #a0a0a0;
+    transform: translate(50%);
+}
+
 .uploadForm button {
     width: 50%;
     height: 2em;
     margin: 0 auto;
     border-radius: 10px;
-    margin-bottom: 1em;
     margin-top: 1em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
@@ -42,8 +91,8 @@
 
 .uploadForm .uploadIcon {
     color:black;
-    width:12em;
-    height:12em;
+    width:8em;
+    height:8em;
     margin-bottom:2em;
     align-self:center;
 }

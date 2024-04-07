@@ -67,7 +67,7 @@ header img {
     margin-left:0.1em;
 }
 
-#register {
+#register, #logout {
     top: 1em;
 }
 
@@ -96,7 +96,8 @@ header img {
 #upload:hover,
 #account:hover,
 #history:hover,
-#help:hover {
+#help:hover, 
+#logout:hover {
     background-color: #f0f0f0;
 }
 
@@ -105,7 +106,8 @@ header img {
 #upload:active,
 #account:active,
 #history:active,
-#help:active {
+#help:active, 
+#logout:active {
     transform: scale(0.95);
 }
 
