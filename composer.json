@@ -11,7 +11,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.4",
-        "php-open-source-saver/jwt-auth": "^2.2"
+        "php-open-source-saver/jwt-auth": "^2.2",
+        "sqids/sqids": "^0.4.1"
     },
     "require-dev": {
         "brianium/paratest": "^7.4",
@@ -30,7 +31,9 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/ValidateHelper.php"
+            "app/Helpers/ValidateHelper.php",
+            "app/Helpers/VideoManager.php",
+            "app/Helpers/utils.php"
         ]
     },
     "autoload-dev": {
@@ -66,6 +69,10 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }
+    },
+    "devDependencies": {
+        "@prettier/plugin-php": "0.14.3",
+        "prettier": "2.0.5"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
