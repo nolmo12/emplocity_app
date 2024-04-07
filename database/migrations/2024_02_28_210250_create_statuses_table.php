@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
             $table->string('type');
+            $table->integer('statusable_id');
+            $table->string('statusable_type');
             $table->timestamps();
         });
     }

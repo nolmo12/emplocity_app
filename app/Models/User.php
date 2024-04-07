@@ -67,6 +67,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->morphMany(Report::class, 'reportable');
     }
 
+    public function status()
+    {
+        return $this->hasOne('App\Models\User', 'status');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

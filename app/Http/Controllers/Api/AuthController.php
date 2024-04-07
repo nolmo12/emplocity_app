@@ -32,12 +32,11 @@ class AuthController extends Controller
                 'password' => 'required',
                 'repeatPassword' => 'required|same:password'
             ]);
-            error_log($validateUser->errors());
 
             if($validateUser->fails())
             {
                 $errors = $validateUser->errors();
-                $formattedErrors = ValidateHelper::getAllErrorCodes($errors);
+                $formattedErrors = ValidateHelper::getAllAuthErrorCodes($errors);
 
 
                 return response()->json([
@@ -108,7 +107,7 @@ class AuthController extends Controller
             if($validateUser->fails())
             {
                 $errors = $validateUser->errors();
-                $formattedErrors = ValidateHelper::getAllErrorCodes($errors);
+                $formattedErrors = ValidateHelper::getAllAuthErrorCodes($errors);
 
 
                 return response()->json([

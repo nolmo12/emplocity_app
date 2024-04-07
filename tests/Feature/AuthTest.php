@@ -51,11 +51,13 @@ class AuthTest extends TestCase
             'password' => 'password123',
             'repeatPassword' => 'password123'
         ]);
-
+        
         $response = $this->post('/api/auth/login', [
             'email' => $email,
             'password' => 'password123',
          ]);
+
+        
 
         $response->assertStatus(200)
         ->assertJsonStructure([
