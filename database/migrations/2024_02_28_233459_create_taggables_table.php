@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('taggable', function (Blueprint $table) {
+        Schema::create('taggables', function (Blueprint $table) {
             $table->id();
             $table->foreignId(Tag::class)->constrained('tags');
             $table->integer('taggable_id');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('taggable');
+        Schema::dropIfExists('taggables');
     }
 };

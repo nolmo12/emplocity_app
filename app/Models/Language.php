@@ -11,6 +11,6 @@ class Language extends Model
 
     public function videos()
     {
-        return $this->belongsToMany(Video::class);
+        return $this->belongsToMany(Video::class)->withPivot('title', 'description');;
     }
 }
