@@ -48,7 +48,7 @@ class Video extends Model
     // Relationship with Languages
     public function languages()
     {
-        return $this->belongsToMany(Language::class);
+        return $this->belongsToMany(Language::class)->withPivot('title', 'description');;
     }
 
     // Relationship with Comments
@@ -62,6 +62,6 @@ class Video extends Model
         $videoManager = new VideoManager($this->video);
 
         $durationInSeconds = $videoManager->getDuration('seconds');
-        
+
     }
 }
