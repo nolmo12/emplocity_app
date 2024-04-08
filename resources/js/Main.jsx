@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
@@ -9,10 +9,8 @@ import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import authUser from "./components/authUser";
-
 function Main() {
     const { getToken, isLogged } = authUser();
-
     return (
         <Routes>
             <Route
@@ -64,7 +62,7 @@ function Main() {
                 }
             />
             <Route
-                path="/video:id"
+                path="/video/:reference_code"
                 element={
                     <>
                         <Header />
