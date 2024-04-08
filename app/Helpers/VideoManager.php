@@ -7,7 +7,7 @@ class VideoManager
 
     public function __construct(string $videoPath)
     {
-        $this->videoPath = 'D:\\SznycTube\\emplocity_app\\storage\\app\\public\\' . $videoPath;
+        $this->videoPath = $videoPath;
     }
     
 
