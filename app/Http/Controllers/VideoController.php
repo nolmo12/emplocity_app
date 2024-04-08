@@ -75,7 +75,10 @@ class VideoController extends Controller
         {
             $videoName = $video->reference_code . $request->file('video')->getClientOriginalName();
             $path = $request->file('video')->storeAs('public/videos', $videoName);
-            $publicPath = $request->file('video')->move(public_path('storage/videos'), $videoName);
+
+            $request->file('video')->move(public_path('storage/videos'), $videoName);
+
+            $publicPath = Storage::url($path);
 
             Storage::delete($path);
 
@@ -93,8 +96,10 @@ class VideoController extends Controller
             $randomTime = rand(0, intval($maxTime));
 
             $thumbnailPath = $videoManager->saveFrame($randomTime);
+            $relativePath = str_replace([public_path(), '\\'], '', $thumbnailPath);
+            $relativePath = str_replace("%03d", "001", $relativePath);
 
-            $video->thumbnail = $thumbnailPath;
+            $video->thumbnail = $relativePath;
 
             $video->save();
 
@@ -114,6 +119,7 @@ class VideoController extends Controller
             'title' => $request->title,
             'description'=> $request->description
         ]);
+
     }
 
     public function show(string $referenceCode)
@@ -130,5 +136,12 @@ class VideoController extends Controller
         $tags = $video->tags()->get();
     
         return response()->json(compact('video', 'title', 'description', 'tags'));
+    }
+
+    public function all()
+    {
+        $videos = Video::with(['languages', 'tags'])->get();
+
+        return $videos;
     }
 }

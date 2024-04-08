@@ -1,13 +1,15 @@
 <?php
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Storage;
+
 class VideoManager
 {
     private string $videoPath;
 
     public function __construct(string $videoPath)
     {
-        $this->videoPath = $videoPath;
+        $this->videoPath = public_path($videoPath);
     }
     
 
