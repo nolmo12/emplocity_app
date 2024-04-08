@@ -5,11 +5,13 @@ import useFetchVideo from "../useFetchVideo";
 import styles from "./video.module.css";
 
 export default function Video({ tempVideo }) {
-    const { languages, reference_code, status, tags, thumbnail, videoPath } =
-        tempVideo;
+    const { reference_code } = tempVideo;
     const { video } = useFetchVideo({ reference_code });
+
     if (video) {
         console.log(video);
+        const videoPath = video.video;
+        const videoThumbnail = video.thumbnail;
         const path = `/video/${reference_code}`;
         return (
             <section className={styles.videoSection}>
@@ -17,8 +19,8 @@ export default function Video({ tempVideo }) {
                     <div id={styles.video}>
                         <video
                             width={320}
-                            src={video.video}
-                            poster={video.thumbnail}
+                            src={videoPath}
+                            poster={videoThumbnail}
                             controls
                         ></video>
                         <div id={styles.title} className={styles.videoInfo}>
