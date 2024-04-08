@@ -19,8 +19,6 @@ class VideoManager
 
         $thumbnailName = str_replace(".$ext", "", $this->videoPath);
 
-        //$thumbnailName = str_replace(".$ext", "", $this->videoPath);
-
         $thumbnailName .= '%03d.jpg';
         
         $command = "ffmpeg -ss $formattedTime -i $this->videoPath -vframes 1 -frames:v 1 $thumbnailName";
@@ -38,7 +36,7 @@ class VideoManager
      *   - 'hours': return video time as an array [Hours, Minutes, Seconds]
      * @return mixed The video duration based on the specified type
      */
-    public function getVideoDuration(string $type = 'minutes'): mixed
+    public function getDuration(string $type = 'minutes'): mixed
     {
         $output = shell_exec("ffmpeg -i $this->videoPath 2>&1");
 
@@ -49,7 +47,11 @@ class VideoManager
             $minutes = intval($matches[2]);
             $seconds = intval($matches[3]);
 
+
+
             $totalSeconds = ($hours * 3600) + ($minutes * 60) + $seconds;
+
+            error_log("Time: ".$totalSeconds);
 
             return VideoManager::convertSeconds($totalSeconds, $type);
         } 
@@ -90,13 +92,12 @@ class VideoManager
                 $minutes = $time / 60;
                 $seconds = $minutes - floor($minutes);
                 $seconds *= 60;
-        
-                return [$minutes, $seconds];
+                return [floor($minutes), $seconds];
             case 'hours':
-                $hours = floor($time / 3600);
-                $minutes = floor(($time % 3600) / 60);
-                $seconds = $time % 60;
-                return [$hours, $minutes, $seconds];
+                $hours = $time / 3600;
+                $minutes = (($hours - floor($hours)) * 3600) / 60;
+                $seconds = ($minutes - floor($minutes)) * 60;
+                return [floor($hours), floor($minutes), $seconds];
             default:
                 return [$time];
         }
