@@ -60,6 +60,19 @@ export default function UploadPage() {
                     <input type="textarea" placeholder="Description"></input>
                 </div>
 
+                <div>
+                    <h2>Thumbnail: </h2>
+                    <input type="file" className={styles.thumbnailInput}/>
+                </div>
+
+                <div>
+                    <h2>Select: </h2>
+                        <select>
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                </div>
+
                 <button>Submit</button>
             </form>
         </main>
