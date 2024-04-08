@@ -18,7 +18,7 @@ export default function UploadPage() {
         language: "",
         video: "",
         thumbnail: "",
-        select: "",
+        visibility: "",
     });
     const { http } = authUser();
 
@@ -40,6 +40,8 @@ export default function UploadPage() {
             formData.append("title", data.title);
             formData.append("language", data.language);
             formData.append("video", data.video);
+            formData.append("thumbnail", data.thumbnail);
+            formData.append("visibility", data.visibility);
             const response = await http.post("/api/video/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
@@ -138,8 +140,9 @@ export default function UploadPage() {
                 <div>
                     <h2>Select: </h2>
                     <select onChange={(e) => handleSelect(e)}>
-                        <option value="public">Public</option>
-                        <option value="private">Private</option>
+                        <option value="Public">Public</option>
+                        <option value="Unlisted">Unlisted</option>
+                        <option value="Hidden">Hidden</option>
                     </select>
                 </div>
 
