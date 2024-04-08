@@ -118,9 +118,17 @@ class VideoController extends Controller
 
     public function show(string $referenceCode)
     {
-        $video = Video::where('reference_code','=', $referenceCode)->first();
-        //$title = $video->
+        $video = Video::where('reference_code', $referenceCode)->first();
+    
+        if (!$video) {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
 
-        return $video;
+        $language = $video->languages()->first();
+        $title = $language->pivot->title;
+        $description = $language->pivot->description;
+        $tags = $video->tags()->get();
+    
+        return response()->json(compact('video', 'title', 'description', 'tags'));
     }
 }
