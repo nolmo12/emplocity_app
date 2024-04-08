@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styles from "./video.module.css";
 
-export default function Video() {
+export default function Video({ video }) {
     return (
         <section className={styles.videoSection}>
             <Link to="/video:id">
