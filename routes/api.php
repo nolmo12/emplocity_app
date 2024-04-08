@@ -109,4 +109,5 @@ Route::post('/reset-password', function (Request $request) {
 Route::prefix('video')->group(function () {
     Route::post('/upload', [VideoController::class, 'store']);
     Route::get('/watch/{referenceCode}', [VideoController::class,'show'])->name('watch');
+    Route::get('/all', [VideoController::class,'all']);
 });
