@@ -18,7 +18,7 @@ export default function UploadPage() {
         language: "",
         video: "",
         thumbnail: "",
-        visibility: "",
+        visibility: "Public",
     });
     const { http } = authUser();
 
@@ -40,13 +40,8 @@ export default function UploadPage() {
             formData.append("title", data.title);
             formData.append("language", data.language);
             formData.append("video", data.video);
-            formData.append("thumbnail", data.thumbnail);
             formData.append("visibility", data.visibility);
-            const response = await http.post("/api/video/upload", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            const response = await http.post("/api/video/upload", formData);
         } catch (error) {
             console.log(error);
         }
@@ -57,12 +52,11 @@ export default function UploadPage() {
     }
 
     function handleThumbnail(e) {
-        console.log(e.target);
-        setData({ ...data, thumbnail: e.target });
+        setData({ ...data, thumbnail: e.target.files[0] });
     }
 
-    function handleSelect(e) {
-        setData({ ...data, select: e.target.value });
+    function handleVisibility(e) {
+        setData({ ...data, visibility: e.target.value });
     }
 
     console.log(data);
@@ -138,8 +132,8 @@ export default function UploadPage() {
                 </div>
 
                 <div>
-                    <h2>Select: </h2>
-                    <select onChange={(e) => handleSelect(e)}>
+                    <h2>Visibility: </h2>
+                    <select onChange={(e) => handleVisibility(e)}>
                         <option value="Public">Public</option>
                         <option value="Unlisted">Unlisted</option>
                         <option value="Hidden">Hidden</option>

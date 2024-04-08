@@ -13,7 +13,7 @@ export default function VideoSection() {
         <div id={styles.videoSection}>
             <h2 className={styles.videoSectionH}>Reccommend</h2>
             {videos.map((video) => {
-                return <Video key={video.id} tempVideo={video} />;
+                return <Video key={video.id} videoObj={video} />;
             })}
         </div>
     );

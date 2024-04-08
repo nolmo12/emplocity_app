@@ -1,5 +1,4 @@
 import React from "react";
-import Video from "../Video/Video";
 import { useParams } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import styles from "./videoFrame.module.css";
@@ -13,14 +12,18 @@ import {
 
 export default function VideoFrame() {
     const { reference_code } = useParams();
-    const { video } = useFetchVideo({ reference_code });
-    if (video) {
+    const videoObj = useFetchVideo({ reference_code });
+    console.log(useFetchVideo({ reference_code }));
+    if (videoObj && videoObj.video) {
+        const videoTitle = videoObj.title;
+        const videoPath = videoObj.video.video;
+        const videoThumbnail = videoObj.video.thumbnail;
         return (
             <>
                 <div className={styles.videoFrameDiv}>
                     <video
-                        src={video.video}
-                        poster={video.thumbnail}
+                        src={videoPath}
+                        poster={videoThumbnail}
                         controls
                     ></video>
                     <div className={styles.videoFrameInfo}>
@@ -36,7 +39,9 @@ export default function VideoFrame() {
                             icon={faThumbsUp}
                             className={styles.videoFrameIcon}
                         />
-                        <h1 className={styles.videoFrameInfoTitle}>Title</h1>
+                        <h1 className={styles.videoFrameInfoTitle}>
+                            {videoTitle}
+                        </h1>
                         <h1>
                             <FontAwesomeIcon icon={faUser} /> Account
                         </h1>
