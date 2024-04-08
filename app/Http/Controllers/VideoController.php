@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Sqids\Sqids;
 use App\Models\Tag;
 use App\Models\Video;
-use Illuminate\Http\Request;
-use App\Models\LanguangeVideo;
-use Illuminate\Support\Facades\Validator;
-use Sqids\Sqids;
-use App\Helpers\ValidateHelper;
-use App\Helpers\VideoManager;
 use App\Helpers\utils;
+use Illuminate\Http\Request;
+use App\Helpers\VideoManager;
+use App\Models\LanguangeVideo;
+use App\Helpers\ValidateHelper;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class VideoController extends Controller
 {
@@ -66,18 +67,20 @@ class VideoController extends Controller
 
         $sqids = new Sqids(minLength : 10);
 
-        if($request->hasFile('video'))
-        {
-            $path = $request->file('video')->store('videos', ['disk'
-        => 'public'
-        ]);
-
-            $video->video = $path;
-        }
-
         $count = Video::count();
 
         $video->reference_code = $sqids->encode([$count, rand(0, 100), rand(0, 100)]);
+
+        if($request->hasFile('video'))
+        {
+            $videoName = $video->reference_code . $request->file('video')->getClientOriginalName();
+            $path = $request->file('video')->storeAs('public/videos', $videoName);
+            $publicPath = $request->file('video')->move(public_path('storage/videos'), $videoName);
+
+            Storage::delete($path);
+
+            $video->video = $publicPath;
+        }
 
         $video->save();
 
@@ -98,9 +101,8 @@ class VideoController extends Controller
         }
         else
         {
-            $path = $request->file('thumbnail')->store('thumbnails', ['disk'
-            => 'public'
-            ]);
+            $thumbnailName = $video->reference_code() . $request->file('thumbnail')->getClientOriginalName();
+            $path = $request->file('thumbnail')->storeAs('public/thumbnails', $thumbnailName);
 
             $video->thumbnail = $path;
         }
@@ -117,7 +119,6 @@ class VideoController extends Controller
     public function show(string $referenceCode)
     {
         $video = Video::where('reference_code','=', $referenceCode)->first();
-
         return $video;
     }
 }
