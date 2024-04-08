@@ -85,7 +85,7 @@ class VideoController extends Controller
         {
             $videoManager = new VideoManager($video->video);
 
-            $maxTime = $videoManager->getVideoDuration('seconds');
+            $maxTime = $videoManager->getDuration('seconds');
 
             $randomTime = rand(0, intval($maxTime));
 
@@ -112,6 +112,12 @@ class VideoController extends Controller
             'title' => $request->title,
             'description'=> $request->description
         ]);
+    }
 
+    public function show(string $referenceCode)
+    {
+        $video = Video::where('reference_code','=', $referenceCode)->first();
+
+        return $video;
     }
 }
