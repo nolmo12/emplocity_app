@@ -119,8 +119,6 @@ class VideoController extends Controller
     public function show(string $referenceCode)
     {
         $video = Video::where('reference_code','=', $referenceCode)->first();
-        //$title = $video->
-
         return $video;
     }
 }
