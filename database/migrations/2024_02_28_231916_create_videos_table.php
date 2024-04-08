@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('reference_code');
             $table->string('thumbnail')->nullable();
             $table->string('video');
+            $table->string('visibility')->default('public');
             $table->foreignIdFor(User::class)->nullable()->constrained();
             $table->timestamps();
         });
