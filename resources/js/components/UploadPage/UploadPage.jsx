@@ -1,5 +1,8 @@
 import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./uploadPage.module.css";
+import authUser from "../authUser";
+import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faUpload,
@@ -9,6 +12,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadPage() {
+    const uploadAreaRef = useRef(null);
+    const [droppedFileName, setDroppedFileName] = useState("");
+    const [draggingOver, setDraggingOver] = useState(false);
+    const [videoSent, setVideoSent] = useState(false);
     const [data, setData] = useState({
         title: "",
         tags: "",
@@ -18,6 +25,7 @@ export default function UploadPage() {
         thumbnail: "",
         visibility: "Public",
     });
+    const navigate = useNavigate();
     const { http } = authUser();
 
     const handleDrop = (e) => {
@@ -44,7 +52,7 @@ export default function UploadPage() {
         setDraggingOver(false);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         const file = e.target;
         e.preventDefault();
         try {
@@ -55,6 +63,7 @@ export default function UploadPage() {
             formData.append("visibility", data.visibility);
             formData.append("thumbnail", data.thumbnail);
             const response = await http.post("/api/video/upload", formData);
+            setVideoSent(true);
         } catch (error) {
             console.log(error);
         }
@@ -75,100 +84,103 @@ export default function UploadPage() {
     console.log(data);
     return (
         <main>
-            <form
-                data-testid="uploadFormWithoutInput"
-                onDragOver={(e) => e.preventDefault()}
-                onDragLeave={(e) => e.preventDefault()}
-                onDrop={handleDrop}
-                onSubmit={(e) => handleSubmit(e)}
-                className={styles.uploadForm}
-            >
-                <div
-                    ref={uploadAreaRef}
-                    className={`${styles.uploadArea} ${draggingOver ? styles.draggingOver : ""}`}
+            {videoSent ? (
+                <Message message={"Video has been sent"} />
+            ) : (
+                <form
+                    data-testid="uploadFormWithoutInput"
+                    onDragOver={(e) => e.preventDefault()}
+                    onDragLeave={(e) => e.preventDefault()}
                     onDrop={handleDrop}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
+                    onSubmit={(e) => handleSubmit(e)}
+                    className={styles.uploadForm}
                 >
-                    <FontAwesomeIcon
-                        icon={faUpload}
-                        className={styles.uploadIcon}
-                    />
-                </div>
+                    <div
+                        ref={uploadAreaRef}
+                        className={`${styles.uploadArea} ${
+                            draggingOver ? styles.draggingOver : ""
+                        }`}
+                        onDrop={handleDrop}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                    >
+                        <FontAwesomeIcon
+                            icon={faUpload}
+                            className={styles.uploadIcon}
+                        />
+                    </div>
 
-                {droppedFileName && (
-                    <p>Uploaded file: {droppedFileName}</p>
-                )}
+                    {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
 
-                <div>
-                    <FontAwesomeIcon
-                        icon={faFilm}
-                        className={styles.uploadFormIcon}
-                    />
-                    <input
-                        type="text"
-                        onChange={(e) => handleInupt("title", e)}
-                        placeholder="Title"
-                    ></input>
-                </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faFilm}
+                            className={styles.uploadFormIcon}
+                        />
+                        <input
+                            type="text"
+                            onChange={(e) => handleInupt("title", e)}
+                            placeholder="Title"
+                        ></input>
+                    </div>
 
-                <div>
-                    <FontAwesomeIcon
-                        icon={faTags}
-                        className={styles.uploadFormIcon}
-                    />
-                    <input
-                        type="text"
-                        onChange={(e) => handleInupt("tags", e)}
-                        placeholder="Tags"
-                    ></input>
-                </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faTags}
+                            className={styles.uploadFormIcon}
+                        />
+                        <input
+                            type="text"
+                            onChange={(e) => handleInupt("tags", e)}
+                            placeholder="Tags"
+                        ></input>
+                    </div>
 
-                <div>
-                    <FontAwesomeIcon
-                        icon={faAlignLeft}
-                        className={styles.uploadFormIcon}
-                    />
-                    <input
-                        type="textarea"
-                        onChange={(e) => handleInupt("description", e)}
-                        placeholder="Description"
-                    ></input>
-                </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faAlignLeft}
+                            className={styles.uploadFormIcon}
+                        />
+                        <input
+                            type="textarea"
+                            onChange={(e) => handleInupt("description", e)}
+                            placeholder="Description"
+                        ></input>
+                    </div>
 
-                <div>
-                    <FontAwesomeIcon
-                        icon={faAlignLeft}
-                        className={styles.uploadFormIcon}
-                    />
-                    <input
-                        type="textarea"
-                        onChange={(e) => handleInupt("language", e)}
-                        placeholder="Language"
-                    ></input>
-                </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faAlignLeft}
+                            className={styles.uploadFormIcon}
+                        />
+                        <input
+                            type="textarea"
+                            onChange={(e) => handleInupt("language", e)}
+                            placeholder="Language"
+                        ></input>
+                    </div>
 
-                <div>
-                    <h2>Thumbnail: </h2>
-                    <input
-                        type="file"
-                        onChange={(e) => handleThumbnail(e)}
-                        className={styles.thumbnailInput}
-                    />
-                </div>
+                    <div>
+                        <h2>Thumbnail: </h2>
+                        <input
+                            type="file"
+                            onChange={(e) => handleThumbnail(e)}
+                            className={styles.thumbnailInput}
+                        />
+                    </div>
 
-                <div>
-                    <h2>Visibility: </h2>
-                    <select onChange={(e) => handleVisibility(e)}>
-                        <option value="Public">Public</option>
-                        <option value="Unlisted">Unlisted</option>
-                        <option value="Hidden">Hidden</option>
-                    </select>
-                </div>
+                    <div>
+                        <h2>Visibility: </h2>
+                        <select onChange={(e) => handleVisibility(e)}>
+                            <option value="Public">Public</option>
+                            <option value="Unlisted">Unlisted</option>
+                            <option value="Hidden">Hidden</option>
+                        </select>
+                    </div>
 
-                <button onClick={handleSubmit}>Submit</button>
-            </form>
-
+                    <button onClick={handleSubmit}>Submit</button>
+                </form>
+            )}
         </main>
     );
 }
