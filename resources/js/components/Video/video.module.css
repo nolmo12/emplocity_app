@@ -4,10 +4,11 @@
     align-items: center;
     font-size: 0.7em; 
     margin: 1em;
+    margin-right:3em;
     padding: 1em;
     background-color: #f4f4f4;
     width: 15%; 
-    height: 35%; 
+    height: 25%; 
     color: black;
     text-align: left;
     border-radius:6px;
@@ -18,13 +19,13 @@
     height: 95%; 
 }
 
-iframe {
-    width: 111%;
-    left:-7%; 
-    height: 70%; 
-    top:-10%;
+#video img {
+    width: 108%;
+    left:-4%; 
+    height: 50%;
     position: relative;
     border:none;
+    border-radius:6px;
 }
 
 .videoSection:hover {
@@ -41,8 +42,7 @@ iframe {
     font-weight: 400;
     position:relative;
     top:-10%;
-    left:-5%;
-    margin-bottom:1%;
+    color:black;
 }
 
 #title {
@@ -51,7 +51,7 @@ iframe {
 
 #views, #likes {
     float: right;
-    left:5%;
+    right:2%;
 }
 
 

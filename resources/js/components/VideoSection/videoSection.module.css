@@ -1,32 +1,58 @@
-#videoSection {
+#videoDiv {
     display: flex;
-    position:absolute;
+    position: absolute;
     align-items: center;
     flex-wrap: wrap;
     width: 73.5%;
-    height:73%;
+    height: 73%;
     color: black;
     background-color: #101b32;
-    left:10%;
+    top:10%;
+    left: 10%;
     border: inset 2px #060c1a; 
-    padding-bottom:1em;
-    padding-right:1em;
-    transform: translate(20%, 5%); 
+    padding-bottom: 1em;
+    padding-right: 1em;
+    transform: translate(20%, 5%);
+    overflow-y: auto;
+    padding-top: 2em;
 }
 
 .videoSectionH {
     position: absolute;
-    top: -10%;
+    top: 0; 
     left: 0;
-    width: 100%;
+    width: 20%;
     color: white;
-    margin: 0;
-    font-weight:600;
+    margin-left: 0.5em;
+    font-weight: 600;
+    z-index: 1; 
+}
+
+#videoDiv> * {
+    flex: 0 0 calc(25%);
+    margin-right: 1em;
+    height: 40%; 
+}
+
+#videoDiv::-webkit-scrollbar {
+    width: 0.3em; 
+}
+
+#videoDiv::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#videoDiv::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+#videoDiv::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 
 @media screen and (max-width: 800px) and (orientation: portrait){
-    #videoSection {
+    #videoDiv {
         width: 50%;
         height:100%;
         left: 30%;
@@ -41,7 +67,7 @@
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
-    #videoSection {
+    #videoDiv {
         width: 75%;
         height:90%;
         left: 5%;

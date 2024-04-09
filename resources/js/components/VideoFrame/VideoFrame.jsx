@@ -27,6 +27,7 @@ export default function VideoFrame() {
                         src={videoPath}
                         poster={videoThumbnail}
                         controls
+                        className={styles.videoScreen}
                     ></video>
                     <div className={styles.videoFrameInfo}>
                         <FontAwesomeIcon

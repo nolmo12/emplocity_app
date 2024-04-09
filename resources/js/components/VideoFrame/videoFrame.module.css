@@ -2,20 +2,20 @@
     position:relative;
     width:80%;
     height:80%;
+    top:-5%;
+    left:-5%;
 }
 
-.videoFrame {
-    width:75%;
+.videoScreen {
+    width:70%;
     height:100%;
-    left:5%;
+    top:-10%;
 }
 
 .videoFrameInfo {
     position:relative;
-    left:5%;
-    top:-10%;
     width:75%;
-    font-size:0.7em;
+    font-size:0.5em;
 }
 
 .videoFrameInfoTitle {
@@ -27,18 +27,22 @@
 }
 
 .videoFrameIcon {
+    position:relative;
     float:right;
     height:3em;
     width:3em;
     margin-left:1em;
+    right:7%;
 }
 
 .videoFrameIconTD {
+    position:relative;
     float:right;
     height:3em;
     width:3em;
     margin-left:1em;
     transform: scaleX(-1);
+    right:7%;
 }
 
 .videoFrameReccomend {
