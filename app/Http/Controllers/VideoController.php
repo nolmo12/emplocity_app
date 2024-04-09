@@ -55,7 +55,7 @@ class VideoController extends Controller
         $count = Video::count();
 
         $video->reference_code = $sqids->encode([$count, rand(0, 100), rand(0, 100)]);
-
+        
         if($request->hasFile('video'))
         {
             $videoName = $video->reference_code . $request->file('video')->getClientOriginalName();
@@ -71,7 +71,7 @@ class VideoController extends Controller
         }
 
         $video->save();
-
+       
         if(!$request->hasFile('thumbnail'))
         {
             $videoManager = new VideoManager($video->video);

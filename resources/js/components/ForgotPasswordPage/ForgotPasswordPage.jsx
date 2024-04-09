@@ -15,7 +15,7 @@ export default function ForgotPasswordPage() {
         password: "",
         repeatPassword: "",
     });
-    const [passwordWasSent, setPasswordWasSent] = useState(false);
+    const [passwordSent, setPasswordSent] = useState(false);
     const [emailValidation, setEmailValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
     const { http } = authUser();
@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
             http.post("/api/auth/forgot-password", {
                 email: loginData.email,
             });
-            setPasswordWasSent(true);
+            setPasswordSent(true);
         } catch (error) {
             setEmailValidation(true);
             console.log(error);
@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
 
     return (
         <main>
-            {passwordWasSent ? (
+            {passwordSent ? (
                 <Message
                     message="Link sent. Check your mail."
                     className={styles.Message}
