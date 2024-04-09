@@ -65,4 +65,25 @@ class Video extends Model
         $durationInSeconds = $videoManager->getDuration('seconds');
 
     }
+
+    public function addTags(array $tags): void
+    {
+        foreach($tags as $tagName)
+        {
+            $tagName = strtolower($tagName);
+            $tag = Tag::where('name', $tagName)->first();
+            
+            if($tag)
+            {
+                $this->tags()->attach($tag->id);
+            }
+            else
+            {
+                $newTag = new Tag(['name' => $tagName]);
+                $newTag->save();
+
+                $this->tags()->attach($newTag);
+            }
+        }
+    }
 }
