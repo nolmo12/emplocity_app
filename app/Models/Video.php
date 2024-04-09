@@ -68,21 +68,17 @@ class Video extends Model
 
     public function addTags(array $tags): void
     {
-        foreach($tags as $tagName)
+        foreach ($tags as $tagName)
         {
             $tagName = strtolower($tagName);
             $tag = Tag::where('name', $tagName)->first();
-            
-            if($tag)
+    
+            if ($tag)
             {
                 $this->tags()->attach($tag->id);
-            }
-            else
-            {
-                $newTag = new Tag(['name' => $tagName]);
-                $newTag->save();
-
-                $this->tags()->attach($newTag);
+            } else {
+                $newTag = Tag::create(['name' => $tagName]);
+                $this->tags()->attach($newTag->id);
             }
         }
     }
