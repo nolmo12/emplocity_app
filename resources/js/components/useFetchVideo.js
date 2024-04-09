@@ -14,6 +14,6 @@ export default function useFetchVideo({ reference_code }) {
             }
         };
         fetchVideo();
-    }, []);
+    }, [reference_code]);
     return videoObj;
 }

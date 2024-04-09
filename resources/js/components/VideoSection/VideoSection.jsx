@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Video from "../Video/Video";
 import MainContent from "../MainContent/MainContent";
@@ -10,6 +10,10 @@ import styles from "./videoSection.module.css";
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const { videos, isLoading } = useFetchAllVideos();
+    const [renderKey, setRenderKey] = useState(0);
+    useEffect(() => {
+        setRenderKey((prev) => prev + 1);
+    }, [reference_code]);
     const similarVideosObj = useFetchSimilarVideos({ reference_code });
     if (isLoading) {
         return <h1>Loading...</h1>;

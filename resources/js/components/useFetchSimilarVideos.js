@@ -16,6 +16,6 @@ export default function useFetchSimilarVideos({ reference_code }) {
             }
         };
         fetchVideos();
-    }, []);
+    }, [reference_code]);
     return { videos, isLoading };
 }

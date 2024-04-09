@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import styles from "./videoFrame.module.css";
@@ -14,6 +14,10 @@ import {
 export default function VideoFrame() {
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
+    const [renderKey, setRenderKey] = useState(0);
+    useEffect(() => {
+        setRenderKey((prev) => prev + 1);
+    }, [reference_code]);
     if (videoObj && videoObj.video) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
