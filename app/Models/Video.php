@@ -76,7 +76,9 @@ class Video extends Model
             if ($tag)
             {
                 $this->tags()->attach($tag->id);
-            } else {
+            } 
+            else
+            {
                 $newTag = Tag::create(['name' => $tagName]);
                 $this->tags()->attach($newTag->id);
             }
