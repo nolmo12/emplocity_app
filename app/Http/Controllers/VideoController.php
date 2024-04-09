@@ -49,12 +49,7 @@ class VideoController extends Controller
         $video = new Video;
 
         $video->status = 'Uploading';
-
-        if($request->tags != null)
-        {
-            $video->addTags($request->tags);
-        }
-
+      
         $sqids = new Sqids(minLength : 10);
 
         $count = Video::count();
@@ -100,9 +95,7 @@ class VideoController extends Controller
             $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
             $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
-
             $publicPath = Storage::url($path);
-
             Storage::delete($path);
 
             $video->thumbnail = $publicPath;
@@ -117,6 +110,11 @@ class VideoController extends Controller
         ]);
 
         $languages = $video->languages;
+
+        if($request->tags != null)
+        {
+            $video->addTags($request->tags);
+        }
 
         foreach($languages as $language)
         {
@@ -158,7 +156,7 @@ class VideoController extends Controller
      * @param string $referenceCode Reference code of the video(Sqids)
      * @return \Illuminate\Support\Collection<array-key, mixed> Collection of similar videos
      */
-    public function getSimilarVideos(string $referenceCode) : Collection
+    public function getSimilarVideos(string $referenceCode)
     {
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
 
@@ -208,6 +206,28 @@ class VideoController extends Controller
         });
 
         return $similarVideos;
+    }
+
+    public function delete(int $id)
+    {
+        $video = Video::find($id);
+        if (!$video)
+        {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
+
+        $video->tags()->detach();
+
+        $video->languages()->detach();
+
+        $videoPath = public_path($video->video);
+
+        if(Storage::exists($videoPath))
+            Storage::delete($videoPath);
+        else
+            return response()->json(['error' => 'Path not found'], 404);
+
+        $video->delete();
     }
 
 }
