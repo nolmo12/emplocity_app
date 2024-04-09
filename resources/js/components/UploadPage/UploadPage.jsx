@@ -41,6 +41,7 @@ export default function UploadPage() {
             formData.append("language", data.language);
             formData.append("video", data.video);
             formData.append("visibility", data.visibility);
+            formData.append("thumbnail", data.thumbnail);
             const response = await http.post("/api/video/upload", formData);
         } catch (error) {
             console.log(error);

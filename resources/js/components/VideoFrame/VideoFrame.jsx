@@ -13,7 +13,6 @@ import {
 export default function VideoFrame() {
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
-    console.log(useFetchVideo({ reference_code }));
     if (videoObj && videoObj.video) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
