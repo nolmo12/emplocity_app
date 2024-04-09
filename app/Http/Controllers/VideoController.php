@@ -49,7 +49,7 @@ class VideoController extends Controller
         $video = new Video;
 
         $video->status = 'Uploading';
-
+      
         $sqids = new Sqids(minLength : 10);
 
         $count = Video::count();
@@ -95,9 +95,7 @@ class VideoController extends Controller
             $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
             $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
-
             $publicPath = Storage::url($path);
-
             Storage::delete($path);
 
             $video->thumbnail = $publicPath;
