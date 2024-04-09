@@ -1,7 +1,7 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
-import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import styles from "./videoFrame.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,8 +14,6 @@ import {
 export default function VideoFrame() {
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
-    const similarVideosObj = useFetchSimilarVideos({ reference_code });
-    console.log(similarVideosObj);
     if (videoObj && videoObj.video) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
