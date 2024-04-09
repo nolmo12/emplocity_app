@@ -71,7 +71,7 @@ class VideoController extends Controller
         }
 
         $video->save();
-
+       
         if(!$request->hasFile('thumbnail'))
         {
             $videoManager = new VideoManager($video->video);

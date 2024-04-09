@@ -14,7 +14,8 @@ import {
 export default function VideoFrame() {
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
-
+    const similarVideosObj = useFetchSimilarVideos({ reference_code });
+    console.log(similarVideosObj);
     if (videoObj && videoObj.video) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
@@ -51,8 +52,6 @@ export default function VideoFrame() {
                         </h1>
                     </div>
                 </div>
-
-                {console.log(similarVideosObj)}
             </>
         );
     }

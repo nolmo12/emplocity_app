@@ -1,23 +1,24 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-export default function useFetchSimilarVideos({ referenceCode }) {
+export default function useFetchSimilarVideos({ reference_code }) {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchVideos = async () => {
             try {
                 const response = await axios.get(
-                    `/api/video/similarVideos/${referenceCode}`
+                    `/api/video/similarVideos/${reference_code}`
                 );
-                response.data.map((video) => {
-                    setVideos((videos) => [...videos, video]);
-                });
-                setIsLoading(false);
+                if (response.data.length > 0) {
+                    setVideos(response.data);
+                    setIsLoading(false);
+                }
             } catch (error) {
                 console.log(error);
             }
         };
         fetchVideos();
-    }, []);
+    }, [reference_code]);
+    console.log(videos);
     return { videos, isLoading };
 }

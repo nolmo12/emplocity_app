@@ -60,6 +60,9 @@ export default function UploadPage() {
             formData.append("title", data.title);
             formData.append("language", data.language);
             formData.append("video", data.video);
+            data.tags.forEach((tag, index) => {
+                formData.append(`tags[${index}]`, tag);
+            });
             formData.append("visibility", data.visibility);
             if (data.thumbnail) {
                 formData.append("thumbnail", data.thumbnail);
@@ -80,7 +83,7 @@ export default function UploadPage() {
     }
 
     function handleTags(e) {
-        const arr = new Array(e.target.value.split(" "));
+        const arr = e.target.value.split(" ");
         setData({ ...data, tags: arr });
     }
 
