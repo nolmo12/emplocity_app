@@ -77,6 +77,11 @@ export default function UploadPage() {
         setData({ ...data, thumbnail: e.target.files[0] });
     }
 
+    function handleTags(e) {
+        const arr = new Array(e.target.value.split(" "));
+        setData({ ...data, tags: arr });
+    }
+
     function handleVisibility(e) {
         setData({ ...data, visibility: e.target.value });
     }
@@ -131,7 +136,7 @@ export default function UploadPage() {
                         />
                         <input
                             type="text"
-                            onChange={(e) => handleInupt("tags", e)}
+                            onChange={(e) => handleTags(e)}
                             placeholder="Tags"
                         ></input>
                     </div>

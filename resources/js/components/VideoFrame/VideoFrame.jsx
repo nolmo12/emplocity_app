@@ -17,6 +17,7 @@ export default function VideoFrame() {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoThumbnail = videoObj.video.thumbnail;
+        console.log(videoObj);
         return (
             <>
                 <div className={styles.videoFrameDiv}>
