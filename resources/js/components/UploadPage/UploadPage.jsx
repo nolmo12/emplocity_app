@@ -17,12 +17,12 @@ export default function UploadPage() {
     const [draggingOver, setDraggingOver] = useState(false);
     const [videoSent, setVideoSent] = useState(false);
     const [data, setData] = useState({
-        title: "",
-        tags: "",
-        description: "",
-        language: "",
-        video: "",
-        thumbnail: "",
+        title: null,
+        tags: null,
+        description: null,
+        language: null,
+        video: null,
+        thumbnail: null,
         visibility: "Public",
     });
     const navigate = useNavigate();
@@ -61,7 +61,9 @@ export default function UploadPage() {
             formData.append("language", data.language);
             formData.append("video", data.video);
             formData.append("visibility", data.visibility);
-            formData.append("thumbnail", data.thumbnail);
+            if (data.thumbnail) {
+                formData.append("thumbnail", data.thumbnail);
+            }
             const response = await http.post("/api/video/upload", formData);
             setVideoSent(true);
         } catch (error) {
