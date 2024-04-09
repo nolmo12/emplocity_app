@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styles from "./uploadPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -9,33 +9,62 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadPage() {
+    const uploadAreaRef = useRef(null);
+    const [droppedFileName, setDroppedFileName] = useState("");
+    const [draggingOver, setDraggingOver] = useState(false);
+
     const handleDrop = (e) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
         handleDroppedFile(files);
+        setDraggingOver(false);
     };
 
     const handleDroppedFile = (files) => {
-        console.log(files);
+        if (files.length > 0) {
+            setDroppedFileName(files[0].name);
+        }
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setDraggingOver(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        setDraggingOver(false);
     };
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         const file = e.target;
         console.log(file);
     };
+
     return (
         <main>
             <form
                 data-testid="uploadFormWithoutInput"
-                onDragOver={(e) => e.preventDefault()}
-                onDragLeave={(e) => e.preventDefault()}
-                onDrop={handleDrop}
                 className={styles.uploadForm}
             >
-                <FontAwesomeIcon
-                    icon={faUpload}
-                    className={styles.uploadIcon}
-                />
+                <div
+                    ref={uploadAreaRef}
+                    className={`${styles.uploadArea} ${draggingOver ? styles.draggingOver : ""}`}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                >
+                    <FontAwesomeIcon
+                        icon={faUpload}
+                        className={styles.uploadIcon}
+                    />
+                </div>
+
+                {droppedFileName && (
+                    <p>Uploaded file: {droppedFileName}</p>
+                )}
+
                 <div>
                     <FontAwesomeIcon
                         icon={faFilm}
@@ -69,12 +98,14 @@ export default function UploadPage() {
                     <h2>Select: </h2>
                         <select>
                             <option value="public">Public</option>
-                            <option value="private">Private</option>
+                            <option value="unlisted">Unlisted</option>
+                            <option value="hidden">Hidden</option>
                         </select>
                 </div>
 
-                <button>Submit</button>
+                <button onClick={handleSubmit}>Submit</button>
             </form>
+
         </main>
     );
 }
