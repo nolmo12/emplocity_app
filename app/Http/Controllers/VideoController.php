@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
 use App\Helpers\ValidateHelper;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,23 +52,7 @@ class VideoController extends Controller
 
         if($request->tags != null)
         {
-            foreach($request->tags as $tagName)
-            {
-                $tag = Tag::where('name', $tagName)->first();
-                
-                if($tag)
-                {
-                    $video->tags()->attach($tag->id);
-                }
-                else
-                {
-                    $newTag = new Tag;
-                    $newTag->name = $tagName;
-                    $newTag->save();
-    
-                    $video->tags()->attach($newTag->id);
-                }
-            }
+            $video->addTags($request->tags);
         }
 
         $sqids = new Sqids(minLength : 10);
@@ -111,10 +96,16 @@ class VideoController extends Controller
         }
         else
         {
-            $thumbnailName = $video->reference_code() . $request->file('thumbnail')->getClientOriginalName();
-            $path = $request->file('thumbnail')->storeAs('public/thumbnails', $thumbnailName);
+            $thumbnailName = $video->reference_code . $request->file('thumbnail')->getClientOriginalName();
+            $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
-            $video->thumbnail = $path;
+            $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
+
+            $publicPath = Storage::url($path);
+
+            Storage::delete($path);
+
+            $video->thumbnail = $publicPath;
         }
 
         
@@ -124,6 +115,14 @@ class VideoController extends Controller
             'title' => $request->title,
             'description'=> $request->description
         ]);
+
+        $languages = $video->languages;
+
+        foreach($languages as $language)
+        {
+            $nameArr = explode(" ", $language->pivot->title);
+            $video->addTags($nameArr);
+        }
 
         $video->status = 'Ok';
         $video->visibility = $request->visibility;
@@ -154,9 +153,12 @@ class VideoController extends Controller
 
         return $videos;
     }
-
-
-    public function getSimilarVideos(string $referenceCode)
+    /**
+     * Gets similarVideos based on tags, user and if lacking videos, then it chooses them randomly.
+     * @param string $referenceCode Reference code of the video(Sqids)
+     * @return \Illuminate\Support\Collection<array-key, mixed> Collection of similar videos
+     */
+    public function getSimilarVideos(string $referenceCode) : Collection
     {
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
 
@@ -196,7 +198,16 @@ class VideoController extends Controller
             return $similarVideo->reference_code !== $video->reference_code;
         });
 
-        return $similarVideos->take(10);
+        $similarVideos->shuffle();
+
+        $similarVideos = $similarVideos->take(10);
+
+        $similarVideos->transform(function ($similarVideo) use ($video) {
+            $similarVideo->title = $similarVideo->languages()->first()->pivot->title;
+            return $similarVideo;
+        });
+
+        return $similarVideos;
     }
 
 }

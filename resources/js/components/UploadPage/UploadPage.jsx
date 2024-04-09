@@ -1,6 +1,4 @@
-import React from "react";
-import { useState } from "react";
-import authUser from "../authUser";
+import React, { useRef, useState } from "react";
 import styles from "./uploadPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -26,13 +24,27 @@ export default function UploadPage() {
         e.preventDefault();
         const files = e.dataTransfer.files;
         handleDroppedFile(files);
+        setDraggingOver(false);
     };
 
     const handleDroppedFile = (files) => {
         setData({ ...data, video: files[0] });
+        if (files.length > 0) {
+            setDroppedFileName(files[0].name);
+        }
     };
 
-    const handleSubmit = async (e) => {
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        setDraggingOver(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        setDraggingOver(false);
+    };
+
+    const handleSubmit = (e) => {
         const file = e.target;
         e.preventDefault();
         try {
@@ -71,10 +83,23 @@ export default function UploadPage() {
                 onSubmit={(e) => handleSubmit(e)}
                 className={styles.uploadForm}
             >
-                <FontAwesomeIcon
-                    icon={faUpload}
-                    className={styles.uploadIcon}
-                />
+                <div
+                    ref={uploadAreaRef}
+                    className={`${styles.uploadArea} ${draggingOver ? styles.draggingOver : ""}`}
+                    onDrop={handleDrop}
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                >
+                    <FontAwesomeIcon
+                        icon={faUpload}
+                        className={styles.uploadIcon}
+                    />
+                </div>
+
+                {droppedFileName && (
+                    <p>Uploaded file: {droppedFileName}</p>
+                )}
+
                 <div>
                     <FontAwesomeIcon
                         icon={faFilm}
@@ -141,8 +166,9 @@ export default function UploadPage() {
                     </select>
                 </div>
 
-                <button>Submit</button>
+                <button onClick={handleSubmit}>Submit</button>
             </form>
+
         </main>
     );
 }

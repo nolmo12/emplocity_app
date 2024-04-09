@@ -14,8 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('taggables', function (Blueprint $table) {
-            $table->id('tag_id');
-            $table->foreignId(Tag::class)->constrained('tags');
+            $table->id();
+            $table->foreignId('tag_id')->constrained('tags');
             $table->integer('taggable_id');
             $table->string('taggable_type');
             $table->timestamps();
