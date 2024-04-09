@@ -158,7 +158,7 @@ class VideoController extends Controller
      * @param string $referenceCode Reference code of the video(Sqids)
      * @return \Illuminate\Support\Collection<array-key, mixed> Collection of similar videos
      */
-    public function getSimilarVideos(string $referenceCode) : Collection
+    public function getSimilarVideos(string $referenceCode)
     {
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
 
@@ -208,6 +208,28 @@ class VideoController extends Controller
         });
 
         return $similarVideos;
+    }
+
+    public function delete(int $id)
+    {
+        $video = Video::find($id);
+        if (!$video)
+        {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
+
+        $video->tags()->detach();
+
+        $video->languages()->detach();
+
+        $videoPath = public_path($video->video);
+
+        if(Storage::exists($videoPath))
+            Storage::delete($videoPath);
+        else
+            return response()->json(['error' => 'Path not found'], 404);
+
+        $video->delete();
     }
 
 }
