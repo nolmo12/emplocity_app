@@ -18,6 +18,7 @@ export default function VideoFrame() {
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
     }, [reference_code]);
+
     if (videoObj && videoObj.video) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
@@ -26,6 +27,7 @@ export default function VideoFrame() {
             <>
                 <div className={styles.videoFrameDiv}>
                     <video
+                        width={320}
                         src={videoPath}
                         poster={videoThumbnail}
                         controls
