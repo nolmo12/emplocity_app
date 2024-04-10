@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
 use App\Helpers\ValidateHelper;
-use Illuminate\Support\Collection;
+use App\Models\VideoLikesDislike;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -58,7 +58,7 @@ class VideoController extends Controller
         
         if($request->hasFile('video'))
         {
-            $videoName = $video->reference_code . $request->file('video')->getClientOriginalName();
+            $videoName = $video->reference_code . str_replace(' ', '', $request->file('video')->getClientOriginalName());
             $path = $request->file('video')->storeAs('public/videos', $videoName);
 
             $request->file('video')->move(public_path('storage/videos'), $videoName);
@@ -91,7 +91,7 @@ class VideoController extends Controller
         }
         else
         {
-            $thumbnailName = $video->reference_code . $request->file('thumbnail')->getClientOriginalName();
+            $thumbnailName = $video->reference_code . str_replace(' ', '', $request->file('thumbnail')->getClientOriginalName());
             $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
             $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
@@ -169,7 +169,8 @@ class VideoController extends Controller
 
         foreach ($video->tags as $tag)
         {
-            $similarVideos = $similarVideos->merge($tag->videos()->where('visibility', 'Public')->get());
+            $tagVideos = $tag->videos()->where('visibility', 'Public')->get();
+            $similarVideos = $similarVideos->merge($tagVideos);
         }
 
         if ($video->user_id != null)
@@ -196,6 +197,9 @@ class VideoController extends Controller
             return $similarVideo->reference_code !== $video->reference_code;
         });
 
+
+
+
         $similarVideos->shuffle();
 
         $similarVideos = $similarVideos->take(10);
@@ -204,6 +208,15 @@ class VideoController extends Controller
             $similarVideo->title = $similarVideo->languages()->first()->pivot->title;
             return $similarVideo;
         });
+        
+        $similarVideosTags = collect();
+        foreach ($similarVideos as $similarVideo)
+        {
+            $similarVideosTags = $similarVideosTags->merge($similarVideo->tags);
+            unset($similarVideo->pivot);
+        }
+
+        $similarVideosTags = $similarVideosTags->unique();
 
         return $similarVideos;
     }
@@ -221,13 +234,106 @@ class VideoController extends Controller
         $video->languages()->detach();
 
         $videoPath = public_path($video->video);
+        $thumbnailPath = public_path($video->thumbnail);
 
         if(Storage::exists($videoPath))
             Storage::delete($videoPath);
         else
-            return response()->json(['error' => 'Path not found'], 404);
+            return response()->json(['error' => 'Video path not found'], 404);
+
+        
+        if(Storage::exists($thumbnailPath))
+            Storage::delete($thumbnailPath);
+        else
+            return response()->json(['error' => 'Thumbnail path not found'], 404);
 
         $video->delete();
+    }
+
+    public function updateLikes(Request $request, string $referenceCode)
+    {
+
+        
+        $validateVideo = Validator::make($request->all(), 
+        [
+            'like_dislike' => 'required|boolean',
+        ]);
+
+        if($validateVideo->fails())
+        {
+            $errors = $validateVideo->errors();
+            $formattedErrors = ValidateHelper::getAllVideoErrorCodes($errors);
+
+
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $formattedErrors
+            ], 401);
+        }
+
+        $video = Video::where('reference_code', $referenceCode)->first();
+        if (!$video)
+        {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
+
+        $existingLike = VideoLikesDislike::where('user_id', $request->user()->id)
+        ->where('video_id', $video->id)
+        ->first();
+
+
+        if ($existingLike)
+        {
+            if ($existingLike->is_like == $request->like_dislike)
+            {
+                $existingLike->delete();
+            } 
+            else 
+            {
+                $existingLike->update(['is_like' => $request->like_dislike]);
+            }
+        } 
+        else 
+        {
+            $likeDislike = VideoLikesDislike::create([
+                'user_id' => $request->user()->id,
+                'video_id' => $video->id,
+                'is_like' => $request->like_dislike
+            ]);
+        }
+
+        return response()->json(['message' => 'Likes updated successfully'], 200);
+    }
+
+    public function update(Request $request, $referenceCode)
+    {
+        $validateVideo = Validator::make($request->all(), 
+        [
+            'title' => 'required|string|max:255',
+            'description' =>'string|max:255',
+            'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
+            'language' => 'required|exists:languages,id',
+            'visibility' => ['required', new Enumerate(['Public', 'Unlisted', 'Hidden'])],
+            'tags' => 'array',
+            'tags.*' => 'string|min:2'
+        ]);
+
+        if($validateVideo->fails())
+        {
+            $errors = $validateVideo->errors();
+            $formattedErrors = ValidateHelper::getAllVideoErrorCodes($errors);
+
+
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $formattedErrors
+            ], 401);
+        }
+
+        $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
+        
     }
 
 }

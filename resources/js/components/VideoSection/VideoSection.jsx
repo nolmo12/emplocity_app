@@ -20,6 +20,7 @@ export default function VideoSection({ sectionType }) {
     if (isLoading) {
         return <h1>Loading...</h1>;
     }
+
     let view = undefined;
 
     if (sectionType === "reccommend") {
@@ -53,4 +54,5 @@ export default function VideoSection({ sectionType }) {
         );
     }
     return view;
+
 }
