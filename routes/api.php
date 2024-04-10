@@ -12,6 +12,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
 /*
 |--------------------------------------------------------------------------
@@ -108,7 +109,19 @@ Route::post('/reset-password', function (Request $request) {
 
 Route::prefix('video')->group(function () {
     Route::post('/upload', [VideoController::class, 'store']);
-    Route::get('/watch/{referenceCode}', [VideoController::class,'show'])->name('watch');
+    
+    Route::get('/watch/{referenceCode}', [VideoController::class,'show'])
+    ->name('watch');
+
     Route::get('/all', [VideoController::class,'all']);
-    Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])->name('similarVideos');
+
+    Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])
+    ->name('similarVideos');
+
+    Route::delete('/delete/{id}', [VideoController::class, 'delete'])
+    ->middleware(['auth:api', EnsureUserOwnsModel::class]);
+
+    Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
+    ->middleware('auth:api')
+    ->name('updateLikes');
 });

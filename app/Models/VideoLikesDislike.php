@@ -5,9 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class VideoLikeDisLike extends Model
+class VideoLikesDislike extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'video_id',
+        'is_like'
+    ];
 
     public function video()
     {
