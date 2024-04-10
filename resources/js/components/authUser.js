@@ -44,7 +44,7 @@ export default function authUser() {
     const http = axios.create({
         baseURL: tempBaseUrl,
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${getToken()}`,
         },
     });
 
