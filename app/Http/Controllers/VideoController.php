@@ -146,13 +146,25 @@ class VideoController extends Controller
     
         return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
     }
-
     public function all()
     {
         $videos = Video::with(['languages', 'tags'])->where('visibility', 'Public')->get();
 
-        return $videos;
+        $videosArray = [];
+        foreach ($videos as $video)
+        {
+            $likesCount = $video->getLikesDislikesCount(true);
+            $dislikesCount = $video->getLikesDislikesCount(false);
+    
+            $videoArray = $video->toArray();
+            $videoArray['likesCount'] = $likesCount;
+            $videoArray['dislikesCount'] = $dislikesCount;
+    
+            $videosArray[] = $videoArray;
+        }
+        return response()->json($videosArray);
     }
+    
     /**
      * Gets similarVideos based on tags, user and if lacking videos, then it chooses them randomly.
      * @param string $referenceCode Reference code of the video(Sqids)
