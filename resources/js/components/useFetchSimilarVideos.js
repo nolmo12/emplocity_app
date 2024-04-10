@@ -9,6 +9,7 @@ export default function useFetchSimilarVideos({ reference_code }) {
                 const response = await axios.get(
                     `/api/video/similarVideos/${reference_code}`
                 );
+                console.log(response.data);
                 setVideos(response.data);
                 setIsLoading(false);
             } catch (error) {
