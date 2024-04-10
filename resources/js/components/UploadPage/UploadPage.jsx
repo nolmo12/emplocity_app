@@ -99,9 +99,6 @@ export default function UploadPage() {
             ) : (
                 <form
                     data-testid="uploadFormWithoutInput"
-                    onDragOver={(e) => e.preventDefault()}
-                    onDragLeave={(e) => e.preventDefault()}
-                    onDrop={handleDrop}
                     onSubmit={(e) => handleSubmit(e)}
                     className={styles.uploadForm}
                 >
