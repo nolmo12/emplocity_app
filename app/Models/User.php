@@ -58,9 +58,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     }
 
     // Relationship with VideoLikeDislike
-    public function likedDislikedVideos()
+    public function likesDislikes()
     {
-        return $this->hasMany(VideoLikeDislike::class);
+        return $this->hasMany(VideoLikesDislike::class, 'user_id');
     }
 
     public function reports()

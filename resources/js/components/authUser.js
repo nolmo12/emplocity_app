@@ -44,9 +44,18 @@ export default function authUser() {
     const http = axios.create({
         baseURL: tempBaseUrl,
         headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${getToken()}`,
         },
     });
+
+    const getUser = async () => {
+        try {
+            const response = await http.get("/api/user");
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     if (getToken() && isLogged === false) {
         setIsLogged(true);
@@ -63,5 +72,6 @@ export default function authUser() {
         http,
         isLogged,
         getCsrfToken,
+        getUser,
     };
 }

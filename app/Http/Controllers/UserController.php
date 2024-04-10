@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Video;
+use App\Models\VideoLikesDislike;
 use Illuminate\Http\Request;
-use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
@@ -25,9 +27,21 @@ class UserController extends Controller
 
     public function getUserData($id)
     {
-        $userData = User::findOrFail($id);
+        $userData = User::with(['likesDislikes'])->findOrFail($id);
         $userData->makeHidden(['email']);
 
         return $userData;
+    }
+
+    public function getLikes(Request $request, string $referenceCode)
+    {
+        $video = Video::where('reference_code', $referenceCode)->first();
+    
+        $likesDislikes = VideoLikesDislike::where('video_id', $video->id)
+        ->where('user_id', $request->user()->id)
+        ->get();
+
+        return $likesDislikes;
+
     }
 }

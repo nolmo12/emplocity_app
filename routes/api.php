@@ -32,7 +32,6 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 Route::get('users', [UserController::class, 'getUsersData']);
 Route::get('user/{id}', [UserController::class, 'getUserData']);
 
-
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -117,6 +116,9 @@ Route::prefix('video')->group(function () {
 
     Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])
     ->name('similarVideos');
+
+    
+    Route::get('/getUserLikes/{referenceCode}', [UserController::class,'getLikes'])->middleware('auth:api');
 
     Route::delete('/delete/{id}', [VideoController::class, 'delete'])
     ->middleware(['auth:api', EnsureUserOwnsModel::class]);

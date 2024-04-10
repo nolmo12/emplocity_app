@@ -11,10 +11,12 @@ export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const { videos, isLoading } = useFetchAllVideos();
     const [renderKey, setRenderKey] = useState(0);
+
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
     }, [reference_code]);
-    const similarVideosObj = useFetchSimilarVideos({ reference_code });
+
+    const similarVideosObj = useFetchSimilarVideos({ reference_code }); // for similar videos
     if (isLoading) {
         return <h1>Loading...</h1>;
     }
@@ -32,7 +34,7 @@ export default function VideoSection({ sectionType }) {
         );
     } else if (sectionType === "similar" && similarVideosObj.videos) {
         view = (
-            <div>
+            <div className={styles.similarVideo}>
                 {Object.entries(similarVideosObj.videos).map(([key, video]) => {
                     const path = `/video/${video.reference_code}`;
                     return (
