@@ -60,19 +60,23 @@ export default function VideoFrame() {
                             icon={faShare}
                             className={styles.videoFrameIcon}
                         />
-                        <FontAwesomeIcon
-                            onClick={() => likeCount(0)} // 0 for dislike
-                            icon={faThumbsDown}
-                            className={styles.videoFrameIconTD}
-                        />
-                        <p>{dislikesCount}</p>
-
-                        <FontAwesomeIcon
-                            onClick={() => likeCount(1)} // 1 for like
-                            icon={faThumbsUp}
-                            className={styles.videoFrameIcon}
-                        />
-                        <p>{likesCount}</p>
+                        <div>
+                            <FontAwesomeIcon
+                                onClick={() => likeCount(0)} // 0 for dislike
+                                icon={faThumbsDown}
+                                className={styles.videoFrameIconTD}
+                            />
+                            <p>{dislikesCount}</p>
+                        </div>
+                        
+                        <div>
+                            <FontAwesomeIcon
+                                onClick={() => likeCount(1)} // 1 for like
+                                icon={faThumbsUp}
+                                className={styles.videoFrameIcon}
+                            />
+                            <p>{likesCount}</p>
+                        </div>
 
                         <h1 className={styles.videoFrameInfoTitle}>
                             {videoTitle}

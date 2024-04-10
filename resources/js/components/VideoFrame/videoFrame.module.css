@@ -6,6 +6,15 @@
     left: 10%;
 }
 
+.videoFrameDiv p {
+    position: relative;
+    float:right;
+    font-size: 2em;
+    margin-top: 2%;
+    display: block;
+    right:4.5%;
+}
+
 .videoScreen {
     width: 70%;
     height: 100%;
