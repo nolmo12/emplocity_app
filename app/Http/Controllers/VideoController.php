@@ -141,8 +141,10 @@ class VideoController extends Controller
         $title = $language->pivot->title;
         $description = $language->pivot->description;
         $tags = $video->tags()->get();
+        $likesCount = $video->getLikesDislikesCount(true);
+        $dislikesCount = $video->getLikesDislikesCount(false);
     
-        return response()->json(compact('video', 'title', 'description', 'tags'));
+        return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
     }
 
     public function all()
