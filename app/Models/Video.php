@@ -31,8 +31,9 @@ class Video extends Model
     // Relationship with VideoLikeDislike
     public function likesDislikes()
     {
-        return $this->hasMany(VideoLikeDislike::class, 'video_id');
+        return $this->hasMany(VideoLikesDislike::class, 'video_id');
     }
+    
 
     // Relationship with Tags
     public function tags(): MorphToMany
@@ -83,5 +84,10 @@ class Video extends Model
                 $this->tags()->attach($newTag->id);
             }
         }
+    }
+
+    public function getLikesDislikesCount(bool $type = true): int
+    {
+        return $this->likesDislikes()->where('is_like', $type)->count();
     }
 }
