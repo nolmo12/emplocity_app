@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function getUserData($id)
     {
-        $userData = User::findOrFail($id);
+        $userData = User::with(['likesDislikes'])->findOrFail($id);
         $userData->makeHidden(['email']);
 
         return $userData;
