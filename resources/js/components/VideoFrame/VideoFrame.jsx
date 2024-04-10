@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import useLike from "../useLike";
@@ -12,16 +12,16 @@ import {
     faThumbsDown,
     faShare,
 } from "@fortawesome/free-solid-svg-icons";
+import { copySelection } from "@testing-library/user-event/dist/cjs/document/copySelection.js";
 
 export default function VideoFrame() {
+    const { http } = authUser();
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
     const [likesCount, setLikesCount] = useState(0);
+    const user = useRef();
     const [dislikesCount, setDislikesCount] = useState(0);
-    const [userThumbsTrack, setUserThumbsTrack] = useState(false);
-    const [likeIsClicked, setLikeIsClicked] = useState(false);
-    const [dislikeIsClicked, setDislikeIsClicked] = useState(false);
-    const { http } = authUser();
+
     const [renderKey, setRenderKey] = useState(0);
 
     useEffect(() => {
@@ -33,41 +33,10 @@ export default function VideoFrame() {
     }, [reference_code, videoObj]);
 
     const likeCount = async (likeType) => {
-        try {
-            const response = await http.post(
-                `/api/video/like/${reference_code}`,
-                {
-                    like_dislike: likeType,
-                }
-            );
-            if (!userThumbsTrack) {
-                if (likeType === 1) {
-                    setLikesCount(likesCount + 1);
-                    setLikeIsClicked(true);
-                    setUserThumbsTrack(true);
-                } else {
-                    setDislikesCount(dislikesCount + 1);
-                    setDislikeIsClicked(true);
-                    setUserThumbsTrack(true);
-                }
-            }
-            if (userThumbsTrack) {
-                if (likeType === 1 && likeIsClicked) {
-                    setLikesCount(likesCount - 1);
-                    setLikeIsClicked(false);
-                    setUserThumbsTrack(false);
-                } else if (
-                    likeType === 0 &&
-                    videoObj.dislikesCount > 0 &&
-                    dislikeIsClicked
-                ) {
-                    setDislikesCount(dislikesCount - 1);
-                    setDislikeIsClicked(false);
-                    setUserThumbsTrack(false);
-                }
-            }
-        } catch (error) {
-            console.log(error);
+        if (likeType === 1) {
+            setLikesCount((prev) => prev + 1);
+        } else if (likeType === 0) {
+            setDislikesCount((prev) => prev + 1);
         }
     };
 

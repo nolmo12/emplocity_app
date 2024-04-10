@@ -48,6 +48,15 @@ export default function authUser() {
         },
     });
 
+    const getUser = async () => {
+        try {
+            const response = await http.get("/api/user");
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     if (getToken() && isLogged === false) {
         setIsLogged(true);
     }
@@ -63,5 +72,6 @@ export default function authUser() {
         http,
         isLogged,
         getCsrfToken,
+        getUser,
     };
 }
