@@ -10,16 +10,16 @@
     max-width: 300px;
 }
 
-.thumbnailInput[type="file"]{
+.thumbnailInput[type="file"] {
     border: none;
 }
 
 .thumbnailInput[type="file"]::file-selector-button {
-    content: 'Select file'; 
+    content: "Select file";
     display: inline-block;
     background-color: white;
-    color: black;  
-    padding: 8px 20px; 
+    color: black;
+    padding: 8px 20px;
     border-radius: 6px;
     cursor: pointer;
     border: solid 2px #a0a0a0;
@@ -27,28 +27,34 @@
 }
 
 .thumbnailInput[type="file"]:hover::file-selector-button {
-    background: #f0f0f0;
+    content: "Select file";
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
 .thumbnailInput[type="file"]:active::file-selector-button {
     transform: scale(0.95);
 }
 
-
 .uploadForm input {
     width: 90%;
     height: 2.5em;
     margin: 0 auto;
     margin-bottom: 1em;
-    padding-left:2.5em;
+    padding-left: 2.5em;
     border: solid 2px #a0a0a0;
 }
 
-
 .uploadForm h2 {
     text-align: center;
-    color:black;
-    margin-bottom:0.5em;
+    color: black;
+    margin-bottom: 0.5em;
 }
 
 .uploadForm select {
@@ -81,25 +87,25 @@
 }
 
 .uploadForm .uploadIcon {
-    color:black;
-    width:8em;
-    height:8em;
-    margin-bottom:2em;
-    align-self:center;
+    color: black;
+    width: 8em;
+    height: 8em;
+    margin-bottom: 2em;
+    align-self: center;
     transform: translate(70%);
 }
 
 .uploadForm .uploadFormIcon {
-    color:black;
-    left:0.7em;
-    top:1.7em;
-    position:relative;
+    color: black;
+    left: 0.7em;
+    top: 1.7em;
+    position: relative;
 }
 
 .uploadForm p {
-    color:red;
-    font-size:0.7em;
-    text-align:center;
+    color: red;
+    font-size: 0.7em;
+    text-align: center;
 }
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
@@ -129,8 +135,7 @@
     }
 
     .uploadForm .uploadFormIcon {
-        top:-1%;
-        left:10%;
+        top: -1%;
+        left: 10%;
     }
-
 }

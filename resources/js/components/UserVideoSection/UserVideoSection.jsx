@@ -14,9 +14,8 @@ export default function UserVideoSection() {
                     <th>Likes</th>
                 </tr>
                 <tr>
-                    <td>
-                        <Video />
-                    </td>
+                    <td>nic</td> // tu by měl být nějaký komponent, který
+                    zobrazí video
                     <td className={styles.tdContent}>20-02-2024</td>
                     <td className={styles.tdContent}>551</td>
                     <td className={styles.tdContent}>14</td>

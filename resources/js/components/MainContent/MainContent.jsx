@@ -14,7 +14,7 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <Popular />
-                <VideoSection />
+                <VideoSection sectionType="reccommend" />
             </main>
         );
     } else if (contentType === "logged") {
@@ -41,7 +41,7 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <VideoFrame />
-                {/* <VideoSection /> */}
+                <VideoSection sectionType="similar" />
             </main>
         );
     }
