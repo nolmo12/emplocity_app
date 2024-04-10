@@ -58,7 +58,7 @@ class VideoController extends Controller
         
         if($request->hasFile('video'))
         {
-            $videoName = $video->reference_code . $request->file('video')->getClientOriginalName();
+            $videoName = $video->reference_code . str_replace(' ', '', $request->file('video')->getClientOriginalName());
             $path = $request->file('video')->storeAs('public/videos', $videoName);
 
             $request->file('video')->move(public_path('storage/videos'), $videoName);
@@ -91,7 +91,7 @@ class VideoController extends Controller
         }
         else
         {
-            $thumbnailName = $video->reference_code . $request->file('thumbnail')->getClientOriginalName();
+            $thumbnailName = $video->reference_code . str_replace(' ', '', $request->file('thumbnail')->getClientOriginalName());
             $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
             $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
@@ -287,7 +287,7 @@ class VideoController extends Controller
         {
             if ($existingLike->is_like == $request->like_dislike)
             {
-                return response()->json(['error' => 'User already liked/disliked the video'], 400);
+                $existingLike->delete();
             } 
             else 
             {
@@ -304,6 +304,36 @@ class VideoController extends Controller
         }
 
         return response()->json(['message' => 'Likes updated successfully'], 200);
+    }
+
+    public function update(Request $request, $referenceCode)
+    {
+        $validateVideo = Validator::make($request->all(), 
+        [
+            'title' => 'required|string|max:255',
+            'description' =>'string|max:255',
+            'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
+            'language' => 'required|exists:languages,id',
+            'visibility' => ['required', new Enumerate(['Public', 'Unlisted', 'Hidden'])],
+            'tags' => 'array',
+            'tags.*' => 'string|min:2'
+        ]);
+
+        if($validateVideo->fails())
+        {
+            $errors = $validateVideo->errors();
+            $formattedErrors = ValidateHelper::getAllVideoErrorCodes($errors);
+
+
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $formattedErrors
+            ], 401);
+        }
+
+        $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
+        
     }
 
 }
