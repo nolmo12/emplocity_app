@@ -216,12 +216,9 @@ class VideoController extends Controller
             return $similarVideo->reference_code !== $video->reference_code;
         });
 
-
-
+        $similarVideos = $similarVideos->take(10);
 
         $similarVideos->shuffle();
-
-        $similarVideos = $similarVideos->take(10);
 
         $similarVideos->transform(function ($similarVideo) use ($video) {
             $similarVideo->title = $similarVideo->languages()->first()->pivot->title;
