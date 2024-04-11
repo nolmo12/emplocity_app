@@ -17,6 +17,7 @@ import { copySelection } from "@testing-library/user-event/dist/cjs/document/cop
 export default function VideoFrame() {
     const { http } = authUser();
     const { likeCountFunction } = useLikeCalculation();
+
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
     const [userThumb, setUserThumb] = useState();
@@ -54,32 +55,36 @@ export default function VideoFrame() {
                         />
                         <div>
                             <FontAwesomeIcon
-                                onClick={() => likeCountFunction(
-                                    1,
-                                    likesCount,
-                                    setLikesCount,
-                                    dislikesCount,
-                                    setDislikesCount,
-                                    reference_code,
-                                    videoObj
-                                )} // 0 for dislike
+                                onClick={() =>
+                                    likeCountFunction(
+                                        0,
+                                        likesCount,
+                                        setLikesCount,
+                                        dislikesCount,
+                                        setDislikesCount,
+                                        reference_code,
+                                        videoObj
+                                    )
+                                } // 0 for dislike
                                 icon={faThumbsDown}
                                 className={styles.videoFrameIconTD}
                             />
                             <p>{dislikesCount}</p>
                         </div>
-                        
+
                         <div>
                             <FontAwesomeIcon
-                                onClick={() => likeCountFunction(
-                                    1,
-                                    likesCount,
-                                    setLikesCount,
-                                    dislikesCount,
-                                    setDislikesCount,
-                                    reference_code,
-                                    videoObj
-                                )} // 1 for like
+                                onClick={() =>
+                                    likeCountFunction(
+                                        1,
+                                        likesCount,
+                                        setLikesCount,
+                                        dislikesCount,
+                                        setDislikesCount,
+                                        reference_code,
+                                        videoObj
+                                    )
+                                } // 1 for like
                                 icon={faThumbsUp}
                                 className={styles.videoFrameIcon}
                             />
