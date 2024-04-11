@@ -44,4 +44,16 @@ class UserController extends Controller
         return $likesDislikes;
 
     }
+
+    public function hasUserLikedVideo(Request $request, string $referenceCode)
+    {
+        $video = Video::where('reference_code', $referenceCode)->first();
+        $likesDislikes = VideoLikesDislike::where('user_id', $request->user()->id)
+        ->first();
+
+        if($likesDislikes)
+        {
+            return $likesDislikes->is_like ? 1 : 0;
+        }
+    }
 }

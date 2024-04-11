@@ -118,7 +118,11 @@ Route::prefix('video')->group(function () {
     ->name('similarVideos');
 
     
-    Route::get('/getUserLikes/{referenceCode}', [UserController::class,'getLikes'])->middleware('auth:api');
+    Route::get('/getUserLikes/{referenceCode}', [UserController::class,'getLikes'])
+    ->middleware('auth:api');
+
+    Route::get('/hasUserLiked/{referenceCode}', [UserController::class, 'hasUserLikedVideo'])
+    ->middleware('auth:api');
 
     Route::delete('/delete/{id}', [VideoController::class, 'delete'])
     ->middleware(['auth:api', EnsureUserOwnsModel::class]);
