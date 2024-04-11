@@ -5,11 +5,14 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 
 class AuthTest extends TestCase
 {
+    use RefreshDatabase;
     public function testRegisterCorrect(): void
     {
         $response = $this->post('/api/auth/register', [
@@ -46,12 +49,16 @@ class AuthTest extends TestCase
     public function testLoginCorrect(): void
     {
         $email = fake()->unique()->email();
-        $this->post('/api/auth/register', [
+
+        $user = User::create([
+            'name' => 'Test User',
             'email' => $email,
-            'password' => 'password123',
-            'repeatPassword' => 'password123'
+            'password' => Hash::make('password123'),
         ]);
-        
+
+        $user->email_verified_at = now();
+        $user->save();
+
         $response = $this->post('/api/auth/login', [
             'email' => $email,
             'password' => 'password123',
@@ -109,12 +116,15 @@ class AuthTest extends TestCase
     public function testLogout()
     {
         $email = fake()->unique()->email();
-    
-        $this->post('/api/auth/register', [
+
+        $user = User::create([
+            'name' => 'Test User',
             'email' => $email,
-            'password' => 'password123',
-            'repeatPassword' => 'password123'
+            'password' => Hash::make('password123'),
         ]);
+
+        $user->email_verified_at = now();
+        $user->save();
     
         $response = $this->post('/api/auth/login', [
             'email' => $email,
@@ -130,5 +140,28 @@ class AuthTest extends TestCase
     
         $logoutResponse->assertStatus(200);
     }
+
+    public function testUserVerified()
+{
+    $email = fake()->unique()->email();
+
+        $user = User::create([
+            'name' => 'Test User',
+            'email' => $email,
+            'password' => Hash::make('password123'),
+        ]);
+
+    $verificationUrl = URL::temporarySignedRoute(
+        'verification.verify',
+        now()->addMinutes(60),
+        ['id' => $user->id, 'hash' => sha1($user->email)],
+        
+    );
+    $this->head($verificationUrl);
+
+    $user->refresh();
+
+    $this->assertTrue($user->hasVerifiedEmail());
+}
     
 }
