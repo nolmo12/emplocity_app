@@ -1,10 +1,13 @@
 import React from "react";
 import { useState } from "react";
+import useFetchLikeForVideo from "./useFetchLikeForVideo";
 import useSendLikeInfo from "./useSendLikeInfo";
 export default function useLikeCalculation() {
     // po ponownym odpaleniu filmiku nie mam mozliwosci zmiany co dalem + jesli zostawilem na np 1 to dzialam z 1 do 2
     const [userThumb, setUserThumb] = useState("");
     const { sendLike } = useSendLikeInfo();
+    const { fetchLikes } = useFetchLikeForVideo();
+
     const likeCountFunction = async (
         likeType,
         likesCount,
@@ -18,7 +21,8 @@ export default function useLikeCalculation() {
         if (likeType === 1 && userThumb !== "like" && userThumb !== "dislike") {
             setLikesCount((prev) => prev + 1);
             setUserThumb("like");
-            await sendLike(reference_code, likeType);
+            sendLike(reference_code, likeType);
+            console.log(await fetchLikes(reference_code, likeType));
         } else if (
             likeType === 0 &&
             userThumb !== "dislike" &&
