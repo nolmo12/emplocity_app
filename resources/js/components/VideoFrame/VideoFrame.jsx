@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
 import useLikeCalculation from "../useLikeCalculation";
+import useLike from "../useLike";
 import styles from "./videoFrame.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,21 +18,33 @@ import { copySelection } from "@testing-library/user-event/dist/cjs/document/cop
 export default function VideoFrame() {
     const { http } = authUser();
     const { likeCountFunction } = useLikeCalculation();
-
+    const { fetchLikes, sendLikes } = useLike();
     const { reference_code } = useParams();
     const videoObj = useFetchVideo({ reference_code });
     const [userThumb, setUserThumb] = useState();
     const [likesCount, setLikesCount] = useState(0);
     const [dislikesCount, setDislikesCount] = useState(0);
+    const [userInteraction, setUserInteraction] = useState();
 
     const [renderKey, setRenderKey] = useState(0);
 
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
+
         if (videoObj) {
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
         }
+        const getLikeInfo = async () => {
+            try {
+                const likeInfo = await fetchLikes(reference_code);
+                setUserInteraction(likeInfo);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        getLikeInfo();
     }, [reference_code, videoObj]);
 
     if (videoObj && videoObj.video) {
@@ -63,7 +76,8 @@ export default function VideoFrame() {
                                         dislikesCount,
                                         setDislikesCount,
                                         reference_code,
-                                        videoObj
+                                        userInteraction,
+                                        setUserInteraction
                                     )
                                 } // 0 for dislike
                                 icon={faThumbsDown}
@@ -82,7 +96,8 @@ export default function VideoFrame() {
                                         dislikesCount,
                                         setDislikesCount,
                                         reference_code,
-                                        videoObj
+                                        userInteraction,
+                                        setUserInteraction
                                     )
                                 } // 1 for like
                                 icon={faThumbsUp}

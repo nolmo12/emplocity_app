@@ -1,13 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import useFetchLikeForVideo from "./useFetchLikeForVideo";
-import useSendLikeInfo from "./useSendLikeInfo";
+import authUser from "./authUser";
+import useLike from "./useLike";
 
 export default function useLikeCalculation() {
-    // po ponownym odpaleniu filmiku nie mam mozliwosci zmiany co dalem + jesli zostawilem na np 1 to dzialam z 1 do 2
     const [userThumb, setUserThumb] = useState("");
-    const { sendLike } = useSendLikeInfo();
-    const { fetchLikes } = useFetchLikeForVideo();
+    const [isProcessing, setIsProcessing] = useState(false);
+    const { fetchLikes, sendLikes } = useLike();
+    const { isLogged } = authUser();
 
     const likeCountFunction = async (
         likeType,
@@ -16,46 +16,60 @@ export default function useLikeCalculation() {
         dislikesCount,
         setDislikesCount,
         reference_code,
-        videoObj
+        userInteraction,
+        setUserInteraction
     ) => {
-        console.log(videoObj);
-        if (likeType === 1 && userThumb !== "like" && userThumb !== "dislike") {
-            setLikesCount((prev) => prev + 1);
-            setUserThumb("like");
-            sendLike(reference_code, likeType);
-            console.log(await fetchLikes(reference_code, likeType));
-        } else if (
-            likeType === 0 &&
-            userThumb !== "dislike" &&
-            userThumb !== "like"
-        ) {
-            setDislikesCount((prev) => prev + 1);
-            setUserThumb("dislike");
-            sendLike(reference_code, likeType);
-        } else if (likeType === 1 && userThumb === "like" && likesCount > 0) {
-            setLikesCount((prev) => prev - 1);
-            setUserThumb("");
-            sendLike(reference_code, likeType);
-        } else if (
-            likeType === 0 &&
-            userThumb === "dislike" &&
-            dislikesCount > 0
-        ) {
-            setDislikesCount((prev) => prev - 1);
-            setUserThumb("");
-            sendLike(reference_code, likeType);
-        } else if (likeType === 0 && userThumb === "like") {
-            setLikesCount((prev) => prev - 1);
-            setDislikesCount((prev) => prev + 1);
-            setUserThumb("dislike");
-            sendLike(reference_code, likeType);
-        } else if (likeType === 1 && userThumb === "dislike") {
-            setLikesCount((prev) => prev + 1);
-            setDislikesCount((prev) => prev - 1);
-            setUserThumb("like");
-            sendLike(reference_code, likeType);
+        if (isLogged && !isProcessing) {
+            setIsProcessing(true);
+
+            if (
+                likeType === 1 &&
+                userThumb !== "like" &&
+                userThumb !== "dislike"
+            ) {
+                setLikesCount((prev) => prev + 1);
+                setUserThumb("like");
+                sendLikes(reference_code, likeType);
+            } else if (
+                likeType === 0 &&
+                userThumb !== "dislike" &&
+                userThumb !== "like"
+            ) {
+                setDislikesCount((prev) => prev + 1);
+                setUserThumb("dislike");
+                sendLikes(reference_code, likeType);
+            } else if (
+                likeType === 1 &&
+                userThumb === "like" &&
+                likesCount > 0
+            ) {
+                setLikesCount((prev) => prev - 1);
+                setUserThumb("");
+                sendLikes(reference_code, likeType);
+            } else if (
+                likeType === 0 &&
+                userThumb === "dislike" &&
+                dislikesCount > 0
+            ) {
+                setDislikesCount((prev) => prev - 1);
+                setUserThumb("");
+                sendLikes(reference_code, likeType);
+            } else if (likeType === 0 && userThumb === "like") {
+                setLikesCount((prev) => prev - 1);
+                setDislikesCount((prev) => prev + 1);
+                setUserThumb("dislike");
+                sendLikes(reference_code, likeType);
+            } else if (likeType === 1 && userThumb === "dislike") {
+                setDislikesCount((prev) => prev - 1);
+                setLikesCount((prev) => prev + 1);
+                setUserThumb("like");
+                sendLikes(reference_code, likeType);
+            } else {
+                console.log("unexpected error");
+            }
+            console.log(userInteraction);
+            setIsProcessing(false);
         }
-        console.log(videoObj);
     };
 
     return {
