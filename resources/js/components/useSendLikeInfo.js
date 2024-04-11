@@ -13,7 +13,6 @@ export default function useSendLikeInfo() {
                     like_dislike: likeType,
                 }
             );
-            console.log(response.data);
         } catch (error) {
             console.log(error);
         }
