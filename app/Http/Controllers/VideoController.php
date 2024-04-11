@@ -122,6 +122,11 @@ class VideoController extends Controller
             $video->addTags($nameArr);
         }
 
+        if($request->user())
+        {
+            $request->user()->videos()->save($video);
+        }
+
         $video->status = 'Ok';
         $video->visibility = $request->visibility;
         $video->save();
