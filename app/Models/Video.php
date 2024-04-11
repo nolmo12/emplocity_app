@@ -64,7 +64,11 @@ class Video extends Model
         $videoManager = new VideoManager($this->video);
 
         $durationInSeconds = $videoManager->getDuration('seconds');
+    }
 
+    public function getRating()
+    {
+        
     }
 
     public function addTags(array $tags): void
