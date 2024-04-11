@@ -34,7 +34,7 @@ export default function VideoSection({ sectionType }) {
         );
     } else if (sectionType === "similar" && similarVideosObj.videos) {
         view = (
-            <div>
+            <div className={styles.similarVideo}>
                 {Object.entries(similarVideosObj.videos).map(([key, video]) => {
                     const path = `/video/${video.reference_code}`;
                     return (
