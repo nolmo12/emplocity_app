@@ -8,8 +8,6 @@ export default function useLike() {
             const response = await http.get(
                 `/api/video/hasUserLiked/${reference_code}`
             );
-            console.log(reference_code);
-            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);
