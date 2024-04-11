@@ -49,6 +49,7 @@ class UserController extends Controller
     {
         $video = Video::where('reference_code', $referenceCode)->first();
         $likesDislikes = VideoLikesDislike::where('user_id', $request->user()->id)
+        ->where('video_id', $video->id)
         ->first();
 
         if($likesDislikes)
