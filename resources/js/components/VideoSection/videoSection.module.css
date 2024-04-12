@@ -22,13 +22,14 @@
     top: 0; 
     left: 0;
     width: 20%;
+    height:5%;
     color: white;
     margin-left: 0.5em;
     font-weight: 600;
     z-index: 1; 
 }
 
-#videoSection> * {
+#videoSection> *:not(h2) {
     flex: 0 0 calc(25%);
     margin-right: 1em;
     height: 40%; 
@@ -40,8 +41,21 @@
     overflow-x: hidden;
 }
 
+#video {
+    color:white;
+    width:100%;
+    margin-bottom:1em;
+}
+
+#video img {
+    width: 90%; 
+    height: 18vh;
+    position: relative;
+}
+
+
 #videoSection::-webkit-scrollbar, .similarVideo::-webkit-scrollbar {
-    width: 0.3em; 
+    width: 0.2em; 
 }
 
 #videoSection::-webkit-scrollbar-track, .similarVideo::-webkit-scrollbar-track {
@@ -56,33 +70,46 @@
     background: #555;
 }
 
-#video {
-    color:white;
-    width:100%;
-    margin-bottom:1em;
-}
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #videoSection {
-        width: 50%;
+        width: 60%;
         height:100%;
-        left: 30%;
-        top:15%;
+        left: 20%;
+        top:5%;
         margin-top:5%;
         padding-bottom:0;
     }
 
+    #videoSection> *:not(h2) {
+        flex: 0 0 calc(40%);
+        margin-right: 1em;
+        height: 15%; 
+    }
+
     h2 {
         font-size:1em;
+    }
+
+    .similarVideo {
+        width:100%;
+        position:relative;
+        display: inline-block;
+        bottom:-20%;
+        right:10%;
+        height:90%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 60%;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #videoSection {
         width: 75%;
-        height:90%;
+        height:80%;
         left: 5%;
-        top: 10%;
+        top: 5%;
         margin-top:3%;
         padding-bottom:0;
         padding-right:0;

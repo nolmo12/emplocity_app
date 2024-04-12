@@ -20,14 +20,21 @@ export default function Video({ videoObj }) {
                             width={300}
                             alt="video thumbnail"
                         />
+                    </div>
+                
+                    <div className={styles.videoStat}>
                         <div id={styles.title} className={styles.videoInfo}>
                             {videoTitle}
                         </div>
-                        <div className={styles.videoInfo}> author </div>
+                        <div className={styles.videoInfo}> 
+                            author 
+                        </div>
                         <div id={styles.views} className={styles.videoInfo}>
                             views
                         </div>
-                        <div className={styles.videoInfo}> date </div>
+                        <div className={styles.videoInfo}> 
+                            date 
+                        </div>
                         <div id={styles.likes} className={styles.videoInfo}>
                             likes
                         </div>
