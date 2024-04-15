@@ -6,7 +6,6 @@ import styles from "./video.module.css";
 
 export default function Video({ videoObj }) {
     if (videoObj) {
-        console.log(videoObj);
         const reference_code = videoObj.reference_code;
         const videoThumbnail = videoObj.thumbnail;
         const videoTitle = videoObj.languages[0].pivot.title;

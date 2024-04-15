@@ -93,7 +93,6 @@ export default function UploadPage() {
         setData({ ...data, visibility: e.target.value });
     }
 
-    console.log(data);
     return (
         <main>
             {videoSent ? (
@@ -143,6 +142,10 @@ export default function UploadPage() {
                             onChange={(e) => handleTags(e)}
                             placeholder="Tags"
                         ></input>
+                        <p>
+                            tags must be separated by space Ex. "polishboy
+                            warsaw"
+                        </p>
                     </div>
 
                     <div>

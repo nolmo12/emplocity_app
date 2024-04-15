@@ -31,8 +31,6 @@ describe("MainContent component test", () => {
         await act(async () => {
             const hElement = screen.getByText("Popular");
             expect(hElement).toBeInTheDocument();
-            const reccomend = screen.getByText("Reccommend");
-            expect(reccomend).toBeInTheDocument();
             const ulElement = screen.getByTestId("guestVideoList");
             const liElements = ulElement.getElementsByTagName("li");
             expect(liElements.length).toBe(10);

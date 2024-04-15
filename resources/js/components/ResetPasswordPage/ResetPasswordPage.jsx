@@ -90,7 +90,7 @@ export default function ResetPasswordPage() {
                     </div>
                     {passwordValidation ? (
                         <p data-testid="passwordRequirements">
-                            The password must contain at least 8 characters
+                            The password must contain at least 9 characters
                         </p>
                     ) : (
                         ""
