@@ -5,7 +5,7 @@ use Illuminate\Support\MessageBag;
 class ValidateHelper
 {
     /**
-    * Custom codes for validation errors.
+    * Custom codes for auth validation errors.
     * Starts at 46x:
     * 461 => email error,
     * 462 => password error,
@@ -37,14 +37,37 @@ class ValidateHelper
     
             return $formattedErrors;
     }
-
+        /**
+    * Custom codes for video validation errors.
+    * Starts at 46x:
+    * 471 => video required error,
+    * 472 => title required error,
+    * 473 => language required error,
+    * 474 => visibility required error
+    */
     static function getAllVideoErrorCodes(MessageBag $errors) : array
     {
         $formattedErrors = [];
         $code = 0;
         foreach ($errors->all() as $error)
         {
-            $code++;    
+            $code = 0;
+            if(str_contains($error, 'video'))
+            {
+                $code = 471;
+            }
+            if(str_contains($error, 'title'))
+            {
+                $code = 472;
+            }
+            if(str_contains($error, 'language'))
+            {
+                $code = 473;
+            }
+            if(str_contains($error, 'visibility'))
+            {
+                $code = 474;
+            }
             $formattedErrors[] = [
                 $code => $error
                 ];
