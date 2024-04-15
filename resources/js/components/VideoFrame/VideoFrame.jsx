@@ -20,8 +20,9 @@ export default function VideoFrame() {
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes, sendLikes } = useLike();
     const { reference_code } = useParams();
-    const videoObj = useFetchVideo({ reference_code });
-    const [userThumb, setUserThumb] = useState();
+    const { videoObj, isLoading } = useFetchVideo({ reference_code });
+
+    // const [userThumb, setUserThumb] = useState();
     const [likesCount, setLikesCount] = useState(0);
     const [dislikesCount, setDislikesCount] = useState(0);
     const [userInteraction, setUserInteraction] = useState();
@@ -47,13 +48,17 @@ export default function VideoFrame() {
         getLikeInfo();
     }, [reference_code, videoObj]);
 
-    if (videoObj && videoObj.video) {
+    if (!isLoading) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
+        const videoDescription = videoObj.description; // [0], when we have only one language
         const videoThumbnail = videoObj.video.thumbnail;
         return (
             <>
-                <div className={styles.videoFrameDiv}>
+                <div
+                    className={styles.videoFrameDiv}
+                    data-testid="video-player"
+                >
                     <video
                         width={320}
                         src={videoPath}
@@ -115,6 +120,7 @@ export default function VideoFrame() {
                         <h1 className={styles.videoFrameInfoDesc}>
                             Description
                         </h1>
+                        {videoDescription && <p>{videoDescription}</p>}
                     </div>
                 </div>
             </>

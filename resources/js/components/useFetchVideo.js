@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 export default function useFetchVideo({ reference_code }) {
     const [videoObj, setVideoObj] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchVideo = async () => {
             try {
@@ -9,11 +10,13 @@ export default function useFetchVideo({ reference_code }) {
                     `/api/video/watch/${reference_code}`
                 );
                 setVideoObj(response.data);
+                setIsLoading(false);
             } catch (error) {
                 console.log(error);
+                setIsLoading(false);
             }
         };
         fetchVideo();
     }, [reference_code]);
-    return videoObj;
+    return { videoObj, isLoading };
 }

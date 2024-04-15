@@ -54,5 +54,4 @@ export default function VideoSection({ sectionType }) {
         );
     }
     return view;
-
 }
