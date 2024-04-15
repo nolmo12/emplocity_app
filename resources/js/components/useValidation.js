@@ -24,6 +24,32 @@ export default function useValidation() {
             });
             return validationInfo;
         }
+        if (type === "upload" && data) {
+            const validationInfo = {
+                titleValidation: false,
+                languageValidation: false,
+                videoValidation: false,
+                visibilityValidation: false,
+            };
+            data.forEach((errorObj) => {
+                console.log(errorObj);
+                Object.entries(errorObj).forEach(([key, value]) => {
+                    if (key == 471) {
+                        validationInfo.videoValidation = true;
+                    }
+                    if (key == 472) {
+                        validationInfo.titleValidation = true;
+                    }
+                    if (key == 473) {
+                        validationInfo.languageValidation = true;
+                    }
+                    if (key == 474) {
+                        validationInfo.visibilityValidation = true;
+                    }
+                });
+            });
+            return validationInfo;
+        }
     };
 
     return {

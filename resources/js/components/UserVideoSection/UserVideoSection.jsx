@@ -8,14 +8,15 @@ export default function UserVideoSection() {
             <table data-testid="userVideoTable">
                 <tr>
                     <th id={styles.VideoHeader}>My video</th>
+                    <th>Title</th>
                     <th>Date</th>
                     <th>Views</th>
                     <th>Comments</th>
                     <th>Likes</th>
                 </tr>
                 <tr>
-                    <td>nic</td> // tu by měl být nějaký komponent, který
-                    zobrazí video
+                    <td>nic</td>
+                    <td className={styles.tdContent}>Nigerianowanie</td>
                     <td className={styles.tdContent}>20-02-2024</td>
                     <td className={styles.tdContent}>551</td>
                     <td className={styles.tdContent}>14</td>
