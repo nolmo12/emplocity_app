@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./uploadPage.module.css";
 import authUser from "../authUser";
+import useValidation from "../useValidation";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -25,8 +26,10 @@ export default function UploadPage() {
         thumbnail: null,
         visibility: "Public",
     });
+    const [validationInfo, setValidationInfo] = useState(null);
     const navigate = useNavigate();
     const { http } = authUser();
+    const { validateForm } = useValidation();
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -57,22 +60,29 @@ export default function UploadPage() {
         e.preventDefault();
         try {
             const formData = new FormData();
-            formData.append("title", data.title);
-            formData.append("language", data.language);
-            formData.append("video", data.video);
+            if (data.title) formData.append("title", data.title);
+            if (data.language) formData.append("language", data.language);
+            if (data.video) formData.append("video", data.video);
             if (data.tags) {
                 data.tags.forEach((tag, index) => {
                     formData.append(`tags[${index}]`, tag);
                 });
             }
-            formData.append("visibility", data.visibility);
+            if (data.visibility) formData.append("visibility", data.visibility);
             if (data.thumbnail) {
                 formData.append("thumbnail", data.thumbnail);
             }
+            if (data.description) {
+                formData.append("description", data.description);
+            }
             const response = await http.post("/api/video/upload", formData);
+            console.log(formData.tags);
             setVideoSent(true);
         } catch (error) {
-            console.log(error);
+            const errors = error.response.data.errors;
+            const validationResult = validateForm("upload", errors);
+            setValidationInfo(validationResult);
+            console.log(validationResult);
         }
     };
 
@@ -119,6 +129,9 @@ export default function UploadPage() {
                     </div>
 
                     {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
+                    {validationInfo && validationInfo.videoValidation && (
+                        <p>The video field is required</p>
+                    )}
 
                     <div>
                         <FontAwesomeIcon
@@ -130,6 +143,9 @@ export default function UploadPage() {
                             onChange={(e) => handleInupt("title", e)}
                             placeholder="Title"
                         ></input>
+                        {validationInfo && validationInfo.titleValidation && (
+                            <p>The title field is required</p>
+                        )}
                     </div>
 
                     <div>
