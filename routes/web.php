@@ -19,9 +19,9 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 |
 */
 
-Route::get('/{any?}', function () {
+Route::get('/{path?}', function () {
     return view('welcome');
-});
+})->where('path', '.*');
 
 
 
