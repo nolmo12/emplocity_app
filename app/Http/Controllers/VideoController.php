@@ -151,9 +151,16 @@ class VideoController extends Controller
     
         return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
     }
-    public function all()
+    public function all(Request $request)
     {
-        $videos = Video::with(['languages', 'tags'])->where('visibility', 'Public')->get();
+        if(!$request->offset)
+            $offset = 0;
+        else
+            $offset = intval($request->offset);
+
+        
+
+        $videos = Video::with(['languages', 'tags'])->where('visibility', 'Public')->offset(12 * $offset)->limit(12)->get();
 
         $videosArray = [];
         foreach ($videos as $video)
