@@ -93,14 +93,13 @@ export default function UploadPage() {
         setData({ ...data, visibility: e.target.value });
     }
 
-    console.log(data);
     return (
         <main>
             {videoSent ? (
                 <Message message={"Video has been sent"} />
             ) : (
                 <form
-                    data-testid="uploadFormWithoutInput"
+                    data-testid="upload-area"
                     onSubmit={(e) => handleSubmit(e)}
                     className={styles.uploadForm}
                 >
@@ -143,6 +142,10 @@ export default function UploadPage() {
                             onChange={(e) => handleTags(e)}
                             placeholder="Tags"
                         ></input>
+                        <p>
+                            tags must be separated by space Ex. "polishboy
+                            warsaw"
+                        </p>
                     </div>
 
                     <div>
@@ -173,6 +176,7 @@ export default function UploadPage() {
                         <h2>Thumbnail: </h2>
                         <input
                             type="file"
+                            data-testid="thumbnail-input"
                             onChange={(e) => handleThumbnail(e)}
                             className={styles.thumbnailInput}
                         />
@@ -180,7 +184,10 @@ export default function UploadPage() {
 
                     <div>
                         <h2>Visibility: </h2>
-                        <select onChange={(e) => handleVisibility(e)}>
+                        <select
+                            onChange={(e) => handleVisibility(e)}
+                            data-testid="visibility-select"
+                        >
                             <option value="Public">Public</option>
                             <option value="Unlisted">Unlisted</option>
                             <option value="Hidden">Hidden</option>

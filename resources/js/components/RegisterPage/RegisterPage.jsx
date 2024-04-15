@@ -52,7 +52,7 @@ export default function RegisterPage() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            http.post("/api/auth/register", {
+            await http.post("/api/auth/register", {
                 email: registeredData.email,
                 password: registeredData.password,
                 repeatPassword: registeredData.repeatPassword,
