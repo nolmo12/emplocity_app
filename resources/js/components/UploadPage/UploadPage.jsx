@@ -76,7 +76,6 @@ export default function UploadPage() {
                 formData.append("description", data.description);
             }
             const response = await http.post("/api/video/upload", formData);
-            console.log(formData.tags);
             setVideoSent(true);
         } catch (error) {
             const errors = error.response.data.errors;
@@ -186,6 +185,10 @@ export default function UploadPage() {
                             onChange={(e) => handleInupt("language", e)}
                             placeholder="Language"
                         ></input>
+                        {validationInfo &&
+                            validationInfo.languageValidation && (
+                                <p>The language field is required</p>
+                            )}
                     </div>
 
                     <div>
