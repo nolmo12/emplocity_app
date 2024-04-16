@@ -17,7 +17,8 @@ export default function useLikeCalculation() {
         setDislikesCount,
         reference_code,
         userInteraction,
-        setUserInteraction
+        setUserInteraction,
+        setThumbStyle
     ) => {
         if (isLogged && !isProcessing) {
             setIsProcessing(true);
@@ -29,6 +30,7 @@ export default function useLikeCalculation() {
                 ) {
                     setLikesCount((prev) => prev + 1);
                     setUserThumb("like");
+                    setThumbStyle("like");
                     sendLikes(reference_code, likeType);
                 } else if (
                     likeType === 0 &&
@@ -37,6 +39,7 @@ export default function useLikeCalculation() {
                 ) {
                     setDislikesCount((prev) => prev + 1);
                     setUserThumb("dislike");
+                    setThumbStyle("dislike");
                     sendLikes(reference_code, likeType);
                 } else if (
                     likeType === 1 &&
@@ -45,6 +48,7 @@ export default function useLikeCalculation() {
                 ) {
                     setLikesCount((prev) => prev - 1);
                     setUserThumb("");
+                    setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (
                     likeType === 0 &&
@@ -53,35 +57,42 @@ export default function useLikeCalculation() {
                 ) {
                     setDislikesCount((prev) => prev - 1);
                     setUserThumb("");
+                    setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 0 && userThumb === "like") {
                     setLikesCount((prev) => prev - 1);
                     setDislikesCount((prev) => prev + 1);
                     setUserThumb("dislike");
+                    setThumbStyle("dislike");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 1 && userThumb === "dislike") {
                     setDislikesCount((prev) => prev - 1);
                     setLikesCount((prev) => prev + 1);
                     setUserThumb("like");
+                    setThumbStyle("like");
                     sendLikes(reference_code, likeType);
                 }
             } else {
                 if (likeType === 1 && userInteraction === 1) {
                     setLikesCount((prev) => prev - 1);
                     setUserInteraction(null);
+                    setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 0 && userInteraction === 0) {
                     setDislikesCount((prev) => prev - 1);
                     setUserInteraction(null);
+                    setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 1 && userInteraction === 0) {
                     setLikesCount((prev) => prev + 1);
                     setDislikesCount((prev) => prev - 1);
                     setUserInteraction(1);
+                    setThumbStyle("like");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 0 && userInteraction === 1) {
                     setDislikesCount((prev) => prev + 1);
                     setLikesCount((prev) => prev - 1);
+                    setThumbStyle("dislike");
                     setUserInteraction(0);
                     sendLikes(reference_code, likeType);
                 }
