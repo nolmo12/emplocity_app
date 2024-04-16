@@ -13,10 +13,11 @@ export default function HelpPage() {
                         icon={faAlignLeft}
                         className={styles.helpFormIcon}
                     />
-                    <input
-                        type="text"
+                    <textarea
                         placeholder="Describe your problem"
                         data-testid="problemInput"
+                        className={styles.descriptionArea}
+                        rows="5"
                     />
                     </div>
                     <button>Send</button>

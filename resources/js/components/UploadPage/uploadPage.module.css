@@ -42,6 +42,11 @@
     transform: scale(0.95);
 }
 
+.uploadForm .uploadArea {
+    border:solid 2px red;
+    border-radius:6px;
+}
+
 .uploadForm input {
     width: 90%;
     height: 2.5em;
@@ -102,11 +107,44 @@
     position: relative;
 }
 
-.uploadForm p {
+.uploadForm .descriptionArea {
+    width: 90%;
+    height:auto;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    padding-top:0.5em;
+    padding-left: 2.5em;
+    border: solid 2px #a0a0a0;
+    resize: none;
+}
+
+.uploadForm .languageSelect {
+    width: 50%;
+    height: 2.5em;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    border: solid 2px #a0a0a0;
+    transform: translate(50%);
+}
+
+.uploadForm .thumbnailPreview {
+    width:8em;
+    height:5em;
+    transform: translate(65%);
+}
+
+.uploadForm .validationInfo {
     color: red;
     font-size: 0.7em;
     text-align: center;
 }
+
+.uploadForm p {
+    color: black;
+    font-size: 0.7em;
+    text-align: center;
+}
+
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
     .uploadForm {
