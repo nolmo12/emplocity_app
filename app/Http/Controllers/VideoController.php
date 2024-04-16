@@ -13,6 +13,7 @@ use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -119,7 +120,13 @@ class VideoController extends Controller
         foreach($languages as $language)
         {
             $nameArr = explode(" ", $language->pivot->title);
-            $video->addTags($nameArr);
+            foreach ($nameArr as $tag)
+            {
+                if (strlen($tag) >= 3)
+                {
+                    $video->addTags([$tag]);
+                }
+            }
         }
 
         if($request->user())
@@ -329,17 +336,19 @@ class VideoController extends Controller
         return response()->json(['message' => 'Likes updated successfully'], 200);
     }
 
-    public function update(Request $request, $referenceCode)
+    public function update(Request $request)
     {
+        $referenceCode = $request->reference_code;
         $validateVideo = Validator::make($request->all(), 
         [
-            'title' => 'required|string|max:255',
+            'title' => 'string|max:255',
             'description' =>'string|max:255',
             'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
-            'language' => 'required|exists:languages,id',
-            'visibility' => ['required', new Enumerate(['Public', 'Unlisted', 'Hidden'])],
+            'language' => 'exists:languages,id',
+            'visibility' => [new Enumerate(['Public', 'Unlisted', 'Hidden'])],
             'tags' => 'array',
-            'tags.*' => 'string|min:2'
+            'tags.*' => 'string|min:3',
+            'tags_to_remove' => 'array'
         ]);
 
         if($validateVideo->fails())
@@ -357,6 +366,70 @@ class VideoController extends Controller
 
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
         
+
+        if($request->hasFile('thumbnail'))
+        {
+            error_log($video->thumbnail);
+            $publicPath = public_path($video->thumbnail);
+            File::delete($publicPath);
+            $thumbnailName = $video->reference_code . str_replace(' ', '', $request->file('thumbnail')->getClientOriginalName());
+            $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
+
+            $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
+            $publicPath = Storage::url($path);
+            Storage::delete($path);
+
+            $video->thumbnail = $publicPath;
+            $video->save();
+        }
+
+        if($request->tags_to_remove)
+        {
+            foreach($request->tags_to_remove as $tag)
+            {
+                $tagModel = Tag::where('name', $tag)->first();
+                $video->tags()->detach($tagModel->id);
+            }
+            $video->save();
+        }
+
+        //this is to be changed when we will add functionality for more languages)
+        $languages = $video->languages;
+        if($request->title)
+        {
+            foreach($languages as $language)
+            {
+                $language->pivot->title = $request->title;
+                $language->pivot->save();
+            }
+        }
+
+        if($request->description)
+        {
+            foreach($languages as $language)
+            {
+                $language->pivot->description = $request->description;
+                $language->pivot->save();
+            }
+        }
+
+
+        foreach($languages as $language)
+        {
+            $nameArr = explode(" ", $language->pivot->title);
+            foreach ($nameArr as $tag)
+            {
+                if (strlen($tag) >= 3)
+                {
+                    $video->addTags([$tag]);
+                }
+            }
+        }
+
+        if($request->tags)
+            $video->addTags($request->tags);
+
+        $video->save();  
     }
 
 }
