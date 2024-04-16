@@ -123,7 +123,7 @@ Route::prefix('video')->group(function () {
     Route::get('/hasUserLiked/{referenceCode}', [UserController::class, 'hasUserLikedVideo'])
     ->middleware('auth:api');
 
-    Route::delete('/delete/{id}', [VideoController::class, 'delete'])
+    Route::delete('/delete', [VideoController::class, 'delete'])
     ->middleware(['auth:api', EnsureUserOwnsModel::class]);
 
     Route::post('/upload', [VideoController::class, 'store']);
