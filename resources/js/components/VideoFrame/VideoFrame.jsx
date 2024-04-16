@@ -26,7 +26,6 @@ export default function VideoFrame() {
     const [userInteraction, setUserInteraction] = useState();
     const [thumbStyle, setThumbStyle] = useState();
     const [renderKey, setRenderKey] = useState(0);
-
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
 
@@ -53,7 +52,6 @@ export default function VideoFrame() {
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
-        console.log(thumbStyle);
         return (
             <>
                 <div
@@ -93,12 +91,7 @@ export default function VideoFrame() {
                             <p>{dislikesCount}</p>
                         </div>
 
-                        <div
-                            className={
-                                tempThumbStyle === "like" &&
-                                styles.videoFrameIconLike
-                            }
-                        >
+                        <div>
                             <FontAwesomeIcon
                                 onClick={() =>
                                     likeCountFunction(
