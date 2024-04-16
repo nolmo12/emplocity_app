@@ -23,6 +23,17 @@
     border: solid 2px #a0a0a0;
 }
 
+.helpForm .descriptionArea {
+    width: 90%;
+    height:auto;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    padding-top:0.5em;
+    padding-left: 2.5em;
+    border: solid 2px #a0a0a0;
+    resize: none;
+}
+
 .helpForm button {
     width: 50%;
     height: 2em;
