@@ -107,7 +107,6 @@ Route::post('/reset-password', function (Request $request) {
 })->middleware('guest')->name('password.update');
 
 Route::prefix('video')->group(function () {
-    Route::post('/upload', [VideoController::class, 'store']);
     
     Route::get('/watch/{referenceCode}', [VideoController::class,'show'])
     ->name('watch');
@@ -127,7 +126,13 @@ Route::prefix('video')->group(function () {
     Route::delete('/delete/{id}', [VideoController::class, 'delete'])
     ->middleware(['auth:api', EnsureUserOwnsModel::class]);
 
+    Route::post('/upload', [VideoController::class, 'store']);
+
     Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
     ->middleware('auth:api')
     ->name('updateLikes');
+
+    Route::post('/update', [VideoController::class,'update'])
+    ->middleware('auth:api')
+    ->middleware(EnsureUserOwnsModel::class);
 });

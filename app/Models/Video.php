@@ -4,11 +4,12 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Report;
+use App\Helpers\VideoManager;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use App\Helpers\VideoManager;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Video extends Model
 {
@@ -93,5 +94,26 @@ class Video extends Model
     public function getLikesDislikesCount(bool $type = true): int
     {
         return $this->likesDislikes()->where('is_like', $type)->count();
+    }
+
+    public function removeThumbnail() : void
+    {
+        $publicPath = public_path($this->thumbnail);
+        if(File::exists($publicPath))
+        {
+           File::delete($publicPath);
+           $this->thumbnail = null;
+        }
+        else
+            error_log('Thumbnail not found');
+    }
+
+    public function removeVideo() : void
+    {
+        $publicPath = public_path($this->video);
+        if(File::exists($publicPath))
+            File::delete($publicPath);
+        else
+            error_log('Video not found');
     }
 }
