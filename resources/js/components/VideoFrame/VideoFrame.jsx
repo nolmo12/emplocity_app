@@ -21,12 +21,10 @@ export default function VideoFrame() {
     const { fetchLikes, sendLikes } = useLike();
     const { reference_code } = useParams();
     const { videoObj, isLoading } = useFetchVideo({ reference_code });
-
-    // const [userThumb, setUserThumb] = useState();
     const [likesCount, setLikesCount] = useState(0);
     const [dislikesCount, setDislikesCount] = useState(0);
     const [userInteraction, setUserInteraction] = useState();
-
+    const [thumbStyle, setThumbStyle] = useState();
     const [renderKey, setRenderKey] = useState(0);
 
     useEffect(() => {
@@ -54,6 +52,8 @@ export default function VideoFrame() {
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
+        const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
+        console.log(thumbStyle);
         return (
             <>
                 <div
@@ -83,16 +83,22 @@ export default function VideoFrame() {
                                         setDislikesCount,
                                         reference_code,
                                         userInteraction,
-                                        setUserInteraction
+                                        setUserInteraction,
+                                        setThumbStyle
                                     )
                                 } // 0 for dislike
                                 icon={faThumbsDown}
-                                className={styles.videoFrameIconTD}
+                                className={styles.videoFrameIcon}
                             />
                             <p>{dislikesCount}</p>
                         </div>
 
-                        <div>
+                        <div
+                            className={
+                                tempThumbStyle === "like" &&
+                                styles.videoFrameIconLike
+                            }
+                        >
                             <FontAwesomeIcon
                                 onClick={() =>
                                     likeCountFunction(
@@ -103,7 +109,8 @@ export default function VideoFrame() {
                                         setDislikesCount,
                                         reference_code,
                                         userInteraction,
-                                        setUserInteraction
+                                        setUserInteraction,
+                                        setThumbStyle
                                     )
                                 } // 1 for like
                                 icon={faThumbsUp}
