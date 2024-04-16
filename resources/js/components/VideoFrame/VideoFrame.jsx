@@ -49,9 +49,10 @@ export default function VideoFrame() {
     }, [reference_code, videoObj]);
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
-        const videoDescription = videoObj.description; // [0], when we have only one language
+        const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         return (
             <>
@@ -120,7 +121,9 @@ export default function VideoFrame() {
                         <h1 className={styles.videoFrameInfoDesc}>
                             Description
                         </h1>
-                        {videoDescription && <p>{videoDescription}</p>}
+                        {videoDescription && (
+                            <p color="black">{videoDescription}</p>
+                        )}
                     </div>
                 </div>
             </>

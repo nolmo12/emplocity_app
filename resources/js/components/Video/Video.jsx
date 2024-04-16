@@ -8,8 +8,10 @@ export default function Video({ videoObj }) {
     if (videoObj) {
         const reference_code = videoObj.reference_code;
         const videoThumbnail = videoObj.thumbnail;
+        const videoDate = videoObj.created_at.substring(0, 10);
         const videoTitle = videoObj.languages[0].pivot.title;
         const path = `/video/${reference_code}`;
+        console.log(videoObj);
         return (
             <section className={styles.videoSection}>
                 <Link to={path}>
@@ -20,20 +22,16 @@ export default function Video({ videoObj }) {
                             alt="video thumbnail"
                         />
                     </div>
-                
+
                     <div className={styles.videoStat}>
                         <div id={styles.title} className={styles.videoInfo}>
                             {videoTitle}
                         </div>
-                        <div className={styles.videoInfo}> 
-                            author 
-                        </div>
+                        <div className={styles.videoInfo}>author</div>
                         <div id={styles.views} className={styles.videoInfo}>
                             views
                         </div>
-                        <div className={styles.videoInfo}> 
-                            date 
-                        </div>
+                        <div className={styles.videoInfo}>{videoDate}</div>
                         <div id={styles.likes} className={styles.videoInfo}>
                             likes
                         </div>
