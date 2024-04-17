@@ -10,6 +10,7 @@ import {
     faFilm,
     faTags,
     faAlignLeft,
+    faLanguage,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadPage() {
@@ -28,7 +29,7 @@ export default function UploadPage() {
     });
     const [validationInfo, setValidationInfo] = useState(null);
     const navigate = useNavigate();
-    const { http } = authUser();
+    const { http, isLogged } = authUser();
     const { validateForm } = useValidation();
 
     const handleDrop = (e) => {
@@ -129,7 +130,7 @@ export default function UploadPage() {
 
                     {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
                     {validationInfo && validationInfo.videoValidation && (
-                        <p>The video field is required</p>
+                        <p className={styles.validationInfo}>The video field is required</p>
                     )}
 
                     <div>
@@ -143,7 +144,7 @@ export default function UploadPage() {
                             placeholder="Title"
                         ></input>
                         {validationInfo && validationInfo.titleValidation && (
-                            <p>The title field is required</p>
+                            <p className={styles.validationInfo}>The title field is required</p>
                         )}
                     </div>
 
@@ -168,26 +169,26 @@ export default function UploadPage() {
                             icon={faAlignLeft}
                             className={styles.uploadFormIcon}
                         />
-                        <input
-                            type="textarea"
+                        <textarea
                             onChange={(e) => handleInupt("description", e)}
                             placeholder="Description"
-                        ></input>
+                            className={styles.descriptionArea}
+                            rows="5"
+                        ></textarea>
                     </div>
 
                     <div>
-                        <FontAwesomeIcon
-                            icon={faAlignLeft}
-                            className={styles.uploadFormIcon}
-                        />
-                        <input
-                            type="textarea"
+                        <select
+                            className={styles.languageSelect}
                             onChange={(e) => handleInupt("language", e)}
-                            placeholder="Language"
-                        ></input>
+                            defaultValue=""
+                        >
+                            <option value="" disabled selected hidden>Language</option>
+                            <option value="1">English</option>
+                        </select>
                         {validationInfo &&
                             validationInfo.languageValidation && (
-                                <p>The language field is required</p>
+                                <p className={styles.validationInfo}>The language field is required</p>
                             )}
                     </div>
 
@@ -199,6 +200,15 @@ export default function UploadPage() {
                             onChange={(e) => handleThumbnail(e)}
                             className={styles.thumbnailInput}
                         />
+                        {data.thumbnail && (
+                            <div>
+                                <img
+                                    src={URL.createObjectURL(data.thumbnail)}
+                                    alt="Thumbnail Preview"
+                                    className={styles.thumbnailPreview}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     <div>
@@ -209,7 +219,7 @@ export default function UploadPage() {
                         >
                             <option value="Public">Public</option>
                             <option value="Unlisted">Unlisted</option>
-                            <option value="Hidden">Hidden</option>
+                            {isLogged && <option value="Hidden">Hidden</option>}
                         </select>
                     </div>
 

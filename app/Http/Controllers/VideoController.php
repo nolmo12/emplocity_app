@@ -137,7 +137,8 @@ class VideoController extends Controller
         $video->status = 'Ok';
         $video->visibility = $request->visibility;
         $video->save();
-
+        
+        return $video;
     }
 
     public function show(string $referenceCode)
@@ -155,8 +156,21 @@ class VideoController extends Controller
         $tags = $video->tags()->get();
         $likesCount = $video->getLikesDislikesCount(true);
         $dislikesCount = $video->getLikesDislikesCount(false);
-    
-        return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
+
+        $user = User::find($video->user_id);
+
+        if($user)
+        {
+            $userName = $user->name;
+            $userFirstName = $user->first_name;
+            $userAvatar = $user->avatar;
+
+            return response()->json(compact('video', 'title', 'description', 'userName', 'userFirstName', 'userAvatar', 'tags', 'likesCount', 'dislikesCount'));
+        }
+        else
+        {
+            return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
+        }
     }
     public function all(Request $request)
     {
@@ -172,10 +186,20 @@ class VideoController extends Controller
         $videosArray = [];
         foreach ($videos as $video)
         {
+
             $likesCount = $video->getLikesDislikesCount(true);
             $dislikesCount = $video->getLikesDislikesCount(false);
+
+            $user = User::find($video->user_id);
     
             $videoArray = $video->toArray();
+            if($user)
+            {
+                $videoArray['userName'] = $user->name;
+                $videoArray['firstName'] = $user->first_name;
+                $videoArray['avatar'] = $user->avatar;
+            }
+                
             $videoArray['likesCount'] = $likesCount;
             $videoArray['dislikesCount'] = $dislikesCount;
     
@@ -250,10 +274,12 @@ class VideoController extends Controller
 
         return $similarVideos;
     }
-
-    public function delete(int $id)
+    //This method needs to be changed, because it is currently not working
+    //Use File instead of Storage class
+    public function delete(Request $request)
     {
-        $video = Video::find($id);
+        $video = Video::where('reference_code', $request->reference_code)->first();
+
         if (!$video)
         {
             return response()->json(['error' => 'Video not found'], 404);
@@ -263,21 +289,25 @@ class VideoController extends Controller
 
         $video->languages()->detach();
 
+        $video->likesDislikes()->delete();
+
         $videoPath = public_path($video->video);
         $thumbnailPath = public_path($video->thumbnail);
 
-        if(Storage::exists($videoPath))
-            Storage::delete($videoPath);
+        if(File::exists($videoPath))
+            File::delete($videoPath);
         else
             return response()->json(['error' => 'Video path not found'], 404);
 
         
-        if(Storage::exists($thumbnailPath))
-            Storage::delete($thumbnailPath);
+        if(File::exists($thumbnailPath))
+            File::delete($thumbnailPath);
         else
             return response()->json(['error' => 'Thumbnail path not found'], 404);
 
         $video->delete();
+
+        return response()->json(['success'=> 'Succesfully deleted video'], 200);
     }
 
     public function updateLikes(Request $request, string $referenceCode)
@@ -365,7 +395,8 @@ class VideoController extends Controller
         }
 
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
-        
+
+        $video->visibility = $request->visibility;
 
         if($request->hasFile('thumbnail'))
         {

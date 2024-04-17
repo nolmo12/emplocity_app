@@ -60,10 +60,11 @@ class AuthController extends Controller
 
             $name = rtrim($name);
 
-            $name .= rand(100, 9999);
+            $name .= rand(1, 9999);
 
             $user = User::create([
                 'name' => $name,
+                'first_name' => $name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
