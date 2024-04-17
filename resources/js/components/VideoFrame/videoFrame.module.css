@@ -7,11 +7,11 @@
 
 .videoFrameDiv p {
     position: relative;
-    float:right;
+    float: right;
     font-size: 2em;
     margin-top: 3%;
     display: block;
-    right:-2.5%;
+    right: -2.5%;
 }
 
 .videoScreen {
@@ -53,7 +53,6 @@
     cursor: pointer;
 }
 
-
 @media screen and (max-width: 800px) and (orientation: portrait) {
     .videoFrameDiv {
         position: relative;
@@ -77,11 +76,11 @@
 
     .videoFrameDiv p {
         position: relative;
-        float:right;
+        float: right;
         font-size: 1.5em;
         margin-top: 7%;
         display: block;
-        right:-6%;
+        right: -6%;
     }
 }
 
@@ -106,10 +105,10 @@
 
     .videoFrameDiv p {
         position: relative;
-        float:right;
+        float: right;
         font-size: 2em;
         margin-top: 5%;
         display: block;
-        right:-4%;
+        right: -4%;
     }
 }
