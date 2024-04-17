@@ -28,8 +28,6 @@ export default function Video({ videoObj }) {
                     <div id={styles.video}>
                         <div
                             style={{
-                                width: 300,
-                                height: "auto",
                                 backgroundColor: "#fff",
                                 position: "relative",
                             }}
