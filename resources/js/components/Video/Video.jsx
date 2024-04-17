@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import useLikeCalculation from "../useLikeCalculation";
 import styles from "./video.module.css";
