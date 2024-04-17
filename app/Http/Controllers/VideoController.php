@@ -156,8 +156,21 @@ class VideoController extends Controller
         $tags = $video->tags()->get();
         $likesCount = $video->getLikesDislikesCount(true);
         $dislikesCount = $video->getLikesDislikesCount(false);
-    
-        return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
+
+        $user = User::find($video->user_id);
+
+        if($user)
+        {
+            $userName = $user->name;
+            $userFirstName = $user->first_name;
+            $userAvatar = $user->avatar;
+
+            return response()->json(compact('video', 'title', 'description', 'userName', 'userFirstName', 'userAvatar', 'tags', 'likesCount', 'dislikesCount'));
+        }
+        else
+        {
+            return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
+        }
     }
     public function all(Request $request)
     {
@@ -173,10 +186,20 @@ class VideoController extends Controller
         $videosArray = [];
         foreach ($videos as $video)
         {
+
             $likesCount = $video->getLikesDislikesCount(true);
             $dislikesCount = $video->getLikesDislikesCount(false);
+
+            $user = User::find($video->user_id);
     
             $videoArray = $video->toArray();
+            if($user)
+            {
+                $videoArray['userName'] = $user->name;
+                $videoArray['firstName'] = $user->first_name;
+                $videoArray['avatar'] = $user->avatar;
+            }
+                
             $videoArray['likesCount'] = $likesCount;
             $videoArray['dislikesCount'] = $dislikesCount;
     

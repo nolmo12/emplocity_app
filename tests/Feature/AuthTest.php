@@ -49,9 +49,11 @@ class AuthTest extends TestCase
     public function testLoginCorrect(): void
     {
         $email = fake()->unique()->email();
+        $name = fake()->name();
 
         $user = User::create([
-            'name' => 'Test User',
+            'name' => $name,
+            'first_name' => $name,
             'email' => $email,
             'password' => Hash::make('password123'),
         ]);
@@ -116,9 +118,11 @@ class AuthTest extends TestCase
     public function testLogout()
     {
         $email = fake()->unique()->email();
+        $name = fake()->name();
 
         $user = User::create([
-            'name' => 'Test User',
+            'name' => $name,
+            'first_name' => $name,
             'email' => $email,
             'password' => Hash::make('password123'),
         ]);
@@ -142,26 +146,28 @@ class AuthTest extends TestCase
     }
 
     public function testUserVerified()
-{
-    $email = fake()->unique()->email();
+    {
+        $email = fake()->unique()->email();
+        $name = fake()->name();
 
-        $user = User::create([
-            'name' => 'Test User',
-            'email' => $email,
-            'password' => Hash::make('password123'),
-        ]);
+            $user = User::create([
+                'name' => $name,
+                'first_name' => $name,
+                'email' => $email,
+                'password' => Hash::make('password123'),
+            ]);
 
-    $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
-        now()->addMinutes(60),
-        ['id' => $user->id, 'hash' => sha1($user->email)],
-        
-    );
-    $this->head($verificationUrl);
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)],
+            
+        );
+        $this->head($verificationUrl);
 
-    $user->refresh();
+        $user->refresh();
 
-    $this->assertTrue($user->hasVerifiedEmail());
-}
+        $this->assertTrue($user->hasVerifiedEmail());
+    }
     
 }
