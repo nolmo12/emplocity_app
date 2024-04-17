@@ -5,15 +5,6 @@
     top: -5%;
 }
 
-.videoFrameDiv p {
-    position: relative;
-    float: right;
-    font-size: 2em;
-    margin-top: 3%;
-    display: block;
-    right: -2.5%;
-}
-
 .videoScreen {
     width: 80%;
     height: 100%;
@@ -34,6 +25,20 @@
     height: 10vh;
 }
 
+.videoLDContainer {
+    width:100%;
+}
+
+.videoLDContainer p {
+    position: relative;
+    float: right;
+    font-size: 2em;
+    margin-top: 3%;
+    display: block;
+    right: -3.5%;
+    width:2%;
+}
+
 .videoFrameIcon {
     position: relative;
     float: right;
@@ -41,6 +46,10 @@
     width: 3em;
     margin-left: 1em;
     cursor: pointer;
+}
+
+.videoFrameIcon.like {
+    color:green;
 }
 
 .videoFrameIconTD {
@@ -51,6 +60,10 @@
     margin-left: 1em;
     transform: scaleX(-1);
     cursor: pointer;
+}
+
+.videoFrameIconTD.dislike {
+    color: red;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
