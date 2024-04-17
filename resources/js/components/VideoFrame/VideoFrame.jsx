@@ -51,6 +51,7 @@ export default function VideoFrame() {
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
+        const videoOwner = videoObj.userName;
         const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
         return (
             <>
@@ -116,14 +117,14 @@ export default function VideoFrame() {
                             {videoTitle}
                         </h1>
                         <h1>
-                            <FontAwesomeIcon icon={faUser} /> Account
+                            <FontAwesomeIcon icon={faUser} />{" "}
+                            {videoOwner ? videoOwner : "Guest"}
                         </h1>
                         <h1 className={styles.videoFrameInfoDesc}>
-                            Description
+                            {videoDescription
+                                ? videoDescription
+                                : "No Description"}
                         </h1>
-                        {videoDescription && (
-                            <p color="black">{videoDescription}</p>
-                        )}
                     </div>
                 </div>
             </>
