@@ -26,7 +26,6 @@ export default function VideoFrame() {
     const [userInteraction, setUserInteraction] = useState();
     const [thumbStyle, setThumbStyle] = useState();
     const [renderKey, setRenderKey] = useState(0);
-
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
 
@@ -52,8 +51,8 @@ export default function VideoFrame() {
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
+        const videoOwner = videoObj.userName;
         const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
-        console.log(thumbStyle);
         return (
             <>
                 <div
@@ -93,12 +92,7 @@ export default function VideoFrame() {
                             <p>{dislikesCount}</p>
                         </div>
 
-                        <div
-                            className={
-                                tempThumbStyle === "like" &&
-                                styles.videoFrameIconLike
-                            }
-                        >
+                        <div>
                             <FontAwesomeIcon
                                 onClick={() =>
                                     likeCountFunction(
@@ -123,14 +117,14 @@ export default function VideoFrame() {
                             {videoTitle}
                         </h1>
                         <h1>
-                            <FontAwesomeIcon icon={faUser} /> Account
+                            <FontAwesomeIcon icon={faUser} />{" "}
+                            {videoOwner ? videoOwner : "Guest"}
                         </h1>
                         <h1 className={styles.videoFrameInfoDesc}>
-                            Description
+                            {videoDescription
+                                ? videoDescription
+                                : "No Description"}
                         </h1>
-                        {videoDescription && (
-                            <p color="black">{videoDescription}</p>
-                        )}
                     </div>
                 </div>
             </>
