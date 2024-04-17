@@ -15,7 +15,7 @@ export default function SearchResult() {
                 <h2>Search results</h2>
                 <li>
                     {videos.map((video) => {
-                        return <Video key={video.id} videoObj={video} />;
+                        return <Video key={video.id} videoObj={video}/>;
                     })}
                 </li>
             </ul>

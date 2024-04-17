@@ -71,7 +71,7 @@ export default function VideoFrame() {
                             icon={faShare}
                             className={styles.videoFrameIcon}
                         />
-                        <div>
+                        <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
                                     likeCountFunction(
@@ -87,12 +87,12 @@ export default function VideoFrame() {
                                     )
                                 } // 0 for dislike
                                 icon={faThumbsDown}
-                                className={styles.videoFrameIcon}
+                                className={`${styles.videoFrameIconTD} ${thumbStyle === 'dislike' && styles.dislike}`}
                             />
                             <p>{dislikesCount}</p>
                         </div>
 
-                        <div>
+                        <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
                                     likeCountFunction(
@@ -108,7 +108,7 @@ export default function VideoFrame() {
                                     )
                                 } // 1 for like
                                 icon={faThumbsUp}
-                                className={styles.videoFrameIcon}
+                                className={`${styles.videoFrameIcon} ${thumbStyle === 'like' && styles.like}`}
                             />
                             <p>{likesCount}</p>
                         </div>
