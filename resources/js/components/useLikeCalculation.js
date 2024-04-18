@@ -114,9 +114,8 @@ export default function useLikeCalculation() {
     const calculateLikeRatio = (likesCount, dislikesCount) => {
         if (likesCount >= dislikesCount) {
             const result = (likesCount / (likesCount + dislikesCount)) * 100;
-            console.log(result);
             if (result) return result + "%";
-            return "No likes yet";
+            return "no ratings";
         } else {
             const result = (dislikesCount / (likesCount + dislikesCount)) * 100;
             if (result) return "-" + result + "%";

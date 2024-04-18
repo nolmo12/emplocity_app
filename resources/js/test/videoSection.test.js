@@ -1,15 +1,8 @@
 import React from "react";
-import {
-    render,
-    screen,
-    act,
-    fireEvent,
-    waitFor,
-} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import VideoSection from "../components/VideoSection/VideoSection";
-import Video from "../components/Video/Video";
 import useFetchAllVideos from "../components/useFetchAllVideos";
 import { expectedData } from "./exampleData.js";
 import config from "../config";

@@ -30,9 +30,6 @@ export default function VideoSection({ sectionType }) {
 
                 {videos &&
                     videos.map((video) => {
-                        {
-                            console.log(videos);
-                        }
                         return (
                             <Video
                                 data-testid={`video-${renderKey}`}
