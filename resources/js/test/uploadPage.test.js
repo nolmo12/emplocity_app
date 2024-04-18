@@ -31,7 +31,7 @@ describe("UploadPage component test", () => {
             const tagsElement = screen.getByPlaceholderText("Tags");
             const descriptionElement =
                 screen.getByPlaceholderText("Description");
-            const languageElement = screen.getByPlaceholderText("Language");
+            const languageElement = screen.getByTestId("language-select");
             const thumbnailElement = screen.getByTestId("thumbnail-input");
             const visibilityElement = screen.getByTestId("visibility-select");
             const submitElement = screen.getByText("Submit");

@@ -74,6 +74,7 @@ export default function VideoFrame() {
     }, [reference_code, videoObj]);
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -114,6 +115,7 @@ export default function VideoFrame() {
                                     )
                                 } // 0 for dislike
                                 icon={faThumbsDown}
+                                data-testid="dislike-button"
                                 className={`${styles.videoFrameIconTD} ${
                                     thumbStyle === "dislike" && styles.dislike
                                 }`}
@@ -137,6 +139,7 @@ export default function VideoFrame() {
                                     )
                                 } // 1 for like
                                 icon={faThumbsUp}
+                                data-testid="like-button"
                                 className={`${styles.videoFrameIcon} ${
                                     thumbStyle === "like" && styles.like
                                 }`}
@@ -145,16 +148,26 @@ export default function VideoFrame() {
                         </div>
 
                         <h1 className={styles.videoFrameInfoTitle}>
-                            {videoTitle}
+                            <p data-testid="video-title">{videoTitle}</p>
                         </h1>
                         <h1>
                             <FontAwesomeIcon icon={faUser} />{" "}
-                            {videoOwner ? videoOwner : "Guest"}
+                            {videoOwner ? (
+                                <p data-testid="video-owner">{videoOwner}</p>
+                            ) : (
+                                <p data-testid="video-owner">Guest</p>
+                            )}
                         </h1>
                         <h1 className={styles.videoFrameInfoDesc}>
-                            {videoDescription
-                                ? videoDescription
-                                : "No Description"}
+                            {videoDescription ? (
+                                <p data-testid="video-description">
+                                    {videoDescription}
+                                </p>
+                            ) : (
+                                <p data-testid="video-description">
+                                    No description
+                                </p>
+                            )}
                         </h1>
                     </div>
                 </div>

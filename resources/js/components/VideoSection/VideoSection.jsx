@@ -27,9 +27,20 @@ export default function VideoSection({ sectionType }) {
         view = (
             <div id={styles.videoSection}>
                 <h2 className={styles.videoSectionH}>Reccommend</h2>
-                {videos.map((video) => {
-                    return <Video key={video.id} videoObj={video} />;
-                })}
+
+                {videos &&
+                    videos.map((video) => {
+                        {
+                            console.log(videos);
+                        }
+                        return (
+                            <Video
+                                data-testid={`video-${renderKey}`}
+                                key={video.id}
+                                videoObj={video}
+                            />
+                        );
+                    })}
             </div>
         );
     } else if (sectionType === "similar" && similarVideosObj.videos) {
