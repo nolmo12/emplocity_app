@@ -28,6 +28,7 @@ export default function useLikeCalculation() {
                     userThumb !== "like" &&
                     userThumb !== "dislike"
                 ) {
+                    console.log(1);
                     setLikesCount((prev) => prev + 1);
                     setUserThumb("like");
                     setThumbStyle("like");
@@ -37,6 +38,7 @@ export default function useLikeCalculation() {
                     userThumb !== "dislike" &&
                     userThumb !== "like"
                 ) {
+                    console.log(2);
                     setDislikesCount((prev) => prev + 1);
                     setUserThumb("dislike");
                     setThumbStyle("dislike");
@@ -46,6 +48,7 @@ export default function useLikeCalculation() {
                     userThumb === "like" &&
                     likesCount > 0
                 ) {
+                    console.log(3);
                     setLikesCount((prev) => prev - 1);
                     setUserThumb("");
                     setThumbStyle("");
@@ -55,17 +58,20 @@ export default function useLikeCalculation() {
                     userThumb === "dislike" &&
                     dislikesCount > 0
                 ) {
+                    console.log(4);
                     setDislikesCount((prev) => prev - 1);
                     setUserThumb("");
                     setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 0 && userThumb === "like") {
+                    console.log(5);
                     setLikesCount((prev) => prev - 1);
                     setDislikesCount((prev) => prev + 1);
                     setUserThumb("dislike");
                     setThumbStyle("dislike");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 1 && userThumb === "dislike") {
+                    console.log(6);
                     setDislikesCount((prev) => prev - 1);
                     setLikesCount((prev) => prev + 1);
                     setUserThumb("like");
@@ -74,22 +80,26 @@ export default function useLikeCalculation() {
                 }
             } else {
                 if (likeType === 1 && userInteraction === 1) {
+                    console.log(7);
                     setLikesCount((prev) => prev - 1);
                     setUserInteraction(null);
                     setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 0 && userInteraction === 0) {
+                    console.log(8);
                     setDislikesCount((prev) => prev - 1);
                     setUserInteraction(null);
                     setThumbStyle("");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 1 && userInteraction === 0) {
+                    console.log(9);
                     setLikesCount((prev) => prev + 1);
                     setDislikesCount((prev) => prev - 1);
                     setUserInteraction(1);
                     setThumbStyle("like");
                     sendLikes(reference_code, likeType);
                 } else if (likeType === 0 && userInteraction === 1) {
+                    console.log(10);
                     setDislikesCount((prev) => prev + 1);
                     setLikesCount((prev) => prev - 1);
                     setThumbStyle("dislike");
@@ -104,9 +114,8 @@ export default function useLikeCalculation() {
     const calculateLikeRatio = (likesCount, dislikesCount) => {
         if (likesCount >= dislikesCount) {
             const result = (likesCount / (likesCount + dislikesCount)) * 100;
-            console.log(result);
             if (result) return result + "%";
-            return "No likes yet";
+            return "no ratings";
         } else {
             const result = (dislikesCount / (likesCount + dislikesCount)) * 100;
             if (result) return "-" + result + "%";
