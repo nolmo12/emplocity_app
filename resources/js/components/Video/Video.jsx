@@ -9,6 +9,29 @@ import { ClipLoader } from "react-spinners";
 export default function Video({ videoObj }) {
     const [thumbnailIsLoaded, setThumbnailIsLoaded] = useState(false);
     const { calculateLikeRatio } = useLikeCalculation();
+    const getLikeRatioStyle = (likeRatio) => {
+        console.log(likeRatio);
+        const ratio = parseInt(likeRatio.replace("%", "").trim());
+    
+        if (isNaN(ratio)) {
+            return {}; 
+        }
+    
+        const green = [0, 255, 0]; 
+        const red = [255, 0, 0]; 
+    
+        const interpolateColor = (color1, color2, factor) => {
+            const result = color1.slice();
+            for (let i = 0; i < 3; i++) {
+                result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+            }
+            return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
+        };
+    
+        const textColor = interpolateColor(red, green, ratio / 100);
+    
+        return { color: textColor };
+    };
     if (videoObj) {
         const reference_code = videoObj.reference_code;
         const videoThumbnail = videoObj.thumbnail;
@@ -73,9 +96,10 @@ export default function Video({ videoObj }) {
                         <div className={styles.videoInfo}>
                             <p data-testid="video-date">{videoDate}</p>
                         </div>
-                        <div id={styles.likes} className={styles.videoInfo}>
-                            <p data-testid="video-like-ratio">{likeRatio}</p>
-                        </div>
+                        <div className={styles.videoInfo}>{videoDate}</div>
+                        <div id={styles.likes} className={styles.videoInfo} style={getLikeRatioStyle(likeRatio)}>
+    {likeRatio}
+</div>
                     </div>
                 </Link>
             </section>
