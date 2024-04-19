@@ -25,4 +25,9 @@ class Comment extends Model
     {
         return Comment::where('parent', $this->id)->exists();
     }
+
+    public function getChildren()
+    {
+        return Comment::where('parent', $this->id)->get();
+    }
 }

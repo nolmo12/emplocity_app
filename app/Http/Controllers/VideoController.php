@@ -149,8 +149,7 @@ class VideoController extends Controller
         {
             return response()->json(['error' => 'Video not found'], 404);
         }
-        if($request->user())
-            error_log('User '.$request->user()->name.'is logged in');
+
         $this->authorize('view', [$video]);
 
         $language = $video->languages()->first();
@@ -284,6 +283,8 @@ class VideoController extends Controller
         {
             return response()->json(['error' => 'Video not found'], 404);
         }
+        
+        $this->authorize('delete', $video);
 
         $video->tags()->detach();
 
@@ -397,6 +398,8 @@ class VideoController extends Controller
         }
 
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
+
+        $this->authorize('update', $video);
 
         $video->visibility = $request->visibility;
 
