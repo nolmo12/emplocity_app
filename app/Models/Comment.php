@@ -9,8 +9,25 @@ class Comment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'content',
+        'parent',
+        'video_id',
+        'user_id'
+    ];
+
     public function video()
     {
         return $this->belongsTo(Video::class);
+    }
+
+    public function hasChildren() : bool
+    {
+        return Comment::where('parent', $this->id)->exists();
+    }
+
+    public function getChildren()
+    {
+        return Comment::where('parent', $this->id)->get();
     }
 }

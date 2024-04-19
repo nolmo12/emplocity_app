@@ -141,14 +141,16 @@ class VideoController extends Controller
         return $video;
     }
 
-    public function show(string $referenceCode)
-    {
-        $video = Video::where('reference_code', $referenceCode)->where('visibility', '!=', 'Hidden')->first();
+    public function show(Request $request, string $referenceCode)
+    {   
+        $video = Video::where('reference_code', $referenceCode)->first();
     
         if (!$video)
         {
             return response()->json(['error' => 'Video not found'], 404);
         }
+
+        $this->authorize('view', [$video]);
 
         $language = $video->languages()->first();
         $title = $language->pivot->title;
@@ -159,25 +161,22 @@ class VideoController extends Controller
 
         $user = User::find($video->user_id);
 
-        if($user)
-        {
-            $userName = $user->name;
-            $userFirstName = $user->first_name;
-            $userAvatar = $user->avatar;
+        $user = User::find($video->user_id);
+        $userName = $user ? $user->name : null;
+        $userFirstName = $user ? $user->first_name : null;
+        $userAvatar = $user ? $user->avatar : null;
+        
+        $responseData = compact('video', 'title', 'description', 'userName', 'userFirstName', 'userAvatar', 'tags', 'likesCount', 'dislikesCount');
 
-            return response()->json(compact('video', 'title', 'description', 'userName', 'userFirstName', 'userAvatar', 'tags', 'likesCount', 'dislikesCount'));
-        }
-        else
-        {
-            return response()->json(compact('video', 'title', 'description', 'tags', 'likesCount', 'dislikesCount'));
-        }
+        return response()->json($responseData);
     }
     public function all(Request $request)
     {
-        if(!$request->offset)
-            $offset = 0;
-        else
-            $offset = intval($request->offset);
+        $request->validate([
+            'offset' => 'nullable|integer|min:0',
+        ]);
+        
+        $offset = $request->input('offset', 0);
 
         
 
@@ -284,12 +283,16 @@ class VideoController extends Controller
         {
             return response()->json(['error' => 'Video not found'], 404);
         }
+        
+        $this->authorize('delete', $video);
 
         $video->tags()->detach();
 
         $video->languages()->detach();
 
         $video->likesDislikes()->delete();
+
+        $video->comments()->delete();
 
         $videoPath = public_path($video->video);
         $thumbnailPath = public_path($video->thumbnail);
@@ -396,11 +399,12 @@ class VideoController extends Controller
 
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
 
+        $this->authorize('update', $video);
+
         $video->visibility = $request->visibility;
 
         if($request->hasFile('thumbnail'))
         {
-            error_log($video->thumbnail);
             $publicPath = public_path($video->thumbnail);
             File::delete($publicPath);
             $thumbnailName = $video->reference_code . str_replace(' ', '', $request->file('thumbnail')->getClientOriginalName());
@@ -462,5 +466,4 @@ class VideoController extends Controller
 
         $video->save();  
     }
-
 }

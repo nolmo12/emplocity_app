@@ -5,8 +5,11 @@ namespace App\Http\Middleware;
 use Closure;
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\Response;
-
+    /**
+     * This middleware will probably be obsolete
+     */
 class EnsureUserOwnsModel
 {
     /**
@@ -16,16 +19,22 @@ class EnsureUserOwnsModel
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $referenceCode = $request->reference_code;
-        $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
-        if (!$video)
+        if($referenceCode = $request->reference_code)
         {
-            return response()->json(['error' => 'Video not found'], 404);
+            $video = Video::where('reference_code', $referenceCode)->first();
+            if (!$video)
+            {
+                return response()->json(['error' => 'Video not found'], 404);
+            }
+    
+            if(!$request->user()->videos()->where('id', $video->id)->exists())
+            {
+                return redirect('/login');
+            }
         }
-
-        if(!$request->user()->videos()->where('id', $video->id)->exists())
+        else
         {
-            return redirect('/login');
+            
         }
 
         return $next($request);

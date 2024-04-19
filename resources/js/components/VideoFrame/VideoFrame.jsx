@@ -37,6 +37,34 @@ export default function VideoFrame() {
             try {
                 const likeInfo = await fetchLikes(reference_code);
                 setUserInteraction(likeInfo);
+                if (likeInfo === 1) {
+                    const storedLikeInfo = localStorage.getItem(
+                        `like-${reference_code}`
+                    );
+                    if (storedLikeInfo) {
+                        setThumbStyle("like");
+                    } else {
+                        setThumbStyle(likeInfo);
+                        localStorage.setItem(
+                            `like-${reference_code}`,
+                            likeInfo
+                        );
+                    }
+                }
+                if (likeInfo === 0) {
+                    const storedLikeInfo = localStorage.getItem(
+                        `dislike-${reference_code}`
+                    );
+                    if (storedLikeInfo) {
+                        setThumbStyle("dislike");
+                    } else {
+                        setThumbStyle(likeInfo);
+                        localStorage.setItem(
+                            `dislike-${reference_code}`,
+                            likeInfo
+                        );
+                    }
+                }
             } catch (error) {
                 console.log(error);
             }
@@ -52,7 +80,7 @@ export default function VideoFrame() {
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
-        const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
+        // const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
         return (
             <>
                 <div
@@ -87,7 +115,10 @@ export default function VideoFrame() {
                                     )
                                 } // 0 for dislike
                                 icon={faThumbsDown}
-                                className={`${styles.videoFrameIconTD} ${thumbStyle === 'dislike' && styles.dislike}`}
+                                data-testid="dislike-button"
+                                className={`${styles.videoFrameIconTD} ${
+                                    thumbStyle === "dislike" && styles.dislike
+                                }`}
                             />
                             <p>{dislikesCount}</p>
                         </div>
@@ -108,22 +139,35 @@ export default function VideoFrame() {
                                     )
                                 } // 1 for like
                                 icon={faThumbsUp}
-                                className={`${styles.videoFrameIcon} ${thumbStyle === 'like' && styles.like}`}
+                                data-testid="like-button"
+                                className={`${styles.videoFrameIcon} ${
+                                    thumbStyle === "like" && styles.like
+                                }`}
                             />
                             <p>{likesCount}</p>
                         </div>
 
                         <h1 className={styles.videoFrameInfoTitle}>
-                            {videoTitle}
+                            <p data-testid="video-title">{videoTitle}</p>
                         </h1>
                         <h1>
                             <FontAwesomeIcon icon={faUser} />{" "}
-                            {videoOwner ? videoOwner : "Guest"}
+                            {videoOwner ? (
+                                <p data-testid="video-owner">{videoOwner}</p>
+                            ) : (
+                                <p data-testid="video-owner">Guest</p>
+                            )}
                         </h1>
                         <h1 className={styles.videoFrameInfoDesc}>
-                            {videoDescription
-                                ? videoDescription
-                                : "No Description"}
+                            {videoDescription ? (
+                                <p data-testid="video-description">
+                                    {videoDescription}
+                                </p>
+                            ) : (
+                                <p data-testid="video-description">
+                                    No description
+                                </p>
+                            )}
                         </h1>
                     </div>
                 </div>

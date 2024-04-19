@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import useLikeCalculation from "../useLikeCalculation";
 import styles from "./video.module.css";
@@ -44,7 +44,6 @@ export default function Video({ videoObj }) {
         );
         const videoViews = videoObj.views;
         const path = `/video/${reference_code}`;
-        console.log(videoObj);
         return (
             <section className={styles.videoSection}>
                 <Link to={path}>
@@ -82,13 +81,20 @@ export default function Video({ videoObj }) {
 
                     <div className={styles.videoStat}>
                         <div id={styles.title} className={styles.videoInfo}>
-                            {videoTitle}
+                            <p data-testid="video-title">{videoTitle}</p>
                         </div>
                         <div className={styles.videoInfo}>
-                            {videoOwner ? videoOwner : "Guest"}
+                            {videoOwner ? (
+                                <p data-testid="video-owner">{videoOwner}</p>
+                            ) : (
+                                <p data-testid="video-owner">Guest</p>
+                            )}
                         </div>
                         <div id={styles.views} className={styles.videoInfo}>
-                            {videoViews}
+                            <p data-testid="video-views">{videoViews}</p>
+                        </div>
+                        <div className={styles.videoInfo}>
+                            <p data-testid="video-date">{videoDate}</p>
                         </div>
                         <div className={styles.videoInfo}>{videoDate}</div>
                         <div id={styles.likes} className={styles.videoInfo} style={getLikeRatioStyle(likeRatio)}>
