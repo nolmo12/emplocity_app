@@ -13,9 +13,10 @@ class CommentController extends Controller
     {
         $request->validate([
             'reference_code' => 'required|exists:videos,reference_code',
-            'content' => 'required|string|max:512',
+            'content' => 'required|string|max:512|min:0',
             'parent' => 'exists:comments,id'
         ]);
+
 
         $referenceCode = $request->reference_code;
 
@@ -30,6 +31,8 @@ class CommentController extends Controller
 
         $comment->video()->associate($video);
         $comment->save();
+
+        return response()->json('Properly added a comment');
     }
 
     public function load(Request $request)
@@ -96,7 +99,7 @@ class CommentController extends Controller
     
             }
     
-            return $children;
+            return response()->json(['child_comments' => $children]);
         }
 
         return response()->json('No child comments');
@@ -112,7 +115,33 @@ class CommentController extends Controller
             return response()->json(['error' => 'Comment not found'], 404);
         }
 
-        
+        $this->authorize($comment);
+
+        $children = $comment->getChildren();
+
+        foreach($children as $child)
+        {
+            $child->delete();
+        }
+
+        $comment->delete();
+
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'comment' => 'required|integer|exists:comments,id',
+            'content' => 'string|max:512|min:0',
+        ]);
+
+        $comment = Comment::find($request->comment);
+
+        $this->authorize($comment);
+
+        $comment->content = $request->content;
+
+        $comment->save();
 
     }
 

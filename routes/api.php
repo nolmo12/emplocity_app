@@ -133,7 +133,7 @@ Route::prefix('video')->group(function () {
     ->middleware('auth:api')
     ->name('updateLikes');
 
-    Route::post('/update', [VideoController::class,'update'])
+    Route::patch('/update', [VideoController::class,'update'])
     ->middleware('auth:api');
 
     Route::post('/comment', [CommentController::class, 'store'])
