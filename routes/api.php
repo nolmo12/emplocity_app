@@ -41,7 +41,7 @@ Route::prefix('auth')->group(function () {
     ->middleware('guest')
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
-    Route::get('/deleteUser', [UserController::class, 'deleteUser'])->middleware('auth:api');
+    Route::get('/deleteUser', [UserController::class, 'delete'])->middleware('auth:api');
     Route::post('/updateUser', [UserController::class, 'update'])->middleware('auth:api');
     Route::get('/readUser', [UserController::class, 'read'])->middleware('auth:api');
 });

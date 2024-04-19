@@ -61,7 +61,7 @@ class UserController extends Controller
             return $likesDislikes->is_like ? 1 : 0;
         }
     }
-    public function deleteUser()
+    public function delete()
     {
         $user = Auth::user();
 
