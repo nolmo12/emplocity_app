@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
+import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
 import useLikeCalculation from "../useLikeCalculation";
@@ -25,7 +26,58 @@ export default function VideoFrame() {
     const [dislikesCount, setDislikesCount] = useState(0);
     const [userInteraction, setUserInteraction] = useState();
     const [thumbStyle, setThumbStyle] = useState();
+    const [initialThumbStyle, setInitialThumbStyle] = useState();
     const [renderKey, setRenderKey] = useState(0);
+
+    const fetchLikeInfo = async () => {
+        try {
+            const likeInfo = await fetchLikes(
+                reference_code,
+                setInitialThumbStyle
+            );
+
+            setUserInteraction(likeInfo);
+            if (likeInfo === 1) {
+                setThumbStyle("like");
+            }
+            if (likeInfo === 0) {
+                setThumbStyle("dislike");
+            }
+            if (likeInfo === null) {
+                setThumbStyle(null);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const commentsObj = [
+        {
+            id: 1,
+            username: "user1",
+            created_at: "2021-08-10",
+            comment: "This is a comment",
+            replyFlag: false,
+            replayComment: "",
+        },
+        {
+            id: 2,
+            username: "user2",
+            created_at: "2021-08-10",
+            comment: "This is a comment",
+            replyFlag: false,
+            replayComment: "",
+        },
+        {
+            id: 3,
+            username: "user3",
+            created_at: "2021-08-10",
+            comment: "This is a comment",
+            replyFlag: false,
+            replayComment: "",
+        },
+    ];
+
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
 
@@ -33,44 +85,8 @@ export default function VideoFrame() {
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
         }
-        const getLikeInfo = async () => {
-            try {
-                const likeInfo = await fetchLikes(reference_code);
-                setUserInteraction(likeInfo);
-                if (likeInfo === 1) {
-                    const storedLikeInfo = localStorage.getItem(
-                        `like-${reference_code}`
-                    );
-                    if (storedLikeInfo) {
-                        setThumbStyle("like");
-                    } else {
-                        setThumbStyle(likeInfo);
-                        localStorage.setItem(
-                            `like-${reference_code}`,
-                            likeInfo
-                        );
-                    }
-                }
-                if (likeInfo === 0) {
-                    const storedLikeInfo = localStorage.getItem(
-                        `dislike-${reference_code}`
-                    );
-                    if (storedLikeInfo) {
-                        setThumbStyle("dislike");
-                    } else {
-                        setThumbStyle(likeInfo);
-                        localStorage.setItem(
-                            `dislike-${reference_code}`,
-                            likeInfo
-                        );
-                    }
-                }
-            } catch (error) {
-                console.log(error);
-            }
-        };
 
-        getLikeInfo();
+        fetchLikeInfo();
     }, [reference_code, videoObj]);
 
     if (!isLoading) {
@@ -80,7 +96,7 @@ export default function VideoFrame() {
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
-        // const tempThumbStyle = thumbStyle === "like" ? "like" : "dislike"; // tempThumbStyle is used to change the background
+
         return (
             <>
                 <div
@@ -171,6 +187,7 @@ export default function VideoFrame() {
                         </h1>
                     </div>
                 </div>
+                <Comments commentsObj={commentsObj} />
             </>
         );
     }
