@@ -15,6 +15,8 @@ import {
 
 export default function Settings() {
     const { logout } = authUser();
+    const historyPath = `/history/${1}}`;
+    const likedPath = `/user-likes/${1}`;
 
     return (
         <div id={styles.Settings}>
@@ -41,14 +43,18 @@ export default function Settings() {
                         icon={faHistory}
                         className={styles.settingsIcon}
                     />
-                    History
+                    <Link to={historyPath} className={styles.link}>
+                        History
+                    </Link>
                 </li>
                 <li>
                     <FontAwesomeIcon
                         icon={faThumbsUp}
                         className={styles.settingsIcon}
                     />
-                    Liked videos
+                    <Link to={likedPath} className={styles.link}>
+                        Liked videos
+                    </Link>
                 </li>
                 <li>
                     <FontAwesomeIcon

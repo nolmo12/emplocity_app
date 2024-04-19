@@ -53,6 +53,24 @@ function Main() {
                 }
             ></Route>
             <Route
+                path="/history/:userId"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="userHistory" />
+                    </>
+                }
+            ></Route>
+            <Route
+                path="/user-likes/:userId"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="userLikes" />
+                    </>
+                }
+            ></Route>
+            <Route
                 path="/help"
                 element={
                     <>

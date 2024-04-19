@@ -21,6 +21,28 @@ export default function SearchResult({ searchType }) {
                 </li>
             </ul>
         );
+    } else if (searchType === "userHistory") {
+        view = (
+            <ul>
+                <h2>Histroy</h2>
+                <li>
+                    {videos.map((video) => {
+                        return <Video key={video.id} videoObj={video} />;
+                    })}
+                </li>
+            </ul>
+        );
+    } else if (searchType === "userLikes") {
+        view = (
+            <ul>
+                <h2>User likes</h2>
+                <li>
+                    {videos.map((video) => {
+                        return <Video key={video.id} videoObj={video} />;
+                    })}
+                </li>
+            </ul>
+        );
     }
     return <div className={styles.searchResultsDiv}>{view}</div>;
 }

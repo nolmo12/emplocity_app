@@ -51,32 +51,32 @@ export default function VideoFrame() {
         }
     };
 
-    const commentsObj = [
-        {
-            id: 1,
-            username: "user1",
-            created_at: "2021-08-10",
-            comment: "This is a comment",
-            replyFlag: false,
-            replayComment: "",
-        },
-        {
-            id: 2,
-            username: "user2",
-            created_at: "2021-08-10",
-            comment: "This is a comment",
-            replyFlag: false,
-            replayComment: "",
-        },
-        {
-            id: 3,
-            username: "user3",
-            created_at: "2021-08-10",
-            comment: "This is a comment",
-            replyFlag: false,
-            replayComment: "",
-        },
-    ];
+    // const commentsObj = [
+    //     {
+    //         id: 1,
+    //         username: "user1",
+    //         created_at: "2021-08-10",
+    //         comment: "This is a comment",
+    //         replyFlag: false,
+    //         replayComment: "",
+    //     },
+    //     {
+    //         id: 2,
+    //         username: "user2",
+    //         created_at: "2021-08-10",
+    //         comment: "This is a comment",
+    //         replyFlag: false,
+    //         replayComment: "",
+    //     },
+    //     {
+    //         id: 3,
+    //         username: "user3",
+    //         created_at: "2021-08-10",
+    //         comment: "This is a comment",
+    //         replyFlag: false,
+    //         replayComment: "",
+    //     },
+    // ];
 
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
@@ -187,7 +187,7 @@ export default function VideoFrame() {
                         </h1>
                     </div>
                 </div>
-                <Comments commentsObj={commentsObj} />
+                <Comments reference_code={reference_code} />
             </>
         );
     }
