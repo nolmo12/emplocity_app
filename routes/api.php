@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\VideoController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
@@ -124,7 +125,7 @@ Route::prefix('video')->group(function () {
     ->middleware('auth:api');
 
     Route::delete('/delete', [VideoController::class, 'delete'])
-    ->middleware(['auth:api', EnsureUserOwnsModel::class]);
+    ->middleware('auth:api');
 
     Route::post('/upload', [VideoController::class, 'store']);
 
@@ -133,6 +134,13 @@ Route::prefix('video')->group(function () {
     ->name('updateLikes');
 
     Route::post('/update', [VideoController::class,'update'])
-    ->middleware('auth:api')
-    ->middleware(EnsureUserOwnsModel::class);
+    ->middleware('auth:api');
+
+    Route::post('/comment', [CommentController::class, 'store'])
+    ->middleware('auth:api');
+
+    Route::get('/comments', [CommentController::class, 'load']);
+
+    Route::get('/comments/children', [CommentController::class, 'getChildrenComments']);
+
 });
