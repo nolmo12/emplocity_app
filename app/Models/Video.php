@@ -19,9 +19,9 @@ class Video extends Model
         'thumbnail', 'video', 'user_id', 'tags'
     ];
 
-    public function user() :BelongsTo
+    public function user() : BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner');
+        return $this->belongsTo(User::class);
     }
 
     public function reports()
@@ -65,11 +65,6 @@ class Video extends Model
         $videoManager = new VideoManager($this->video);
 
         $durationInSeconds = $videoManager->getDuration('seconds');
-    }
-
-    public function getRating()
-    {
-        
     }
 
     public function addTags(array $tags): void
