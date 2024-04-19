@@ -28,7 +28,7 @@ export default function VideoFrame() {
     const [thumbStyle, setThumbStyle] = useState();
     const [initialThumbStyle, setInitialThumbStyle] = useState();
     const [renderKey, setRenderKey] = useState(0);
-
+    console.log(thumbStyle);
     const fetchLikeInfo = async () => {
         try {
             const likeInfo = await fetchLikes(
@@ -51,35 +51,11 @@ export default function VideoFrame() {
         }
     };
 
-    // const commentsObj = [
-    //     {
-    //         id: 1,
-    //         username: "user1",
-    //         created_at: "2021-08-10",
-    //         comment: "This is a comment",
-    //         replyFlag: false,
-    //         replayComment: "",
-    //     },
-    //     {
-    //         id: 2,
-    //         username: "user2",
-    //         created_at: "2021-08-10",
-    //         comment: "This is a comment",
-    //         replyFlag: false,
-    //         replayComment: "",
-    //     },
-    //     {
-    //         id: 3,
-    //         username: "user3",
-    //         created_at: "2021-08-10",
-    //         comment: "This is a comment",
-    //         replyFlag: false,
-    //         replayComment: "",
-    //     },
-    // ];
-
     useEffect(() => {
         setRenderKey((prev) => prev + 1);
+
+        setUserInteraction(null);
+        setThumbStyle("");
 
         if (videoObj) {
             setLikesCount(videoObj.likesCount);
@@ -90,12 +66,18 @@ export default function VideoFrame() {
     }, [reference_code, videoObj]);
 
     if (!isLoading) {
-        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
+        console.log("-----------------------");
+        console.log("userInteraction", userInteraction);
+        console.log("thumbStyle", thumbStyle);
+        console.log("initialThumbStyle", initialThumbStyle);
+        console.log("likesCount", likesCount);
+        console.log("dislikesCount", dislikesCount);
+        console.log("reference_code", reference_code);
 
         return (
             <>

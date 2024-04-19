@@ -8,13 +8,14 @@ export default function useLike() {
             const response = await http.get(
                 `/api/video/hasUserLiked/${reference_code}`
             );
+            console.log(response.data);
             if (response.data === 1) {
                 setInitialThumbStyle("like");
             }
             if (response.data === 0) {
                 setInitialThumbStyle("dislike");
             }
-            if (response.data === null) {
+            if (!response.data && response.data !== 0) {
                 setInitialThumbStyle(null);
             }
             return response.data;

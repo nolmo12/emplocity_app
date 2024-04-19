@@ -52,5 +52,22 @@ export default function useComments() {
         }
     };
 
-    return { fetchComments, sendComment, sendReplyComment, fetchChildren };
+    const editComment = async (commentId, content) => {
+        try {
+            await http.patch(`/api/video/comment/update`, {
+                comment: commentId,
+                content: content,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return {
+        fetchComments,
+        sendComment,
+        sendReplyComment,
+        fetchChildren,
+        editComment,
+    };
 }

@@ -1,15 +1,22 @@
 import { React } from "react";
 import { useState, useEffect } from "react";
 import useComments from "../useComments";
+import { isEditable } from "@testing-library/user-event/dist/cjs/utils/index.js";
 export default function Comments({ reference_code }) {
     const [commentsObj, setCommentsObj] = useState([]);
     const [replyCommentsObj, setReplyCommentsObj] = useState([]);
-    const { fetchComments, sendComment, sendReplyComment, fetchChildren } =
-        useComments();
+    const {
+        fetchComments,
+        sendComment,
+        sendReplyComment,
+        fetchChildren,
+        editComment,
+    } = useComments();
     const [commentContent, setCommentContent] = useState("");
     const [replyCommentContent, setReplyCommentContent] = useState("");
     const [replayArr, setReplayArr] = useState([]);
     const [replyViewFlag, setReplyViewFlag] = useState(false);
+    const [isEditable, setIsEditable] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -67,6 +74,14 @@ export default function Comments({ reference_code }) {
         setReplyViewFlag(!replyViewFlag);
     };
 
+    const handleClickEdit = async (e, type, id) => {
+        setIsEditable(!isEditable);
+        if (isEditable === true && type === "comment")
+            await editComment(reference_code, commentContent);
+        if (isEditable === true && type === "reply")
+            await editComment(reference_code, replyCommentContent);
+    };
+
     const view =
         commentsObj.length < 1 ? (
             <div>
@@ -83,6 +98,7 @@ export default function Comments({ reference_code }) {
                 ></textarea>
                 <button onClick={(e) => handleClickButton(e)}>Comment</button>
                 {Object.entries(commentsObj).map(([key, commentObj]) => {
+                    console.log(commentObj);
                     return commentObj.map((comment) => {
                         const temp = replayArr.includes(comment.id);
                         return (
@@ -92,10 +108,25 @@ export default function Comments({ reference_code }) {
                                     <p>{comment.user_name}</p>
                                     <p>{comment.created_at}</p>
                                     <textarea
-                                        readOnly
-                                        value={comment.content}
-                                    />
+                                        readOnly={!isEditable}
+                                        onChange={(e) =>
+                                            handleTextareaChange(e, "comment")
+                                        }
+                                    >
+                                        {comment.content}
+                                    </textarea>
                                 </div>
+                                <button
+                                    onClick={(e) =>
+                                        handleClickEdit(
+                                            e,
+                                            "comment",
+                                            comment.id
+                                        )
+                                    }
+                                >
+                                    edit
+                                </button>
 
                                 <>
                                     {comment.has_children && (
@@ -138,11 +169,35 @@ export default function Comments({ reference_code }) {
                                                                     }
                                                                 </p>
                                                                 <textarea
-                                                                    readOnly
-                                                                    value={
+                                                                    readOnly={
+                                                                        !isEditable
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleTextareaChange(
+                                                                            e,
+                                                                            "reply",
+                                                                            replyComment.id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {
                                                                         replyComment.content
                                                                     }
-                                                                />
+                                                                </textarea>
+                                                                <button
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleClickEdit(
+                                                                            e,
+                                                                            "reply"
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    edit
+                                                                </button>
                                                             </div>
                                                         );
                                                     }
@@ -156,6 +211,7 @@ export default function Comments({ reference_code }) {
                                     >
                                         reply
                                     </button>
+
                                     {temp && (
                                         <>
                                             <textarea
