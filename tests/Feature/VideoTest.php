@@ -11,7 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class VideoTest extends TestCase
 {
-    //use RefreshDatabase;
+    // use RefreshDatabase;
     /**
      * A basic feature test example.
      */
@@ -63,7 +63,7 @@ class VideoTest extends TestCase
 
         $video = $user->videos()->first();
 
-        $response = $this->post('/api/video/update',[
+        $response = $this->patch('/api/video/update',[
             'reference_code' => $video->reference_code,
             'title' => 'Bivowy film',
             'description' =>'Mega nie fajny opis',
