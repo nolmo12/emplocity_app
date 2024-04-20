@@ -51,6 +51,7 @@ export default function authUser() {
     const getUser = async () => {
         try {
             const response = await http.get("/api/user");
+            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);
