@@ -22,6 +22,7 @@ export default function Header() {
     const [iconPath, setIconPath] = useState("");
     const [tempLogoPath, setTempLogoPath] = useState("");
     const { getToken, logout, isLogged } = authUser();
+    const path = `/history/${1}`;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -109,7 +110,7 @@ export default function Header() {
 
     const historyElement = (
         <li onClick={toggleMenu}>
-            <Link to="/">
+            <Link to={path}>
                 <button id={styles.history}>
                     <FontAwesomeIcon
                         icon={faHistory}
