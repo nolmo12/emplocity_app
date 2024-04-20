@@ -6,7 +6,7 @@ use Sqids\Sqids;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Video;
-use App\Helpers\utils;
+use App\Helpers\Utils;
 use App\Rules\Enumerate;
 use Illuminate\Http\Request;
 use App\Helpers\VideoManager;
@@ -271,6 +271,13 @@ class VideoController extends Controller
 
         $similarVideosTags = $similarVideosTags->unique();
 
+        $similarVideos = $similarVideos->map(function ($similarVideo) use ($video) {
+            $similarVideo->similarity_score = $video->calculateSimilarityScore($similarVideo);
+            return $similarVideo;
+        });
+        
+        $similarVideos = $similarVideos->sortByDesc('similarity_score')->take(10);
+
         return $similarVideos;
     }
     //This method needs to be changed, because it is currently not working
@@ -465,5 +472,57 @@ class VideoController extends Controller
             $video->addTags($request->tags);
 
         $video->save();  
+    }
+
+
+    public function search(Request $request)
+    {
+        $request->validate([
+            'query' => 'string|max:255|min:0',
+            'offset' => 'nullable|integer|min:0',
+            'sorting' => ['nullable','string', new Enumerate(['date', 'views', 'popularity'])]
+        ]);
+
+        $searchQuery = $request->query('query');
+
+        $searchQueryArray = explode(' ', $searchQuery);
+        $videoCollection = collect();
+        
+        foreach($searchQueryArray as $word)
+        {
+            $videos = Video::where('visibility', 'Public')
+                            ->whereHas('languages', function ($query) use ($word) {
+                                $query->where('title', 'like', "%$word%");
+                            })
+                            ->get();
+        
+            $videoCollection = $videoCollection->concat($videos);
+        }
+        
+        $scores = [];
+        
+        foreach($videoCollection as $video)
+        {
+            $scores[$video->reference_code] =[
+                'upload_date' => $video->created_at->timestamp,
+                'score' => $video->calculateSearchScore($searchQueryArray)
+            ];
+        }
+
+        $order = $request->sorting;
+        switch($order)
+        {
+            case 'popularity':
+                break;
+            case 'upload_date_desc':
+                break;
+            case 'upload_date_asc':
+                break;
+            default:
+                Utils::sortByScore($scores, 'desc');
+                
+        }
+        
+        return $scores;
     }
 }

@@ -112,6 +112,8 @@ Route::prefix('video')->group(function () {
     Route::get('/watch/{referenceCode}', [VideoController::class,'show'])
     ->name('watch');
 
+    Route::get('/search', [VideoController::class,'search']);
+
     Route::get('/all', [VideoController::class,'all']);
 
     Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])
@@ -139,7 +141,13 @@ Route::prefix('video')->group(function () {
     Route::post('/comment', [CommentController::class, 'store'])
     ->middleware('auth:api');
 
-    Route::get('/comments', [CommentController::class, 'load']);
+    Route::get('/comments', [CommentController::class, 'show']);
+
+    Route::patch('comment/update', [CommentController::class,'update'])
+    ->middleware('auth:api');
+
+    Route::delete('comment/delete', [CommentController::class,'delete'])
+    ->middleware('auth:api');
 
     Route::get('/comments/children', [CommentController::class, 'getChildrenComments']);
 
