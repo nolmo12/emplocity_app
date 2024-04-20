@@ -13,7 +13,7 @@ class CommentController extends Controller
     {
         $request->validate([
             'reference_code' => 'required|exists:videos,reference_code',
-            'content' => 'required|string|max:512|min:0',
+            'content' => 'required|string|max:512|min:1',
             'parent' => 'exists:comments,id'
         ]);
 
@@ -35,25 +35,25 @@ class CommentController extends Controller
         return response()->json('Properly added a comment');
     }
 
-    public function load(Request $request)
+    public function show(Request $request)
     {
         $request->validate([
             'reference_code' => 'required|exists:videos,reference_code',
             'offset' => 'nullable|integer|min:0',
         ]);
-        
+
         $offset = $request->input('offset', 0);
 
         $referenceCode = $request->reference_code;
 
         $video = Video::where('reference_code', $referenceCode)->first();
-
+        
         $comments = $video->comments()
         ->where('parent', 0)
         ->offset(10 * $offset)
         ->limit(10)
         ->get();
-
+        
         foreach($comments as &$comment)
         {
             $user = User::find($comment['user_id']);
@@ -63,7 +63,7 @@ class CommentController extends Controller
             $comment['has_children'] = $comment->hasChildren();
 
         }
-
+        
         return response()->json(['comments' => $comments]);
     }
 
@@ -126,13 +126,14 @@ class CommentController extends Controller
 
         $comment->delete();
 
+        return response()->json('Comment deleted succesfully');
     }
 
     public function update(Request $request)
     {
         $request->validate([
             'comment' => 'required|integer|exists:comments,id',
-            'content' => 'string|max:512|min:0',
+            'content' => 'string|max:512|min:1',
         ]);
 
         $comment = Comment::find($request->comment);
@@ -142,6 +143,8 @@ class CommentController extends Controller
         $comment->content = $request->content;
 
         $comment->save();
+
+        return response()->json('Comment updated succesfully');
 
     }
 

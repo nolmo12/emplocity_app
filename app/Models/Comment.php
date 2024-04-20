@@ -20,6 +20,10 @@ class Comment extends Model
     {
         return $this->belongsTo(Video::class);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function hasChildren() : bool
     {
