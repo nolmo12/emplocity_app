@@ -3,12 +3,13 @@ import { Route, Routes } from "react-router-dom";
 import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
-import VideoFrame from "./components/VideoFrame/VideoFrame";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
+import AccountSettings from "./components/AccountSettings/AccountSettings";
 import authUser from "./components/authUser";
+
 function Main() {
     const { getToken, isLogged } = authUser();
     return (
@@ -85,6 +86,15 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="video" />
+                    </>
+                }
+            />
+            <Route
+                path="/account-settings"
+                element={
+                    <>
+                        <Header />
+                        <AccountSettings />
                     </>
                 }
             />

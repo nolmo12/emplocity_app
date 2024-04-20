@@ -27,7 +27,9 @@ export default function Settings() {
                         icon={faUser}
                         className={styles.settingsIcon}
                     />
-                    Account settings
+                    <Link to="/account-settings" className={styles.link}>
+                        Account settings
+                    </Link>
                 </li>
                 <li>
                     <FontAwesomeIcon
