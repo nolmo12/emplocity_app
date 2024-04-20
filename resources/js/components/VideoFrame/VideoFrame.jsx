@@ -24,61 +24,62 @@ export default function VideoFrame() {
     const { videoObj, isLoading } = useFetchVideo({ reference_code });
     const [likesCount, setLikesCount] = useState(0);
     const [dislikesCount, setDislikesCount] = useState(0);
-    const [userInteraction, setUserInteraction] = useState();
-    const [thumbStyle, setThumbStyle] = useState();
-    const [initialThumbStyle, setInitialThumbStyle] = useState();
     const [renderKey, setRenderKey] = useState(0);
-    console.log(thumbStyle);
+    const [thumbObj, setThumbObj] = useState({
+        like: false,
+        dislike: false,
+        userInteraction: null,
+        thumbStyle: null,
+    });
+
+    useEffect(() => {
+        console.log("rendering");
+        setThumbObj({
+            like: false,
+            dislike: false,
+            userInteraction: null,
+            thumbStyle: null,
+        });
+        setRenderKey((prev) => prev + 1);
+
+        if (videoObj) {
+            setLikesCount(videoObj.likesCount);
+            setDislikesCount(videoObj.dislikesCount);
+            console.log(thumbObj);
+        }
+        fetchLikeInfo();
+    }, [reference_code, videoObj]);
+
     const fetchLikeInfo = async () => {
         try {
-            const likeInfo = await fetchLikes(
-                reference_code,
-                setInitialThumbStyle
-            );
-
-            setUserInteraction(likeInfo);
-            if (likeInfo === 1) {
-                setThumbStyle("like");
-            }
-            if (likeInfo === 0) {
-                setThumbStyle("dislike");
-            }
-            if (likeInfo === null) {
-                setThumbStyle(null);
+            const likeInfo = await fetchLikes(reference_code);
+            if (likeInfo || likeInfo === 0) {
+                if (likeInfo === 1) {
+                    setThumbObj({
+                        like: true,
+                        dislike: false,
+                        userInteraction: "like",
+                        thumbStyle: "like",
+                    });
+                } else if (likeInfo === 0) {
+                    setThumbObj({
+                        like: false,
+                        dislike: true,
+                        userInteraction: "dislike",
+                        thumbStyle: "dislike",
+                    });
+                }
             }
         } catch (error) {
             console.log(error);
         }
     };
-
-    useEffect(() => {
-        setRenderKey((prev) => prev + 1);
-
-        setUserInteraction(null);
-        setThumbStyle("");
-
-        if (videoObj) {
-            setLikesCount(videoObj.likesCount);
-            setDislikesCount(videoObj.dislikesCount);
-        }
-
-        fetchLikeInfo();
-    }, [reference_code, videoObj]);
-
     if (!isLoading) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
-        console.log("-----------------------");
-        console.log("userInteraction", userInteraction);
-        console.log("thumbStyle", thumbStyle);
-        console.log("initialThumbStyle", initialThumbStyle);
-        console.log("likesCount", likesCount);
-        console.log("dislikesCount", dislikesCount);
-        console.log("reference_code", reference_code);
-
         return (
             <>
                 <div
@@ -102,20 +103,20 @@ export default function VideoFrame() {
                                 onClick={() =>
                                     likeCountFunction(
                                         0,
-                                        likesCount,
-                                        setLikesCount,
-                                        dislikesCount,
-                                        setDislikesCount,
+                                        thumbObj,
+                                        setThumbObj,
                                         reference_code,
-                                        userInteraction,
-                                        setUserInteraction,
-                                        setThumbStyle
+                                        likesCount,
+                                        dislikesCount,
+                                        setLikesCount,
+                                        setDislikesCount
                                     )
                                 } // 0 for dislike
                                 icon={faThumbsDown}
                                 data-testid="dislike-button"
                                 className={`${styles.videoFrameIconTD} ${
-                                    thumbStyle === "dislike" && styles.dislike
+                                    thumbObj.thumbStyle === "dislike" &&
+                                    styles.dislike
                                 }`}
                             />
                             <p>{dislikesCount}</p>
@@ -126,20 +127,20 @@ export default function VideoFrame() {
                                 onClick={() =>
                                     likeCountFunction(
                                         1,
-                                        likesCount,
-                                        setLikesCount,
-                                        dislikesCount,
-                                        setDislikesCount,
+                                        thumbObj,
+                                        setThumbObj,
                                         reference_code,
-                                        userInteraction,
-                                        setUserInteraction,
-                                        setThumbStyle
+                                        likesCount,
+                                        dislikesCount,
+                                        setLikesCount,
+                                        setDislikesCount
                                     )
                                 } // 1 for like
                                 icon={faThumbsUp}
                                 data-testid="like-button"
-                                className={`${styles.videoFrameIcon} ${
-                                    thumbStyle === "like" && styles.like
+                                className={`${styles.videoFrameIconTD} ${
+                                    thumbObj.thumbStyle === "like" &&
+                                    styles.like
                                 }`}
                             />
                             <p>{likesCount}</p>

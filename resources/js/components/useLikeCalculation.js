@@ -4,109 +4,69 @@ import authUser from "./authUser";
 import useLike from "./useLike";
 
 export default function useLikeCalculation() {
-    const [userThumb, setUserThumb] = useState("");
     const [isProcessing, setIsProcessing] = useState(false);
     const { fetchLikes, sendLikes } = useLike();
     const { isLogged } = authUser();
 
     const likeCountFunction = async (
-        likeType,
-        likesCount,
-        setLikesCount,
-        dislikesCount,
-        setDislikesCount,
+        thumbType,
+        thumbObj,
+        setThumbObj,
         reference_code,
-        userInteraction,
-        setUserInteraction,
-        setThumbStyle
+        likesCount,
+        dislikesCount,
+        setLikesCount,
+        setDislikesCount
     ) => {
         if (isLogged && !isProcessing) {
             setIsProcessing(true);
-            if (userInteraction !== 1 && userInteraction !== 0) {
-                if (
-                    likeType === 1 &&
-                    userThumb !== "like" &&
-                    userThumb !== "dislike"
-                ) {
-                    console.log(1);
+            if (
+                !thumbObj.like &&
+                !thumbObj.dislike &&
+                thumbObj.userInteraction === null
+            ) {
+                if (thumbType === 1) {
+                    setThumbObj({
+                        like: true,
+                        dislike: false,
+                        userInteraction: "like",
+                        thumbStyle: "like",
+                    });
+                    sendLikes(reference_code, thumbType);
                     setLikesCount((prev) => prev + 1);
-                    setUserThumb("like");
-                    setThumbStyle("like");
-                    sendLikes(reference_code, likeType);
-                } else if (
-                    likeType === 0 &&
-                    userThumb !== "dislike" &&
-                    userThumb !== "like"
-                ) {
-                    console.log(2);
+                } else {
+                    console.log("dislike");
+                    setThumbObj({
+                        like: false,
+                        dislike: true,
+                        userInteraction: "dislike",
+                        thumbStyle: "dislike",
+                    });
+                    sendLikes(reference_code, thumbType);
                     setDislikesCount((prev) => prev + 1);
-                    setUserThumb("dislike");
-                    setThumbStyle("dislike");
-                    sendLikes(reference_code, likeType);
-                } else if (
-                    likeType === 1 &&
-                    userThumb === "like" &&
-                    likesCount > 0
-                ) {
-                    console.log(3);
-                    setLikesCount((prev) => prev - 1);
-                    setUserThumb("");
-                    setThumbStyle("");
-                    sendLikes(reference_code, likeType);
-                } else if (
-                    likeType === 0 &&
-                    userThumb === "dislike" &&
-                    dislikesCount > 0
-                ) {
-                    console.log(4);
-                    setDislikesCount((prev) => prev - 1);
-                    setUserThumb("");
-                    setThumbStyle("");
-                    sendLikes(reference_code, likeType);
-                } else if (likeType === 0 && userThumb === "like") {
-                    console.log(5);
-                    setLikesCount((prev) => prev - 1);
-                    setDislikesCount((prev) => prev + 1);
-                    setUserThumb("dislike");
-                    setThumbStyle("dislike");
-                    sendLikes(reference_code, likeType);
-                } else if (likeType === 1 && userThumb === "dislike") {
-                    console.log(6);
-                    setDislikesCount((prev) => prev - 1);
-                    setLikesCount((prev) => prev + 1);
-                    setUserThumb("like");
-                    setThumbStyle("like");
-                    sendLikes(reference_code, likeType);
-                }
-            } else {
-                if (likeType === 1 && userInteraction === 1) {
-                    console.log(7);
-                    setLikesCount((prev) => prev - 1);
-                    setUserInteraction(null);
-                    setThumbStyle("");
-                    sendLikes(reference_code, likeType);
-                } else if (likeType === 0 && userInteraction === 0) {
-                    console.log(8);
-                    setDislikesCount((prev) => prev - 1);
-                    setUserInteraction(null);
-                    setThumbStyle("");
-                    sendLikes(reference_code, likeType);
-                } else if (likeType === 1 && userInteraction === 0) {
-                    console.log(9);
-                    setLikesCount((prev) => prev + 1);
-                    setDislikesCount((prev) => prev - 1);
-                    setUserInteraction(1);
-                    setThumbStyle("like");
-                    sendLikes(reference_code, likeType);
-                } else if (likeType === 0 && userInteraction === 1) {
-                    console.log(10);
-                    setDislikesCount((prev) => prev + 1);
-                    setLikesCount((prev) => prev - 1);
-                    setThumbStyle("dislike");
-                    setUserInteraction(0);
-                    sendLikes(reference_code, likeType);
                 }
             }
+            if (thumbObj.like && thumbType === 1 && likesCount > 0) {
+                setThumbObj({
+                    like: false,
+                    dislike: false,
+                    userInteraction: null,
+                    thumbStyle: null,
+                });
+                sendLikes(reference_code, 1);
+                setLikesCount((prev) => prev - 1);
+            }
+            if (thumbObj.dislike && thumbType === 0 && dislikesCount > 0) {
+                setThumbObj({
+                    like: false,
+                    dislike: false,
+                    userInteraction: null,
+                    thumbStyle: null,
+                });
+                sendLikes(reference_code, 0);
+                setDislikesCount((prev) => prev - 1);
+            }
+
             setIsProcessing(false);
         }
     };
