@@ -32,6 +32,20 @@ export default function MainContent({ contentType }) {
                 <SearchResult searchType={"userSearch"} />
             </main>
         );
+    } else if (contentType === "userHistory") {
+        view = (
+            <main>
+                <Popular />
+                <SearchResult searchType={"userHistory"} />
+            </main>
+        );
+    } else if (contentType === "userLikes") {
+        view = (
+            <main>
+                <Popular />
+                <SearchResult searchType={"userLikes"} />
+            </main>
+        );
     } else if (contentType === "help") {
         view = (
             <main>
