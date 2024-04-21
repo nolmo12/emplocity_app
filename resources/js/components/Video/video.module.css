@@ -24,13 +24,34 @@
     top:-10%;
 }
 
-#video img {
+.thumbnailContainer {
+    background-color: #fff;
+    position: relative;
+}
+
+.thumbnail {
+    position: absolute;
+    opacity: 0;
     width: 100%; 
     height: 20vh;
-    position: relative;
     border: none;
     border-top-left-radius: 6px;
     border-top-right-radius: 6px;
+}
+
+.thumbnail.loaded {
+    opacity: 1;
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.clipLoader {
+    color: #000;
 }
 
 .videoSection:hover {

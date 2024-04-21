@@ -48,32 +48,16 @@ export default function Video({ videoObj }) {
             <section className={styles.videoSection}>
                 <Link to={path}>
                     <div id={styles.video}>
-                        <div
-                            style={{
-                                backgroundColor: "#fff",
-                                position: "relative",
-                            }}
-                        >
+                        <div className={styles.thumbnailContainer}>
                             <img
                                 src={videoThumbnail}
-                                width={300}
                                 onLoad={() => setThumbnailIsLoaded(true)}
                                 alt="video thumbnail"
-                                style={{
-                                    opacity: thumbnailIsLoaded ? 1 : 0,
-                                    position: "absolute",
-                                }}
+                                className={`${styles.thumbnail} ${thumbnailIsLoaded ? styles.loaded : ''}`}
                             />
                             {!thumbnailIsLoaded && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        top: "50%",
-                                        left: "50%",
-                                        transform: "translate(-50%, -50%)",
-                                    }}
-                                >
-                                    <ClipLoader color="#000" />
+                                <div className={styles.loader}>
+                                    <ClipLoader className={styles.clipLoader}/>
                                 </div>
                             )}
                         </div>
@@ -96,10 +80,9 @@ export default function Video({ videoObj }) {
                         <div className={styles.videoInfo}>
                             <p data-testid="video-date">{videoDate}</p>
                         </div>
-                        <div className={styles.videoInfo}>{videoDate}</div>
                         <div id={styles.likes} className={styles.videoInfo} style={getLikeRatioStyle(likeRatio)}>
-    {likeRatio}
-</div>
+                            {likeRatio}
+                        </div>
                     </div>
                 </Link>
             </section>

@@ -20,9 +20,33 @@
     width:50%;
 }
 
+.searchResultsDiv li {
+    margin-bottom: 1em; 
+    display:flex;
+}
+
 .searchResultsDiv section {
     width:50%;
     height:30vh;    
+}
+
+.searchResultsDiv h2 {
+    margin-bottom:1em;
+}
+
+.searchResultsDiv .thumbnailContainer{
+    width:18em;
+}
+
+.searchResultsDiv .thumbnailContainer .thumbnail{
+    width:100%;
+    height:17vh;
+}
+
+.searchResultsDiv .videoInfo {
+    color:white;
+    padding-left: 1em;
+    width:200%;
 }
 
 .searchResultsDiv::-webkit-scrollbar {
