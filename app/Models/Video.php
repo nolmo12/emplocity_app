@@ -111,4 +111,37 @@ class Video extends Model
         else
             error_log('Video not found');
     }
+
+    public function calculateSimilarityScoreToOtherVideo(Video $other, ?Tag $tags): int
+    {
+        $tagIds = $this->tags->pluck('id')->toArray();
+        $otherTagIds = $other->tags->pluck('id')->toArray();
+        $tagCount = count(array_intersect($tagIds, $otherTagIds));
+        return $tagCount;
+    }
+
+    public function calculateSearchScore(array $searchQueryArray) : float
+    {
+        $score = 0;
+
+        $title = $this->languages()->first()->pivot->title;
+
+        $titleArray = explode(' ', $title);
+        
+        $wordCount = count(array_intersect($titleArray, $searchQueryArray));
+
+        $titleSimiliratyScore = 7 * $wordCount / count($searchQueryArray);
+
+        $tags = $this->tags->pluck('name')->toArray();
+
+        $sameTagsCount = count(array_intersect($tags, $searchQueryArray));
+
+        $tagSimilarityScore = 3 * $sameTagsCount / count($searchQueryArray);
+        
+        $score += $titleSimiliratyScore + $tagSimilarityScore;
+
+        return $score;
+    }
+
+
 }
