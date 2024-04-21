@@ -10,7 +10,6 @@ export default function useComments() {
             const response = await http.get(
                 `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
             );
-            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -52,11 +51,22 @@ export default function useComments() {
         }
     };
 
-    const editComment = async (commentId, content) => {
+    const editComment = async (parentId, content) => {
         try {
             await http.patch(`/api/video/comment/update`, {
-                comment: commentId,
+                comment: parentId,
                 content: content,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const deleteComment = async (id) => {
+        try {
+            console.log(id);
+            await http.delete(`/api/video/comment/delete`, {
+                comment: id,
             });
         } catch (error) {
             console.log(error);
@@ -69,5 +79,6 @@ export default function useComments() {
         sendReplyComment,
         fetchChildren,
         editComment,
+        deleteComment,
     };
 }

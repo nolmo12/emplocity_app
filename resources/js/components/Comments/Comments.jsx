@@ -1,8 +1,10 @@
 import { React } from "react";
 import { useState, useEffect } from "react";
 import useComments from "../useComments";
-import { isEditable } from "@testing-library/user-event/dist/cjs/utils/index.js";
+import authUser from "../authUser";
+
 export default function Comments({ reference_code }) {
+    const [renderKey, setRenderKey] = useState(0);
     const [commentsObj, setCommentsObj] = useState([]);
     const [replyCommentsObj, setReplyCommentsObj] = useState([]);
     const {
@@ -11,21 +13,28 @@ export default function Comments({ reference_code }) {
         sendReplyComment,
         fetchChildren,
         editComment,
+        deleteComment,
     } = useComments();
     const [commentContent, setCommentContent] = useState("");
     const [replyCommentContent, setReplyCommentContent] = useState("");
     const [replayArr, setReplayArr] = useState([]);
     const [replyViewFlag, setReplyViewFlag] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
+    const [userData, setUserData] = useState({});
+    const [nextCursor, setNextCursor] = useState(null);
+
+    const { getUser } = authUser();
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await fetchComments(reference_code, 0);
+            const response = await getUser();
+            setUserData(response);
             setCommentsObj(data);
         };
 
         fetchData();
-    }, [reference_code]);
+    }, [reference_code, renderKey]);
 
     const handleTextareaChange = (e, type) => {
         console.log(e.target.value);
@@ -36,6 +45,7 @@ export default function Comments({ reference_code }) {
     const handleClickButton = async (e) => {
         try {
             await sendComment(reference_code, commentContent);
+            setRenderKey((prev) => prev + 1);
             // setCommentsObj([...commentsObj, { comment: commentContent }]);
         } catch (error) {
             console.log(error);
@@ -50,6 +60,7 @@ export default function Comments({ reference_code }) {
                 replyCommentContent,
                 parentId
             );
+            setRenderKey((prev) => prev + 1);
         } catch (error) {
             console.log(error);
         }
@@ -69,17 +80,32 @@ export default function Comments({ reference_code }) {
     const handleClickView = async (e, parentId) => {
         console.log(parentId);
         const data = await fetchChildren(parentId);
+        setRenderKey((prev) => prev + 1);
         console.log(data);
         setReplyCommentsObj(data);
         setReplyViewFlag(!replyViewFlag);
     };
 
-    const handleClickEdit = async (e, type, id) => {
-        setIsEditable(!isEditable);
-        if (isEditable === true && type === "comment")
-            await editComment(reference_code, commentContent);
-        if (isEditable === true && type === "reply")
-            await editComment(reference_code, replyCommentContent);
+    const handleClickEdit = async (e, type, commentId, userId) => {
+        if (userData.id === userId) {
+            setIsEditable(!isEditable);
+            if (isEditable === true && type === "comment")
+                await editComment(commentId, commentContent);
+            if (isEditable === true && type === "reply")
+                await editComment(commentId, replyCommentContent);
+            setRenderKey((prev) => prev + 1);
+        }
+    };
+
+    const handleClickDelete = async (e, id, userId) => {
+        if (userData.id === userId) {
+            try {
+                await deleteComment(id);
+                setRenderKey((prev) => prev + 1);
+            } catch (error) {
+                console.log(error);
+            }
+        }
     };
 
     const view =
@@ -98,7 +124,6 @@ export default function Comments({ reference_code }) {
                 ></textarea>
                 <button onClick={(e) => handleClickButton(e)}>Comment</button>
                 {Object.entries(commentsObj).map(([key, commentObj]) => {
-                    console.log(commentObj);
                     return commentObj.map((comment) => {
                         const temp = replayArr.includes(comment.id);
                         return (
@@ -121,11 +146,23 @@ export default function Comments({ reference_code }) {
                                         handleClickEdit(
                                             e,
                                             "comment",
-                                            comment.id
+                                            comment.id,
+                                            comment.user_id
                                         )
                                     }
                                 >
                                     edit
+                                </button>
+                                <button
+                                    onClick={(e) =>
+                                        handleClickDelete(
+                                            e,
+                                            comment.id,
+                                            comment.user_id
+                                        )
+                                    }
+                                >
+                                    Delete
                                 </button>
 
                                 <>
@@ -192,11 +229,26 @@ export default function Comments({ reference_code }) {
                                                                     ) =>
                                                                         handleClickEdit(
                                                                             e,
-                                                                            "reply"
+                                                                            "reply",
+                                                                            replyComment.id,
+                                                                            replyComment.user_id
                                                                         )
                                                                     }
                                                                 >
                                                                     edit
+                                                                </button>
+                                                                <button
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        handleClickDelete(
+                                                                            e,
+                                                                            replyComment.id,
+                                                                            replyComment.user_id
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Delete
                                                                 </button>
                                                             </div>
                                                         );

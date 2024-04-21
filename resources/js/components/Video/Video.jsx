@@ -10,26 +10,27 @@ export default function Video({ videoObj }) {
     const [thumbnailIsLoaded, setThumbnailIsLoaded] = useState(false);
     const { calculateLikeRatio } = useLikeCalculation();
     const getLikeRatioStyle = (likeRatio) => {
-        console.log(likeRatio);
         const ratio = parseInt(likeRatio.replace("%", "").trim());
-    
+
         if (isNaN(ratio)) {
-            return {}; 
+            return {};
         }
-    
-        const green = [0, 255, 0]; 
-        const red = [255, 0, 0]; 
-    
+
+        const green = [0, 255, 0];
+        const red = [255, 0, 0];
+
         const interpolateColor = (color1, color2, factor) => {
             const result = color1.slice();
             for (let i = 0; i < 3; i++) {
-                result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+                result[i] = Math.round(
+                    result[i] + factor * (color2[i] - color1[i])
+                );
             }
             return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
         };
-    
+
         const textColor = interpolateColor(red, green, ratio / 100);
-    
+
         return { color: textColor };
     };
     if (videoObj) {
@@ -53,11 +54,13 @@ export default function Video({ videoObj }) {
                                 src={videoThumbnail}
                                 onLoad={() => setThumbnailIsLoaded(true)}
                                 alt="video thumbnail"
-                                className={`${styles.thumbnail} ${thumbnailIsLoaded ? styles.loaded : ''}`}
+                                className={`${styles.thumbnail} ${
+                                    thumbnailIsLoaded ? styles.loaded : ""
+                                }`}
                             />
                             {!thumbnailIsLoaded && (
                                 <div className={styles.loader}>
-                                    <ClipLoader className={styles.clipLoader}/>
+                                    <ClipLoader className={styles.clipLoader} />
                                 </div>
                             )}
                         </div>
@@ -80,7 +83,11 @@ export default function Video({ videoObj }) {
                         <div className={styles.videoInfo}>
                             <p data-testid="video-date">{videoDate}</p>
                         </div>
-                        <div id={styles.likes} className={styles.videoInfo} style={getLikeRatioStyle(likeRatio)}>
+                        <div
+                            id={styles.likes}
+                            className={styles.videoInfo}
+                            style={getLikeRatioStyle(likeRatio)}
+                        >
                             {likeRatio}
                         </div>
                     </div>
