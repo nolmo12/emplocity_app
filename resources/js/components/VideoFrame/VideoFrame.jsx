@@ -24,6 +24,7 @@ export default function VideoFrame() {
     const { videoObj, isLoading } = useFetchVideo({ reference_code });
     const [likesCount, setLikesCount] = useState(0);
     const [dislikesCount, setDislikesCount] = useState(0);
+    const [shareIsClicked, setShareIsClicked] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [thumbObj, setThumbObj] = useState({
         like: false,
@@ -33,7 +34,6 @@ export default function VideoFrame() {
     });
 
     useEffect(() => {
-        console.log("rendering");
         setThumbObj({
             like: false,
             dislike: false,
@@ -45,7 +45,6 @@ export default function VideoFrame() {
         if (videoObj) {
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
-            console.log(thumbObj);
         }
         fetchLikeInfo();
     }, [reference_code, videoObj]);
@@ -74,6 +73,11 @@ export default function VideoFrame() {
             console.log(error);
         }
     };
+
+    const handleShareClick = (e) => {
+        setShareIsClicked(true);
+    };
+
     if (!isLoading) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
@@ -95,6 +99,7 @@ export default function VideoFrame() {
                     ></video>
                     <div className={styles.videoFrameInfo}>
                         <FontAwesomeIcon
+                            onClick={(e) => handleShareClick(e)}
                             icon={faShare}
                             className={styles.videoFrameIcon}
                         />
@@ -171,6 +176,14 @@ export default function VideoFrame() {
                     </div>
                 </div>
                 <Comments reference_code={reference_code} />
+                {shareIsClicked && (
+                    <>
+                        <p>{JSON.stringify(videoObj.video.video)}</p>
+                        <button onClick={() => setShareIsClicked(false)}>
+                            Ok
+                        </button>
+                    </>
+                )}
             </>
         );
     }
