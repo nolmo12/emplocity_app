@@ -1,0 +1,81 @@
+.settingsDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border: solid 2px black;
+    border-radius: 6px;
+    background-color: rgba(229, 229, 229, 0.8);
+    padding: 5%;
+    width: 30%;
+    max-width: 300px;
+}
+
+.userInfoForm h3{
+    font-size: 1.5em;
+    margin-bottom: 1em;
+    text-align: center;
+    color: black;
+}
+
+.userInfoForm {
+    position:relative;
+    top:-10%;
+}
+
+.userInfoForm p{
+    color:blue;
+    font-size:0.7em;
+    margin-bottom: 1em;
+    margin-left:1em;
+}
+
+.userInfoForm .borderSetting{
+    color:black;
+    font-size:1em;
+    transform: translateX(15%);
+    margin-bottom:1em;
+}
+
+.userInfoForm input {
+    width: 90%;
+    height: 2.5em;
+    margin: 0 auto;
+    padding-left: 0.5em;
+    border: solid 2px #a0a0a0;
+}
+
+.userInfoForm button {
+    width: 50%;
+    height: 2em;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-bottom: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+    transform: translateX(40%);
+}
+
+.userInfoForm button:hover {
+    background-color: #f0f0f0;
+}
+
+.userInfoForm button:active {
+    transform: scale(0.95);
+}
+
+.userInfoForm .uploadIcon {
+    color: black;
+    width: 6em;
+    height: 6em;
+    margin-bottom: 0.5em;
+    transform: translateX(90%);
+}
+
+.userInfoForm .uploadIconP {
+    color:blue;
+    font-size:0.7em;
+    transform: translateX(30%);
+    margin-bottom: 1em;
+}
