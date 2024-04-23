@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
@@ -15,8 +15,8 @@ import {
     faShare,
 } from "@fortawesome/free-solid-svg-icons";
 import { copySelection } from "@testing-library/user-event/dist/cjs/document/copySelection.js";
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
     const { http } = authUser();
@@ -76,7 +76,6 @@ export default function VideoFrame() {
         }
     };
 
-
     const handleShareClick = (e) => {
         setShareIsClicked(true);
     };
@@ -115,11 +114,15 @@ export default function VideoFrame() {
                         >
                             {(close) => (
                                 <div className={styles.sharePopup}>
-                                    <p>{JSON.stringify(videoObj.video.video)}</p>
-                                    <button onClick={() => {
-                                        setShareIsClicked(false);
-                                        close();
-                                    }}>
+                                    <p>
+                                        {JSON.stringify(videoObj.video.video)}
+                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            setShareIsClicked(false);
+                                            close();
+                                        }}
+                                    >
                                         Ok
                                     </button>
                                 </div>
@@ -196,7 +199,7 @@ export default function VideoFrame() {
                             )}
                         </h1>
                     </div>
-                                    <Comments reference_code={reference_code} />
+                    <Comments reference_code={reference_code} />
                 </div>
             </>
         );

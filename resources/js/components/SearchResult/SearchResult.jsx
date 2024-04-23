@@ -2,6 +2,8 @@ import React from "react";
 import Video from "../Video/Video";
 import useFetchAllVideos from "../useFetchAllVideos";
 import useLikeCalculation from "../useLikeCalculation";
+import useFetchVideosHistory from "../useFetchVideosHistory";
+import authUser from "../authUser";
 import styles from "./searchResult.module.css";
 import { Link } from "react-router-dom";
 
@@ -19,7 +21,10 @@ function VideoThumbnail({ videoObj }) {
 
 function VideoInfo({ videoObj }) {
     const { calculateLikeRatio } = useLikeCalculation();
-    const likeRatio = calculateLikeRatio(videoObj.likesCount, videoObj.dislikesCount);
+    const likeRatio = calculateLikeRatio(
+        videoObj.likesCount,
+        videoObj.dislikesCount
+    );
 
     return (
         <div className={styles.videoInfo}>
@@ -34,7 +39,11 @@ function VideoInfo({ videoObj }) {
 }
 
 export default function SearchResult({ searchType }) {
+    const { getUser } = authUser();
     const { videos, isLoading } = useFetchAllVideos();
+    if (getUser()) {
+        const { videos: videosHistory } = useFetchVideosHistory(getUser().id);
+    }
 
     if (isLoading) {
         return <h1>Loading...</h1>;
@@ -77,7 +86,7 @@ export default function SearchResult({ searchType }) {
         view = (
             <ul>
                 <h2>User likes</h2>
-                {videos.map((video) => (
+                {videosHistory.map((video) => (
                     <li key={video.id}>
                         <Link to={`/video/${video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
