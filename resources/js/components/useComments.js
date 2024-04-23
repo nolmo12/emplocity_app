@@ -64,9 +64,7 @@ export default function useComments() {
     const deleteComment = async (id) => {
         try {
             console.log(id);
-            await http.delete(`/api/video/comment/delete`, {
-                comment: id,
-            });
+            await http.delete(`/api/video/comment/delete?comment=${id}`);
         } catch (error) {
             console.log(error);
         }

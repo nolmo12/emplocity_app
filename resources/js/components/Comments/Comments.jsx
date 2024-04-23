@@ -38,7 +38,6 @@ export default function Comments({ reference_code }) {
     }, [reference_code, renderKey]);
 
     const handleTextareaChange = (e, type) => {
-        console.log(e.target.value);
         if (type === "reply") setReplyCommentContent(e.target.value);
         if (type === "comment") setCommentContent(e.target.value);
     };
@@ -67,53 +66,63 @@ export default function Comments({ reference_code }) {
 
     const handleClickView = async (e, parentId) => {
         if (viewReplyArr.includes(parentId)) {
+            // when click view again, close the view and remove the data from viewReplyArr
             const index = viewReplyArr.indexOf(parentId);
             viewReplyArr.splice(index, 1);
             setViewReplyArr([...viewReplyArr]);
             return;
+        } else {
+            const data = await fetchChildren(parentId);
+            setViewReplyArr([parentId]);
+            setReplyCommentsObj(data);
         }
-        setViewReplyArr([...viewReplyArr, parentId]);
-        const data = await fetchChildren(parentId);
-        setRenderKey((prev) => prev + 1);
-        setReplyCommentsObj(data);
     };
 
     const handleClickEdit = async (e, type, commentId, userId) => {
         if (userData.id === userId) {
             setIsEditable(!isEditable);
             let copy;
-            if (isEditable === true && type === "comment")
+            if (isEditable === true && type === "comment") {
                 await editComment(commentId, commentContent);
-            copy = { ...commentsObj };
-            Object.entries(copy).map(([key, commentObj]) => {
-                return commentObj.map((comment) => {
-                    if (comment.id === commentId) {
-                        comment.content = commentContent;
-                    }
+                copy = { ...commentsObj };
+                Object.entries(copy).map(([key, commentObj]) => {
+                    return commentObj.map((comment) => {
+                        if (comment.id === commentId) {
+                            comment.content = commentContent;
+                        }
+                    });
                 });
-            });
-            if (isEditable === true && type === "reply")
+            }
+
+            if (isEditable === true && type === "reply") {
                 await editComment(commentId, replyCommentContent);
-            copy = { ...replyCommentsObj };
-            Object.entries(copy).map(([key, replyCommentObj]) => {
-                return replyCommentObj.map((replyComment) => {
-                    if (replyComment.id === commentId) {
-                        replyComment.content = replyCommentContent;
-                    }
+                copy = { ...replyCommentsObj };
+                Object.entries(copy).map(([key, replyCommentObj]) => {
+                    return replyCommentObj.map((replyComment) => {
+                        if (replyComment.id === commentId) {
+                            replyComment.content = replyCommentContent;
+                        }
+                    });
                 });
-            });
+            }
+
             setRenderKey((prev) => prev + 1);
         }
     };
 
-    const handleClickDelete = async (e, id, userId) => {
+    const handleClickDelete = async (e, id, userId, commentsObjType) => {
         if (userData.id === userId) {
-            try {
-                await deleteComment(id);
-                setRenderKey((prev) => prev + 1);
-            } catch (error) {
-                console.log(error);
-            }
+            const copy = { ...commentsObjType };
+            await deleteComment(id);
+            Object.entries(copy).map(([key, commentObj]) => {
+                const index = commentObj.findIndex(
+                    (commentObj) => commentObj.id === id
+                );
+                if (index !== -1) {
+                    commentObj.splice(index, 1);
+                }
+            });
+            setRenderKey((prev) => prev + 1);
         }
     };
 
@@ -142,9 +151,7 @@ export default function Comments({ reference_code }) {
                                     <p>{comment.created_at}</p>
                                     <textarea
                                         readOnly={!isEditable}
-                                        onChange={(e) =>
-                                            handleTextareaChange(e, "comment")
-                                        }
+                                        onChange={(e) => (e, "comment")}
                                     >
                                         {comment.content}
                                     </textarea>
@@ -166,7 +173,8 @@ export default function Comments({ reference_code }) {
                                         handleClickDelete(
                                             e,
                                             comment.id,
-                                            comment.user_id
+                                            comment.user_id,
+                                            commentsObj
                                         )
                                     }
                                 >
@@ -251,7 +259,8 @@ export default function Comments({ reference_code }) {
                                                                         handleClickDelete(
                                                                             e,
                                                                             replyComment.id,
-                                                                            replyComment.user_id
+                                                                            replyComment.user_id,
+                                                                            replyCommentsObj
                                                                         )
                                                                     }
                                                                 >
