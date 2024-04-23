@@ -2,6 +2,7 @@ import { React } from "react";
 import { useState, useEffect } from "react";
 import useComments from "../useComments";
 import authUser from "../authUser";
+import styles from "./comments.module.css";
 
 export default function Comments({ reference_code }) {
     const [renderKey, setRenderKey] = useState(0);
@@ -110,7 +111,7 @@ export default function Comments({ reference_code }) {
 
     const view =
         commentsObj.length < 1 ? (
-            <div>
+            <div className={styles.commentTextarea}>
                 <p>No comments yet</p>
                 <textarea
                     onChange={(e) => handleTextareaChange(e, "comment")}
@@ -127,8 +128,8 @@ export default function Comments({ reference_code }) {
                     return commentObj.map((comment) => {
                         const temp = replayArr.includes(comment.id);
                         return (
-                            <div key={comment.id} style={{ padding: "5px" }}>
-                                <div>
+                            <div key={comment.id}>
+                                <div className={styles.mainCommentDiv}>
                                     <img src="dsa" alt="avatar"></img>
                                     <p>{comment.user_name}</p>
                                     <p>{comment.created_at}</p>
@@ -186,10 +187,7 @@ export default function Comments({ reference_code }) {
                                                                 key={
                                                                     replyComment.id
                                                                 }
-                                                                style={{
-                                                                    padding:
-                                                                        "5px",
-                                                                }}
+                                                                className={styles.replyCommentDiv}
                                                             >
                                                                 <img
                                                                     src="dsa"
@@ -282,7 +280,7 @@ export default function Comments({ reference_code }) {
                                                     )
                                                 }
                                             >
-                                                comment
+                                                Comment
                                             </button>
                                         </>
                                     )}
@@ -294,5 +292,5 @@ export default function Comments({ reference_code }) {
             </>
         );
 
-    return <div>{view}</div>;
+    return <div className={styles.commentDiv}>{view}</div>;
 }

@@ -15,6 +15,8 @@ import {
     faShare,
 } from "@fortawesome/free-solid-svg-icons";
 import { copySelection } from "@testing-library/user-event/dist/cjs/document/copySelection.js";
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
 
 export default function VideoFrame() {
     const { http } = authUser();
@@ -74,6 +76,7 @@ export default function VideoFrame() {
         }
     };
 
+
     const handleShareClick = (e) => {
         setShareIsClicked(true);
     };
@@ -98,11 +101,30 @@ export default function VideoFrame() {
                         className={styles.videoScreen}
                     ></video>
                     <div className={styles.videoFrameInfo}>
-                        <FontAwesomeIcon
-                            onClick={(e) => handleShareClick(e)}
-                            icon={faShare}
-                            className={styles.videoFrameIcon}
-                        />
+                        <Popup
+                            trigger={
+                                <FontAwesomeIcon
+                                    icon={faShare}
+                                    className={styles.videoFrameIcon}
+                                    onClick={handleShareClick}
+                                />
+                            }
+                            position="center"
+                            modal
+                            className={styles.customPopup}
+                        >
+                            {(close) => (
+                                <div className={styles.sharePopup}>
+                                    <p>{JSON.stringify(videoObj.video.video)}</p>
+                                    <button onClick={() => {
+                                        setShareIsClicked(false);
+                                        close();
+                                    }}>
+                                        Ok
+                                    </button>
+                                </div>
+                            )}
+                        </Popup>
                         <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
@@ -143,7 +165,7 @@ export default function VideoFrame() {
                                 } // 1 for like
                                 icon={faThumbsUp}
                                 data-testid="like-button"
-                                className={`${styles.videoFrameIconTD} ${
+                                className={`${styles.videoFrameIcon} ${
                                     thumbObj.thumbStyle === "like" &&
                                     styles.like
                                 }`}
@@ -174,16 +196,8 @@ export default function VideoFrame() {
                             )}
                         </h1>
                     </div>
+                                    <Comments reference_code={reference_code} />
                 </div>
-                <Comments reference_code={reference_code} />
-                {shareIsClicked && (
-                    <>
-                        <p>{JSON.stringify(videoObj.video.video)}</p>
-                        <button onClick={() => setShareIsClicked(false)}>
-                            Ok
-                        </button>
-                    </>
-                )}
             </>
         );
     }
