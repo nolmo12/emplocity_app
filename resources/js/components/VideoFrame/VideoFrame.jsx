@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useEffect, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
@@ -15,6 +15,8 @@ import {
     faShare,
 } from "@fortawesome/free-solid-svg-icons";
 import { copySelection } from "@testing-library/user-event/dist/cjs/document/copySelection.js";
+import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
     const { http } = authUser();
@@ -24,6 +26,7 @@ export default function VideoFrame() {
     const { videoObj, isLoading } = useFetchVideo({ reference_code });
     const [likesCount, setLikesCount] = useState(0);
     const [dislikesCount, setDislikesCount] = useState(0);
+    const [shareIsClicked, setShareIsClicked] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [thumbObj, setThumbObj] = useState({
         like: false,
@@ -33,7 +36,6 @@ export default function VideoFrame() {
     });
 
     useEffect(() => {
-        console.log("rendering");
         setThumbObj({
             like: false,
             dislike: false,
@@ -45,7 +47,6 @@ export default function VideoFrame() {
         if (videoObj) {
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
-            console.log(thumbObj);
         }
         fetchLikeInfo();
     }, [reference_code, videoObj]);
@@ -74,6 +75,11 @@ export default function VideoFrame() {
             console.log(error);
         }
     };
+
+    const handleShareClick = (e) => {
+        setShareIsClicked(true);
+    };
+
     if (!isLoading) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
@@ -94,10 +100,34 @@ export default function VideoFrame() {
                         className={styles.videoScreen}
                     ></video>
                     <div className={styles.videoFrameInfo}>
-                        <FontAwesomeIcon
-                            icon={faShare}
-                            className={styles.videoFrameIcon}
-                        />
+                        <Popup
+                            trigger={
+                                <FontAwesomeIcon
+                                    icon={faShare}
+                                    className={styles.videoFrameIcon}
+                                    onClick={handleShareClick}
+                                />
+                            }
+                            position="center"
+                            modal
+                            className={styles.customPopup}
+                        >
+                            {(close) => (
+                                <div className={styles.sharePopup}>
+                                    <p>
+                                        {JSON.stringify(videoObj.video.video)}
+                                    </p>
+                                    <button
+                                        onClick={() => {
+                                            setShareIsClicked(false);
+                                            close();
+                                        }}
+                                    >
+                                        Ok
+                                    </button>
+                                </div>
+                            )}
+                        </Popup>
                         <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
@@ -138,7 +168,7 @@ export default function VideoFrame() {
                                 } // 1 for like
                                 icon={faThumbsUp}
                                 data-testid="like-button"
-                                className={`${styles.videoFrameIconTD} ${
+                                className={`${styles.videoFrameIcon} ${
                                     thumbObj.thumbStyle === "like" &&
                                     styles.like
                                 }`}
@@ -169,8 +199,8 @@ export default function VideoFrame() {
                             )}
                         </h1>
                     </div>
+                    <Comments reference_code={reference_code} />
                 </div>
-                <Comments reference_code={reference_code} />
             </>
         );
     }

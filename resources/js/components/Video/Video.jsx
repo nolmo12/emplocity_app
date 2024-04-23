@@ -10,26 +10,27 @@ export default function Video({ videoObj }) {
     const [thumbnailIsLoaded, setThumbnailIsLoaded] = useState(false);
     const { calculateLikeRatio } = useLikeCalculation();
     const getLikeRatioStyle = (likeRatio) => {
-        console.log(likeRatio);
         const ratio = parseInt(likeRatio.replace("%", "").trim());
-    
+
         if (isNaN(ratio)) {
-            return {}; 
+            return {};
         }
-    
-        const green = [0, 255, 0]; 
-        const red = [255, 0, 0]; 
-    
+
+        const green = [0, 255, 0];
+        const red = [255, 0, 0];
+
         const interpolateColor = (color1, color2, factor) => {
             const result = color1.slice();
             for (let i = 0; i < 3; i++) {
-                result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+                result[i] = Math.round(
+                    result[i] + factor * (color2[i] - color1[i])
+                );
             }
             return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
         };
-    
+
         const textColor = interpolateColor(red, green, ratio / 100);
-    
+
         return { color: textColor };
     };
     if (videoObj) {
@@ -48,32 +49,18 @@ export default function Video({ videoObj }) {
             <section className={styles.videoSection}>
                 <Link to={path}>
                     <div id={styles.video}>
-                        <div
-                            style={{
-                                backgroundColor: "#fff",
-                                position: "relative",
-                            }}
-                        >
+                        <div className={styles.thumbnailContainer}>
                             <img
                                 src={videoThumbnail}
-                                width={300}
                                 onLoad={() => setThumbnailIsLoaded(true)}
                                 alt="video thumbnail"
-                                style={{
-                                    opacity: thumbnailIsLoaded ? 1 : 0,
-                                    position: "absolute",
-                                }}
+                                className={`${styles.thumbnail} ${
+                                    thumbnailIsLoaded ? styles.loaded : ""
+                                }`}
                             />
                             {!thumbnailIsLoaded && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        top: "50%",
-                                        left: "50%",
-                                        transform: "translate(-50%, -50%)",
-                                    }}
-                                >
-                                    <ClipLoader color="#000" />
+                                <div className={styles.loader}>
+                                    <ClipLoader className={styles.clipLoader} />
                                 </div>
                             )}
                         </div>
@@ -96,10 +83,13 @@ export default function Video({ videoObj }) {
                         <div className={styles.videoInfo}>
                             <p data-testid="video-date">{videoDate}</p>
                         </div>
-                        <div className={styles.videoInfo}>{videoDate}</div>
-                        <div id={styles.likes} className={styles.videoInfo} style={getLikeRatioStyle(likeRatio)}>
-    {likeRatio}
-</div>
+                        <div
+                            id={styles.likes}
+                            className={styles.videoInfo}
+                            style={getLikeRatioStyle(likeRatio)}
+                        >
+                            {likeRatio}
+                        </div>
                     </div>
                 </Link>
             </section>

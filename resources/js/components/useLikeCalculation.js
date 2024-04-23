@@ -66,6 +66,29 @@ export default function useLikeCalculation() {
                 sendLikes(reference_code, 0);
                 setDislikesCount((prev) => prev - 1);
             }
+            // potential bug here
+            if (thumbObj.like && thumbType === 0 && likesCount > 0) {
+                setThumbObj({
+                    like: false,
+                    dislike: true,
+                    userInteraction: "dislike",
+                    thumbStyle: "dislike",
+                });
+                sendLikes(reference_code, 0);
+                setLikesCount((prev) => prev - 1);
+                setDislikesCount((prev) => prev + 1);
+            }
+            if (thumbObj.dislike && thumbType === 1 && dislikesCount > 0) {
+                setThumbObj({
+                    like: true,
+                    dislike: false,
+                    userInteraction: "like",
+                    thumbStyle: "like",
+                });
+                sendLikes(reference_code, 1);
+                setLikesCount((prev) => prev + 1);
+                setDislikesCount((prev) => prev - 1);
+            }
 
             setIsProcessing(false);
         }

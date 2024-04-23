@@ -15,6 +15,7 @@ use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\HistoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -42,6 +43,9 @@ Route::prefix('auth')->group(function () {
     ->middleware('guest')
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
+    Route::get('/deleteUser', [UserController::class, 'delete'])->middleware('auth:api');
+    Route::post('/updateUser', [UserController::class, 'update'])->middleware('auth:api');
+    Route::get('/readUser/{id}', [UserController::class, 'read'])->middleware('auth:api');
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
@@ -119,7 +123,6 @@ Route::prefix('video')->group(function () {
     Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])
     ->name('similarVideos');
 
-    
     Route::get('/getUserLikes/{referenceCode}', [UserController::class,'getLikes'])
     ->middleware('auth:api');
 
@@ -132,8 +135,7 @@ Route::prefix('video')->group(function () {
     Route::post('/upload', [VideoController::class, 'store']);
 
     Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
-    ->middleware('auth:api')
-    ->name('updateLikes');
+    ->middleware('auth:api')    ->name('updateLikes');
 
     Route::patch('/update', [VideoController::class,'update'])
     ->middleware('auth:api');
@@ -150,5 +152,11 @@ Route::prefix('video')->group(function () {
     ->middleware('auth:api');
 
     Route::get('/comments/children', [CommentController::class, 'getChildrenComments']);
+
+});
+
+Route::prefix('history')->group(function () {
+    Route::post('/{referenceCode}', [HistoryController::class,'createOrUpdate']);
+    Route::get('/read', [HistoryController::class,'read']);
 
 });
