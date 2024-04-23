@@ -87,9 +87,9 @@ class UserController extends Controller
             // Validate the request data
         $validateUser = Validator::make($request->all(), [
             'name' => 'string|max:255',
-            'email' => 'email|unique:users,email,'. $request->user()->id,
             'password' => 'string',
-            'repeatPassword' => 'same:password'
+            'repeatPassword' => 'same:password',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validateUser->fails()) {
@@ -105,17 +105,18 @@ class UserController extends Controller
 
         $user = User::findOrFail($request->user()->id);
 
-        if ($request->filled('email')) {
-            $user->email = $request->email;
-            // user registered event
-            $user->email_verified_at = null;
-            event(new Registered($user));
-        }
+
         if ($request->filled('name')) {
             $user->name = $request->name;
         }
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
+        }
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailName = $user->id . '_' . time() . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+            $thumbnailPath = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
+            $relativePath = str_replace(public_path(), '/', $thumbnailPath);
+            $user->avatar = $relativePath;
         }
 
         $user->save();
@@ -133,10 +134,16 @@ class UserController extends Controller
             ], 500);
         }
     }
-    public function read(Request $request)
-{
+    public function read(Request $request, $id)
+    {
     try {
-        $user = User::with('videos')->findOrFail($request->user()->id);
+        if ($request->user()->id == $id) {
+            $user = User::with('videos')->findOrFail($id);
+        } else {
+            $user = User::with(['videos' => function ($query) {
+                $query->where('visibility', 'Public');
+            }])->findOrFail($id);
+        }
 
         $userData = [
             'name' => $user->name,
@@ -163,5 +170,5 @@ class UserController extends Controller
             'message' => 'User not found',
         ], 404);
     }
-}
+    }
 }
