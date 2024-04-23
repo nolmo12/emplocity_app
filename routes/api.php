@@ -43,7 +43,7 @@ Route::prefix('auth')->group(function () {
     Route::get('/user-data', [UserController::class, 'getUserData']);
     Route::get('/deleteUser', [UserController::class, 'delete'])->middleware('auth:api');
     Route::post('/updateUser', [UserController::class, 'update'])->middleware('auth:api');
-    Route::get('/readUser', [UserController::class, 'read'])->middleware('auth:api');
+    Route::get('/readUser/{id}', [UserController::class, 'read'])->middleware('auth:api');
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
