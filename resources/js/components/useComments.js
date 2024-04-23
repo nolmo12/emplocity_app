@@ -44,7 +44,6 @@ export default function useComments() {
             const response = await http.get(
                 `/api/video/comments/children?comment=${parentId}&offset=0`
             );
-            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);

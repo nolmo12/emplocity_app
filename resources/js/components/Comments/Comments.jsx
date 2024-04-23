@@ -18,8 +18,8 @@ export default function Comments({ reference_code }) {
     } = useComments();
     const [commentContent, setCommentContent] = useState("");
     const [replyCommentContent, setReplyCommentContent] = useState("");
-    const [replayArr, setReplayArr] = useState([]);
-    const [replyViewFlag, setReplyViewFlag] = useState(false);
+    const [replyArr, setReplyArr] = useState([]);
+    const [viewReplyArr, setViewReplyArr] = useState([]);
     const [isEditable, setIsEditable] = useState(false);
     const [userData, setUserData] = useState({});
     const [nextCursor, setNextCursor] = useState(null);
@@ -43,57 +43,65 @@ export default function Comments({ reference_code }) {
         if (type === "comment") setCommentContent(e.target.value);
     };
 
-    const handleClickButton = async (e) => {
-        try {
-            await sendComment(reference_code, commentContent);
-            setRenderKey((prev) => prev + 1);
-            // setCommentsObj([...commentsObj, { comment: commentContent }]);
-        } catch (error) {
-            console.log(error);
-        }
+    const handleClickComment = async (e) => {
+        await sendComment(reference_code, commentContent);
+        setRenderKey((prev) => prev + 1);
     };
 
     const handleClickReplyComment = async (e, parentId) => {
         e.preventDefault();
-        try {
-            await sendReplyComment(
-                reference_code,
-                replyCommentContent,
-                parentId
-            );
-            setRenderKey((prev) => prev + 1);
-        } catch (error) {
-            console.log(error);
-        }
+        await sendReplyComment(reference_code, replyCommentContent, parentId);
+        handleClickReply(e, parentId); // close reply textarea
+        setRenderKey((prev) => prev + 1);
     };
 
     const handleClickReply = (e, id) => {
-        e.preventDefault();
-        if (replayArr.includes(id)) {
-            const index = replayArr.indexOf(id);
-            replayArr.splice(index, 1);
-            setReplayArr([...replayArr]);
+        if (replyArr.includes(id)) {
+            const index = replyArr.indexOf(id);
+            replyArr.splice(index, 1);
+            setReplyArr([...replyArr]);
             return;
         }
-        setReplayArr([...replayArr, id]);
+        setReplyArr([...replyArr, id]);
     };
 
     const handleClickView = async (e, parentId) => {
-        console.log(parentId);
+        if (viewReplyArr.includes(parentId)) {
+            const index = viewReplyArr.indexOf(parentId);
+            viewReplyArr.splice(index, 1);
+            setViewReplyArr([...viewReplyArr]);
+            return;
+        }
+        setViewReplyArr([...viewReplyArr, parentId]);
         const data = await fetchChildren(parentId);
         setRenderKey((prev) => prev + 1);
-        console.log(data);
         setReplyCommentsObj(data);
-        setReplyViewFlag(!replyViewFlag);
     };
 
     const handleClickEdit = async (e, type, commentId, userId) => {
         if (userData.id === userId) {
             setIsEditable(!isEditable);
+            let copy;
             if (isEditable === true && type === "comment")
                 await editComment(commentId, commentContent);
+            copy = { ...commentsObj };
+            Object.entries(copy).map(([key, commentObj]) => {
+                return commentObj.map((comment) => {
+                    if (comment.id === commentId) {
+                        comment.content = commentContent;
+                    }
+                });
+            });
             if (isEditable === true && type === "reply")
                 await editComment(commentId, replyCommentContent);
+            copy = { ...replyCommentsObj };
+            Object.entries(copy).map(([key, replyCommentObj]) => {
+                return replyCommentObj.map((replyComment) => {
+                    if (replyComment.id === commentId) {
+                        replyComment.content = replyCommentContent;
+                    }
+                });
+            });
             setRenderKey((prev) => prev + 1);
         }
     };
@@ -116,17 +124,16 @@ export default function Comments({ reference_code }) {
                 <textarea
                     onChange={(e) => handleTextareaChange(e, "comment")}
                 ></textarea>
-                <button onClick={(e) => handleClickButton(e)}>Comment</button>
+                <button onClick={(e) => handleClickComment(e)}>Comment</button>
             </div>
         ) : (
             <>
                 <textarea
                     onChange={(e) => handleTextareaChange(e, "comment")}
                 ></textarea>
-                <button onClick={(e) => handleClickButton(e)}>Comment</button>
+                <button onClick={(e) => handleClickComment(e)}>Comment</button>
                 {Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment) => {
-                        const temp = replayArr.includes(comment.id);
                         return (
                             <div key={comment.id}>
                                 <div className={styles.mainCommentDiv}>
@@ -177,7 +184,7 @@ export default function Comments({ reference_code }) {
                                         </button>
                                     )}
 
-                                    {replyViewFlag &&
+                                    {viewReplyArr.includes(comment.id) &&
                                         Object.entries(replyCommentsObj).map(
                                             ([key, replyCommentObj]) => {
                                                 return replyCommentObj.map(
@@ -187,7 +194,9 @@ export default function Comments({ reference_code }) {
                                                                 key={
                                                                     replyComment.id
                                                                 }
-                                                                className={styles.replyCommentDiv}
+                                                                className={
+                                                                    styles.replyCommentDiv
+                                                                }
                                                             >
                                                                 <img
                                                                     src="dsa"
@@ -262,7 +271,7 @@ export default function Comments({ reference_code }) {
                                         reply
                                     </button>
 
-                                    {temp && (
+                                    {replyArr.includes(comment.id) && (
                                         <>
                                             <textarea
                                                 onChange={(e) =>
