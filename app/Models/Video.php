@@ -112,7 +112,7 @@ class Video extends Model
             error_log('Video not found');
     }
 
-    public function calculateSimilarityScoreToOtherVideo(Video $other, ?Tag $tags): int
+    public function calculateSimilarityScore(Video $other): int
     {
         $tagIds = $this->tags->pluck('id')->toArray();
         $otherTagIds = $other->tags->pluck('id')->toArray();
