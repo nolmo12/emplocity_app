@@ -1,6 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import authUser from "../authUser";
+import styles from "./accountSettings.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faUpload
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettings() {
     const [user, setUser] = useState();
@@ -37,34 +42,34 @@ export default function AccountSettings() {
     console.log(user);
     return (
         <main>
-            <div>
+            <div className={styles.settingsDiv}>
                 {user && (
-                    <>
-                        <h3>User Info</h3>
-                        <p>First name {user.first_name}</p>
-                        <p>Nickname {user.name}</p>
-                        <p>Premium border {user.border_id ? "yes" : "no"}</p>
-                        <img src="Fd" alt="Avatar" />
-                    </>
-                )}
-            </div>
-            <div>
-                {user && (
-                    <>
-                        <form onSubmit={(e) => handleSubmit(e)}>
-                            <p>Change first name</p>
-                            <input
-                                type="text"
-                                onChange={(e) => handleChangeFirstName(e)}
-                            />
-                            <p>Nickname</p>
-                            <input
-                                type="text"
-                                onChange={(e) => handleChangeNickname(e)}
-                            />
-                            <button>Save</button>
-                        </form>
-                    </>
+                    <div className={styles.userInfoForm}>
+                        <>
+                            <form onSubmit={(e) => handleSubmit(e)}>
+                                <h3>User Info</h3>
+                                <input
+                                    type="text"
+                                    value={userData.first_name || user.first_name}
+                                    onChange={(e) => handleChangeFirstName(e)}
+                                />
+                                <p>Change first name</p>
+                                <input
+                                    type="text"
+                                    value={userData.nickname || user.name}
+                                    onChange={(e) => handleChangeNickname(e)}
+                                />
+                                <p>Change nickname</p>
+                                <p className={styles.borderSetting}>Premium border {user.border_id ? "yes" : "no"}</p>
+                                <FontAwesomeIcon
+                                    icon={faUpload}
+                                    className={styles.uploadIcon}
+                                />
+                                <p className={styles.uploadIconP}>Change avatar</p>
+                                <button>Save</button>
+                            </form>
+                        </>
+                    </div>
                 )}
             </div>
         </main>

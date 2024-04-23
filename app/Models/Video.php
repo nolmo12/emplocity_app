@@ -60,6 +60,12 @@ class Video extends Model
         return $this->hasMany(Comment::class);
     }
 
+    // Relationship with History
+    public function histories()
+    {
+        return $this->hasMany(History::class);
+    }
+
     public function getDuration()
     {
         $videoManager = new VideoManager($this->video);
