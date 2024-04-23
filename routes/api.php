@@ -15,6 +15,7 @@ use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\HistoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -132,8 +133,7 @@ Route::prefix('video')->group(function () {
     Route::post('/upload', [VideoController::class, 'store']);
 
     Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
-    ->middleware('auth:api')
-    ->name('updateLikes');
+    ->middleware('auth:api')    ->name('updateLikes');
 
     Route::patch('/update', [VideoController::class,'update'])
     ->middleware('auth:api');
@@ -150,5 +150,11 @@ Route::prefix('video')->group(function () {
     ->middleware('auth:api');
 
     Route::get('/comments/children', [CommentController::class, 'getChildrenComments']);
+
+});
+
+Route::prefix('history')->group(function () {
+    Route::post('/{referenceCode}', [HistoryController::class,'createOrUpdate']);
+    Route::get('/read', [HistoryController::class,'read']);
 
 });
