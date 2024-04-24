@@ -1,11 +1,11 @@
 .commentDiv {
-    position:relative;
-    width:50%;
-    top:5%;
+    position: relative;
+    width: 50%;
+    top: 5%;
 }
 
-.commentDiv p{
-    font-size:0.8em;
+.commentDiv p {
+    font-size: 0.8em;
 }
 
 .commentDiv textarea {
@@ -13,7 +13,7 @@
     height: 12vh;
     background-color: #101b32;
     border: inset 2px #060c1a;
-    border-radius:6px;
+    border-radius: 6px;
     color: white;
     resize: none;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
@@ -22,7 +22,7 @@
 .commentDiv button {
     width: 15%;
     height: 1.5em;
-    font-size:0.8em;
+    font-size: 0.8em;
     margin: 0 auto;
     border-radius: 10px;
     margin-bottom: 1em;
@@ -30,7 +30,7 @@
     cursor: pointer;
     border: solid 2px #a0a0a0;
     background-color: white;
-    float:right;
+    float: right;
 }
 
 .commentDiv button:hover {
@@ -42,11 +42,14 @@
 }
 
 .mainCommentDiv {
-    margin-top:2em;
+    margin-top: 2em;
 }
 
 .replyCommentDiv {
-    margin-left:1em;
-    margin-top:2em;
+    margin-left: 1em;
+    margin-top: 2em;
 }
 
+.isClick {
+    color: red;
+}

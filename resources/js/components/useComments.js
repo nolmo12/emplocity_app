@@ -70,6 +70,8 @@ export default function useComments() {
         }
     };
 
+    // ---------------------------------------------------
+
     return {
         fetchComments,
         sendComment,
