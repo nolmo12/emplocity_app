@@ -25,8 +25,8 @@ export default function Comments({ reference_code }) {
     };
 
     return (
-        <div>
-            <div className={styles.commentTextarea}>
+        <div className={styles.commentDiv}>
+            <div>
                 <textarea
                     onChange={(e) => handleTextareaChange(e, "comment")}
                 ></textarea>
@@ -36,13 +36,15 @@ export default function Comments({ reference_code }) {
                 Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {
                         return (
-                            <Comment
-                                key={index}
-                                comment={comment}
-                                setRenderKey={setRenderKey}
-                                reference_code={reference_code}
-                                isReply={false}
-                            />
+                            <div className={styles.commentContainer}>
+                                <Comment
+                                    key={index}
+                                    comment={comment}
+                                    setRenderKey={setRenderKey}
+                                    reference_code={reference_code}
+                                    isReply={false}
+                                />
+                            </div>
                         );
                     });
                 })}
