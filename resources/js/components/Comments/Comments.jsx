@@ -20,9 +20,10 @@ export default function Comments({ reference_code }) {
     const [replyCommentContent, setReplyCommentContent] = useState("");
     const [replyArr, setReplyArr] = useState([]);
     const [viewReplyArr, setViewReplyArr] = useState([]);
+    const [viewButtonStylesObj, setViewButtonStylesObj] = useState([]);
+    const [editButtonStylesObj, setEditButtonStylesObj] = useState([]);
     const [isEditable, setIsEditable] = useState(false);
     const [userData, setUserData] = useState({});
-    const [nextCursor, setNextCursor] = useState(null);
 
     const { getUser } = authUser();
 
@@ -45,6 +46,7 @@ export default function Comments({ reference_code }) {
     const handleClickComment = async (e) => {
         await sendComment(reference_code, commentContent);
         setRenderKey((prev) => prev + 1);
+        e.target.previousElementSibling.value = "";
     };
 
     const handleClickReplyComment = async (e, parentId) => {
@@ -52,6 +54,7 @@ export default function Comments({ reference_code }) {
         await sendReplyComment(reference_code, replyCommentContent, parentId);
         handleClickReply(e, parentId); // close reply textarea
         setRenderKey((prev) => prev + 1);
+        e.target.previousElementSibling.value = "";
     };
 
     const handleClickReply = (e, id) => {
@@ -65,6 +68,9 @@ export default function Comments({ reference_code }) {
     };
 
     const handleClickView = async (e, parentId) => {
+        setViewButtonStylesObj((prev) => ({
+            [parentId]: !prev[parentId],
+        }));
         if (viewReplyArr.includes(parentId)) {
             // when click view again, close the view and remove the data from viewReplyArr
             const index = viewReplyArr.indexOf(parentId);
@@ -78,33 +84,9 @@ export default function Comments({ reference_code }) {
         }
     };
 
-    const handleClickEdit = async (e, type, commentId, userId) => {
+    const handleClickEdit = (e, type, commentId, userId) => {
         if (userData.id === userId) {
             setIsEditable(!isEditable);
-            let copy;
-            if (isEditable === true && type === "comment") {
-                await editComment(commentId, commentContent);
-                copy = { ...commentsObj };
-                Object.entries(copy).map(([key, commentObj]) => {
-                    return commentObj.map((comment) => {
-                        if (comment.id === commentId) {
-                            comment.content = commentContent;
-                        }
-                    });
-                });
-            }
-
-            if (isEditable === true && type === "reply") {
-                await editComment(commentId, replyCommentContent);
-                copy = { ...replyCommentsObj };
-                Object.entries(copy).map(([key, replyCommentObj]) => {
-                    return replyCommentObj.map((replyComment) => {
-                        if (replyComment.id === commentId) {
-                            replyComment.content = replyCommentContent;
-                        }
-                    });
-                });
-            }
 
             setRenderKey((prev) => prev + 1);
         }
@@ -151,12 +133,19 @@ export default function Comments({ reference_code }) {
                                     <p>{comment.created_at}</p>
                                     <textarea
                                         readOnly={!isEditable}
-                                        onChange={(e) => (e, "comment")}
+                                        onChange={(e) =>
+                                            handleTextareaChange(e, "comment")
+                                        }
                                     >
                                         {comment.content}
                                     </textarea>
                                 </div>
                                 <button
+                                    className={
+                                        editButtonStylesObj[comment.id]
+                                            ? styles.isClick
+                                            : ""
+                                    }
                                     onClick={(e) =>
                                         handleClickEdit(
                                             e,
@@ -184,6 +173,11 @@ export default function Comments({ reference_code }) {
                                 <>
                                     {comment.has_children && (
                                         <button
+                                            className={
+                                                viewButtonStylesObj[comment.id]
+                                                    ? styles.isClick
+                                                    : ""
+                                            }
                                             onClick={(e) =>
                                                 handleClickView(e, comment.id)
                                             }
@@ -229,8 +223,7 @@ export default function Comments({ reference_code }) {
                                                                     ) =>
                                                                         handleTextareaChange(
                                                                             e,
-                                                                            "reply",
-                                                                            replyComment.id
+                                                                            "reply"
                                                                         )
                                                                     }
                                                                 >
@@ -239,6 +232,14 @@ export default function Comments({ reference_code }) {
                                                                     }
                                                                 </textarea>
                                                                 <button
+                                                                    className={
+                                                                        editButtonStylesObj[
+                                                                            replyComment
+                                                                                .id
+                                                                        ]
+                                                                            ? styles.isClick
+                                                                            : ""
+                                                                    }
                                                                     onClick={(
                                                                         e
                                                                     ) =>
@@ -272,6 +273,7 @@ export default function Comments({ reference_code }) {
                                                 );
                                             }
                                         )}
+
                                     <button
                                         onClick={(e) =>
                                             handleClickReply(e, comment.id)
