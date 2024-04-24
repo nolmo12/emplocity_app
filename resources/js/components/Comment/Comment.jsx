@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import useComments from "../useComments";
 import styles from "../Comments/comments.module.css";
+
 export default function Comment({
     comment,
     setRenderKey,
@@ -15,22 +16,28 @@ export default function Comment({
     const [isEditable, setIsEditable] = useState(false);
     const [replyCommentContent, setReplyCommentContent] = useState();
     const [replyComment, setReplyComment] = useState({});
+    const [isReplyStyle, setIsReplyStyle] = useState(isReply); // Nowa zmienna stanu
+
     const handleClickDelete = async (e) => {
         await deleteComment(comment.id);
         setRenderKey((prev) => prev + 1);
     };
+
     const handleTextareaChange = (e) => {
         setReplyCommentContent(e.target.value);
     };
+
     const handleClickReply = async (e) => {
         setReplyFlag(!replyFlag);
     };
+
     const handleClickReplyComment = async (e, id) => {
         console.log(comment.id);
         await sendReplyComment(reference_code, replyCommentContent, id);
         setReplyFlag(!replyFlag);
         setRenderKey((prev) => prev + 1);
     };
+
     const handleClickView = async (e) => {
         const tempReplyComments = await fetchChildren(comment.id);
         setViewFlag(!viewFlag);
@@ -52,6 +59,7 @@ export default function Comment({
         setReplyComment(newReplyComments);
         setRenderKey((prev) => prev + 1);
     };
+
     const handleClickEdit = async (e) => {
         setIsEditable(!isEditable);
         if (isEditable) {
@@ -60,52 +68,55 @@ export default function Comment({
         }
         setRenderKey((prev) => prev + 1);
     };
+
     return (
         <>
-            <img src="avatar" alt="avatar" />
-            <p>{comment.user_name}</p>
-            <p>{comment.created_at}</p>
-            <textarea
-                readOnly={!isEditable}
-                defaultValue={comment.content}
-                onChange={(e) => handleTextareaChange(e)}
-            />
-            <button
-                onClick={(e) => handleClickEdit(e)}
-                className={isEditable ? styles.isClick : ""}
-            >
-                edit
-            </button>
-            <button onClick={(e) => handleClickDelete(e)}>delete</button>
-            {comment.has_children && (
+            <div className={isReply ? styles.replyContainer : ""}>
+                <img src="avatar" alt="avatar" />
+                <p>{comment.user_name}</p>
+                <p>{comment.created_at}</p>
+                <textarea
+                    readOnly={!isEditable}
+                    defaultValue={comment.content}
+                    onChange={(e) => handleTextareaChange(e)}
+                />
                 <button
-                    onClick={(e) => handleClickView(e)}
-                    className={viewFlag ? styles.isClick : ""}
+                    onClick={(e) => handleClickEdit(e)}
+                    className={isEditable ? styles.isClick : ""}
                 >
-                    view
+                    edit
                 </button>
-            )}
-            {viewFlag && replyComment}
-            {!isReply && (
-                <button
-                    onClick={(e) => handleClickReply(e)}
-                    className={replyFlag ? styles.isClick : ""}
-                >
-                    reply
-                </button>
-            )}
-            {replyFlag && (
-                <>
-                    <textarea
-                        onChange={(e) => handleTextareaChange(e)}
-                    ></textarea>
+                <button onClick={(e) => handleClickDelete(e)}>delete</button>
+                {comment.has_children && (
                     <button
-                        onClick={(e) => handleClickReplyComment(e, comment.id)}
+                        onClick={(e) => handleClickView(e)}
+                        className={viewFlag ? styles.isClick : ""}
                     >
-                        comment
+                        view
                     </button>
-                </>
-            )}
+                )}
+                {viewFlag && replyComment}
+                {!isReply && (
+                    <button
+                        onClick={(e) => handleClickReply(e)}
+                        className={replyFlag ? styles.isClick : ""}
+                    >
+                        reply
+                    </button>
+                )}
+                {replyFlag && (
+                    <>
+                        <textarea
+                            onChange={(e) => handleTextareaChange(e)}
+                        ></textarea>
+                        <button
+                            onClick={(e) => handleClickReplyComment(e, comment.id)}
+                        >
+                            comment
+                        </button>
+                    </>
+                )}
+            </div>
         </>
     );
 }
