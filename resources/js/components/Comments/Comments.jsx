@@ -36,9 +36,11 @@ export default function Comments({ reference_code }) {
                 Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {
                         return (
-                            <div className={styles.commentContainer}>
+                            <div
+                                className={styles.commentContainer}
+                                key={index}
+                            >
                                 <Comment
-                                    key={index}
                                     comment={comment}
                                     setRenderKey={setRenderKey}
                                     reference_code={reference_code}

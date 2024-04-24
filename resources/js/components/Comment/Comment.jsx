@@ -16,10 +16,12 @@ export default function Comment({
     const [isEditable, setIsEditable] = useState(false);
     const [replyCommentContent, setReplyCommentContent] = useState();
     const [replyComment, setReplyComment] = useState({});
-    const [isReplyStyle, setIsReplyStyle] = useState(isReply); // Nowa zmienna stanu
 
     const handleClickDelete = async (e) => {
         await deleteComment(comment.id);
+        if (isReply) {
+            console.log("isReply");
+        }
         setRenderKey((prev) => prev + 1);
     };
 
@@ -110,7 +112,9 @@ export default function Comment({
                             onChange={(e) => handleTextareaChange(e)}
                         ></textarea>
                         <button
-                            onClick={(e) => handleClickReplyComment(e, comment.id)}
+                            onClick={(e) =>
+                                handleClickReplyComment(e, comment.id)
+                            }
                         >
                             comment
                         </button>
