@@ -37,8 +37,6 @@
 
 .similarVideo {
     height:90%;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 #video {
