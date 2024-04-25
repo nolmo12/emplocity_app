@@ -16,7 +16,7 @@ export default function Comment({
     const [isEditable, setIsEditable] = useState(false);
     const [replyCommentContent, setReplyCommentContent] = useState();
     const [replyComment, setReplyComment] = useState({});
-    const [isReplyStyle, setIsReplyStyle] = useState(isReply); // Nowa zmienna stanu
+    const [isReplyStyle, setIsReplyStyle] = useState(isReply);
 
     const handleClickDelete = async (e) => {
         await deleteComment(comment.id);
@@ -95,7 +95,6 @@ export default function Comment({
                         view
                     </button>
                 )}
-                {viewFlag && replyComment}
                 {!isReply && (
                     <button
                         onClick={(e) => handleClickReply(e)}
@@ -104,7 +103,8 @@ export default function Comment({
                         reply
                     </button>
                 )}
-                {replyFlag && (
+                {viewFlag && replyComment}
+                {replyFlag && !isReply && (
                     <>
                         <textarea
                             onChange={(e) => handleTextareaChange(e)}
