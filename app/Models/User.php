@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Exception;
+use App\Helpers\SearchInterface;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -12,7 +14,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail, SearchInterface
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -84,6 +86,28 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     {
         return $this->getKey();
     }
+
+    public function calculateSearchScore(array $searchQueryArray) : float
+    {
+
+        $name = $this->name;
+        $firstName = $this->first_name;
+
+        similar_text(strtolower($name), strtolower(implode(' ', $searchQueryArray)), $nameSimilarity);
+        similar_text(strtolower($firstName), strtolower(implode(' ', $searchQueryArray)), $firstNameSimilarity);
+
+        $score = 3 * ($nameSimilarity / 100);
+
+        $score += 7 * ($firstNameSimilarity / 100);
+
+        return $score;
+    }
+
+    public function calculateListingScore() : float
+    {
+        throw new Exception("method2 is not supported");
+    }
+
 
         /**
      * Return a key-value array that will be serialized as the claims of the JWT.

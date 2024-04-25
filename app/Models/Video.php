@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\SearchInterface;
 use App\Models\User;
 use App\Models\Report;
 use App\Helpers\VideoManager;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
-class Video extends Model
+class Video extends Model implements SearchInterface
 {
     use HasFactory;
 
@@ -132,21 +133,31 @@ class Video extends Model
 
         $title = $this->languages()->first()->pivot->title;
 
-        $titleArray = explode(' ', $title);
+        similar_text(strtolower($title), strtolower(implode(' ', $searchQueryArray)), $titleSimilarity);
         
-        $wordCount = count(array_intersect($titleArray, $searchQueryArray));
-
-        $titleSimiliratyScore = 7 * $wordCount / count($searchQueryArray);
+        $titleSimiliratyScore = 7 * ($titleSimilarity / 100);
 
         $tags = $this->tags->pluck('name')->toArray();
+        $tags = array_map('strtolower', $tags);
 
-        $sameTagsCount = count(array_intersect($tags, $searchQueryArray));
-
-        $tagSimilarityScore = 3 * $sameTagsCount / count($searchQueryArray);
+        $commonTagsCount = 0;
+        foreach ($tags as $tag) {
+            similar_text($tag, implode(' ', $searchQueryArray), $percent);
+            if ($percent >= 50) 
+            { 
+                $commonTagsCount++;
+            }
+        }
+        $tagSimilarityScore = 3 * ($commonTagsCount / count($tags));
         
         $score += $titleSimiliratyScore + $tagSimilarityScore;
 
         return $score;
+    }
+
+    public function calculateListingScore(): float
+    {
+        return 3.3;
     }
 
 
