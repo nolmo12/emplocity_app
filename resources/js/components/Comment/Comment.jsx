@@ -44,7 +44,7 @@ export default function Comment({
     };
 
     const handleTextareaChange = (e) => {
-        setReplyCommentContent(e.target.value);
+        setReplyCommentContent(e.target.innerText);
     };
 
     const handleClickReply = async (e) => {
@@ -100,13 +100,15 @@ export default function Comment({
                 <img src="avatar" alt="avatar" />
                 <p>{comment.user_name}</p>
                 <p>{comment.created_at}</p>
-                {console.log(comment)}
                 <p>{comment.content}</p>
-                <textarea
-                    readOnly={!isEditable}
-                    onChange={(e) => handleTextareaChange(e)}
-                    value={isEditable ? replyCommentContent : comment.content}
-                ></textarea>
+                <div
+                    style={{ height: "100px" }}
+                    contentEditable={isEditable}
+                    onInput={(e) => handleTextareaChange(e)}
+                >
+                    {comment.content}
+                </div>
+                <p>{comment.content}</p>
                 {editUserFlag && (
                     <button
                         onClick={(e) => handleClickEdit(e)}
@@ -139,9 +141,10 @@ export default function Comment({
                 )}
                 {replyFlag && (
                     <>
-                        <textarea
-                            onChange={(e) => handleTextareaChange(e)}
-                        ></textarea>
+                        <div
+                            contentEditable="true"
+                            onInput={(e) => handleTextareaChange(e)}
+                        ></div>
                         <button
                             onClick={(e) =>
                                 handleClickReplyComment(e, comment.id)
