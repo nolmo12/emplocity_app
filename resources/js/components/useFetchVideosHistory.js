@@ -4,9 +4,9 @@ export default function useFetchVideosHistory() {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
-        const fetchVideos = async (id) => {
+        const fetchVideos = async () => {
             try {
-                const response = await axios.get(`api/auth/readUser/${id}`);
+                const response = await axios.get(`/api/auth/likedVideos`);
                 console.log(response.data);
                 response.data.videos.map((video) => {
                     setVideos((videos) => [...videos, video]);
