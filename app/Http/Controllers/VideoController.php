@@ -480,49 +480,94 @@ class VideoController extends Controller
         $request->validate([
             'query' => 'string|max:255|min:0',
             'offset' => 'nullable|integer|min:0',
-            'sorting' => ['nullable','string', new Enumerate(['date', 'views', 'popularity'])]
+            'sorting' => ['nullable','string', new Enumerate(['upload_date_desc', 'upload_date_asc', 'views', 'popularity'])]
         ]);
 
         $searchQuery = $request->query('query');
 
         $searchQueryArray = explode(' ', $searchQuery);
+
+        $searchQueryArray = array_map('strtolower', $searchQueryArray);
+
         $videoCollection = collect();
+
+        $userCollection = collect();
         
         foreach($searchQueryArray as $word)
         {
             $videos = Video::where('visibility', 'Public')
-                            ->whereHas('languages', function ($query) use ($word) {
-                                $query->where('title', 'like', "%$word%");
-                            })
-                            ->get();
+            ->whereHas('tags', function ($query) use ($word) {
+                $soundexWord = soundex($word);
+                $query->whereRaw("SOUNDEX(name) = '$soundexWord'");
+            })
+            ->get();
         
+        
+
+            
+
+            $users = User::where(function ($query) use ($word) {
+                $soundexWord = soundex($word);
+                $query->whereRaw("SOUNDEX(name) = SOUNDEX('$word')")
+                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX('$word')");
+            })
+            ->get();
+
             $videoCollection = $videoCollection->concat($videos);
+            $userCollection = $userCollection->concat($users);
         }
         
-        $scores = [];
-        
+        $videoScores = [];
+        $userScores = [];
+
         foreach($videoCollection as $video)
         {
-            $scores[$video->reference_code] =[
+            $videoScores[$video->reference_code] = [
+                'video_name' => $video->languages()->first()->pivot->title,
                 'upload_date' => $video->created_at->timestamp,
                 'score' => $video->calculateSearchScore($searchQueryArray)
             ];
         }
 
+        foreach ($userCollection as $user)
+        {
+            $userScores[$user->id] = [
+                'upload_date' => $user->created_at->timestamp,
+                'score' => $user->calculateSearchScore($searchQueryArray)
+            ];
+        }
+
+
         $order = $request->sorting;
         switch($order)
         {
             case 'popularity':
+                usort($videoScores, function($a, $b) {
+                    return $b['score'] <=> $a['score'];
+                });
                 break;
             case 'upload_date_desc':
+                usort($videoScores, function($a, $b) {
+                    return $b['upload_date'] <=> $a['upload_date'];
+                });
                 break;
             case 'upload_date_asc':
+                usort($videoScores, function($a, $b) {
+                    return $b['upload_date'] <= $a['upload_date'];
+                });
                 break;
             default:
-                Utils::sortByScore($scores, 'desc');
-                
+            usort($videoScores, function($a, $b) {
+                return $b['score'] <=> $a['score'];
+            });                                                                                                                                                                                                            
         }
+
+        uasort($userScores, function ($a, $b) {
+            return $b['score'] <=> $a['score'];
+        });
+
+        $scores = array_merge($videoScores, $userScores);
         
-        return $scores;
+        return $videoScores;
     }
 }
