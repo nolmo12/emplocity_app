@@ -1,16 +1,16 @@
 import axios from "axios";
+import authUser from "./authUser";
 import { useState, useEffect } from "react";
 export default function useFetchVideosHistory() {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { http } = authUser();
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await axios.get(`/api/auth/likedVideos`);
+                const response = await http.get(`/api/auth/likedVideos`);
                 console.log(response.data);
-                response.data.videos.map((video) => {
-                    setVideos((videos) => [...videos, video]);
-                });
+                setVideos(response.data);
                 setIsLoading(false);
             } catch (error) {
                 console.log(error);

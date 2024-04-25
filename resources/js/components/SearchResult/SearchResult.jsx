@@ -6,6 +6,7 @@ import useFetchVideosHistory from "../useFetchVideosHistory";
 import authUser from "../authUser";
 import styles from "./searchResult.module.css";
 import { Link } from "react-router-dom";
+import useFetchVideo from "../useFetchVideo";
 
 function VideoThumbnail({ videoObj }) {
     return (
@@ -40,7 +41,7 @@ function VideoInfo({ videoObj }) {
 
 export default function SearchResult({ searchType }) {
     const { getUser } = authUser();
-    const { videos, isLoading } = useFetchAllVideos();
+    const { videos, isLoading } = useFetchVideosHistory();
     if (getUser()) {
         const { videos } = useFetchVideosHistory();
     }
@@ -86,7 +87,8 @@ export default function SearchResult({ searchType }) {
         view = (
             <ul>
                 <h2>User likes</h2>
-                {videosHistory.map((video) => (
+                {console.log(videos)}
+                {videos.map((video) => (
                     <li key={video.id}>
                         <Link to={`/video/${video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
