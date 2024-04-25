@@ -37,9 +37,7 @@ export default function Comment({
 
     const handleClickDelete = async (e) => {
         await deleteComment(comment.id);
-        if (isReply) {
-            console.log("isReply");
-        }
+
         setRenderKey((prev) => prev + 1);
     };
 
@@ -52,7 +50,6 @@ export default function Comment({
     };
 
     const handleClickReplyComment = async (e, id) => {
-        console.log(comment.id);
         setReplyCommentContent("");
         await sendReplyComment(reference_code, replyCommentContent, id);
 
@@ -88,7 +85,6 @@ export default function Comment({
             setReplyCommentContent(comment.content);
         }
         if (isEditable) {
-            console.log(replyCommentContent);
             await editComment(comment.id, replyCommentContent);
         }
         setRenderKey((prev) => prev + 1);
