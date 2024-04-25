@@ -46,6 +46,8 @@ Route::prefix('auth')->group(function () {
     Route::get('/deleteUser', [UserController::class, 'delete'])->middleware('auth:api');
     Route::post('/updateUser', [UserController::class, 'update'])->middleware('auth:api');
     Route::get('/readUser/{id}', [UserController::class, 'read'])->middleware('auth:api');
+    Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
+
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);
@@ -122,9 +124,6 @@ Route::prefix('video')->group(function () {
 
     Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])
     ->name('similarVideos');
-
-    Route::get('/getUserLikes/{referenceCode}', [UserController::class,'getLikes'])
-    ->middleware('auth:api');
 
     Route::get('/hasUserLiked/{referenceCode}', [UserController::class, 'hasUserLikedVideo'])
     ->middleware('auth:api');
