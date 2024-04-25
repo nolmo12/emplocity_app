@@ -3,12 +3,14 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import useLikeCalculation from "../useLikeCalculation";
+import useFetchVideosHistory from "../useFetchVideosHistory";
 import styles from "./video.module.css";
 import { ClipLoader } from "react-spinners";
 
 export default function Video({ videoObj }) {
     const [thumbnailIsLoaded, setThumbnailIsLoaded] = useState(false);
     const { calculateLikeRatio } = useLikeCalculation();
+    const { sendToHistory } = useFetchVideosHistory();
     const getLikeRatioStyle = (likeRatio) => {
         const ratio = parseInt(likeRatio.replace("%", "").trim());
 
@@ -45,9 +47,15 @@ export default function Video({ videoObj }) {
         );
         const videoViews = videoObj.views;
         const path = `/video/${reference_code}`;
+
+        const sendVideoInfo = async (e) => {
+            console.log("sendVideoInfo");
+            await sendToHistory(reference_code);
+        };
+
         return (
             <section className={styles.videoSection}>
-                <Link to={path}>
+                <Link to={path} onClick={() => sendVideoInfo()}>
                     <div id={styles.video}>
                         <div className={styles.thumbnailContainer}>
                             <img

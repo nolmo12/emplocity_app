@@ -5,6 +5,7 @@ import Video from "../Video/Video";
 import MainContent from "../MainContent/MainContent";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchAllVideos from "../useFetchAllVideos";
+import useFetchVideosHistory from "../useFetchVideosHistory";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {

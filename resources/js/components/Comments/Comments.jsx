@@ -16,29 +16,33 @@ export default function Comments({ reference_code }) {
         });
     }, [reference_code, renderKey]);
     const handleTextareaChange = (e, type) => {
-        setMainCommentContent(e.target.value);
+        setMainCommentContent(e.target.innerText);
     };
     const handleClickComment = async (e) => {
         await sendComment(reference_code, mainCommentContent);
-        e.target.previousElementSibling.value = "";
+        e.target.previousElementSibling.innerText = "";
         setRenderKey((prev) => prev + 1);
     };
 
     return (
         <div className={styles.commentDiv}>
             <div>
-                <textarea
-                    onChange={(e) => handleTextareaChange(e, "comment")}
-                ></textarea>
+                <div
+                    className={styles.commentTextarea}
+                    contentEditable="true"
+                    onInput={(e) => handleTextareaChange(e, "comment")}
+                ></div>
                 <button onClick={(e) => handleClickComment(e)}>Comment</button>
             </div>
             {commentsObj.comments &&
                 Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {
                         return (
-                            <div className={styles.commentContainer}>
+                            <div
+                                className={styles.commentContainer}
+                                key={index}
+                            >
                                 <Comment
-                                    key={index}
                                     comment={comment}
                                     setRenderKey={setRenderKey}
                                     reference_code={reference_code}

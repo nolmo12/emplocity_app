@@ -1,17 +1,17 @@
 import React from "react";
-import Video from "../Video/Video";
-import useFetchAllVideos from "../useFetchAllVideos";
+import { useState, useEffect } from "react";
 import useLikeCalculation from "../useLikeCalculation";
 import useFetchVideosHistory from "../useFetchVideosHistory";
 import authUser from "../authUser";
 import styles from "./searchResult.module.css";
 import { Link } from "react-router-dom";
-
+// inaczej zwracane z likedVideos i videosHistory
 function VideoThumbnail({ videoObj }) {
+    console.log(videoObj);
     return (
         <div className={styles.thumbnailContainer}>
             <img
-                src={videoObj.thumbnail}
+                src={videoObj.video.thumbnail}
                 alt="video thumbnail"
                 className={styles.thumbnail}
             />
@@ -21,34 +21,40 @@ function VideoThumbnail({ videoObj }) {
 
 function VideoInfo({ videoObj }) {
     const { calculateLikeRatio } = useLikeCalculation();
-    const likeRatio = calculateLikeRatio(
-        videoObj.likesCount,
-        videoObj.dislikesCount
-    );
-
+    // const likeRatio = calculateLikeRatio(
+    //     videoObj.likesCount,
+    //     videoObj.dislikesCount
+    // );
+    console.log(videoObj);
     return (
         <div className={styles.videoInfo}>
-            <p>{videoObj.languages[0].pivot.title}</p>
-            <p>{videoObj.userName || "Guest"}</p>
-            <p>{videoObj.created_at.substring(0, 10)}</p>
-            <p>{likeRatio}</p>
-            <p>{videoObj.views}</p>
-            <p>{videoObj.description || "No description"}</p>
+            <p>title</p>
+            <p>Username</p>
+            <p>creted</p>
+            <p>ratio</p>
+            <p>views</p>
+            <p>description</p>
         </div>
     );
 }
 
 export default function SearchResult({ searchType }) {
+    const [videos, setVideos] = useState([]);
     const { getUser } = authUser();
-    const { videos, isLoading } = useFetchAllVideos();
-    if (getUser()) {
-        const { videos: videosHistory } = useFetchVideosHistory(getUser().id);
-    }
+    const { videosHistory, likedVideos, isLoading, sendToHistory } =
+        useFetchVideosHistory();
+
+    useEffect(() => {
+        if (searchType === "userHistory") {
+            setVideos(videosHistory);
+        } else {
+            setVideos(likedVideos);
+        }
+    }, [searchType, videosHistory, likedVideos]);
 
     if (isLoading) {
         return <h1>Loading...</h1>;
     }
-
     let view = undefined;
     if (searchType === "userSearch") {
         view = (
@@ -56,10 +62,10 @@ export default function SearchResult({ searchType }) {
                 <h2>Search results</h2>
                 {videos.map((video) => (
                     <li key={video.id}>
-                        <Link to={`/video/${video.reference_code}`}>
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>
-                        <Link to={`/video/${video.reference_code}`}>
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoInfo videoObj={video} />
                         </Link>
                     </li>
@@ -67,15 +73,16 @@ export default function SearchResult({ searchType }) {
             </ul>
         );
     } else if (searchType === "userHistory") {
+        console.log(videos);
         view = (
             <ul>
                 <h2>History</h2>
                 {videos.map((video) => (
                     <li key={video.id}>
-                        <Link to={`/video/${video.reference_code}`}>
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>
-                        <Link to={`/video/${video.reference_code}`}>
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoInfo videoObj={video} />
                         </Link>
                     </li>
@@ -86,12 +93,13 @@ export default function SearchResult({ searchType }) {
         view = (
             <ul>
                 <h2>User likes</h2>
-                {videosHistory.map((video) => (
+                {console.log(videos)}
+                {videos.map((video) => (
                     <li key={video.id}>
-                        <Link to={`/video/${video.reference_code}`}>
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>
-                        <Link to={`/video/${video.reference_code}`}>
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoInfo videoObj={video} />
                         </Link>
                     </li>

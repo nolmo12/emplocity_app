@@ -1,6 +1,7 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useComments from "../useComments";
+import authUser from "../authUser";
 import styles from "../Comments/comments.module.css";
 
 export default function Comment({
@@ -8,23 +9,40 @@ export default function Comment({
     setRenderKey,
     reference_code,
     isReply,
+    replyCommentsObj,
 }) {
+    const { getUser } = authUser();
     const { deleteComment, sendReplyComment, fetchChildren, editComment } =
         useComments();
     const [replyFlag, setReplyFlag] = useState(false);
     const [viewFlag, setViewFlag] = useState(false);
+    const [editUserFlag, setEditUserFlag] = useState(false);
+    const [deleteUserFlag, setDeleteUserFlag] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
     const [replyCommentContent, setReplyCommentContent] = useState();
     const [replyComment, setReplyComment] = useState({});
-    const [isReplyStyle, setIsReplyStyle] = useState(isReply);
+    useEffect(() => {
+        setReplyCommentContent("");
+        const setVisibility = async () => {
+            const user = await getUser();
+            if (user) {
+                if (user.id === comment.user_id) {
+                    setEditUserFlag(true);
+                    setDeleteUserFlag(true);
+                }
+            }
+        };
+        setVisibility();
+    }, [comment.user_id]);
 
     const handleClickDelete = async (e) => {
         await deleteComment(comment.id);
+
         setRenderKey((prev) => prev + 1);
     };
 
     const handleTextareaChange = (e) => {
-        setReplyCommentContent(e.target.value);
+        setReplyCommentContent(e.target.innerText);
     };
 
     const handleClickReply = async (e) => {
@@ -32,8 +50,9 @@ export default function Comment({
     };
 
     const handleClickReplyComment = async (e, id) => {
-        console.log(comment.id);
+        setReplyCommentContent("");
         await sendReplyComment(reference_code, replyCommentContent, id);
+
         setReplyFlag(!replyFlag);
         setRenderKey((prev) => prev + 1);
     };
@@ -46,7 +65,7 @@ export default function Comment({
                 return tempReplyCommentsObj.map((tempReplyComment, index) => {
                     return (
                         <Comment
-                            key={index}
+                            key={tempReplyComment.id}
                             comment={tempReplyComment}
                             setRenderKey={setRenderKey}
                             reference_code={reference_code}
@@ -62,8 +81,10 @@ export default function Comment({
 
     const handleClickEdit = async (e) => {
         setIsEditable(!isEditable);
+        if (!isEditable) {
+            setReplyCommentContent(comment.content);
+        }
         if (isEditable) {
-            console.log(replyCommentContent);
             await editComment(comment.id, replyCommentContent);
         }
         setRenderKey((prev) => prev + 1);
@@ -74,19 +95,27 @@ export default function Comment({
             <div className={isReply ? styles.replyContainer : ""}>
                 <img src="avatar" alt="avatar" />
                 <p>{comment.user_name}</p>
-                <p>{comment.created_at}</p>
-                <textarea
-                    readOnly={!isEditable}
-                    defaultValue={comment.content}
-                    onChange={(e) => handleTextareaChange(e)}
-                />
-                <button
-                    onClick={(e) => handleClickEdit(e)}
-                    className={isEditable ? styles.isClick : ""}
+                <p>{comment.created_at.substring(0, 10)}</p>
+                <div
+                    className={styles.commentTextarea}
+                    contentEditable={isEditable}
+                    onInput={(e) => handleTextareaChange(e)}
                 >
-                    edit
-                </button>
-                <button onClick={(e) => handleClickDelete(e)}>delete</button>
+                    {comment.content}
+                </div>
+                {editUserFlag && (
+                    <button
+                        onClick={(e) => handleClickEdit(e)}
+                        className={isEditable ? styles.isClick : ""}
+                    >
+                        edit
+                    </button>
+                )}
+                {deleteUserFlag && (
+                    <button onClick={(e) => handleClickDelete(e)}>
+                        delete
+                    </button>
+                )}
                 {comment.has_children && (
                     <button
                         onClick={(e) => handleClickView(e)}
@@ -95,6 +124,7 @@ export default function Comment({
                         view
                     </button>
                 )}
+                {viewFlag && replyComment}
                 {!isReply && (
                     <button
                         onClick={(e) => handleClickReply(e)}
@@ -103,14 +133,17 @@ export default function Comment({
                         reply
                     </button>
                 )}
-                {viewFlag && replyComment}
-                {replyFlag && !isReply && (
+                {replyFlag && (
                     <>
-                        <textarea
-                            onChange={(e) => handleTextareaChange(e)}
-                        ></textarea>
+                        <div
+                            className={styles.commentTextarea}
+                            contentEditable="true"
+                            onInput={(e) => handleTextareaChange(e)}
+                        ></div>
                         <button
-                            onClick={(e) => handleClickReplyComment(e, comment.id)}
+                            onClick={(e) =>
+                                handleClickReplyComment(e, comment.id)
+                            }
                         >
                             comment
                         </button>

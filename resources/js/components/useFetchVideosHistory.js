@@ -1,22 +1,41 @@
 import axios from "axios";
+import authUser from "./authUser";
 import { useState, useEffect } from "react";
 export default function useFetchVideosHistory() {
-    const [videos, setVideos] = useState([]);
+    const [videosHistory, setVideosHistory] = useState([]);
+    const [likedVideos, setLikedVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const { http } = authUser();
     useEffect(() => {
-        const fetchVideos = async (id) => {
+        const fetchVideosHistory = async () => {
             try {
-                const response = await axios.get(`api/auth/readUser/${id}`);
-                console.log(response.data);
-                response.data.videos.map((video) => {
-                    setVideos((videos) => [...videos, video]);
-                });
+                const response = await http.get(`/api/history/read`);
+                setVideosHistory(response.data);
                 setIsLoading(false);
             } catch (error) {
                 console.log(error);
             }
         };
-        fetchVideos();
+        const fetchLikedVideos = async () => {
+            try {
+                const response = await http.get(`/api/auth/likedVideos`);
+                setLikedVideos(response.data);
+                setIsLoading(false);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchLikedVideos();
+        fetchVideosHistory();
     }, []);
-    return { videos, isLoading };
+
+    const sendToHistory = async (reference_code) => {
+        try {
+            await http.post(`/api/history/${reference_code}`);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return { videosHistory, likedVideos, isLoading, sendToHistory };
 }
