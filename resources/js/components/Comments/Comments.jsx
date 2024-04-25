@@ -31,6 +31,7 @@ export default function Comments({ reference_code }) {
         <div className={styles.commentDiv}>
             <div>
                 <div
+                    className={styles.commentTextarea}
                     contentEditable="true"
                     onInput={(e) => handleTextareaChange(e, "comment")}
                 ></div>

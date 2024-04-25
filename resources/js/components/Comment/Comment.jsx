@@ -99,10 +99,10 @@ export default function Comment({
             <div className={isReply ? styles.replyContainer : ""}>
                 <img src="avatar" alt="avatar" />
                 <p>{comment.user_name}</p>
-                <p>{comment.created_at}</p>
+                <p>{comment.created_at.substring(0, 10)}</p>
                 <p>{comment.content}</p>
                 <div
-                    style={{ height: "100px" }}
+                    className={styles.commentTextarea}
                     contentEditable={isEditable}
                     onInput={(e) => handleTextareaChange(e)}
                 >
@@ -142,6 +142,7 @@ export default function Comment({
                 {replyFlag && (
                     <>
                         <div
+                            className={styles.commentTextarea}
                             contentEditable="true"
                             onInput={(e) => handleTextareaChange(e)}
                         ></div>

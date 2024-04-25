@@ -42,7 +42,7 @@ export default function SearchResult({ searchType }) {
     const { getUser } = authUser();
     const { videos, isLoading } = useFetchAllVideos();
     if (getUser()) {
-        const { videos: videosHistory } = useFetchVideosHistory(getUser().id);
+        const { videos } = useFetchVideosHistory();
     }
 
     if (isLoading) {

@@ -8,8 +8,8 @@
     font-size: 0.8em;
 }
 
-.commentDiv textarea {
-    margin-top:1em;
+.commentDiv .commentTextarea {
+    margin-top: 1em;
     width: 100%;
     height: 12vh;
     background-color: #101b32;
@@ -43,7 +43,7 @@
 }
 
 .commentContainer {
-    margin-top:2em;
+    margin-top: 2em;
 }
 
 .replyContainer {
@@ -51,11 +51,10 @@
     margin-top: 2em;
 }
 
-.replyContainer textarea{
-    height:10vh;
+.replyContainer .commentTextarea {
+    height: 10vh;
     border: inset 1px #060c1a;
 }
-
 
 .isClick {
     color: red;
