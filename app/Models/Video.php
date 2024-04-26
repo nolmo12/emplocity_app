@@ -20,6 +20,11 @@ class Video extends Model implements SearchInterface
         'thumbnail', 'video', 'user_id', 'tags'
     ];
 
+    protected $hidden = [
+        'id',
+        'user_id'
+    ];
+
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -67,11 +72,44 @@ class Video extends Model implements SearchInterface
         return $this->hasMany(History::class);
     }
 
+    public function stats()
+    {
+        $language = $this->languages()->first();
+        $title = $language->pivot->title;
+        $description = $language->pivot->description;
+        $tags = $this->tags()->get();
+        $likesCount = $this->getLikesDislikesCount(true);
+        $dislikesCount = $this->getLikesDislikesCount(false);
+
+        $user = User::find($this->user_id);
+
+        $user = User::find($this->user_id);
+        $userName = $user ? $user->name : null;
+        $userFirstName = $user ? $user->first_name : null;
+        $userAvatar = $user ? $user->avatar : null;
+        
+        $responseData = [
+            'video' => $this,
+            'title' => $title,
+            'description' => $description,
+            'userName' => $userName,
+            'userFirstName' => $userFirstName,
+            'userAvatar' => $userAvatar,
+            'tags' => $tags,
+            'likesCount' => $likesCount,
+            'dislikesCount' => $dislikesCount,
+        ];
+
+        return $responseData;
+    }
+
     public function getDuration()
     {
         $videoManager = new VideoManager($this->video);
 
         $durationInSeconds = $videoManager->getDuration('seconds');
+
+        return $durationInSeconds;
     }
 
     public function addTags(array $tags): void
@@ -121,10 +159,26 @@ class Video extends Model implements SearchInterface
 
     public function calculateSimilarityScore(Video $other): int
     {
-        $tagIds = $this->tags->pluck('id')->toArray();
-        $otherTagIds = $other->tags->pluck('id')->toArray();
-        $tagCount = count(array_intersect($tagIds, $otherTagIds));
-        return $tagCount;
+        $title = $this->languages()->first()->pivot->title;
+
+        $otherTitle = $other->languages()->first()->pivot->title;
+
+        similar_text(strtolower($title), strtolower($otherTitle), $titleSimilarity);
+
+        $titleSimiliratyScore = 7 * ($titleSimilarity / 100);
+
+        $tags = $this->tags->pluck('name')->toArray();
+        $otherTags = $other->tags->pluck('name')->toArray();
+
+
+        $commonTags = array_intersect($tags, $otherTags);
+        $commonTagsCount = count($commonTags);
+
+        $tagSimilarityScore = 3 * ($commonTagsCount / count($tags));
+
+        $similarityScore = $tagSimilarityScore + $titleSimiliratyScore;
+
+        return $similarityScore;
     }
 
     public function calculateSearchScore(array $searchQueryArray) : float
@@ -140,14 +194,9 @@ class Video extends Model implements SearchInterface
         $tags = $this->tags->pluck('name')->toArray();
         $tags = array_map('strtolower', $tags);
 
-        $commonTagsCount = 0;
-        foreach ($tags as $tag) {
-            similar_text($tag, implode(' ', $searchQueryArray), $percent);
-            if ($percent >= 50) 
-            { 
-                $commonTagsCount++;
-            }
-        }
+        $commonTags = array_intersect($tags, $searchQueryArray);
+        $commonTagsCount = count($commonTags);
+
         $tagSimilarityScore = 3 * ($commonTagsCount / count($tags));
         
         $score += $titleSimiliratyScore + $tagSimilarityScore;

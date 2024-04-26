@@ -29,7 +29,7 @@ class VideoController extends Controller
             'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
             'language' => 'required|exists:languages,id',
             'visibility' => ['required', new Enumerate(['Public', 'Unlisted', 'Hidden'])],
-            'video' => 'required|file|mimetypes:video/mp4,video/avi,video/mpeg,video/quicktime',
+            'video' => 'required|file|mimetypes:video/mp4,video/avi, video/mov, video/mpeg,video/quicktime,',
             'tags' => 'array',
             'tags.*' => 'string|min:2'
         ]);
@@ -152,23 +152,7 @@ class VideoController extends Controller
 
         $this->authorize('view', [$video]);
 
-        $language = $video->languages()->first();
-        $title = $language->pivot->title;
-        $description = $language->pivot->description;
-        $tags = $video->tags()->get();
-        $likesCount = $video->getLikesDislikesCount(true);
-        $dislikesCount = $video->getLikesDislikesCount(false);
-
-        $user = User::find($video->user_id);
-
-        $user = User::find($video->user_id);
-        $userName = $user ? $user->name : null;
-        $userFirstName = $user ? $user->first_name : null;
-        $userAvatar = $user ? $user->avatar : null;
-        
-        $responseData = compact('video', 'title', 'description', 'userName', 'userFirstName', 'userAvatar', 'tags', 'likesCount', 'dislikesCount');
-
-        return response()->json($responseData);
+        return response()->json($video->stats());
     }
     public function all(Request $request)
     {
@@ -214,69 +198,51 @@ class VideoController extends Controller
      */
     public function getSimilarVideos(string $referenceCode)
     {
-        $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
+
+        $offset = 16;
+
+        $video = Video::where('reference_code', $referenceCode)->first();
 
         if (!$video) 
         {
             return response()->json(['error' => 'Video not found'], 404);
         }
 
+        $similarVideosBasedTags = Video::whereHas('tags', function($tag) use ($video) {
+            $tag->whereIn('name', $video->tags()->pluck('name'));
+        })
+        ->where('reference_code', '!=', $referenceCode)
+        ->where('visibility', 'Public')
+        ->limit(4)
+        ->get();
+
         $similarVideos = collect();
 
-        foreach ($video->tags as $tag)
+        foreach($similarVideosBasedTags as $similarVideo)
         {
-            $tagVideos = $tag->videos()->where('visibility', 'Public')->get();
-            $similarVideos = $similarVideos->merge($tagVideos);
+            $stats = $similarVideo->stats();
+            unset($stats['tags']);
+            $similarVideos->push($stats);
         }
-
-        if ($video->user_id != null)
+    
+        if ($similarVideos->count() < $offset)
         {
-            $videoOwner = User::find($video->user_id);
-            $similarVideos = $similarVideos->merge($videoOwner->videos()->where('visibility', 'Public')->get());
-        }
-
-        $similarVideos = $similarVideos->unique('reference_code');
-
-        if ($similarVideos->count() < 10)
-        {
-            $additionalVideosNeeded = 10 - $similarVideos->count();
+            $additionalVideosNeeded = $offset - $similarVideos->count();
             $additionalVideos = Video::where('visibility', 'Public')
                 ->inRandomOrder()
-                ->whereNotIn('reference_code', $similarVideos->pluck('reference_code')->toArray())
+                ->whereNotIn('reference_code', $similarVideosBasedTags->pluck('reference_code')->toArray())
                 ->limit($additionalVideosNeeded)
                 ->get();
-
-            $similarVideos = $similarVideos->merge($additionalVideos);
+    
+            foreach($additionalVideos as $additionalVideo)
+            {
+                $stats = $additionalVideo->stats();
+                unset($stats['tags']);
+                $similarVideos->push($stats);
+            }
         }
 
-        $similarVideos = $similarVideos->filter(function ($similarVideo) use ($video) {
-            return $similarVideo->reference_code !== $video->reference_code;
-        });
-
-        $similarVideos = $similarVideos->take(10);
-
-        $similarVideos->shuffle();
-
-        $similarVideos->transform(function ($similarVideo) use ($video) {
-            $similarVideo->title = $similarVideo->languages()->first()->pivot->title;
-            return $similarVideo;
-        });
-        
-        $similarVideosTags = collect();
-        foreach ($similarVideos as $similarVideo)
-        {
-            $similarVideosTags = $similarVideosTags->merge($similarVideo->tags);
-            unset($similarVideo->pivot);
-        }
-
-        $similarVideosTags = $similarVideosTags->unique();
-
-        $similarVideos = $similarVideos->map(function ($similarVideo) use ($video) {
-            $similarVideo->similarity_score = $video->calculateSimilarityScore($similarVideo);
-            return $similarVideo;
-        });
-        
-        $similarVideos = $similarVideos->sortByDesc('similarity_score')->take(10);
+        //$similarVideos = $similarVideos->unique('video.reference_code');
 
         return $similarVideos;
     }
