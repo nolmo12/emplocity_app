@@ -45,7 +45,7 @@ export default function VideoSection({ sectionType }) {
         view = (
             <div className={styles.similarVideo}>
                 {Object.entries(similarVideosObj.videos).map(([key, video]) => {
-                    const path = `/video/${video.reference_code}`;
+                    const path = `/video/${video.video.reference_code}`;
                     return (
                         <Link key={key} to={path}>
                             <div id={styles.video}>
