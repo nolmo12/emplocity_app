@@ -45,8 +45,8 @@ class UserController extends Controller
 
         foreach($likes as $like)
         {
-            $video = Video::with('languages')->find($like->video_id);
-            $videos[] = $video;
+            $video = Video::find($like->video_id);
+            $videos[] = $video->stats();
         }
 
         return $videos;
