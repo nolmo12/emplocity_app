@@ -595,6 +595,7 @@ class VideoController extends Controller
                 $query->whereIn('name', $watchedTags->pluck('name'));
             })
             ->whereNotIn('id', $videos->pluck('id'))
+            ->where('visibility', 'Public')
             ->inRandomOrder()
             ->limit(12)
             ->get();
@@ -605,6 +606,7 @@ class VideoController extends Controller
             $additionalVideos = Video::inRandomOrder()
             ->whereNotIn('id', $videos->pluck('id'))
             ->limit(12 - $videos->count())
+            ->where('visibility', 'Public')
             ->get();
     
             $videos = $videos->merge($additionalVideos);
