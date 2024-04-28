@@ -40,9 +40,12 @@ class CommentController extends Controller
         $request->validate([
             'reference_code' => 'required|exists:videos,reference_code',
             'offset' => 'nullable|integer|min:0',
+            'children_offset' => 'nullable|integer|min:0'
         ]);
 
         $offset = $request->input('offset', 0);
+        $children_offset = $request->input('children_offset', 0);
+
 
         $referenceCode = $request->reference_code;
 
@@ -60,8 +63,8 @@ class CommentController extends Controller
             $comment['user_name'] = $user->name;
             $comment['user_first_name'] = $user->first_name;
             $comment['user_avatar'] = $user->avatar;
-            $comment['has_children'] = $comment->hasChildren();
-
+            $comment['children_count'] = $comment->countChildren();
+            $comment['children'] = $comment->getChildren($children_offset);
         }
         
         return response()->json(['comments' => $comments]);
@@ -95,7 +98,8 @@ class CommentController extends Controller
                 $child['user_name'] = $user->name;
                 $child['user_first_name'] = $user->first_name;
                 $child['user_avatar'] = $user->avatar;
-                $child['has_children'] = $child->hasChildren();
+                $comment['children_count'] = $comment->countChildren();
+                $child['children`'] = $child->getChildren();
     
             }
     

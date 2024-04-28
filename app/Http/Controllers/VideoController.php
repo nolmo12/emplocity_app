@@ -196,10 +196,11 @@ class VideoController extends Controller
      * @param string $referenceCode Reference code of the video(Sqids)
      * @return \Illuminate\Support\Collection<array-key, mixed> Collection of similar videos
      */
-    public function getSimilarVideos(string $referenceCode)
+
+    public function getSimilarVideos(Request $request, string $referenceCode)
     {
 
-        $offset = 16;
+        $offset = $request->input('offset', 16);
 
         $video = Video::where('reference_code', $referenceCode)->first();
 
@@ -222,6 +223,7 @@ class VideoController extends Controller
         {
             $stats = $similarVideo->stats();
             unset($stats['tags']);
+            unset($stats['description']);
             $similarVideos->push($stats);
         }
     
@@ -238,6 +240,7 @@ class VideoController extends Controller
             {
                 $stats = $additionalVideo->stats();
                 unset($stats['tags']);
+                unset($stats['description']);
                 $similarVideos->push($stats);
             }
         }
@@ -449,6 +452,8 @@ class VideoController extends Controller
             'sorting' => ['nullable','string', new Enumerate(['upload_date_desc', 'upload_date_asc', 'views', 'popularity'])]
         ]);
 
+        $offset = $request->input('offset', 0);
+
         $searchQuery = $request->query('query');
 
         $searchQueryArray = explode(' ', $searchQuery);
@@ -466,6 +471,7 @@ class VideoController extends Controller
                 $soundexWord = soundex($word);
                 $query->whereRaw("SOUNDEX(name) = '$soundexWord'");
             })
+            ->offset(12 * $offset)
             ->get();
         
         
@@ -473,9 +479,8 @@ class VideoController extends Controller
             
 
             $users = User::where(function ($query) use ($word) {
-                $soundexWord = soundex($word);
-                $query->whereRaw("SOUNDEX(name) = SOUNDEX('$word')")
-                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX('$word')");
+                $query->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$word])
+                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX(?)", [$word]);
             })
             ->get();
 
@@ -486,8 +491,7 @@ class VideoController extends Controller
         $videoScores = [];
         $userScores = [];
 
-        foreach($videoCollection as $video)
-        {
+        foreach ($videoCollection as $video) {
             $videoScores[$video->reference_code] = [
                 'video_name' => $video->languages()->first()->pivot->title,
                 'upload_date' => $video->created_at->timestamp,
@@ -498,32 +502,35 @@ class VideoController extends Controller
         foreach ($userCollection as $user)
         {
             $userScores[$user->id] = [
-                'upload_date' => $user->created_at->timestamp,
                 'score' => $user->calculateSearchScore($searchQueryArray)
             ];
         }
-
 
         $order = $request->sorting;
         switch($order)
         {
             case 'popularity':
-                usort($videoScores, function($a, $b) {
+                uasort($videoScores, function($a, $b) {
                     return $b['score'] <=> $a['score'];
                 });
                 break;
             case 'upload_date_desc':
-                usort($videoScores, function($a, $b) {
+                uasort($videoScores, function($a, $b) {
                     return $b['upload_date'] <=> $a['upload_date'];
                 });
                 break;
             case 'upload_date_asc':
-                usort($videoScores, function($a, $b) {
+                uasort($videoScores, function($a, $b) {
                     return $b['upload_date'] <= $a['upload_date'];
                 });
                 break;
+            case 'views':
+                    uasort($videoScores, function($a, $b) {
+                        return $b['upload_date'] <= $a['upload_date'];
+                    });
+                    break;
             default:
-            usort($videoScores, function($a, $b) {
+            uasort($videoScores, function($a, $b) {
                 return $b['score'] <=> $a['score'];
             });                                                                                                                                                                                                            
         }
@@ -532,8 +539,27 @@ class VideoController extends Controller
             return $b['score'] <=> $a['score'];
         });
 
-        $scores = array_merge($videoScores, $userScores);
+        $videos = [];
+        $users = [];
+
+        foreach($videoScores as $referenceCode => $value)
+        {
+            $video = Video::where('reference_code', $referenceCode)->first();
+            $stats = $video->stats();
+            $videos[] = $stats;
+        }
+
+        foreach($userScores as $id => $value)
+        {
+            $user = User::find($id);
+            $users[] = $user;
+        }
+
+        $result = [
+            'videos' => $videos,
+            'users' => $users
+        ];
         
-        return $videoScores;
+        return $result;
     }
 }

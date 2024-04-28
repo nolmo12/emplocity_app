@@ -30,8 +30,25 @@ class Comment extends Model
         return Comment::where('parent', $this->id)->exists();
     }
 
-    public function getChildren()
+    public function getChildren(int $offset = 0)
     {
-        return Comment::where('parent', $this->id)->get();
+       $children = Comment::where('parent', $this->id)->offset($offset)->get();
+
+       foreach($children as &$child)
+       {
+        $user = User::find($child['user_id']);
+        $child['user_name'] = $user->name;
+        $child['user_first_name'] = $user->first_name;
+        $child['user_avatar'] = $user->avatar;
+        $child['children'] = $child->getChildren();
+       }
+
+       return $children;
+
+    }
+
+    public function countChildren() : int
+    {
+        return Comment::where('parent', $this->id)->count();
     }
 }
