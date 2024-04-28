@@ -9,7 +9,6 @@ export default function Comment({
     setRenderKey,
     reference_code,
     isReply,
-    replyCommentsObj,
 }) {
     const { getUser } = authUser();
     const { deleteComment, sendReplyComment, fetchChildren, editComment } =
@@ -20,7 +19,7 @@ export default function Comment({
     const [deleteUserFlag, setDeleteUserFlag] = useState(false);
     const [isEditable, setIsEditable] = useState(false);
     const [replyCommentContent, setReplyCommentContent] = useState();
-    const [replyComment, setReplyComment] = useState({});
+
     useEffect(() => {
         setReplyCommentContent("");
         const setVisibility = async () => {
@@ -58,24 +57,7 @@ export default function Comment({
     };
 
     const handleClickView = async (e) => {
-        const tempReplyComments = await fetchChildren(comment.id);
         setViewFlag(!viewFlag);
-        const newReplyComments = Object.entries(tempReplyComments).map(
-            ([key, tempReplyCommentsObj]) => {
-                return tempReplyCommentsObj.map((tempReplyComment, index) => {
-                    return (
-                        <Comment
-                            key={tempReplyComment.id}
-                            comment={tempReplyComment}
-                            setRenderKey={setRenderKey}
-                            reference_code={reference_code}
-                            isReply={true}
-                        />
-                    );
-                });
-            }
-        );
-        setReplyComment(newReplyComments);
         setRenderKey((prev) => prev + 1);
     };
 
@@ -84,10 +66,13 @@ export default function Comment({
         if (!isEditable) {
             setReplyCommentContent(comment.content);
         }
+    };
+
+    const handleBlur = async () => {
         if (isEditable) {
             await editComment(comment.id, replyCommentContent);
+            setIsEditable(false);
         }
-        setRenderKey((prev) => prev + 1);
     };
 
     return (
@@ -99,35 +84,46 @@ export default function Comment({
                 <div
                     className={styles.commentTextarea}
                     contentEditable={isEditable}
-                    onInput={(e) => handleTextareaChange(e)}
+                    onInput={handleTextareaChange}
+                    onBlur={handleBlur}
+                    suppressContentEditableWarning={true}
                 >
                     {comment.content}
                 </div>
                 {editUserFlag && (
                     <button
-                        onClick={(e) => handleClickEdit(e)}
+                        onClick={handleClickEdit}
                         className={isEditable ? styles.isClick : ""}
                     >
-                        edit
+                        {isEditable ? "save" : "edit"}
                     </button>
                 )}
                 {deleteUserFlag && (
-                    <button onClick={(e) => handleClickDelete(e)}>
-                        delete
-                    </button>
+                    <button onClick={handleClickDelete}>delete</button>
                 )}
-                {comment.has_children && (
+                {comment.children_count > 0 && (
                     <button
-                        onClick={(e) => handleClickView(e)}
+                        onClick={handleClickView}
                         className={viewFlag ? styles.isClick : ""}
                     >
-                        view
+                        view {comment.children_count}
                     </button>
                 )}
-                {viewFlag && replyComment}
+                {viewFlag &&
+                    comment.children.map((child) => {
+                        return (
+                            <Comment
+                                key={child.id}
+                                comment={child}
+                                setRenderKey={setRenderKey}
+                                reference_code={reference_code}
+                                isReply={true}
+                            />
+                        );
+                    })}
                 {!isReply && (
                     <button
-                        onClick={(e) => handleClickReply(e)}
+                        onClick={handleClickReply}
                         className={replyFlag ? styles.isClick : ""}
                     >
                         reply
@@ -138,7 +134,7 @@ export default function Comment({
                         <div
                             className={styles.commentTextarea}
                             contentEditable="true"
-                            onInput={(e) => handleTextareaChange(e)}
+                            onInput={handleTextareaChange}
                         ></div>
                         <button
                             onClick={(e) =>

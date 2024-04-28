@@ -2,10 +2,8 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Video from "../Video/Video";
-import MainContent from "../MainContent/MainContent";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchAllVideos from "../useFetchAllVideos";
-import useFetchVideosHistory from "../useFetchVideosHistory";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
@@ -14,7 +12,19 @@ export default function VideoSection({ sectionType }) {
     const [renderKey, setRenderKey] = useState(0);
 
     useEffect(() => {
+        // pagination
+        const handleScroll = () => {
+            const halfwayDown = document.body.scrollHeight / 2;
+
+            if (window.scrollY >= halfwayDown) {
+                console.log("User has scrolled halfway down the page");
+            }
+        };
+        window.addEventListener("scroll", handleScroll);
         setRenderKey((prev) => prev + 1);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
     }, [reference_code]);
 
     const similarVideosObj = useFetchSimilarVideos({ reference_code }); // for similar videos

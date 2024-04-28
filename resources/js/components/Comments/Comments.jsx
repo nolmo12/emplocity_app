@@ -1,7 +1,6 @@
 import { React } from "react";
 import { useState, useEffect } from "react";
 import useComments from "../useComments";
-import authUser from "../authUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
 
@@ -34,7 +33,6 @@ export default function Comments({ reference_code }) {
                 ></div>
                 <button onClick={(e) => handleClickComment(e)}>Comment</button>
             </div>
-            {console.log(commentsObj)}
             {commentsObj.comments &&
                 Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {

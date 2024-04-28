@@ -5,7 +5,7 @@ import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
 import useLikeCalculation from "../useLikeCalculation";
-import useFetchVideosHistory from "../useFetchVideosHistory";
+import useFetchVideosSearch from "../useFetchVideosSearch";
 import useLike from "../useLike";
 import styles from "./videoFrame.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,8 +20,8 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
-    const { http } = authUser();
-    const { sendToHistory } = useFetchVideosHistory();
+    const { http, isLogged } = authUser();
+    const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes, sendLikes } = useLike();
     const { reference_code } = useParams();
@@ -55,6 +55,10 @@ export default function VideoFrame() {
     }, [reference_code, videoObj]);
 
     const fetchLikeInfo = async () => {
+        if (!isLogged) {
+            console.log("User is not logged in. Cannot fetch likes.");
+            return;
+        }
         try {
             const likeInfo = await fetchLikes(reference_code);
             if (likeInfo || likeInfo === 0) {
