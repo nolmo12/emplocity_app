@@ -197,10 +197,10 @@ class VideoController extends Controller
      * @return \Illuminate\Support\Collection<array-key, mixed> Collection of similar videos
      */
 
-    public function getSimilarVideos(string $referenceCode)
+    public function getSimilarVideos(Request $request, string $referenceCode)
     {
 
-        $offset = 16;
+        $offset = $request->input('offset', 16);
 
         $video = Video::where('reference_code', $referenceCode)->first();
 
@@ -452,6 +452,8 @@ class VideoController extends Controller
             'sorting' => ['nullable','string', new Enumerate(['upload_date_desc', 'upload_date_asc', 'views', 'popularity'])]
         ]);
 
+        $offset = $request->input('offset', 0);
+
         $searchQuery = $request->query('query');
 
         $searchQueryArray = explode(' ', $searchQuery);
@@ -469,6 +471,7 @@ class VideoController extends Controller
                 $soundexWord = soundex($word);
                 $query->whereRaw("SOUNDEX(name) = '$soundexWord'");
             })
+            ->offset(12 * $offset)
             ->get();
         
         
@@ -476,9 +479,8 @@ class VideoController extends Controller
             
 
             $users = User::where(function ($query) use ($word) {
-                $soundexWord = soundex($word);
-                $query->whereRaw("SOUNDEX(name) = SOUNDEX('$word')")
-                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX('$word')");
+                $query->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$word])
+                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX(?)", [$word]);
             })
             ->get();
 
@@ -522,6 +524,11 @@ class VideoController extends Controller
                     return $b['upload_date'] <= $a['upload_date'];
                 });
                 break;
+            case 'views':
+                    uasort($videoScores, function($a, $b) {
+                        return $b['upload_date'] <= $a['upload_date'];
+                    });
+                    break;
             default:
             uasort($videoScores, function($a, $b) {
                 return $b['score'] <=> $a['score'];
