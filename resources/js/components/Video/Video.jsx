@@ -3,7 +3,8 @@ import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import useLikeCalculation from "../useLikeCalculation";
-import useFetchVideosHistory from "../useFetchVideosHistory";
+import useFetchVideosHistory from "../useFetchVideosSearch";
+import authUser from "../authUser";
 import styles from "./video.module.css";
 import { ClipLoader } from "react-spinners";
 
@@ -11,6 +12,7 @@ export default function Video({ videoObj }) {
     const [thumbnailIsLoaded, setThumbnailIsLoaded] = useState(false);
     const { calculateLikeRatio } = useLikeCalculation();
     const { sendToHistory } = useFetchVideosHistory();
+    const { isLogged } = authUser();
     const getLikeRatioStyle = (likeRatio) => {
         const ratio = parseInt(likeRatio.replace("%", "").trim());
 
@@ -49,7 +51,7 @@ export default function Video({ videoObj }) {
         const path = `/video/${reference_code}`;
 
         const sendVideoInfo = async (e) => {
-            console.log("sendVideoInfo");
+            if (!isLogged) return;
             await sendToHistory(reference_code);
         };
 

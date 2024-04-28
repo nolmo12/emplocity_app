@@ -3,15 +3,14 @@ import { useState, useEffect } from "react";
 import authUser from "../authUser";
 import styles from "./accountSettings.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faUpload
-} from "@fortawesome/free-solid-svg-icons";
+import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 export default function AccountSettings() {
     const [user, setUser] = useState();
+    const [passwordFlag, setPasswordFlag] = useState(false);
     const [userData, setUserData] = useState({
         first_name: "",
-        nickname: "",
+        password: "",
     });
     const { http, getUser } = authUser();
 
@@ -21,25 +20,18 @@ export default function AccountSettings() {
         });
     }, []);
 
-    const handleChangeFirstName = (e) => {
-        setUserData({ ...userData, first_name: e.target.value });
+    const handleChangePassword = (e) => {
+        setUserData({ ...userData, password: e.target.value });
     };
 
     const handleChangeNickname = (e) => {
         setUserData({ ...userData, nickname: e.target.value });
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            console.log(userData);
-            // api call
-        } catch (error) {
-            console.log(error);
-        }
+    const handleClickSave = async (e) => {
+        // api call to save new password
     };
 
-    console.log(user);
     return (
         <main>
             <div className={styles.settingsDiv}>
@@ -50,24 +42,50 @@ export default function AccountSettings() {
                                 <h3>User Info</h3>
                                 <input
                                     type="text"
-                                    value={userData.first_name || user.first_name}
-                                    onChange={(e) => handleChangeFirstName(e)}
-                                />
-                                <p>Change first name</p>
-                                <input
-                                    type="text"
                                     value={userData.nickname || user.name}
                                     onChange={(e) => handleChangeNickname(e)}
                                 />
-                                <p>Change nickname</p>
-                                <p className={styles.borderSetting}>Premium border {user.border_id ? "yes" : "no"}</p>
-                                <FontAwesomeIcon
-                                    icon={faUpload}
-                                    className={styles.uploadIcon}
-                                />
-                                <p className={styles.uploadIconP}>Change avatar</p>
-                                <button>Save</button>
+                                <p>Nickname</p>
+                                {passwordFlag ? (
+                                    <>
+                                        <input
+                                            type="password"
+                                            onChange={(e) =>
+                                                handleChangePassword(e)
+                                            }
+                                        ></input>
+                                        <p>Old password</p>
+                                        <input
+                                            type="password"
+                                            onChange={(e) =>
+                                                handleChangePassword(e)
+                                            }
+                                        ></input>
+                                        <p>New password</p>
+                                        <button
+                                            onClick={(e) => handleClickSave(e)}
+                                        >
+                                            Save new password
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button
+                                        onClick={() =>
+                                            setPasswordFlag(!passwordFlag)
+                                        }
+                                    >
+                                        Change password
+                                    </button>
+                                )}
+
+                                <input type="file" id="file" />
+                                <button className={styles.uploadIconP}>
+                                    Change avatar
+                                </button>
                             </form>
+                            <p className={styles.borderSetting}>
+                                Premium border {user.border_id ? "yes" : "no"}
+                            </p>
                         </>
                     </div>
                 )}

@@ -49,6 +49,7 @@ export default function authUser() {
     });
 
     const getUser = async () => {
+        if (!isLogged) return;
         try {
             const response = await http.get("/api/user");
             return response.data;

@@ -9,16 +9,20 @@ export default function HelpPage() {
             <section className={styles.helpForm}>
                 <form data-testid="problemForm">
                     <div>
-                    <FontAwesomeIcon
-                        icon={faAlignLeft}
-                        className={styles.helpFormIcon}
-                    />
-                    <textarea
-                        placeholder="Describe your problem"
-                        data-testid="problemInput"
-                        className={styles.descriptionArea}
-                        rows="5"
-                    />
+                        <input
+                            type="text"
+                            placeholder="Enter your email"
+                        ></input>
+                        <FontAwesomeIcon
+                            icon={faAlignLeft}
+                            className={styles.helpFormIcon}
+                        />
+                        <textarea
+                            placeholder="Describe your problem"
+                            data-testid="problemInput"
+                            className={styles.descriptionArea}
+                            rows="5"
+                        />
                     </div>
                     <button>Send</button>
                 </form>
