@@ -474,10 +474,6 @@ class VideoController extends Controller
             ->offset(12 * $offset)
             ->get();
         
-        
-
-            
-
             $users = User::where(function ($query) use ($word) {
                 $query->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$word])
                       ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX(?)", [$word]);
@@ -546,6 +542,7 @@ class VideoController extends Controller
         {
             $video = Video::where('reference_code', $referenceCode)->first();
             $stats = $video->stats();
+            unset($stats['tags']);
             $videos[] = $stats;
         }
 
@@ -562,4 +559,11 @@ class VideoController extends Controller
         
         return $result;
     }
+
+    /*public function listing(Request $request)
+    {
+        $user = $request->user();
+        $watchedTags = $user->
+    }*/
+
 }
