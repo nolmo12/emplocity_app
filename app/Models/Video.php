@@ -21,7 +21,6 @@ class Video extends Model implements SearchInterface
     ];
 
     protected $hidden = [
-        'id',
         'user_id'
     ];
 
