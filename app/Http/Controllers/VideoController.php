@@ -560,10 +560,64 @@ class VideoController extends Controller
         return $result;
     }
 
-    /*public function listing(Request $request)
+    public function listing(Request $request)
     {
+        $request->validate([
+            'offset' => 'nullable|integer|min:0',
+        ]);
+        
+        $offset = $request->input('offset', 0);
         $user = $request->user();
-        $watchedTags = $user->
-    }*/
+
+        $listedVideos = collect();
+        $watchedTags = collect();
+        $videos = collect();
+
+
+        if(!$user)
+        {
+            $videos = Video::inRandomOrder()->offset(12 * $offset)->get();
+        }
+        else
+        {
+            $watchedVideos = $user->histories()->with('video.tags')->get();
+            foreach($watchedVideos as $history)
+            {
+                $watchedTags = $watchedTags->merge($history->video->tags);
+            }
+
+            foreach ($watchedTags as &$tag)
+            {
+                unset($tag['pivot']);
+            }
+            
+            $videos = Video::whereHas('tags', function($query) use ($watchedTags) {
+                $query->whereIn('name', $watchedTags->pluck('name'));
+            })
+            ->whereNotIn('id', $videos->pluck('id'))
+            ->inRandomOrder()
+            ->limit(12)
+            ->get();
+        }
+
+        if($videos->count() < 12)
+        {
+            $additionalVideos = Video::inRandomOrder()
+            ->whereNotIn('id', $videos->pluck('id'))
+            ->limit(12 - $videos->count())
+            ->get();
+    
+            $videos = $videos->merge($additionalVideos);
+        }
+
+        foreach($videos as $video)
+        {
+            $stats = $video->stats();
+            unset($stats['tags']);
+            $listedVideos->push($stats);
+        }
+
+        return $listedVideos;
+    }
 
 }
