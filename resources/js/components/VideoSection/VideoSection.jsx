@@ -4,11 +4,13 @@ import { useParams, Link } from "react-router-dom";
 import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchAllVideos from "../useFetchAllVideos";
+import useLikeCalculation from "../useLikeCalculation";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const { videos, isLoading } = useFetchAllVideos();
+    const { calculateLikeRatio } = useLikeCalculation();
     const [renderKey, setRenderKey] = useState(0);
 
     useEffect(() => {
@@ -54,21 +56,29 @@ export default function VideoSection({ sectionType }) {
     } else if (sectionType === "similar" && similarVideosObj.videos) {
         view = (
             <div className={styles.similarVideo}>
-                {Object.entries(similarVideosObj.videos).map(([key, video]) => {
-                    const path = `/video/${video.video.reference_code}`;
-                    return (
-                        <Link key={key} to={path}>
-                            <div id={styles.video}>
-                                <img
-                                    src={video.thumbnail}
-                                    width={300}
-                                    alt="video thumbnail"
-                                />
-                                <p>{video.title}</p>
-                            </div>
-                        </Link>
-                    );
-                })}
+                {Object.entries(similarVideosObj.videos).map(
+                    ([key, videoObj]) => {
+                        const path = `/video/${videoObj.video.reference_code}`;
+                        return (
+                            <Link key={key} to={path}>
+                                <div id={styles.video}>
+                                    <img
+                                        src={videoObj.video.thumbnail}
+                                        width={300}
+                                        alt="video thumbnail"
+                                    />
+                                    <p>{videoObj.title}</p>
+                                    <p>
+                                        {calculateLikeRatio(
+                                            videoObj.likesCount,
+                                            videoObj.dislikesCount
+                                        )}
+                                    </p>
+                                </div>
+                            </Link>
+                        );
+                    }
+                )}
             </div>
         );
     }
