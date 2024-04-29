@@ -1,7 +1,3 @@
-main {
-    overflow-y:auto;
-}
-
 main::-webkit-scrollbar, .similarVideo::-webkit-scrollbar {
     width: 0.2em; 
 }
@@ -43,6 +39,19 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 
 .videoFrameInfoDesc {
     height: 10vh;
+}
+
+.videoFrameInfoTitle p, .videoFrameInfoDesc p, .videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar{
+    font-size:1rem;
+}
+
+.videoFrameOwner {
+    display: flex;
+    align-items: center; 
+}
+
+.videoFrameOwnerAvatar {
+    margin-right: 0.5em;
 }
 
 .videoLDContainer {

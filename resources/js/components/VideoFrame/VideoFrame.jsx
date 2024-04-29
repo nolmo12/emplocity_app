@@ -183,18 +183,18 @@ export default function VideoFrame() {
                             <p>{likesCount}</p>
                         </div>
 
-                        <h1 className={styles.videoFrameInfoTitle}>
+                        <div className={styles.videoFrameInfoTitle}>
                             <p data-testid="video-title">{videoTitle}</p>
-                        </h1>
-                        <h1>
-                            <FontAwesomeIcon icon={faUser} />{" "}
+                        </div>
+                        <div className={styles.videoFrameOwner}>
+                            <FontAwesomeIcon icon={faUser} className={styles.videoFrameOwnerAvatar}/>{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">{videoOwner}</p>
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
                             )}
-                        </h1>
-                        <h1 className={styles.videoFrameInfoDesc}>
+                        </div>
+                        <div className={styles.videoFrameInfoDesc}>
                             {videoDescription ? (
                                 <p data-testid="video-description">
                                     {videoDescription}
@@ -204,7 +204,7 @@ export default function VideoFrame() {
                                     No description
                                 </p>
                             )}
-                        </h1>
+                        </div>
                     </div>
                     <Comments reference_code={reference_code} />
                 </div>

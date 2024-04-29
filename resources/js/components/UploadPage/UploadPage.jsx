@@ -206,7 +206,7 @@ export default function UploadPage() {
                     </div>
 
                     <div>
-                        <h2>Thumbnail: </h2>
+                        <p className={styles.uploadFormOption}>Thumbnail: </p>
                         <input
                             type="file"
                             data-testid="thumbnail-input"
@@ -225,7 +225,7 @@ export default function UploadPage() {
                     </div>
 
                     <div>
-                        <h2>Visibility: </h2>
+                        <p className={styles.uploadFormOption}>Visibility: </p>
                         <select
                             onChange={(e) => handleVisibility(e)}
                             data-testid="visibility-select"
