@@ -144,14 +144,6 @@ Route::prefix('video')->group(function () {
 
     Route::get('/comments', [CommentController::class, 'show']);
 
-    Route::patch('comment/update', [CommentController::class,'update'])
-    ->middleware('auth:api');
-
-    Route::delete('comment/delete', [CommentController::class,'delete'])
-    ->middleware('auth:api');
-
-    Route::get('/comments/children', [CommentController::class, 'getChildrenComments']);
-
 });
 
 Route::prefix('history')->group(function () {

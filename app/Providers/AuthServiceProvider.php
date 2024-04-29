@@ -19,10 +19,6 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
-    protected $policies = [
-        Video::class => VideoPolicy::class,
-        Comment::class => CommentPolicy::class,
-    ];
 
     /**
      * Register any authentication / authorization services.
