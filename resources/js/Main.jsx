@@ -31,6 +31,15 @@ function Main() {
                     </>
                 }
             />
+            <Route
+                path="/account/:id"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="otherUser" />
+                    </>
+                }
+            />
 
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/login" element={<LoginPage />} />
