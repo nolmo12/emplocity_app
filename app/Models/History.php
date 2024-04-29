@@ -18,5 +18,10 @@ class History extends Model
         return $this->belongsTo(Video::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     use HasFactory;
 }

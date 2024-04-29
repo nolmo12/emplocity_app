@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\User;
 use App\Models\Video;
-use App\Models\VideoLikesDislike;
+
 use App\Models\Comment;
+
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Laravel\Sanctum\PersonalAccessToken;
 use App\Helpers\ValidateHelper;
-use Illuminate\Support\Facades\Validator;
+use App\Models\VideoLikesDislike;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Laravel\Sanctum\PersonalAccessToken;
+use Illuminate\Support\Facades\Validator;
 
 
 class UserController extends Controller
@@ -173,4 +176,61 @@ class UserController extends Controller
         ], 404);
     }
     }
+
+    public function listing()
+    {    
+        $limit = 20;
+
+        $twentyFourHoursAgo = new DateTime('-24 hours');
+
+        $users = User::with(['videos' => function ($query) use ($twentyFourHoursAgo) {
+            $query->where('created_at', '<=', $twentyFourHoursAgo->format('Y-m-d H:i:s'))
+                  ->where('visibility', 'public');
+        }])->get();
+
+        $userScores = [];
+
+        foreach ($users as $user)
+        {
+            $totalScore = 0;
+            foreach ($user->videos as $video)
+            {
+                $likes = $video->getLikesDislikesCount(true);
+                $dislikes = $video->getLikesDislikesCount(false);
+
+                if($likes + $dislikes == 0)
+                    continue;
+
+                $likeToDisLikeRatio = $video->$likes / max(1, $likes + $dislikes);
+
+                if($likeToDisLikeRatio > 0.5)
+                    $videoScore  = $video->views * $likeToDisLikeRatio;
+                else
+                    $videoScore = 0;
+
+                $totalScore += $videoScore;
+            }
+            $userScores[$user->id] = $totalScore;
+        }
+
+        arsort($userScores);
+
+        $topUsers = array_slice($userScores, 0, $limit, true);
+
+        $sortedKeys = array_keys($topUsers);
+
+        $topUsersDetails = collect();
+        foreach ($sortedKeys as $key)
+        {
+            $user = User::find($key);
+            if ($user) 
+            {
+                $topUsersDetails->push($user);
+            }
+        }
+
+        return $topUsersDetails;
+
+    }
+
 }
