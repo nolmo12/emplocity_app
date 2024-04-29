@@ -61,7 +61,7 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "video") {
         view = (
-            <main>
+            <main className={styles.videoFrameMain}>
                 <VideoFrame />
                 <VideoSection sectionType="similar" />
             </main>
