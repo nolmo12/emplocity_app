@@ -1,8 +1,9 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import authUser from "./authUser";
 
 export default function useComments() {
+    const navigate = useNavigate();
     const { http } = authUser();
 
     const fetchComments = async (reference_code, offset) => {
@@ -20,9 +21,12 @@ export default function useComments() {
         try {
             await http.post(`/api/video/comment`, {
                 reference_code: reference_code,
-                content: content,
+                content: content.replace(/\n/g, "<br>"),
             });
         } catch (error) {
+            if (error.response.status === 401) {
+                navigate("/login");
+            }
             console.log(error);
         }
     };
@@ -35,6 +39,9 @@ export default function useComments() {
                 parent: parentId,
             });
         } catch (error) {
+            if (error.response.status === 401) {
+                navigate("/login");
+            }
             console.log(error);
         }
     };

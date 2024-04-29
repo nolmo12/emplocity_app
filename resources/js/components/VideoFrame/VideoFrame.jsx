@@ -88,11 +88,13 @@ export default function VideoFrame() {
     };
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
+        const tags = videoObj.tags;
         return (
             <>
                 <div
@@ -183,18 +185,18 @@ export default function VideoFrame() {
                             <p>{likesCount}</p>
                         </div>
 
-                        <div className={styles.videoFrameInfoTitle}>
+                        <h1 className={styles.videoFrameInfoTitle}>
                             <p data-testid="video-title">{videoTitle}</p>
-                        </div>
-                        <div className={styles.videoFrameOwner}>
-                            <FontAwesomeIcon icon={faUser} className={styles.videoFrameOwnerAvatar}/>{" "}
+                        </h1>
+                        <h1>
+                            <FontAwesomeIcon icon={faUser} />{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">{videoOwner}</p>
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
                             )}
-                        </div>
-                        <div className={styles.videoFrameInfoDesc}>
+                        </h1>
+                        <h1 className={styles.videoFrameInfoDesc}>
                             {videoDescription ? (
                                 <p data-testid="video-description">
                                     {videoDescription}
@@ -204,7 +206,16 @@ export default function VideoFrame() {
                                     No description
                                 </p>
                             )}
-                        </div>
+                            <p>
+                                {tags.map((tag, index) => {
+                                    return (
+                                        <span
+                                            key={index}
+                                        >{` #${tag.name}`}</span> // tag click
+                                    );
+                                })}
+                            </p>
+                        </h1>
                     </div>
                     <Comments reference_code={reference_code} />
                 </div>

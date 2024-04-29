@@ -25,6 +25,13 @@ export default function MainContent({ contentType }) {
                 <UserVideoSection />
             </main>
         );
+    } else if (contentType === "otherUser") {
+        view = (
+            <main>
+                <Popular />
+                <VideoSection sectionType="otherAccount" />
+            </main>
+        );
     } else if (contentType === "result") {
         view = (
             <main>
