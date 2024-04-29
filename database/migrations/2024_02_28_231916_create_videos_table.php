@@ -30,7 +30,7 @@ return new class extends Migration
 
         Schema::create('video_likes_dislikes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->foreignIdFor(User::class)->constrained();
             $table->foreignIdFor(Video::class)->constrained();
             $table->boolean('is_like');
 

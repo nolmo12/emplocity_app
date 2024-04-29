@@ -43,9 +43,9 @@ Route::prefix('auth')->group(function () {
     ->middleware('guest')
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
-    Route::get('/deleteUser', [UserController::class, 'delete'])->middleware('auth:api');
-    Route::post('/updateUser', [UserController::class, 'update'])->middleware('auth:api');
-    Route::get('/readUser/{id}', [UserController::class, 'read'])->middleware('auth:api');
+    Route::delete('/delete/{id}', [UserController::class, 'delete']);
+    Route::patch('/update/{id}', [UserController::class, 'update']);
+    Route::get('/read/{id}', [UserController::class, 'read']);
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
 
 });
