@@ -39,16 +39,19 @@ class UserController extends Controller
         return $userData;
     }
 
-    public function getLikes(Request $request, string $referenceCode)
+    public function getLikes(Request $request)
     {
-        $video = Video::where('reference_code', $referenceCode)->first();
-    
-        $likesDislikes = VideoLikesDislike::where('video_id', $video->id)
-        ->where('user_id', $request->user()->id)
-        ->get();
+        $likes = $request->user()->likesDislikes()->where('is_like', true)->get();
+        
+        $videos = [];
 
-        return $likesDislikes;
+        foreach($likes as $like)
+        {
+            $video = Video::find($like->video_id);
+            $videos[] = $video->stats();
+        }
 
+        return $videos;
     }
 
     public function hasUserLikedVideo(Request $request, string $referenceCode)

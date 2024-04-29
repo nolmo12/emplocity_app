@@ -10,10 +10,12 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\VideoController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\HistoryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -41,9 +43,9 @@ Route::prefix('auth')->group(function () {
     ->middleware('guest')
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
-    Route::delete('/delete/{id}', [UserController::class, 'delete']);
-    Route::patch('/update/{id}', [UserController::class, 'update']);
-    Route::get('/read/{id}', [UserController::class, 'read']);
+    Route::get('/deleteUser', [UserController::class, 'delete'])->middleware('auth:api');
+    Route::post('/updateUser', [UserController::class, 'update'])->middleware('auth:api');
+    Route::get('/readUser/{id}', [UserController::class, 'read'])->middleware('auth:api');
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
 
 });
@@ -116,30 +118,36 @@ Route::prefix('video')->group(function () {
     Route::get('/watch/{referenceCode}', [VideoController::class,'show'])
     ->name('watch');
 
+    Route::get('/search', [VideoController::class,'search']);
+
     Route::get('/all', [VideoController::class,'all']);
 
     Route::get('/similarVideos/{referenceCode}', [VideoController::class,'getSimilarVideos'])
     ->name('similarVideos');
 
-    Route::get('/getUserLikes/{referenceCode}', [UserController::class,'getLikes'])
-    ->middleware('auth:api');
-
     Route::get('/hasUserLiked/{referenceCode}', [UserController::class, 'hasUserLikedVideo'])
     ->middleware('auth:api');
 
     Route::delete('/delete', [VideoController::class, 'delete'])
-    ->middleware(['auth:api', EnsureUserOwnsModel::class]);
+    ->middleware('auth:api');
 
     Route::post('/upload', [VideoController::class, 'store']);
 
     Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
-    ->middleware('auth:api')
-    ->name('updateLikes');
+    ->middleware('auth:api')    ->name('updateLikes');
 
-    Route::post('/update', [VideoController::class,'update'])
-    ->middleware('auth:api')
-    ->middleware(EnsureUserOwnsModel::class);
-   
+    Route::patch('/update', [VideoController::class,'update'])
+    ->middleware('auth:api');
+
+    Route::post('/comment', [CommentController::class, 'store'])
+    ->middleware('auth:api');
+
+    Route::get('/comments', [CommentController::class, 'show']);
+
 });
- 
 
+Route::prefix('history')->group(function () {
+    Route::post('/{referenceCode}', [HistoryController::class,'createOrUpdate']);
+    Route::get('/read', [HistoryController::class,'read']);
+
+});

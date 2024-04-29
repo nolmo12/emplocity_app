@@ -76,13 +76,17 @@ export default function UploadPage() {
             if (data.description) {
                 formData.append("description", data.description);
             }
+
             const response = await http.post("/api/video/upload", formData);
             setVideoSent(true);
         } catch (error) {
-            const errors = error.response.data.errors;
-            const validationResult = validateForm("upload", errors);
-            setValidationInfo(validationResult);
-            console.log(validationResult);
+            if (error.response && error.response.data) {
+                const errors = error.response.data.errors;
+                const validationResult = validateForm("upload", errors);
+                setValidationInfo(validationResult);
+            } else {
+                console.log("Error occurred, but no error data was received");
+            }
         }
     };
 
@@ -130,7 +134,9 @@ export default function UploadPage() {
 
                     {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
                     {validationInfo && validationInfo.videoValidation && (
-                        <p className={styles.validationInfo}>The video field is required</p>
+                        <p className={styles.validationInfo}>
+                            The video field is required
+                        </p>
                     )}
 
                     <div>
@@ -144,7 +150,9 @@ export default function UploadPage() {
                             placeholder="Title"
                         ></input>
                         {validationInfo && validationInfo.titleValidation && (
-                            <p className={styles.validationInfo}>The title field is required</p>
+                            <p className={styles.validationInfo}>
+                                The title field is required
+                            </p>
                         )}
                     </div>
 
@@ -181,14 +189,19 @@ export default function UploadPage() {
                         <select
                             className={styles.languageSelect}
                             onChange={(e) => handleInupt("language", e)}
+                            data-testid="language-select"
                             defaultValue=""
                         >
-                            <option value="" disabled selected hidden>Language</option>
+                            <option value="" disabled selected hidden>
+                                Language
+                            </option>
                             <option value="1">English</option>
                         </select>
                         {validationInfo &&
                             validationInfo.languageValidation && (
-                                <p className={styles.validationInfo}>The language field is required</p>
+                                <p className={styles.validationInfo}>
+                                    The language field is required
+                                </p>
                             )}
                     </div>
 

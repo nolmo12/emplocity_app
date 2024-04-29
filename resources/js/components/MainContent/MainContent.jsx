@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import Popular from "../Popular/Popular";
 import VideoSection from "../VideoSection/VideoSection";
 import VideoFrame from "../VideoFrame/VideoFrame";
@@ -28,7 +29,21 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <Popular />
-                <SearchResult />
+                <SearchResult searchType={"userSearch"} />
+            </main>
+        );
+    } else if (contentType === "userHistory") {
+        view = (
+            <main>
+                <Popular />
+                <SearchResult searchType={"userHistory"} />
+            </main>
+        );
+    } else if (contentType === "userLikes") {
+        view = (
+            <main>
+                <Popular />
+                <SearchResult searchType={"userLikes"} />
             </main>
         );
     } else if (contentType === "help") {

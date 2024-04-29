@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('content');
             $table->bigInteger('parent');
-            $table->foreignId(Video::class)->constrained('videos');
-            $table->foreignId(User::class)->constrained('users');
+            $table->foreignId('video_id')->constrained('videos');
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }

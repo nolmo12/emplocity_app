@@ -1,14 +1,42 @@
 import React from "react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import useFetchVideo from "../useFetchVideo";
 import useLikeCalculation from "../useLikeCalculation";
+import useFetchVideosHistory from "../useFetchVideosSearch";
+import authUser from "../authUser";
 import styles from "./video.module.css";
 import { ClipLoader } from "react-spinners";
 
 export default function Video({ videoObj }) {
     const [thumbnailIsLoaded, setThumbnailIsLoaded] = useState(false);
     const { calculateLikeRatio } = useLikeCalculation();
+    const { sendToHistory } = useFetchVideosHistory();
+    const { isLogged } = authUser();
+    const getLikeRatioStyle = (likeRatio) => {
+        const ratio = parseInt(likeRatio.replace("%", "").trim());
+
+        if (isNaN(ratio)) {
+            return {};
+        }
+
+        const green = [0, 255, 0];
+        const red = [255, 0, 0];
+
+        const interpolateColor = (color1, color2, factor) => {
+            const result = color1.slice();
+            for (let i = 0; i < 3; i++) {
+                result[i] = Math.round(
+                    result[i] + factor * (color2[i] - color1[i])
+                );
+            }
+            return `rgb(${result[0]}, ${result[1]}, ${result[2]})`;
+        };
+
+        const textColor = interpolateColor(red, green, ratio / 100);
+
+        return { color: textColor };
+    };
     if (videoObj) {
         const reference_code = videoObj.reference_code;
         const videoThumbnail = videoObj.thumbnail;
@@ -21,37 +49,28 @@ export default function Video({ videoObj }) {
         );
         const videoViews = videoObj.views;
         const path = `/video/${reference_code}`;
-        console.log(videoObj);
+
+        const sendVideoInfo = async (e) => {
+            if (!isLogged) return;
+            await sendToHistory(reference_code);
+        };
+
         return (
             <section className={styles.videoSection}>
-                <Link to={path}>
+                <Link to={path} onClick={() => sendVideoInfo()}>
                     <div id={styles.video}>
-                        <div
-                            style={{
-                                backgroundColor: "#fff",
-                                position: "relative",
-                            }}
-                        >
+                        <div className={styles.thumbnailContainer}>
                             <img
                                 src={videoThumbnail}
-                                width={300}
                                 onLoad={() => setThumbnailIsLoaded(true)}
                                 alt="video thumbnail"
-                                style={{
-                                    opacity: thumbnailIsLoaded ? 1 : 0,
-                                    position: "absolute",
-                                }}
+                                className={`${styles.thumbnail} ${
+                                    thumbnailIsLoaded ? styles.loaded : ""
+                                }`}
                             />
                             {!thumbnailIsLoaded && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        top: "50%",
-                                        left: "50%",
-                                        transform: "translate(-50%, -50%)",
-                                    }}
-                                >
-                                    <ClipLoader color="#000" />
+                                <div className={styles.loader}>
+                                    <ClipLoader className={styles.clipLoader} />
                                 </div>
                             )}
                         </div>
@@ -59,16 +78,26 @@ export default function Video({ videoObj }) {
 
                     <div className={styles.videoStat}>
                         <div id={styles.title} className={styles.videoInfo}>
-                            {videoTitle}
+                            <p data-testid="video-title">{videoTitle}</p>
                         </div>
                         <div className={styles.videoInfo}>
-                            {videoOwner ? videoOwner : "Guest"}
+                            {videoOwner ? (
+                                <p data-testid="video-owner">{videoOwner}</p>
+                            ) : (
+                                <p data-testid="video-owner">Guest</p>
+                            )}
                         </div>
                         <div id={styles.views} className={styles.videoInfo}>
-                            {videoViews}
+                            <p data-testid="video-views">{videoViews}</p>
                         </div>
-                        <div className={styles.videoInfo}>{videoDate}</div>
-                        <div id={styles.likes} className={styles.videoInfo}>
+                        <div className={styles.videoInfo}>
+                            <p data-testid="video-date">{videoDate}</p>
+                        </div>
+                        <div
+                            id={styles.likes}
+                            className={styles.videoInfo}
+                            style={getLikeRatioStyle(likeRatio)}
+                        >
                             {likeRatio}
                         </div>
                     </div>

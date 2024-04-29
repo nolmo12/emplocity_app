@@ -1,3 +1,23 @@
+main {
+    overflow-y:auto;
+}
+
+main::-webkit-scrollbar, .similarVideo::-webkit-scrollbar {
+    width: 0.2em; 
+}
+
+main::-webkit-scrollbar-track, .similarVideo::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+main::-webkit-scrollbar-thumb, .similarVideo::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
 .videoFrameDiv {
     position: relative;
     width: 70%;
@@ -26,7 +46,7 @@
 }
 
 .videoLDContainer {
-    width:100%;
+    width: 100%;
 }
 
 .videoLDContainer p {
@@ -36,7 +56,7 @@
     margin-top: 3%;
     display: block;
     right: -3.5%;
-    width:2%;
+    width: 2%;
 }
 
 .videoFrameIcon {
@@ -49,7 +69,7 @@
 }
 
 .videoFrameIcon.like {
-    color:green;
+    color: green;
 }
 
 .videoFrameIconTD {
@@ -64,6 +84,36 @@
 
 .videoFrameIconTD.dislike {
     color: red;
+}
+
+.sharePopup {
+    text-align: center;
+}
+
+.sharePopup p{
+    margin-top:1em;
+    margin-bottom:1em;
+}
+
+.sharePopup button{
+    width: 15%;
+    height: 1.5em;
+    font-size:0.8em;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-bottom: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+}
+
+.sharePopup button:hover{
+    background-color: #f0f0f0;
+}
+
+.sharePopup button:active{
+    transform: scale(0.95);
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
