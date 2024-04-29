@@ -45,7 +45,7 @@ function Main() {
             ></Route>
             <Route path="/upload" element={<UploadPage />}></Route>
             <Route
-                path="/search-result"
+                path="/search-result/:query"
                 element={
                     <>
                         <Header />

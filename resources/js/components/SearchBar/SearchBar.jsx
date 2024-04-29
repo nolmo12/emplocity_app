@@ -1,26 +1,32 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useFetchVideosSearch from "../useFetchVideosSearch";
 import styles from "./searchBar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
 export default function SearchBar() {
-    const [query, setQuery] = useState("");
+    const [data, setData] = useState("");
+    const { fetchSearchedVideos } = useFetchVideosSearch();
     const navigate = useNavigate();
 
     function handleChange(e) {
-        setQuery(e.target.value);
+        setData(e.target.value);
     }
 
     function handleKeyDown(e) {
         if (e.key === "Enter") {
-            navigate("/search-result");
+            search();
         }
     }
 
     const handleClick = () => {
-        navigate("/search-result");
+        search();
+    };
+
+    const search = async () => {
+        navigate(`/search-result/${data}`);
     };
 
     return (

@@ -76,19 +76,14 @@ export default function UploadPage() {
             if (data.description) {
                 formData.append("description", data.description);
             }
-            console.log(data.title);
-            console.log(data.language);
-            console.log(data.video);
-            console.log(data.tags);
+
             const response = await http.post("/api/video/upload", formData);
-            console.log(formData);
             setVideoSent(true);
         } catch (error) {
             if (error.response && error.response.data) {
                 const errors = error.response.data.errors;
                 const validationResult = validateForm("upload", errors);
                 setValidationInfo(validationResult);
-                console.log(validationResult);
             } else {
                 console.log("Error occurred, but no error data was received");
             }
