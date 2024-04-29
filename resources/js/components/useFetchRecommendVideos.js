@@ -2,7 +2,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import authUser from "./authUser";
-export default function useFetchVideos() {
+export default function useFetchRecommendVideos() {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { id } = useParams();
@@ -10,7 +10,8 @@ export default function useFetchVideos() {
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await axios.get("/api/video/all");
+                const response = await axios.get("/api/video/listing");
+                console.log(response.data);
                 response.data.map((video) => {
                     setVideos((videos) => [...videos, video]);
                 });

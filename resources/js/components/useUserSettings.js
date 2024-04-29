@@ -15,11 +15,17 @@ export default function useUserSettings() {
 
     const changePassword = async (id, newPassword, newPasswordRepeat) => {
         try {
-            await http.patch(`/api/auth/update/${id}`, {
+            const repsonse = await http.patch(`/api/auth/update/${id}`, {
                 password: newPassword,
                 repeatPassword: newPasswordRepeat,
             });
+            if (repsonse.status === 200) {
+                return true;
+            }
         } catch (error) {
+            if (error.response.status === 401) {
+                return false;
+            }
             console.log(error);
         }
     };

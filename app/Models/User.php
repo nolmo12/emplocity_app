@@ -82,6 +82,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Searc
         return $this->hasMany(Comment::class);
     }
 
+    public function histories() : HasMany
+    {
+        return $this->hasMany(History::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
