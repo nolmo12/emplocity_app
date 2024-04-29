@@ -4,15 +4,14 @@ import { useState, useEffect } from "react";
 export default function useFetchVideosSearch() {
     const [videosHistory, setVideosHistory] = useState([]);
     const [likedVideos, setLikedVideos] = useState([]);
-    const [searchedVideos, setSearchedVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { http, isLogged } = authUser();
 
     const fetchVideosHistory = async () => {
         try {
             const response = await http.get(`/api/history/read`);
-            setVideosHistory(response.data);
             setIsLoading(false);
+            return response.data;
         } catch (error) {
             console.log(error);
         }
@@ -20,8 +19,8 @@ export default function useFetchVideosSearch() {
     const fetchLikedVideos = async () => {
         try {
             const response = await http.get(`/api/auth/likedVideos`);
-            setLikedVideos(response.data);
             setIsLoading(false);
+            return response.data;
         } catch (error) {
             console.log(error);
         }
@@ -41,8 +40,9 @@ export default function useFetchVideosSearch() {
 
     useEffect(() => {
         if (!isLogged) return;
-        fetchLikedVideos();
-        fetchVideosHistory();
+        console.log(1);
+        // fetchLikedVideos();
+        // fetchVideosHistory();
     }, []);
 
     const sendToHistory = async (reference_code) => {
@@ -55,9 +55,9 @@ export default function useFetchVideosSearch() {
     };
 
     return {
-        videosHistory,
-        likedVideos,
         fetchSearchedVideos,
+        fetchLikedVideos,
+        fetchVideosHistory,
         isLoading,
         sendToHistory,
     };

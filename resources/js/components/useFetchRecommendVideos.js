@@ -11,7 +11,6 @@ export default function useFetchRecommendVideos() {
         const fetchVideos = async () => {
             try {
                 const response = await axios.get("/api/video/listing");
-                console.log(response.data);
                 response.data.map((video) => {
                     setVideos((videos) => [...videos, video]);
                 });
