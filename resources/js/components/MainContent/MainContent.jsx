@@ -25,6 +25,13 @@ export default function MainContent({ contentType }) {
                 <UserVideoSection />
             </main>
         );
+    } else if (contentType === "otherUser") {
+        view = (
+            <main>
+                <Popular />
+                <VideoSection sectionType="otherAccount" />
+            </main>
+        );
     } else if (contentType === "result") {
         view = (
             <main>
@@ -54,7 +61,7 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "video") {
         view = (
-            <main>
+            <main className={styles.videoFrameMain}>
                 <VideoFrame />
                 <VideoSection sectionType="similar" />
             </main>

@@ -70,7 +70,7 @@ class Video extends Model implements SearchInterface
     {
         return $this->hasMany(History::class);
     }
-
+    
     public function stats()
     {
         $language = $this->languages()->first();

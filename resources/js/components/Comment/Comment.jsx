@@ -41,7 +41,8 @@ export default function Comment({
     };
 
     const handleTextareaChange = (e) => {
-        setReplyCommentContent(e.target.innerText);
+        setReplyCommentContent(e.target.textContent);
+        console.log(replyCommentContent);
     };
 
     const handleClickReply = async (e) => {

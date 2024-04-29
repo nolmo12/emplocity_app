@@ -88,11 +88,13 @@ export default function VideoFrame() {
     };
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
+        const tags = videoObj.tags;
         return (
             <>
                 <div
@@ -204,6 +206,15 @@ export default function VideoFrame() {
                                     No description
                                 </p>
                             )}
+                            <p>
+                                {tags.map((tag, index) => {
+                                    return (
+                                        <span
+                                            key={index}
+                                        >{` #${tag.name}`}</span> // tag click
+                                    );
+                                })}
+                            </p>
                         </h1>
                     </div>
                     <Comments reference_code={reference_code} />

@@ -9,6 +9,7 @@ import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
 import AccountSettings from "./components/AccountSettings/AccountSettings";
 import authUser from "./components/authUser";
+import Footer from "./components/Footer/Footer";
 
 function Main() {
     const { getToken, isLogged } = authUser();
@@ -18,7 +19,9 @@ function Main() {
                 path="/"
                 element={
                     <>
-                        <Header /> <MainContent contentType="guest" />
+                        <Header /> 
+                        <MainContent contentType="guest" />
+                        <Footer />
                     </>
                 }
             ></Route>
@@ -28,6 +31,16 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="logged" />
+                        <Footer />
+                    </>
+                }
+            />
+            <Route
+                path="/account/:id"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="otherUser" />
                     </>
                 }
             />
@@ -50,6 +63,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="result" />
+                        <Footer />
                     </>
                 }
             ></Route>
@@ -59,6 +73,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="userHistory" />
+                        <Footer />
                     </>
                 }
             ></Route>
@@ -68,6 +83,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="userLikes" />
+                        <Footer />
                     </>
                 }
             ></Route>
@@ -77,6 +93,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="help" />
+                        <Footer />
                     </>
                 }
             />
@@ -86,6 +103,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="video" />
+                        <Footer />
                     </>
                 }
             />
@@ -95,6 +113,7 @@ function Main() {
                     <>
                         <Header />
                         <AccountSettings />
+                        <Footer />
                     </>
                 }
             />

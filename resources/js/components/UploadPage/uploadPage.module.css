@@ -56,10 +56,11 @@
     border: solid 2px #a0a0a0;
 }
 
-.uploadForm h2 {
+.uploadForm .uploadFormOption {
     text-align: center;
     color: black;
     margin-bottom: 0.5em;
+    font-size:1.5em;
 }
 
 .uploadForm select {

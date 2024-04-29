@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use DateTime;
 use App\Models\User;
 use App\Models\Video;
+
+use App\Models\Comment;
+
 use Illuminate\Http\Request;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
@@ -13,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
+
 
 class UserController extends Controller
 {
@@ -65,13 +69,13 @@ class UserController extends Controller
             return $likesDislikes->is_like ? 1 : 0;
         }
     }
-    public function delete()
+    public function delete(Request $request, $id)
     {
-        $user = Auth::user();
-
+        $user = User::findOrFail($id);
+        $this->authorize('delete', $user);
         if ($user) 
         {
-            User::where('id', $user->id)->delete();
+            User::where('id', $id)->delete();
             Auth::logout();
             return redirect('/');
         }
@@ -83,9 +87,8 @@ class UserController extends Controller
  * @param Request $request
  * @return User
  */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $request->user();
 
         try{
             // Validate the request data
@@ -107,8 +110,8 @@ class UserController extends Controller
             ], 401);
         }
 
-        $user = User::findOrFail($request->user()->id);
-
+        $user = User::findOrFail($id);
+        $this->authorize('update', $user);
 
         if ($request->filled('name')) {
             $user->name = $request->name;
@@ -155,17 +158,15 @@ class UserController extends Controller
         ];
         $videosData = [];
         foreach ($user->videos as $video) {
-            $videosData[] = [
-                'title' => $video->title,
-                'date' => $video->created_at->format('Y-m-d'),
-                'views' => $video->views,
-                // 'comments' => $video
-                'likes' => $video->getLikesDislikesCount(true),
-            ];
+            $videoStats = $video->stats();
+            $commentsCount = Comment::where('video_id', $video->id)->count();
+            $videoStats['comments'] = $commentsCount;
+            unset($videoStats['tags']);
+            $videosData[] = $videoStats;
         }
         return response()->json([
             'status' => 'success',
-            'user' => $userData,
+             'user' => $userData,
             'videos' => $videosData,
         ]);
     } catch (\Exception $e) {
