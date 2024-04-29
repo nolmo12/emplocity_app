@@ -174,4 +174,50 @@ class UserController extends Controller
         ], 404);
     }
     }
+
+    public function listing()
+    {    
+        $limit = 20;
+
+        $users = User::with('videos')->get();
+
+        $userScores = [];
+
+        foreach ($users as $user)
+        {
+            $totalScore = 0;
+            foreach ($user->videos as $video)
+            {
+                $likeToDisLikeRatio = $video->likes / max(1, $video->dislikes + $video->likes);
+
+                if($likeToDisLikeRatio > 0.5)
+                    $videoScore  = $video->views * $likeToDisLikeRatio;
+                else
+                    $videoScore = 0;
+                
+                $totalScore += $videoScore;
+            }
+            $userScores[$user->id] = $totalScore;
+        }
+
+        arsort($userScores);
+
+        $topUsers = array_slice($userScores, 0, $limit, true);
+
+        $sortedKeys = array_keys($topUsers);
+
+        $topUsersDetails = collect();
+        foreach ($sortedKeys as $key)
+        {
+            $user = User::find($key);
+            if ($user) 
+            {
+                $topUsersDetails->push($user);
+            }
+        }
+
+        return $topUsersDetails;
+
+    }
+
 }

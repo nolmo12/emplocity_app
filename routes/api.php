@@ -33,6 +33,7 @@ Route::middleware('auth')->get('/user', function (Request $request) {
 
 Route::get('users', [UserController::class, 'getUsersData']);
 Route::get('user/{id}', [UserController::class, 'getUserData']);
+Route::get('users/listing', [UserController::class,'listing']);
 
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);

@@ -207,6 +207,4 @@ class Video extends Model implements SearchInterface
     {
         return 3.3;
     }
-
-
 }
