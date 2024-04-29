@@ -9,7 +9,6 @@ export default function Popular() {
     const fetchPopularUser = async () => {
         try {
             const response = await axios.get("/api/users/listing");
-            console.log(response.data);
             setPopularData(response.data);
         } catch (error) {
             console.log(error);

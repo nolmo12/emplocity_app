@@ -13,8 +13,6 @@ export default function VideoSection({ sectionType }) {
     const { calculateLikeRatio } = useLikeCalculation();
     const [renderKey, setRenderKey] = useState(0);
     useEffect(() => {
-        console.log("isLoading:", isLoading);
-        console.log("videos:", videos);
         // pagination
     }, [reference_code, isLoading, videos]);
 
@@ -27,7 +25,6 @@ export default function VideoSection({ sectionType }) {
 
     if (sectionType === "reccommend" && isLoading === false) {
         if (videos) {
-            console.log(videos);
             view = (
                 <div id={styles.videoSection}>
                     <h2 className={styles.videoSectionH}>Reccommend</h2>
@@ -35,7 +32,7 @@ export default function VideoSection({ sectionType }) {
                         return (
                             <Video
                                 data-testid={`video-${renderKey}`}
-                                key={video.id}
+                                key={`recommend-${video.video.id}`}
                                 videoObj={video}
                             />
                         );
