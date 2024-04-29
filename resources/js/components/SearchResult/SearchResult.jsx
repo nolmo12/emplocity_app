@@ -51,29 +51,30 @@ function UserInfo({ userObj }) {
 export default function SearchResult({ searchType }) {
     const [videos, setVideos] = useState([]);
     const [searchedObj, setSearchedObj] = useState([]);
+    const [sortType, setSortType] = useState("popularity");
     const { query } = useParams();
-    const { getUser } = authUser();
     const { videosHistory, likedVideos, fetchSearchedVideos, isLoading } =
         useFetchVideosSearch();
-    const temp = async () => {
-        const response = await fetchSearchedVideos(
-            query,
-            0,
-            "upload_date_desc"
-        );
+
+    const searchedVideos = async (sortType) => {
+        const response = await fetchSearchedVideos(query, 0, sortType);
         setSearchedObj(response);
     };
 
     useEffect(() => {
-        temp();
         if (searchType === "userHistory") {
             setVideos(videosHistory);
         } else if (searchType === "userLikes") {
             setVideos(likedVideos);
         } else {
-            temp();
+            searchedVideos(sortType);
         }
-    }, [searchType, videosHistory, likedVideos, query]);
+    }, [searchType, videosHistory, likedVideos, query, sortType]);
+
+    const handleChangeSort = (e) => {
+        console.log(e.target.value);
+        setSortType(e.target.value);
+    };
 
     if (isLoading) {
         return <h1>Loading...</h1>;
@@ -89,7 +90,7 @@ export default function SearchResult({ searchType }) {
                 value.forEach((user) => {
                     if (user.name === query) {
                         matchedUser.push(
-                            <li key={user.id}>
+                            <li key={`user-${user.video.id}`}>
                                 <Link to={`/account/${user.id}`}>
                                     <UserInfo userObj={user} />
                                 </Link>
@@ -97,7 +98,7 @@ export default function SearchResult({ searchType }) {
                         );
                     } else {
                         otherResults.push(
-                            <li key={user.id}>
+                            <li key={`user-${user.video.id}`}>
                                 <Link to={`/account/${user.id}`}>
                                     <UserInfo userObj={user} />
                                 </Link>
@@ -108,7 +109,7 @@ export default function SearchResult({ searchType }) {
             } else if (key === "videos") {
                 value.forEach((video) => {
                     otherResults.push(
-                        <li key={video.id}>
+                        <li key={`video-${video.video.id}`}>
                             <Link to={`/video/${video.video.reference_code}`}>
                                 <VideoThumbnail videoObj={video} />
                             </Link>
@@ -159,5 +160,15 @@ export default function SearchResult({ searchType }) {
         );
     }
 
-    return <div className={styles.searchResultsDiv}>{view}</div>;
+    return (
+        <div className={styles.searchResultsDiv}>
+            <select onChange={(e) => handleChangeSort(e)}>
+                <option value="upload_date_desc">desc</option>
+                <option value="upload_date_asc">asc</option>
+                <option value="views">views</option>
+                <option value="popularity">popularity</option>
+            </select>
+            {view}
+        </div>
+    );
 }

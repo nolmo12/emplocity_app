@@ -8,7 +8,8 @@ export default function Popular() {
     const { http } = authUser();
     const fetchPopularUser = async () => {
         try {
-            const response = await http.get("/api/users/listing");
+            const response = await axios.get("/api/users/listing");
+            console.log(response.data);
             setPopularData(response.data);
         } catch (error) {
             console.log(error);
@@ -21,14 +22,14 @@ export default function Popular() {
         <div id={styles.Popular}>
             <h1>Popular</h1>
             <ul data-testid="guestVideoList">
-                {/* {popularData.map((user) => {
+                {popularData.map((user) => {
                     return (
-                        <li>
+                        <li key={user.id}>
                             <img src="avatar" alt="avatar" />
-                            <p>{user.userName}</p>
+                            <p>{user.name}</p>
                         </li>
                     );
-                })} */}
+                })}
             </ul>
         </div>
     );

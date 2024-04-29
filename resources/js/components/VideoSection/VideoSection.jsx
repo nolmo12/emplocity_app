@@ -3,31 +3,20 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
-import useFetchAllVideos from "../useFetchAllVideos";
+import useFetchRecommendVideos from "../useFetchRecommendVideos";
 import useLikeCalculation from "../useLikeCalculation";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
-    const { videos, isLoading } = useFetchAllVideos();
+    const { videos, isLoading } = useFetchRecommendVideos();
     const { calculateLikeRatio } = useLikeCalculation();
     const [renderKey, setRenderKey] = useState(0);
-
     useEffect(() => {
+        console.log("isLoading:", isLoading);
+        console.log("videos:", videos);
         // pagination
-        const handleScroll = () => {
-            const halfwayDown = document.body.scrollHeight / 2;
-
-            if (window.scrollY >= halfwayDown) {
-                console.log("User has scrolled halfway down the page");
-            }
-        };
-        window.addEventListener("scroll", handleScroll);
-        setRenderKey((prev) => prev + 1);
-        return () => {
-            window.removeEventListener("scroll", handleScroll);
-        };
-    }, [reference_code]);
+    }, [reference_code, isLoading, videos]);
 
     const similarVideosObj = useFetchSimilarVideos({ reference_code }); // for similar videos
     if (isLoading) {
@@ -36,13 +25,13 @@ export default function VideoSection({ sectionType }) {
 
     let view = undefined;
 
-    if (sectionType === "reccommend") {
-        view = (
-            <div id={styles.videoSection}>
-                <h2 className={styles.videoSectionH}>Reccommend</h2>
-
-                {videos &&
-                    videos.map((video) => {
+    if (sectionType === "reccommend" && isLoading === false) {
+        if (videos) {
+            console.log(videos);
+            view = (
+                <div id={styles.videoSection}>
+                    <h2 className={styles.videoSectionH}>Reccommend</h2>
+                    {Object.entries(videos).map(([key, video]) => {
                         return (
                             <Video
                                 data-testid={`video-${renderKey}`}
@@ -51,8 +40,9 @@ export default function VideoSection({ sectionType }) {
                             />
                         );
                     })}
-            </div>
-        );
+                </div>
+            );
+        }
     } else if (sectionType === "similar" && similarVideosObj.videos) {
         view = (
             <div className={styles.similarVideo}>
@@ -82,5 +72,6 @@ export default function VideoSection({ sectionType }) {
             </div>
         );
     }
+
     return view;
 }

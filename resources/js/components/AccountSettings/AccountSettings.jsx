@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUserSettings from "../useUserSettings";
 import styles from "./accountSettings.module.css";
@@ -8,7 +9,8 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { render } from "@testing-library/react";
 
 export default function AccountSettings() {
-    const { http, isLogged, getUser } = authUser();
+    const navigate = useNavigate();
+    const { getUser, logout } = authUser();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
     const [renderKey, setRenderKey] = useState(0);
@@ -33,7 +35,6 @@ export default function AccountSettings() {
 
     const handleNicknameChange = (e) => {
         e.preventDefault();
-        console.log(e.target.value);
         setUserData({ ...userData, nickname: e.target.value });
     };
 
@@ -48,18 +49,24 @@ export default function AccountSettings() {
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         await changeNickname(user.id, userData.nickname);
+        setUserData({ ...userData, nickname: "" });
         setRenderKey((prev) => prev + 1);
     };
 
     const handleClickChangePassword = async (e) => {
         // tuy
         e.preventDefault();
-        await changePassword(
+        const response = await changePassword(
             user.id,
             userData.password,
             userData.repeatPassword
         );
-        console.log(2);
+        if (response) {
+            logout();
+            navigate("/login");
+        } else {
+            console.log("error");
+        }
     };
 
     const handleChangeAvatar = async (e) => {
@@ -71,7 +78,6 @@ export default function AccountSettings() {
     const handleClickChangeAvatar = async (e) => {
         e.preventDefault();
         const formData = new FormData();
-        console.log(userData.avatar);
         formData.append("avatar", userData.avatar);
         await changeAvatar(user.id, formData);
     };
@@ -100,6 +106,7 @@ export default function AccountSettings() {
                     <input
                         type="text"
                         onChange={(e) => handleNicknameChange(e)}
+                        value={userData.nickname}
                         placeholder="New nickname"
                     />
                     <button onClick={(e) => handleClickChangeNickname(e)}>
@@ -108,11 +115,13 @@ export default function AccountSettings() {
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "password")}
+                        value={userData.password}
                         placeholder="New password"
                     />
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "repeat")}
+                        value={userData.repeatPassword}
                         placeholder="Repeat new password"
                     ></input>
                     <button onClick={(e) => handleClickChangePassword(e)}>

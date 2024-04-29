@@ -38,11 +38,11 @@ export default function Video({ videoObj }) {
         return { color: textColor };
     };
     if (videoObj) {
-        const reference_code = videoObj.reference_code;
-        const videoThumbnail = videoObj.thumbnail;
+        const reference_code = videoObj.video.reference_code;
+        const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
-        const videoDate = videoObj.created_at.substring(0, 10);
-        const videoTitle = videoObj.languages[0].pivot.title;
+        const videoDate = videoObj.video.created_at.substring(0, 10);
+        const videoTitle = videoObj.title;
         const likeRatio = calculateLikeRatio(
             videoObj.likesCount,
             videoObj.dislikesCount
