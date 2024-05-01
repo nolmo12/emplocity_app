@@ -10,7 +10,24 @@
     border: inset 2px #060c1a; 
     padding-bottom: 1.5em;
     align-items: flex-start; 
+    overflow-y: auto;
 }   
+
+#UserVideoSection::-webkit-scrollbar, .similarVideo::-webkit-scrollbar {
+    width: 0.2em; 
+}
+
+#UserVideoSection::-webkit-scrollbar-track, .similarVideo::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#UserVideoSection::-webkit-scrollbar-thumb, .similarVideo::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+#UserVideoSection::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 #UserVideoSection table {
     width: 100%;
@@ -40,6 +57,11 @@
 #UserVideoSection section {
     width: 60%;
     transform: translateX(20%);
+}
+
+#UserVideoSection img {
+    width:12em;
+    height:8em;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
