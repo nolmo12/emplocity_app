@@ -127,10 +127,23 @@ export default function AccountSettings() {
                     <button onClick={(e) => handleClickChangePassword(e)}>
                         Change password
                     </button>
-                    <input
-                        type="file"
-                        onChange={(e) => handleChangeAvatar(e)}
-                    />
+                    <div className={styles.avatarSettings}>
+                        <input
+                            type="file"
+                            onChange={(e) => handleChangeAvatar(e)}
+                            className={styles.avatarInput}
+                        />
+                        {userData.avatar && (
+                            <div>
+                                <p>Selected Avatar:</p>
+                                <img
+                                    src={URL.createObjectURL(userData.avatar)}
+                                    alt="Selected Avatar"
+                                    className={styles.selectedAvatar}
+                                />
+                            </div>
+                        )}
+                    </div>
                     <button onClick={(e) => handleClickChangeAvatar(e)}>
                         Change avatar
                     </button>

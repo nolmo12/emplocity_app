@@ -5,13 +5,13 @@
     border: solid 2px black;
     border-radius: 6px;
     background-color: rgba(229, 229, 229, 0.8);
-    padding: 5%;
+    padding: 3%;
     width: 30%;
     max-width: 300px;
 }
 
 .userInfoForm h3{
-    font-size: 1.5em;
+    font-size: 2em;
     margin-bottom: 1em;
     text-align: center;
     color: black;
@@ -24,19 +24,12 @@
 
 .userInfoForm p{
     color:blue;
-    font-size:0.7em;
+    font-size:1em;
     margin-bottom: 1em;
     margin-left:1em;
 }
 
-.userInfoForm .borderSetting{
-    color:black;
-    font-size:1em;
-    transform: translateX(15%);
-    margin-bottom:1em;
-}
-
-.userInfoForm input {
+.settingsDiv input {
     width: 90%;
     height: 2.5em;
     margin: 0 auto;
@@ -44,7 +37,7 @@
     border: solid 2px #a0a0a0;
 }
 
-.userInfoForm button {
+.settingsDiv button {
     width: 50%;
     height: 2em;
     margin: 0 auto;
@@ -54,28 +47,60 @@
     cursor: pointer;
     border: solid 2px #a0a0a0;
     background-color: white;
-    transform: translateX(40%);
+    display:block;
 }
 
-.userInfoForm button:hover {
+.settingsDiv button:hover {
     background-color: #f0f0f0;
 }
 
-.userInfoForm button:active {
+.settingsDiv button:active {
     transform: scale(0.95);
 }
 
-.userInfoForm .uploadIcon {
-    color: black;
-    width: 6em;
-    height: 6em;
-    margin-bottom: 0.5em;
-    transform: translateX(90%);
+.avatarInput[type="file"] {
+    border: none;
+    color:black;
+    margin-bottom:1em;
 }
 
-.userInfoForm .uploadIconP {
-    color:blue;
-    font-size:0.7em;
-    transform: translateX(30%);
-    margin-bottom: 1em;
+.avatarInput[type="file"]::file-selector-button {
+    content: "Select file";
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.avatarInput[type="file"]:hover::file-selector-button {
+    content: "Select file";
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.avatarInput[type="file"]:active::file-selector-button {
+    transform: scale(0.95);
+}
+
+form .selectedAvatar {
+    width:9em;
+    height:6em;
+    transform: translate(55%);
+    margin-bottom:1em;
+}
+
+.avatarSettings p {
+    color:black;
+    text-align: center;
+    margin-bottom:1em;
 }
