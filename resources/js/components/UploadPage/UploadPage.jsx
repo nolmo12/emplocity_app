@@ -108,7 +108,7 @@ export default function UploadPage() {
     }
 
     return (
-        <main>
+        <main className={styles.videoUploadPage}>
             {videoSent ? (
                 <Message message={"Video has been sent"} />
             ) : (
