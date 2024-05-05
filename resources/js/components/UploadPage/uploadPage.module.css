@@ -35,15 +35,7 @@
 }
 
 .thumbnailInput[type="file"]:hover::file-selector-button {
-    content: "Select file";
-    display: inline-block;
-    background-color: white;
-    color: black;
-    padding: 8px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    border: solid 2px #a0a0a0;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    background-color:#f0f0f0;
 }
 
 .thumbnailInput[type="file"]:active::file-selector-button {
@@ -139,7 +131,12 @@
 .uploadForm .thumbnailPreview {
     width:8em;
     height:5em;
-    transform: translate(65%);
+}
+
+.uploadForm .clearThumbnailButton {
+    position: absolute;
+    width: 30%;
+    left: 50%;
 }
 
 .uploadForm .validationInfo {

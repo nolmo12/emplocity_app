@@ -11,6 +11,7 @@ import {
     faTags,
     faAlignLeft,
     faLanguage,
+    faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadPage() {
@@ -96,6 +97,11 @@ export default function UploadPage() {
 
     function handleThumbnail(e) {
         setData({ ...data, thumbnail: e.target.files[0] });
+    }
+
+    function handleClearThumbnail() {
+        setData({ ...data, thumbnail: null });
+        document.getElementById("thumbnail-input").value = "";
     }
 
     function handleTags(e) {
@@ -209,7 +215,7 @@ export default function UploadPage() {
                         <p className={styles.uploadFormOption}>Thumbnail: </p>
                         <input
                             type="file"
-                            data-testid="thumbnail-input"
+                            id="thumbnail-input"
                             onChange={(e) => handleThumbnail(e)}
                             className={styles.thumbnailInput}
                         />
@@ -220,6 +226,13 @@ export default function UploadPage() {
                                     alt="Thumbnail Preview"
                                     className={styles.thumbnailPreview}
                                 />
+                                <button
+                                    type="button"
+                                    onClick={handleClearThumbnail}
+                                    className={styles.clearThumbnailButton}
+                                >
+                                    Clear Thumbnail
+                                </button>
                             </div>
                         )}
                     </div>
