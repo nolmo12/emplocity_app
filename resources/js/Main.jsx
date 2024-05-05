@@ -41,6 +41,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="otherUser" />
+                        <Footer />
                     </>
                 }
             />
@@ -56,7 +57,16 @@ function Main() {
                 path="/reset-password"
                 element={<ResetPasswordPage />}
             ></Route>
-            <Route path="/upload" element={<UploadPage />}></Route>
+            <Route 
+                path="/upload" 
+                element={
+                    <>
+                        <Header /> 
+                        <UploadPage />
+                        <Footer />
+                    </>
+                }>
+            </Route>
             <Route
                 path="/search-result/:query"
                 element={

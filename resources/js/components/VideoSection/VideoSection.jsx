@@ -5,6 +5,7 @@ import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchRecommendVideos from "../useFetchRecommendVideos";
 import useLikeCalculation from "../useLikeCalculation";
+import { getLikeRatioStyle } from "../Video/Video";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
@@ -46,6 +47,11 @@ export default function VideoSection({ sectionType }) {
                 {Object.entries(similarVideosObj.videos).map(
                     ([key, videoObj]) => {
                         const path = `/video/${videoObj.video.reference_code}`;
+                        const likeRatio = calculateLikeRatio(
+                            videoObj.likesCount,
+                            videoObj.dislikesCount
+                        );
+                        const ratingStyle = getLikeRatioStyle(likeRatio);
                         return (
                             <Link key={key} to={path}>
                                 <div id={styles.video}>
@@ -56,10 +62,7 @@ export default function VideoSection({ sectionType }) {
                                     />
                                     <p>{videoObj.title}</p>
                                     <p>
-                                        {calculateLikeRatio(
-                                            videoObj.likesCount,
-                                            videoObj.dislikesCount
-                                        )}
+                                        Rating: <span style={{ color: ratingStyle.color }}>{likeRatio}</span>
                                     </p>
                                 </div>
                             </Link>

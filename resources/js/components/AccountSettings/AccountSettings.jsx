@@ -69,6 +69,12 @@ export default function AccountSettings() {
         }
     };
 
+    const handleClickClearAvatar = (e) => {
+        e.preventDefault();
+        document.getElementById('avatar-input').value = ''; 
+        setUserData({ ...userData, avatar: "" });
+    };
+
     const handleChangeAvatar = async (e) => {
         e.preventDefault();
         setUserData({ ...userData, avatar: e.target.files[0] });
@@ -89,11 +95,17 @@ export default function AccountSettings() {
                         <>
                             <h3>User Info</h3>
                             <div>
-                                <p>First name: {user.first_name}</p>
-                                <p>Nickname: {user.name}</p>
                                 <p>
-                                    Created at:{" "}
-                                    {user.created_at.substring(0, 10)}
+                                    <span className={styles.label}>First name: </span>
+                                    <span>{user.first_name}</span>
+                                </p>
+                                <p>
+                                    <span className={styles.label}>Nickname: </span>
+                                    <span>{user.name}</span>
+                                </p>
+                                <p>
+                                    <span className={styles.label}>Created at: </span>
+                                    <span>{user.created_at.substring(0, 10)}</span>
                                 </p>
                                 <p>
                                     <img src={user.avatar} alt="avatar" />
@@ -131,6 +143,7 @@ export default function AccountSettings() {
                         <input
                             type="file"
                             onChange={(e) => handleChangeAvatar(e)}
+                            id="avatar-input"
                             className={styles.avatarInput}
                         />
                         {userData.avatar && (
@@ -141,10 +154,13 @@ export default function AccountSettings() {
                                     alt="Selected Avatar"
                                     className={styles.selectedAvatar}
                                 />
+                                <button onClick={handleClickClearAvatar} className={styles.clearAvatarButton}>
+                                    Clear Avatar
+                                </button>
                             </div>
                         )}
                     </div>
-                    <button onClick={(e) => handleClickChangeAvatar(e)}>
+                    <button onClick={(e) => handleClickChangeAvatar(e)} className={styles.avatarButton}>
                         Change avatar
                     </button>
                 </form>

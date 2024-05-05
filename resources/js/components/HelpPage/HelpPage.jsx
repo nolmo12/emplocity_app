@@ -1,7 +1,10 @@
 import React from "react";
 import styles from "./helpPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+import { 
+    faAlignLeft,
+    faEnvelope
+ } from "@fortawesome/free-solid-svg-icons";
 
 export default function HelpPage() {
     return (
@@ -9,6 +12,10 @@ export default function HelpPage() {
             <section className={styles.helpForm}>
                 <form data-testid="problemForm">
                     <div>
+                        <FontAwesomeIcon
+                            icon={faEnvelope}
+                            className={styles.helpFormIcon}
+                        />
                         <input
                             type="text"
                             placeholder="Enter your email"

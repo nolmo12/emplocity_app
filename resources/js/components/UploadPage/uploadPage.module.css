@@ -1,11 +1,19 @@
+.videoUploadPage {
+    overflow-y: auto;
+}
+
 .uploadForm {
     display: flex;
+    position:relative;
+    top:5%;
     justify-content: center;
     flex-direction: column;
     border: solid 2px black;
     border-radius: 6px;
     background-color: rgba(229, 229, 229, 0.8);
-    padding: 5%;
+    padding: 4%;
+    padding-bottom: 2%;
+    padding-top: 2%;
     width: 30%;
     max-width: 300px;
 }
@@ -27,15 +35,7 @@
 }
 
 .thumbnailInput[type="file"]:hover::file-selector-button {
-    content: "Select file";
-    display: inline-block;
-    background-color: white;
-    color: black;
-    padding: 8px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    border: solid 2px #a0a0a0;
-    transition: background-color 0.3s ease, transform 0.1s ease;
+    background-color:#f0f0f0;
 }
 
 .thumbnailInput[type="file"]:active::file-selector-button {
@@ -131,7 +131,12 @@
 .uploadForm .thumbnailPreview {
     width:8em;
     height:5em;
-    transform: translate(65%);
+}
+
+.uploadForm .clearThumbnailButton {
+    position: absolute;
+    width: 30%;
+    left: 50%;
 }
 
 .uploadForm .validationInfo {

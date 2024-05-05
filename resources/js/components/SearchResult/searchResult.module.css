@@ -41,6 +41,12 @@
 .searchResultsDiv .thumbnailContainer .thumbnail{
     width:100%;
     height:17vh;
+    border-radius: 10px;
+    transition: border-radius 1s ease;
+}
+
+.searchResultsDiv .thumbnailContainer .thumbnail:hover{
+    border-radius: 0;
 }
 
 .searchResultsDiv .videoInfo {
