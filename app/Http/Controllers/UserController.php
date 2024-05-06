@@ -121,8 +121,6 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
 
-        error_log($request->file('thumbnail')->getClientOriginalExtension());
-
         if ($request->hasFile('thumbnail')) {
             $thumbnailName = $user->id . '_' . time() . '.' . $request->file('thumbnail')->getClientOriginalExtension();
             $path = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
