@@ -136,6 +136,8 @@ Route::prefix('video')->group(function () {
 
     Route::post('/upload', [VideoController::class, 'store']);
 
+    Route::post('/addView/{referenceCode}', [VideoController::class, 'countView']);
+
     Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
     ->middleware('auth:api')    ->name('updateLikes');
 
@@ -146,7 +148,6 @@ Route::prefix('video')->group(function () {
     ->middleware('auth:api');
 
     Route::get('/comments', [CommentController::class, 'show']);
-
 });
 
 Route::prefix('history')->group(function () {
