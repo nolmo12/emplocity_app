@@ -179,7 +179,7 @@ class UserController extends Controller
 
     public function listing()
     {    
-        $limit = 20;
+        $limit = 10;
 
         $twentyFourHoursAgo = new DateTime('-24 hours');
 
@@ -198,7 +198,7 @@ class UserController extends Controller
                 $likes = $video->getLikesDislikesCount(true);
                 $dislikes = $video->getLikesDislikesCount(false);
 
-                if($likes + $dislikes == 0)
+                if($likes + $dislikes == 0 || $video->views == 0)
                     continue;
 
                 $likeToDisLikeRatio = $video->$likes / max(1, $likes + $dislikes);
