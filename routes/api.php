@@ -45,7 +45,7 @@ Route::prefix('auth')->group(function () {
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
     Route::delete('/delete/{id}', [UserController::class, 'delete']);
-    Route::patch('/update/{id}', [UserController::class, 'update']);
+    Route::post('/update/{id}', [UserController::class, 'update']);
     Route::get('/read/{id}', [UserController::class, 'read']);
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
 
@@ -84,7 +84,7 @@ Route::post('/reset-password', function (Request $request) {
     $validateData = Validator::make($request->all(), [
         'token' => 'required',
         'email' => 'required|email',
-        'password' => 'required|min:8',
+        'password' => 'required|min:6',
         'repeatPassword' => 'required|same:password'
     ]);
 
@@ -139,15 +139,18 @@ Route::prefix('video')->group(function () {
     Route::post('/addView/{referenceCode}', [VideoController::class, 'countView']);
 
     Route::post('/like/{referenceCode}', [VideoController::class,'updateLikes'])
-    ->middleware('auth:api')    ->name('updateLikes');
+    ->middleware('auth:api')->name('updateLikes');
 
-    Route::patch('/update', [VideoController::class,'update'])
+    Route::post('/update', [VideoController::class,'update'])
     ->middleware('auth:api');
 
     Route::post('/comment', [CommentController::class, 'store'])
     ->middleware('auth:api');
 
     Route::get('/comments', [CommentController::class, 'show']);
+
+    Route::delete('/comment/delete', [CommentController::class, 'delete']);
+    Route::patch('/comment/update', [CommentController::class, 'update']);
 });
 
 Route::prefix('history')->group(function () {

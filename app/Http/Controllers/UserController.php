@@ -14,6 +14,7 @@ use App\Models\VideoLikesDislike;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
 
@@ -96,7 +97,7 @@ class UserController extends Controller
             'name' => 'string|max:255',
             'password' => 'string',
             'repeatPassword' => 'same:password',
-            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
         ]);
 
         if ($validateUser->fails()) {
@@ -119,11 +120,17 @@ class UserController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
         }
+
+        error_log($request->file('thumbnail')->getClientOriginalExtension());
+
         if ($request->hasFile('thumbnail')) {
             $thumbnailName = $user->id . '_' . time() . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $thumbnailPath = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
-            $relativePath = str_replace(public_path(), '/', $thumbnailPath);
-            $user->avatar = $relativePath;
+            $path = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
+            $request->file('thumbnail')->move(public_path('storage/avatars'), $thumbnailName);
+            $publicPath = Storage::url($path);
+            error_log($publicPath);
+            Storage::delete($path);
+            $user->avatar = $publicPath;
         }
 
         $user->save();
