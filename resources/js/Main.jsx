@@ -4,6 +4,7 @@ import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import Header from "./components/Header/Header";
+import AboutUs from "./components/AboutUs/AboutUs";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
@@ -132,7 +133,6 @@ function Main() {
                 element={
                     <>
                         <Header />
-                        <p>fsdfsdfsd</p>
                         <MainContent contentType="otherUser" />
                         <Footer />
                     </>
@@ -148,6 +148,24 @@ function Main() {
                     </>
                 }
             ></Route>
+            <Route
+                path="/about-us"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="aboutUs" />
+                    </>
+                }
+            />
+            <Route
+                path="/rules"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="rules" />
+                    </>
+                }
+            />
         </Routes>
     );
 }

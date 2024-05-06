@@ -136,6 +136,30 @@ export default function Header() {
         </li>
     );
 
+    const aboutUsElement = (
+        <li onClick={toggleMenu}>
+            <Link to="/about-us">
+                <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className={styles.imgMenu}
+                />
+                <button id={styles.help}>About us</button>
+            </Link>
+        </li>
+    );
+
+    const rulesElement = (
+        <li onClick={toggleMenu}>
+            <Link to="/rules">
+                <FontAwesomeIcon
+                    icon={faQuestionCircle}
+                    className={styles.imgMenu}
+                />
+                <button id={styles.help}>Rules</button>
+            </Link>
+        </li>
+    );
+
     return (
         <>
             <header>
@@ -175,6 +199,8 @@ export default function Header() {
                 {accountElement}
                 {historyElement}
                 {helpElement}
+                {aboutUsElement}
+                {rulesElement}
             </ul>
         </>
     );

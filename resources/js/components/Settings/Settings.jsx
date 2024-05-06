@@ -84,6 +84,16 @@ export default function Settings() {
                         Help
                     </Link>
                 </li>
+                <li>
+                    <Link to="/about-us" className={styles.link}>
+                        About us
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/rules" className={styles.link}>
+                        Rules
+                    </Link>
+                </li>
                 <li onClick={logout}>
                     <FontAwesomeIcon
                         icon={faSignOutAlt}
