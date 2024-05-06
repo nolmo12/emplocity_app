@@ -6,6 +6,7 @@ import VideoFrame from "../VideoFrame/VideoFrame";
 import SearchResult from "../SearchResult/SearchResult";
 import HelpPage from "../HelpPage/HelpPage";
 import Settings from "../Settings/Settings";
+import Shop from "../Shop/Shop";
 import UserVideoSection from "../UserVideoSection/UserVideoSection";
 import styles from "./mainContent.module.css";
 
@@ -64,6 +65,12 @@ export default function MainContent({ contentType }) {
             <main className={styles.videoFrameMain}>
                 <VideoFrame />
                 <VideoSection sectionType="similar" />
+            </main>
+        );
+    } else if (contentType === "shop") {
+        view = (
+            <main className={styles.videoFrameMain}>
+                <Shop />
             </main>
         );
     }

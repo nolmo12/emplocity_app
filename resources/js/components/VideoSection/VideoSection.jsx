@@ -62,7 +62,12 @@ export default function VideoSection({ sectionType }) {
                                     />
                                     <p>{videoObj.title}</p>
                                     <p>
-                                        Rating: <span style={{ color: ratingStyle.color }}>{likeRatio}</span>
+                                        Rating:{" "}
+                                        <span
+                                            style={{ color: ratingStyle.color }}
+                                        >
+                                            {likeRatio}
+                                        </span>
                                     </p>
                                 </div>
                             </Link>
@@ -71,6 +76,25 @@ export default function VideoSection({ sectionType }) {
                 )}
             </div>
         );
+    } else if (sectionType === "otherAccount") {
+        if (videos) {
+            const userName = videos[0].userName;
+            console.log(videos);
+            view = (
+                <div id={styles.videoSection}>
+                    <h2 className={styles.videoSectionH}>{userName} videos</h2>
+                    {Object.entries(videos).map(([key, video]) => {
+                        return (
+                            <Video
+                                data-testid={`video-${renderKey}`}
+                                key={`otherUser-${video.video.id}`}
+                                videoObj={video}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
     }
 
     return view;

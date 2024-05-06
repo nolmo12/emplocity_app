@@ -26,7 +26,7 @@ export default function SearchBar() {
     };
 
     const search = async () => {
-        navigate(`/search-result/${data}`);
+        navigate(`/search-result/${data}/popularity`);
     };
 
     return (
