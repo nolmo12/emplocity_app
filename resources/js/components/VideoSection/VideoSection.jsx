@@ -12,10 +12,11 @@ export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const { videos, isLoading } = useFetchRecommendVideos();
     const { calculateLikeRatio } = useLikeCalculation();
+    const { userId } = useParams();
     const [renderKey, setRenderKey] = useState(0);
     useEffect(() => {
         // pagination
-    }, [reference_code, isLoading, videos]);
+    }, [reference_code, isLoading, videos, userId]);
 
     const similarVideosObj = useFetchSimilarVideos({ reference_code }); // for similar videos
     if (isLoading) {
@@ -78,8 +79,10 @@ export default function VideoSection({ sectionType }) {
         );
     } else if (sectionType === "otherAccount") {
         if (videos) {
-            const userName = videos[0].userName;
-            console.log(videos);
+            let userName = "";
+            if (videos.length > 0) {
+                userName = videos[0].userName;
+            }
             view = (
                 <div id={styles.videoSection}>
                     <h2 className={styles.videoSectionH}>{userName} videos</h2>
