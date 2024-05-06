@@ -24,7 +24,7 @@ export default function Popular() {
             <ul data-testid="guestVideoList">
                 {popularData.map((user) => {
                     return (
-                        <Link to={`/${user.name}`} key={user.id}>
+                        <Link to={`/${user.id}`} key={user.id}>
                             <li key={user.id}>
                                 <img src="avatar" alt="avatar" />
                                 <p>{user.name}</p>

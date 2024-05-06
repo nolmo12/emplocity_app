@@ -129,7 +129,7 @@ function Main() {
                 }
             />
             <Route
-                path="/:otherUserName"
+                path="/:userId"
                 element={
                     <>
                         <Header />
