@@ -5,7 +5,7 @@ export default function useUserSettings() {
 
     const changeNickname = async (id, newUsername) => {
         try {
-            await http.patch(`/api/auth/update/${id}`, {
+            await http.post(`/api/auth/update/${id}`, {
                 name: newUsername,
             });
         } catch (error) {
@@ -15,7 +15,7 @@ export default function useUserSettings() {
 
     const changePassword = async (id, newPassword, newPasswordRepeat) => {
         try {
-            const repsonse = await http.patch(`/api/auth/update/${id}`, {
+            const repsonse = await http.post(`/api/auth/update/${id}`, {
                 password: newPassword,
                 repeatPassword: newPasswordRepeat,
             });
@@ -34,7 +34,7 @@ export default function useUserSettings() {
         const formData = new FormData();
         formData.append("thumbnail", newAvatar);
         try {
-            await http.patch(`/api/auth/update/${id}`, formData);
+            await http.post(`/api/auth/update/${id}`, formData);
         } catch (error) {
             console.log(error);
         }
