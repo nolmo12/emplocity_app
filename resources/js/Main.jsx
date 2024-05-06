@@ -19,7 +19,7 @@ function Main() {
                 path="/"
                 element={
                     <>
-                        <Header /> 
+                        <Header />
                         <MainContent contentType="guest" />
                         <Footer />
                     </>
@@ -57,18 +57,18 @@ function Main() {
                 path="/reset-password"
                 element={<ResetPasswordPage />}
             ></Route>
-            <Route 
-                path="/upload" 
+            <Route
+                path="/upload"
                 element={
                     <>
-                        <Header /> 
+                        <Header />
                         <UploadPage />
                         <Footer />
                     </>
-                }>
-            </Route>
+                }
+            ></Route>
             <Route
-                path="/search-result/:query"
+                path="/search-result/:query/:sortType"
                 element={
                     <>
                         <Header />
@@ -127,6 +127,27 @@ function Main() {
                     </>
                 }
             />
+            <Route
+                path="/:otherUserName"
+                element={
+                    <>
+                        <Header />
+                        <p>fsdfsdfsd</p>
+                        <MainContent contentType="otherUser" />
+                        <Footer />
+                    </>
+                }
+            ></Route>
+            <Route
+                path="/shop"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="shop" />
+                        <Footer />
+                    </>
+                }
+            ></Route>
         </Routes>
     );
 }

@@ -5,8 +5,9 @@ import authUser from "./authUser";
 export default function useFetchRecommendVideos() {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { id } = useParams();
-    const { http } = authUser();
+    const { otherUserName } = useParams();
+    console.log(otherUserName);
+    const { http } = authUser(); // video fetching for other users
     useEffect(() => {
         const fetchVideos = async () => {
             try {
@@ -32,8 +33,7 @@ export default function useFetchRecommendVideos() {
                 console.log(error);
             }
         };
-        if (id) {
-            console.log(id);
+        if (otherUserName) {
             fetchOtherUserVideos(id);
         } else {
             fetchVideos();
