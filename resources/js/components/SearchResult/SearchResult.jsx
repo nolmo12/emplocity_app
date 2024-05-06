@@ -6,6 +6,8 @@ import useFetchVideosSearch from "../useFetchVideosSearch";
 import authUser from "../authUser";
 import styles from "./searchResult.module.css";
 import { Link } from "react-router-dom";
+import { getLikeRatioStyle } from "../Video/Video";
+
 // inaczej zwracane z likedVideos i videosHistory
 function VideoThumbnail({ videoObj }) {
     return (
@@ -25,14 +27,17 @@ function VideoInfo({ videoObj }) {
         videoObj.likesCount,
         videoObj.dislikesCount
     );
+    const ratingStyle = getLikeRatioStyle(likeRatio);
 
     return (
         <div className={styles.videoInfo}>
             <p>{videoObj.title}</p>
             <p>{videoObj.userName}</p>
             <p>{videoObj.video.created_at.slice(0, 10)}</p>
-            <p>{likeRatio}</p>
-            <p>{videoObj.video.views}</p>
+            <p>
+                Rating: <span style={{ color: ratingStyle.color }}>{likeRatio}</span>
+            </p>
+            <p>Views: {videoObj.video.views}</p>
             <p>{videoObj.description}</p>
         </div>
     );

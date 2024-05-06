@@ -49,6 +49,12 @@
     width: 90%; 
     height: 18vh;
     position: relative;
+    border-radius: 5px;
+    transition: border-radius 1s ease;
+}
+
+#video img:hover {
+    border-radius: 0;
 }
 
 

@@ -95,16 +95,10 @@ export default function useLikeCalculation() {
     };
 
     const calculateLikeRatio = (likesCount, dislikesCount) => {
-        if (likesCount >= dislikesCount) {
-            const result = (likesCount / (likesCount + dislikesCount)) * 100;
-            if (result) return result + "%";
-            return "no ratings";
-        } else {
-            const result = (dislikesCount / (likesCount + dislikesCount)) * 100;
-            if (result) return "-" + result + "%";
-            return "no ratings";
-        }
-    };
+        const result = Math.round((likesCount / (likesCount + dislikesCount)) * 100);
+        if (result || likesCount + dislikesCount != 0) return result + "%";
+        return "no ratings";
+};
 
     return {
         likeCountFunction,
