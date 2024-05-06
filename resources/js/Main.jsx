@@ -4,6 +4,7 @@ import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import Header from "./components/Header/Header";
+import AboutUs from "./components/AboutUs/AboutUs";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
 import LoginPage from "./components/LoginPage/LoginPage";
@@ -19,7 +20,7 @@ function Main() {
                 path="/"
                 element={
                     <>
-                        <Header /> 
+                        <Header />
                         <MainContent contentType="guest" />
                         <Footer />
                     </>
@@ -41,6 +42,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="otherUser" />
+                        <Footer />
                     </>
                 }
             />
@@ -56,9 +58,18 @@ function Main() {
                 path="/reset-password"
                 element={<ResetPasswordPage />}
             ></Route>
-            <Route path="/upload" element={<UploadPage />}></Route>
             <Route
-                path="/search-result/:query"
+                path="/upload"
+                element={
+                    <>
+                        <Header />
+                        <UploadPage />
+                        <Footer />
+                    </>
+                }
+            ></Route>
+            <Route
+                path="/search-result/:query/:sortType"
                 element={
                     <>
                         <Header />
@@ -114,6 +125,44 @@ function Main() {
                         <Header />
                         <AccountSettings />
                         <Footer />
+                    </>
+                }
+            />
+            <Route
+                path="/:userId"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="otherUser" />
+                        <Footer />
+                    </>
+                }
+            ></Route>
+            <Route
+                path="/shop"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="shop" />
+                        <Footer />
+                    </>
+                }
+            ></Route>
+            <Route
+                path="/about-us"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="aboutUs" />
+                    </>
+                }
+            />
+            <Route
+                path="/rules"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="rules" />
                     </>
                 }
             />

@@ -1,11 +1,13 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useLikeCalculation from "../useLikeCalculation";
 import useFetchVideosSearch from "../useFetchVideosSearch";
 import authUser from "../authUser";
 import styles from "./searchResult.module.css";
 import { Link } from "react-router-dom";
+import { getLikeRatioStyle } from "../Video/Video";
+
 // inaczej zwracane z likedVideos i videosHistory
 function VideoThumbnail({ videoObj }) {
     return (
@@ -25,14 +27,18 @@ function VideoInfo({ videoObj }) {
         videoObj.likesCount,
         videoObj.dislikesCount
     );
+    const ratingStyle = getLikeRatioStyle(likeRatio);
 
     return (
         <div className={styles.videoInfo}>
             <p>{videoObj.title}</p>
             <p>{videoObj.userName}</p>
             <p>{videoObj.video.created_at.slice(0, 10)}</p>
-            <p>{likeRatio}</p>
-            <p>{videoObj.video.views}</p>
+            <p>
+                Rating:{" "}
+                <span style={{ color: ratingStyle.color }}>{likeRatio}</span>
+            </p>
+            <p>Views: {videoObj.video.views}</p>
             <p>{videoObj.description}</p>
         </div>
     );
@@ -50,9 +56,10 @@ function UserInfo({ userObj }) {
 
 export default function SearchResult({ searchType }) {
     const [videos, setVideos] = useState([]);
-    const [searchedObj, setSearchedObj] = useState([]);
-    const [sortType, setSortType] = useState("popularity");
-    const { query } = useParams();
+    const [sortTypeValue, setSortTypeValue] = useState();
+    const [searchedObj, setSearchedObj] = useState({});
+    const { query, sortType } = useParams();
+    const navigate = useNavigate();
     const {
         fetchVideosHistory,
         fetchLikedVideos,
@@ -81,13 +88,29 @@ export default function SearchResult({ searchType }) {
         } else if (searchType === "userLikes") {
             likedVideos();
         } else {
-            searchedVideos(sortType);
+            if (!sortTypeValue) {
+                searchedVideos(sortType);
+            } else {
+                searchedVideos(sortTypeValue);
+            }
         }
-    }, [searchType, query, sortType]);
+    }, [searchType, query, sortTypeValue]);
 
     const handleChangeSort = (e) => {
-        console.log(e.target.value);
-        setSortType(e.target.value);
+        setSortTypeValue(e.target.value);
+        navigate(`/search-result/${query}/${e.target.value}`);
+    };
+
+    const checkUrl = () => {
+        if (sortType === "upload_date_desc") {
+            return "upload_date_desc";
+        } else if (sortType === "upload_date_asc") {
+            return "upload_date_asc";
+        } else if (sortType === "views") {
+            return "views";
+        } else if (sortType === "popularity") {
+            return "popularity";
+        }
     };
 
     if (isLoading) {
@@ -177,7 +200,10 @@ export default function SearchResult({ searchType }) {
     return (
         <div className={styles.searchResultsDiv}>
             {searchType === "userSearch" && (
-                <select onChange={(e) => handleChangeSort(e)}>
+                <select
+                    onChange={(e) => handleChangeSort(e)}
+                    value={checkUrl()}
+                >
                     <option value="upload_date_desc">desc</option>
                     <option value="upload_date_asc">asc</option>
                     <option value="views">views</option>

@@ -4,11 +4,12 @@
     top: 2%;
     height: 6%;
     transform: translateY(-10%); 
-    left: 40%;
+    left: 43%;
+    width:30%;
 }
 
 #searchBar {
-    width: 200%;
+    width: 100%;
     height: 50%;
     top: 20%;
     left: -10%;
@@ -23,11 +24,11 @@
 
 #searchLoop {
     height: 40%;
-    width: 40%;
+    width: 10%;
     position: absolute; 
     cursor: pointer;
-    right: -80%; /* Przesunięcie w prawo */
-    top: 40%; /* Zachowanie odległości od góry */
+    top: 40%;
+    right:22%;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){

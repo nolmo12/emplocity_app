@@ -5,7 +5,7 @@ import authUser from "./authUser";
 export default function useFetchRecommendVideos() {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { id } = useParams();
+    const { userId } = useParams();
     const { http } = authUser();
     useEffect(() => {
         const fetchVideos = async () => {
@@ -20,6 +20,7 @@ export default function useFetchRecommendVideos() {
             }
         };
         const fetchOtherUserVideos = async (userId) => {
+            // video fetching for other users Andrew endpoint
             try {
                 const response = await axios.get(`/api/auth/read/${userId}`);
                 console.log(response.data);
@@ -32,9 +33,9 @@ export default function useFetchRecommendVideos() {
                 console.log(error);
             }
         };
-        if (id) {
-            console.log(id);
-            fetchOtherUserVideos(id);
+        if (userId) {
+            console.log(userId);
+            fetchOtherUserVideos(userId);
         } else {
             fetchVideos();
         }

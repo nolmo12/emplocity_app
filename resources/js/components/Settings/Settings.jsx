@@ -1,4 +1,5 @@
 import React from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import styles from "./settings.module.css";
@@ -14,9 +15,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
-    const { logout } = authUser();
-    const historyPath = `/history/${1}}`;
-    const likedPath = `/user-likes/${1}`;
+    const { logout, getUser } = authUser();
+    const [historyPath, setHistoryPath] = useState();
+    const [likedPath, setLikedPath] = useState();
+
+    useEffect(() => {
+        getUser().then((data) => {
+            setHistoryPath(`/history/${data.id}`);
+            setLikedPath(`/user-likes/${data.id}`);
+        });
+    }, [historyPath, likedPath]);
 
     return (
         <div id={styles.Settings}>
@@ -63,7 +71,9 @@ export default function Settings() {
                         icon={faStore}
                         className={styles.settingsIcon}
                     />
-                    Shop
+                    <Link to="/shop" className={styles.link}>
+                        Shop
+                    </Link>
                 </li>
                 <li>
                     <FontAwesomeIcon
@@ -72,6 +82,16 @@ export default function Settings() {
                     />
                     <Link to="/help" className={styles.link}>
                         Help
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/about-us" className={styles.link}>
+                        About us
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/rules" className={styles.link}>
+                        Rules
                     </Link>
                 </li>
                 <li onClick={logout}>

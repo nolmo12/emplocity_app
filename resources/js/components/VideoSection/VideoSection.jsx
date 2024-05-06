@@ -5,6 +5,7 @@ import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchRecommendVideos from "../useFetchRecommendVideos";
 import useLikeCalculation from "../useLikeCalculation";
+import { getLikeRatioStyle } from "../Video/Video";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
@@ -46,6 +47,11 @@ export default function VideoSection({ sectionType }) {
                 {Object.entries(similarVideosObj.videos).map(
                     ([key, videoObj]) => {
                         const path = `/video/${videoObj.video.reference_code}`;
+                        const likeRatio = calculateLikeRatio(
+                            videoObj.likesCount,
+                            videoObj.dislikesCount
+                        );
+                        const ratingStyle = getLikeRatioStyle(likeRatio);
                         return (
                             <Link key={key} to={path}>
                                 <div id={styles.video}>
@@ -56,10 +62,12 @@ export default function VideoSection({ sectionType }) {
                                     />
                                     <p>{videoObj.title}</p>
                                     <p>
-                                        {calculateLikeRatio(
-                                            videoObj.likesCount,
-                                            videoObj.dislikesCount
-                                        )}
+                                        Rating:{" "}
+                                        <span
+                                            style={{ color: ratingStyle.color }}
+                                        >
+                                            {likeRatio}
+                                        </span>
                                     </p>
                                 </div>
                             </Link>
@@ -68,6 +76,25 @@ export default function VideoSection({ sectionType }) {
                 )}
             </div>
         );
+    } else if (sectionType === "otherAccount") {
+        if (videos) {
+            const userName = videos[0].userName;
+            console.log(videos);
+            view = (
+                <div id={styles.videoSection}>
+                    <h2 className={styles.videoSectionH}>{userName} videos</h2>
+                    {Object.entries(videos).map(([key, video]) => {
+                        return (
+                            <Video
+                                data-testid={`video-${renderKey}`}
+                                key={`otherUser-${video.video.id}`}
+                                videoObj={video}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
     }
 
     return view;

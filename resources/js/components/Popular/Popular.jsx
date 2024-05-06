@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import authUser from "../authUser";
 import styles from "./popular.module.css";
 
@@ -23,10 +24,12 @@ export default function Popular() {
             <ul data-testid="guestVideoList">
                 {popularData.map((user) => {
                     return (
-                        <li key={user.id}>
-                            <img src="avatar" alt="avatar" />
-                            <p>{user.name}</p>
-                        </li>
+                        <Link to={`/${user.id}`} key={user.id}>
+                            <li key={user.id}>
+                                <img src="avatar" alt="avatar" />
+                                <p>{user.name}</p>
+                            </li>
+                        </Link>
                     );
                 })}
             </ul>

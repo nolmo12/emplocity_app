@@ -4,7 +4,6 @@
     justify-content: center;
     align-items: center;
     font-size: 1em;
-    margin: 5%;
     padding: 5%;
     background-color: #f4f4f4;
     width: 30%;
@@ -12,7 +11,27 @@
     height: auto;
     color: black;
     text-align: left;
-    border-radius: 6px;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+    height:30%;
+}
+
+.helpForm {
+    border-left: 2px solid black;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.helpInfo {
+    border-right: 2px solid black;
+    padding-left:0%;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.helpForm form {
+    position:relative;
+    top:-10%;
 }
 
 .helpForm input {
@@ -65,11 +84,20 @@
 .helpInfo h2 {
     margin-bottom:1em;
     font-weight: 600;
+    top:-15%;
+    position:relative;
 }
 
 .helpInfo ul {
     padding: 0;
     margin: 0;
+    top:-15%;
+    position:relative;
+}
+
+.helpInfo li {
+    margin-bottom:1em;
+    list-style: none;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
