@@ -71,7 +71,7 @@ export default function AccountSettings() {
 
     const handleClickClearAvatar = (e) => {
         e.preventDefault();
-        document.getElementById('avatar-input').value = ''; 
+        document.getElementById("avatar-input").value = "";
         setUserData({ ...userData, avatar: "" });
     };
 
@@ -82,11 +82,12 @@ export default function AccountSettings() {
     };
 
     const handleClickChangeAvatar = async (e) => {
-        e.preventDefault();
         const formData = new FormData();
         formData.append("avatar", userData.avatar);
-        await changeAvatar(user.id, formData);
+
+        await changeAvatar(user.id, userData.avatar);
     };
+    console.log(user);
     return (
         <main>
             <div className={styles.settingsDiv}>
@@ -96,16 +97,24 @@ export default function AccountSettings() {
                             <h3>User Info</h3>
                             <div>
                                 <p>
-                                    <span className={styles.label}>First name: </span>
+                                    <span className={styles.label}>
+                                        First name:{" "}
+                                    </span>
                                     <span>{user.first_name}</span>
                                 </p>
                                 <p>
-                                    <span className={styles.label}>Nickname: </span>
+                                    <span className={styles.label}>
+                                        Nickname:{" "}
+                                    </span>
                                     <span>{user.name}</span>
                                 </p>
                                 <p>
-                                    <span className={styles.label}>Created at: </span>
-                                    <span>{user.created_at.substring(0, 10)}</span>
+                                    <span className={styles.label}>
+                                        Created at:{" "}
+                                    </span>
+                                    <span>
+                                        {user.created_at.substring(0, 10)}
+                                    </span>
                                 </p>
                                 <p>
                                     <img src={user.avatar} alt="avatar" />
@@ -154,13 +163,19 @@ export default function AccountSettings() {
                                     alt="Selected Avatar"
                                     className={styles.selectedAvatar}
                                 />
-                                <button onClick={handleClickClearAvatar} className={styles.clearAvatarButton}>
+                                <button
+                                    onClick={handleClickClearAvatar}
+                                    className={styles.clearAvatarButton}
+                                >
                                     Clear Avatar
                                 </button>
                             </div>
                         )}
                     </div>
-                    <button onClick={(e) => handleClickChangeAvatar(e)} className={styles.avatarButton}>
+                    <button
+                        onClick={(e) => handleClickChangeAvatar(e)}
+                        className={styles.avatarButton}
+                    >
                         Change avatar
                     </button>
                 </form>

@@ -94,6 +94,7 @@ export default function VideoFrame() {
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
+        const videoViews = videoObj.video.views;
         const tags = videoObj.tags;
         return (
             <>
@@ -137,6 +138,12 @@ export default function VideoFrame() {
                                 </div>
                             )}
                         </Popup>
+                        <div className={styles.videoFrameInfoViews}>
+                            <p>
+                                <FontAwesomeIcon icon={faUser} /> {videoViews}
+                            </p>
+                        </div>
+                        {/*views views views views views views views */}
                         <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
