@@ -129,7 +129,12 @@ class Video extends Model implements SearchInterface
             }
         }
     }
-
+    /**
+     * Get the count of likes or dislikes for the video.
+     *
+     * @param bool $type True for likes, false for dislikes.
+     * @return int The count of likes or dislikes.
+     */
     public function getLikesDislikesCount(bool $type = true): int
     {
         return $this->likesDislikes()->where('is_like', $type)->count();
@@ -197,7 +202,37 @@ class Video extends Model implements SearchInterface
         $commonTagsCount = count($commonTags);
 
         $tagSimilarityScore = 3 * ($commonTagsCount / count($tags));
+
+        $likesCount = $this->getLikesDislikesCount(true);
+        $dislikesCount = $this->getLikesDislikesCount(false);
         
+        if( $likesCount + $dislikesCount > 0)
+        {
+            $likeToDislikeRatio = $likesCount / ($likesCount + $dislikesCount);
+
+            if( $likeToDislikeRatio < 0.5 && $likeToDislikeRatio > 0)
+            {
+                $popularityScore = -1 * (1 / $likeToDislikeRatio);
+            }
+            else if( $likeToDislikeRatio == 0)
+            {
+                $popularityScore = -5;
+            }
+            else
+            {
+                $popularityScore = ($this->views * $likeToDislikeRatio) / (100 * ($likesCount + $dislikesCount));
+            }
+
+            $popularityScore = max($popularityScore, -5);
+
+            $score += $popularityScore;
+        }
+        else
+        {
+            $popularityScore = 0;
+            $score += $popularityScore;
+        }
+
         $score += $titleSimiliratyScore + $tagSimilarityScore;
 
         return $score;

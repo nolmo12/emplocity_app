@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Sqids\Sqids;
+use Carbon\Carbon;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Video;
 use App\Helpers\Utils;
 use App\Rules\Enumerate;
+use App\Models\VideoView;
 use Illuminate\Http\Request;
 use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
@@ -491,7 +493,8 @@ class VideoController extends Controller
             $videoScores[$video->reference_code] = [
                 'video_name' => $video->languages()->first()->pivot->title,
                 'upload_date' => $video->created_at->timestamp,
-                'score' => $video->calculateSearchScore($searchQueryArray)
+                'score' => $video->calculateSearchScore($searchQueryArray),
+                'views' => $video->views
             ];
         }
 
@@ -522,7 +525,7 @@ class VideoController extends Controller
                 break;
             case 'views':
                     uasort($videoScores, function($a, $b) {
-                        return $b['upload_date'] <= $a['upload_date'];
+                        return $b['views'] >= $a['views'];
                     });
                     break;
             default:
@@ -576,7 +579,7 @@ class VideoController extends Controller
 
         if(!$user)
         {
-            $videos = Video::inRandomOrder()->offset(12 * $offset)->get();
+            $videos = Video::inRandomOrder()->offset(12 * $offset)->limit(12)->get();
         }
         else
         {
@@ -620,6 +623,33 @@ class VideoController extends Controller
         }
 
         return $listedVideos;
+    }
+    
+    public function countView(Request $request, string $referenceCode)
+    {
+        $video = Video::where('reference_code', $referenceCode)->first();
+
+        if($video)
+        {
+            $ipAddress = $request->ip();
+            $hasViewed = VideoView::where('video_id', $video->id)
+            ->where('ip_address', $ipAddress)
+            ->where('created_at', '>=', Carbon::now()->subHours(24))
+            ->exists();
+
+            if (!$hasViewed)
+            {
+                $video->views += 1;
+                $video->save();
+
+                VideoView::create([
+                    'video_id' => $video->id,
+                    'ip_address' => $ipAddress,
+                ]);
+            
+                return response()->json('Succesfully added view');
+            }
+        }
     }
 
 }
