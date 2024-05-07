@@ -581,7 +581,7 @@ class VideoController extends Controller
 
         if(!$user)
         {
-            $videos = Video::inRandomOrder()->offset(12 * $offset)->limit(12)->get();
+            $videos = Video::inRandomOrder()->where('visibility', 'Public')->offset(12 * $offset)->limit(12)->get();
         }
         else
         {
