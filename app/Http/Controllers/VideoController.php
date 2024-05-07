@@ -237,6 +237,7 @@ class VideoController extends Controller
             $additionalVideos = Video::where('visibility', 'Public')
                 ->inRandomOrder()
                 ->whereNotIn('reference_code', $similarVideosBasedTags->pluck('reference_code')->toArray())
+                ->where('reference_code', '!=', $referenceCode)
                 ->limit($additionalVideosNeeded)
                 ->get();
     
@@ -248,8 +249,6 @@ class VideoController extends Controller
                 $similarVideos->push($stats);
             }
         }
-
-        //$similarVideos = $similarVideos->unique('video.reference_code');
 
         return $similarVideos;
     }
@@ -653,28 +652,4 @@ class VideoController extends Controller
             }
         }
     }
-
-    public function getVideoByTag(Request $request, string $tag)
-    {
-        $offset = $request->input('offset', 0);
-
-        $videos = Video::whereHas('tags', function($query) use ($tag) {
-            $query->where('name', $tag);
-        })
-        ->where('visibility', 'Public')
-        ->offset(12 * $offset)
-        ->limit(12)
-        ->get();
-
-        $videosCollection = collect();
-
-        foreach($videos as $video)
-        {
-            $stats = $video->stats();
-            $videosCollection->push($stats);
-        }
-
-        return $videosCollection;
-    }
-
 }
