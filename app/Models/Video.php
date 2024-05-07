@@ -86,11 +86,14 @@ class Video extends Model implements SearchInterface
         $userName = $user ? $user->name : null;
         $userFirstName = $user ? $user->first_name : null;
         $userAvatar = $user ? $user->avatar : null;
+
+        $commentCount = $this->comments()->count();
         
         $responseData = [
             'video' => $this,
             'title' => $title,
             'description' => $description,
+            'commentCount' => $commentCount,
             'userName' => $userName,
             'userFirstName' => $userFirstName,
             'userAvatar' => $userAvatar,
