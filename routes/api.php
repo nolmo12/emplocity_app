@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HistoryController;
+use App\Http\Controllers\TagController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -152,7 +154,12 @@ Route::prefix('video')->group(function () {
     Route::delete('/comment/delete', [CommentController::class, 'delete']);
     Route::patch('/comment/update', [CommentController::class, 'update']);
 
-    Route::get('/{tag}', [VideoController::class, 'getVideoByTag']);
+    
+});
+
+Route::prefix('tags')->group(function (){
+    Route::get('/all', [TagController::class, 'all']);
+    Route::get('/{tag}', [TagController::class, 'getVideoByTag']);
 });
 
 Route::prefix('history')->group(function () {

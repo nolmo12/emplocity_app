@@ -652,28 +652,4 @@ class VideoController extends Controller
             }
         }
     }
-
-    public function getVideoByTag(Request $request, string $tag)
-    {
-        $offset = $request->input('offset', 0);
-
-        $videos = Video::whereHas('tags', function($query) use ($tag) {
-            $query->where('name', $tag);
-        })
-        ->where('visibility', 'Public')
-        ->offset(12 * $offset)
-        ->limit(12)
-        ->get();
-
-        $videosCollection = collect();
-
-        foreach($videos as $video)
-        {
-            $stats = $video->stats();
-            $videosCollection->push($stats);
-        }
-
-        return $videosCollection;
-    }
-
 }
