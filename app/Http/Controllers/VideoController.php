@@ -237,6 +237,7 @@ class VideoController extends Controller
             $additionalVideos = Video::where('visibility', 'Public')
                 ->inRandomOrder()
                 ->whereNotIn('reference_code', $similarVideosBasedTags->pluck('reference_code')->toArray())
+                ->where('reference_code', '!=', $referenceCode)
                 ->limit($additionalVideosNeeded)
                 ->get();
     
@@ -248,8 +249,6 @@ class VideoController extends Controller
                 $similarVideos->push($stats);
             }
         }
-
-        //$similarVideos = $similarVideos->unique('video.reference_code');
 
         return $similarVideos;
     }
