@@ -20,6 +20,7 @@ return new class extends Migration
         Schema::create('videos', function (Blueprint $table) {
             $table->id(); 
             $table->string('reference_code');
+            $table->float('duration')->default(0.0);
             $table->string('thumbnail')->nullable();
             $table->string('video')->nullable();
             $table->integer('views')->default(0);
