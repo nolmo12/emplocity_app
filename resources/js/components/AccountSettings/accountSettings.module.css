@@ -35,6 +35,13 @@
     margin-left:1em;
 }
 
+.userInfoForm .userAvatar {
+    height:4em;
+    width:6em;
+    position:relative;
+    left:25%;
+}
+
 .settingsDiv input {
     width: 90%;
     height: 2.5em;
