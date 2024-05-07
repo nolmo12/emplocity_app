@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
+import _ from "lodash";
 import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchRecommendVideos from "../useFetchRecommendVideos";
@@ -19,6 +20,17 @@ export default function VideoSection({ sectionType }) {
     }, [reference_code, isLoading, videos, userId]);
 
     const similarVideosObj = useFetchSimilarVideos({ reference_code }); // for similar videos
+
+    const handleScroll = _.throttle((event) => {
+        const target = event.target;
+        const scrollPercentage =
+            (target.scrollTop / (target.scrollHeight - target.clientHeight)) *
+            100;
+        if (scrollPercentage >= 80) {
+            console.log("Scrollbar 80% event");
+        }
+    }, 500);
+
     if (isLoading) {
         return <h1>Loading...</h1>;
     }
@@ -28,7 +40,7 @@ export default function VideoSection({ sectionType }) {
     if (sectionType === "reccommend" && isLoading === false) {
         if (videos) {
             view = (
-                <div id={styles.videoSection}>
+                <div id={styles.videoSection} onScroll={handleScroll}>
                     <h2 className={styles.videoSectionH}>Reccommend</h2>
                     {Object.entries(videos).map(([key, video]) => {
                         return (
@@ -84,7 +96,7 @@ export default function VideoSection({ sectionType }) {
                 userName = videos[0].userName;
             }
             view = (
-                <div id={styles.videoSection}>
+                <div id={styles.videoSection} onScroll={handleScroll}>
                     <h2 className={styles.videoSectionH}>{userName} videos</h2>
                     {Object.entries(videos).map(([key, video]) => {
                         return (

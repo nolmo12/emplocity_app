@@ -14,6 +14,8 @@ import {
     faHistory,
     faQuestionCircle,
     faSignOutAlt,
+    faInfoCircle,
+    faGavel,
 } from "@fortawesome/free-solid-svg-icons";
 import { ClipLoader } from "react-spinners";
 
@@ -139,11 +141,13 @@ export default function Header() {
     const aboutUsElement = (
         <li onClick={toggleMenu}>
             <Link to="/about-us">
-                <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className={styles.imgMenu}
-                />
-                <button id={styles.help}>About us</button>
+                <button id={styles.aboutUs}>
+                    <FontAwesomeIcon
+                        icon={faInfoCircle}
+                        className={styles.imgMenu}
+                    />
+                    About us
+                </button>
             </Link>
         </li>
     );
@@ -151,11 +155,13 @@ export default function Header() {
     const rulesElement = (
         <li onClick={toggleMenu}>
             <Link to="/rules">
-                <FontAwesomeIcon
-                    icon={faQuestionCircle}
-                    className={styles.imgMenu}
-                />
-                <button id={styles.help}>Rules</button>
+                <button id={styles.rules}>
+                    <FontAwesomeIcon
+                        icon={faGavel}
+                        className={styles.imgMenu}
+                    />
+                    Rules
+                </button>
             </Link>
         </li>
     );

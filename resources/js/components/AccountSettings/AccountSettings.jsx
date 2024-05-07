@@ -117,7 +117,7 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    <img src={user.avatar} alt="avatar" />
+                                    <img src={user.avatar} alt="avatar" className={styles.userAvatar}/>
                                 </p>
                             </div>
                         </>

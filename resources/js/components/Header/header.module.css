@@ -91,13 +91,23 @@ header img {
     top:9em;
 }
 
+#aboutUs {
+    top:11em;
+}
+
+#rules {
+    top:13em;
+}
+
 #login:hover,
 #register:hover,
 #upload:hover,
 #account:hover,
 #history:hover,
 #help:hover, 
-#logout:hover {
+#logout:hover,
+#aboutUs:hover,
+#rules:hover {
     background-color: #f0f0f0;
 }
 
@@ -107,7 +117,9 @@ header img {
 #account:active,
 #history:active,
 #help:active, 
-#logout:active {
+#logout:active,
+#aboutUs:active,
+#rules:active {
     transform: scale(0.95);
 }
 
