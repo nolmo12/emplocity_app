@@ -30,7 +30,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         ResetPassword::createUrlUsing(function (User $user, string $token) {
-            return 'http://127.0.0.1:8000/reset-password?token='.$token.'&email='.$user->email;
+            $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+            $host = $_SERVER['HTTP_HOST'];
+            return $protocol . '://' . $host . '/reset-password?token=' . $token . '&email=' . urlencode($user->email);
         });
     }
 }
