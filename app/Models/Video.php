@@ -86,11 +86,14 @@ class Video extends Model implements SearchInterface
         $userName = $user ? $user->name : null;
         $userFirstName = $user ? $user->first_name : null;
         $userAvatar = $user ? $user->avatar : null;
+
+        $commentCount = $this->comments()->count();
         
         $responseData = [
             'video' => $this,
             'title' => $title,
             'description' => $description,
+            'commentCount' => $commentCount,
             'userName' => $userName,
             'userFirstName' => $userFirstName,
             'userAvatar' => $userAvatar,
@@ -113,20 +116,23 @@ class Video extends Model implements SearchInterface
 
     public function addTags(array $tags): void
     {
+        $existingTagNames = $this->tags()->pluck('name')->toArray();
+
         foreach ($tags as $tagName)
         {
             $tagName = strtolower($tagName);
-            $tag = Tag::where('name', $tagName)->first();
-    
-            if ($tag)
+
+            if (in_array($tagName, $existingTagNames))
             {
-                $this->tags()->attach($tag->id);
-            } 
-            else
-            {
-                $newTag = Tag::create(['name' => $tagName]);
-                $this->tags()->attach($newTag->id);
+                continue;
             }
+            $tag = Tag::where('name', $tagName)->first();
+
+    
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $this->tags()->attach($tag->id);
+
+            $existingTagNames[] = $tagName;
         }
     }
     /**

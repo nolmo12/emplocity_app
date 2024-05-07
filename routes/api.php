@@ -151,6 +151,8 @@ Route::prefix('video')->group(function () {
 
     Route::delete('/comment/delete', [CommentController::class, 'delete']);
     Route::patch('/comment/update', [CommentController::class, 'update']);
+
+    Route::get('/{tag}', [VideoController::class, 'getVideoByTag']);
 });
 
 Route::prefix('history')->group(function () {
