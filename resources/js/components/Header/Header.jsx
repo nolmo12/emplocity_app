@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
-import fetchImage from "../fetchImgFromStorage";
+import fetchImgFromStorage from "../fetchImgFromStorage";
 import styles from "./header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,26 +21,50 @@ import { ClipLoader } from "react-spinners";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
-    const [iconPath, setIconPath] = useState("");
+    const userAwatar = useRef("");
+    const userId = useRef("");
+    const [path, setPath] = useState(null);
     const [tempLogoPath, setTempLogoPath] = useState("");
-    const { getToken, logout, isLogged } = authUser();
-    const path = `/history/${1}`;
+    const [awatarPath, setAwatarPath] = useState("");
+    const { logout, isLogged, getUser } = authUser();
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const [iconPath, tempLogoPath] = await Promise.all([
-                    fetchImage("ico.png"),
-                    fetchImage("tempLogo.png"),
-                ]);
-                setIconPath(iconPath);
-                setTempLogoPath(tempLogoPath);
-            } catch (error) {
-                console.error(error);
+            if (isLogged) {
+                console.log("isLogged");
+                await getUserData();
+            } else {
+                userAwatar.current = "ico.png";
+            }
+            const { fetchImage, fetchAwatar } = await fetchImgFromStorage();
+            if (userAwatar.current) {
+                setPath(`/history/${userId.current}`);
+                try {
+                    const [awatarPath, tempLogoPath] = await Promise.all([
+                        fetchAwatar(userAwatar.current),
+                        fetchImage("tempLogo.png"),
+                    ]);
+
+                    setTempLogoPath(tempLogoPath);
+                    setAwatarPath(awatarPath);
+                } catch (error) {
+                    console.error(error);
+                }
             }
         };
         fetchData();
-    }, []);
+    }, [isLogged]);
+
+    const getUserData = async () => {
+        const user = await getUser();
+        if (user.avatar === null) {
+            user.avatar = "ico.png";
+        }
+        userAwatar.current = user.avatar;
+        const avatarFileName = userAwatar.current.split("/").pop();
+        userAwatar.current = avatarFileName;
+        userId.current = user.id;
+    };
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -182,9 +206,9 @@ export default function Header() {
                     <ClipLoader color="#000" />
                 )}
                 <SearchBar />
-                {iconPath ? (
+                {awatarPath ? (
                     <img
-                        src={iconPath}
+                        src={awatarPath}
                         alt="Icon"
                         data-testid="icon"
                         id={styles.imgIcon}

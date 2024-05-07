@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function useFetchSimilarVideos({ reference_code }) {
+export default function useFetchSimilarVideos({ reference_code, offset }) {
     const [videos, setVideos] = useState();
     const [isLoading, setIsLoading] = useState(true);
 

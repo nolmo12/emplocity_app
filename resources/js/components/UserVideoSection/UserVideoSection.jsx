@@ -24,6 +24,13 @@ export default function UserVideoSection() {
         console.log(response.data);
     };
 
+    const handleClickRemove = async (reference_code) => {
+        console.log(reference_code);
+        await http.delete(`/api/video/delete/`, {
+            reference_code: reference_code,
+        });
+    };
+
     return (
         <div id={styles.UserVideoSection}>
             <table data-testid="userVideoTable">
@@ -65,13 +72,24 @@ export default function UserVideoSection() {
                                         {video.video.views}
                                     </td>
                                     <td className={styles.tdContent}>
-                                        {video.video.views}
+                                        {video.commentCount}
                                     </td>
                                     <td className={styles.tdContent}>
                                         {video.likesCount}
                                     </td>
                                     <td className={styles.tdContent}>
                                         {video.dislikesCount}
+                                    </td>
+                                    <td>
+                                        <button
+                                            onClick={() =>
+                                                handleClickRemove(
+                                                    video.video.reference_code
+                                                )
+                                            }
+                                        >
+                                            Remove
+                                        </button>
                                     </td>
                                 </tr>
                             );

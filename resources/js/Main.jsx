@@ -119,6 +119,16 @@ function Main() {
                 }
             />
             <Route
+                path="/:tag"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="tag" />
+                        <Footer />
+                    </>
+                }
+            />
+            <Route
                 path="/account-settings"
                 element={
                     <>
