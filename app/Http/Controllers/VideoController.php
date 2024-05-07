@@ -75,12 +75,14 @@ class VideoController extends Controller
 
         $video->save();
        
+        $videoManager = new VideoManager($video->video);
+
+        $maxTime = $videoManager->getDuration('seconds');
+
+        $video->duration = $maxTime;
+
         if(!$request->hasFile('thumbnail'))
         {
-            $videoManager = new VideoManager($video->video);
-
-            $maxTime = $videoManager->getDuration('seconds');
-
             $randomTime = rand(0, intval($maxTime));
 
             $thumbnailPath = $videoManager->saveFrame($randomTime);
