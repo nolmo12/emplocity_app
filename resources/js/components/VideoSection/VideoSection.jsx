@@ -11,15 +11,16 @@ import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
-    const { videos, isLoading } = useFetchRecommendVideos();
+    const [offset, setOffset] = useState(0);
+    const { videos, isLoading } = useFetchRecommendVideos({ offset });
     const { calculateLikeRatio } = useLikeCalculation();
-    const { userId } = useParams();
+    const { userId, tag } = useParams();
     const [renderKey, setRenderKey] = useState(0);
     useEffect(() => {
         // pagination
-    }, [reference_code, isLoading, videos, userId]);
+    }, [reference_code, isLoading, videos, userId, tag]);
 
-    const similarVideosObj = useFetchSimilarVideos({ reference_code }); // for similar videos
+    const similarVideosObj = useFetchSimilarVideos({ reference_code, offset }); // for similar videos
 
     const handleScroll = _.throttle((event) => {
         const target = event.target;
@@ -38,6 +39,7 @@ export default function VideoSection({ sectionType }) {
     let view = undefined;
 
     if (sectionType === "reccommend" && isLoading === false) {
+        console.log(videos);
         if (videos) {
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
@@ -94,6 +96,7 @@ export default function VideoSection({ sectionType }) {
             let userName = "";
             if (videos.length > 0) {
                 userName = videos[0].userName;
+                console.log(userName);
             }
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
@@ -103,6 +106,24 @@ export default function VideoSection({ sectionType }) {
                             <Video
                                 data-testid={`video-${renderKey}`}
                                 key={`otherUser-${video.video.id}`}
+                                videoObj={video}
+                            />
+                        );
+                    })}
+                </div>
+            );
+        }
+    } else if (sectionType === "tag") {
+        if (videos) {
+            let tagName = "";
+            view = (
+                <div id={styles.videoSection} onScroll={handleScroll}>
+                    <h2 className={styles.videoSectionH}>#{tag} videos</h2>
+                    {Object.entries(videos).map(([key, video]) => {
+                        return (
+                            <Video
+                                data-testid={`video-${renderKey}`}
+                                key={`tag-${video.video.id}`}
                                 videoObj={video}
                             />
                         );

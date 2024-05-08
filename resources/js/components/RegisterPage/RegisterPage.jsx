@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Message from "../Message/Message";
 import useValidation from "../useValidation";
 import authUser from "../authUser";
-import fetchImage from "../fetchImgFromStorage";
+import fetchImgFromStorage from "../fetchImgFromStorage";
 import styles from "./registerPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
@@ -20,10 +20,12 @@ export default function RegisterPage() {
     const [iconPath, setIconPath] = useState("");
     const [validationInfo, setValidationInfo] = useState(null);
     const { http } = authUser();
+
     const { validateForm } = useValidation();
 
     useEffect(() => {
         const fetchData = async () => {
+            const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);

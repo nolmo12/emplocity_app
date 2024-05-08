@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -19,6 +19,17 @@ export default function authUser() {
         }
         return token;
     };
+
+    useEffect(() => {
+        if (getToken() && !isLogged) {
+            console.log(11);
+            setIsLogged(true);
+        }
+        if (!getToken() && isLogged) {
+            console.log(22);
+            setIsLogged(false);
+        }
+    }, [getToken(), isLogged]);
 
     const getCsrfToken = () => {
         const token = Cookies.get("XSRF-TOKEN");
@@ -56,13 +67,6 @@ export default function authUser() {
             console.log(error);
         }
     };
-
-    if (getToken() && isLogged === false) {
-        setIsLogged(true);
-    }
-    if (!getToken() && isLogged === true) {
-        setIsLogged(false);
-    }
 
     return {
         setToken: saveToken,

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
-import fetchImage from "../fetchImgFromStorage";
+import fetchImgFromStorage from "../fetchImgFromStorage";
 import styles from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
@@ -21,6 +21,7 @@ export default function LoginPage() {
 
     useEffect(() => {
         const fetchData = async () => {
+            const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);

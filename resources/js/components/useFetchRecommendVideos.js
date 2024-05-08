@@ -2,29 +2,46 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import authUser from "./authUser";
-export default function useFetchRecommendVideos() {
+export default function useFetchRecommendVideos({ offset }) {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { userId } = useParams();
+    const { userId, tag } = useParams();
     const { http } = authUser();
     useEffect(() => {
         const fetchVideos = async () => {
             try {
-                const response = await axios.get("/api/video/listing");
+                setVideos([]);
+                const response = await axios.get(`/api/video/listing`);
+                console.log(response.data);
                 response.data.map((video) => {
                     setVideos((videos) => [...videos, video]);
                 });
-                setIsLoading(false);
+                // setIsLoading(false);
             } catch (error) {
                 console.log(error);
             }
+            setIsLoading(false);
         };
         const fetchOtherUserVideos = async (userId) => {
             try {
-                const response = await http.get(`/api/auth/read/${userId}`); // http => axios
-                console.log(response.data);
+                const response = await axios.get(`/api/read/${userId}`); // http => axios
                 const tempVideos = [];
                 response.data.videos.map((video) => {
+                    tempVideos.push(video);
+                });
+                setVideos(tempVideos);
+                // setIsLoading(false);
+            } catch (error) {
+                console.log(error);
+            }
+            setIsLoading(false);
+        };
+
+        const fetchVideosOnTag = async (tag) => {
+            try {
+                const response = await axios.get(`/api/video/${tag}`);
+                const tempVideos = [];
+                response.data.map((video) => {
                     tempVideos.push(video);
                 });
                 setVideos(tempVideos);
@@ -35,12 +52,13 @@ export default function useFetchRecommendVideos() {
         };
 
         if (userId) {
-            console.log(userId);
             fetchOtherUserVideos(userId);
+        } else if (tag) {
+            fetchVideosOnTag(tag);
         } else {
             fetchVideos();
         }
-    }, [userId]);
+    }, [userId, tag]);
 
     return { videos, isLoading };
 }

@@ -1,9 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
+import useViews from "../useViews";
 import useLikeCalculation from "../useLikeCalculation";
 import useFetchVideosSearch from "../useFetchVideosSearch";
 import useLike from "../useLike";
@@ -15,18 +16,21 @@ import {
     faThumbsDown,
     faShare,
 } from "@fortawesome/free-solid-svg-icons";
-import { copySelection } from "@testing-library/user-event/dist/cjs/document/copySelection.js";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
-    const { http, isLogged } = authUser();
+    const { http, isLogged, getUser } = authUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes, sendLikes } = useLike();
+    const { sendViews, startTimer, pauseTimer, resumeTimer, timeRemaining } =
+        useViews();
     const { reference_code } = useParams();
     const { videoObj, isLoading } = useFetchVideo({ reference_code });
     const [likesCount, setLikesCount] = useState(0);
+    const [userFirstName, setUserFirstName] = useState();
+    const [userId, setUserId] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
     const [shareIsClicked, setShareIsClicked] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
@@ -45,6 +49,7 @@ export default function VideoFrame() {
             userInteraction: null,
             thumbStyle: null,
         });
+        getUserFirstNameAndId();
         setRenderKey((prev) => prev + 1);
 
         if (videoObj) {
@@ -53,6 +58,12 @@ export default function VideoFrame() {
         }
         fetchLikeInfo();
     }, [reference_code, videoObj]);
+
+    const getUserFirstNameAndId = async () => {
+        const user = await getUser();
+        setUserId(user.id);
+        setUserFirstName(user.first_name);
+    };
 
     const fetchLikeInfo = async () => {
         if (!isLogged) {
@@ -88,13 +99,14 @@ export default function VideoFrame() {
     };
 
     if (!isLoading) {
-        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
         const videoOwner = videoObj.userName;
         const videoViews = videoObj.video.views;
+        const videoDuration = videoObj.video.duration;
+        const videoOwnerFirstName = videoObj.userFirstName;
         const tags = videoObj.tags;
         return (
             <>
@@ -103,9 +115,17 @@ export default function VideoFrame() {
                     data-testid="video-player"
                 >
                     <video
+                        ref={timeRemaining}
                         width={320}
                         src={videoPath}
                         poster={videoThumbnail}
+                        onPlay={() =>
+                            startTimer(
+                                Number(videoDuration * 0.3),
+                                reference_code
+                            )
+                        }
+                        onPause={() => pauseTimer()}
                         controls
                         className={styles.videoScreen}
                     ></video>
@@ -198,7 +218,17 @@ export default function VideoFrame() {
                         <h1>
                             <FontAwesomeIcon icon={faUser} />{" "}
                             {videoOwner ? (
-                                <p data-testid="video-owner">{videoOwner}</p>
+                                <p data-testid="video-owner">
+                                    {videoOwnerFirstName == userFirstName ? (
+                                        <Link to={`/account`}>
+                                            {videoOwner}
+                                        </Link>
+                                    ) : (
+                                        <Link to={`/${userId}`}>
+                                            {videoOwner}
+                                        </Link>
+                                    )}
+                                </p>
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
                             )}
@@ -216,9 +246,11 @@ export default function VideoFrame() {
                             <p>
                                 {tags.map((tag, index) => {
                                     return (
-                                        <span
-                                            key={index}
-                                        >{` #${tag.name}`}</span> // tag click
+                                        <Link to={`/${tag.name}`} key={index}>
+                                            <span
+                                                key={index}
+                                            >{` #${tag.name}`}</span>{" "}
+                                        </Link>
                                     );
                                 })}
                             </p>
