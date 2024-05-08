@@ -107,6 +107,7 @@ export default function VideoFrame() {
         const videoViews = videoObj.video.views;
         const videoDuration = videoObj.video.duration;
         const videoOwnerFirstName = videoObj.userFirstName;
+        const videoOwnerId = videoObj.userId;
         const tags = videoObj.tags;
         return (
             <>
@@ -224,8 +225,8 @@ export default function VideoFrame() {
                                             videoOwnerFirstName ===
                                             userFirstName
                                                 ? `/account`
-                                                : `/user/${userId}`
-                                        }
+                                                : `/user/${videoOwnerId}`
+                                        } // need endpoint video -> ownerId
                                     >
                                         {videoOwner}
                                     </Link>
