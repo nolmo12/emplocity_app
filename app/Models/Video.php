@@ -83,6 +83,7 @@ class Video extends Model implements SearchInterface
         $user = User::find($this->user_id);
 
         $user = User::find($this->user_id);
+        $userId = $user ? $user->id : null;
         $userName = $user ? $user->name : null;
         $userFirstName = $user ? $user->first_name : null;
         $userAvatar = $user ? $user->avatar : null;
@@ -94,6 +95,7 @@ class Video extends Model implements SearchInterface
             'title' => $title,
             'description' => $description,
             'commentCount' => $commentCount,
+            'userId' => $userId,
             'userName' => $userName,
             'userFirstName' => $userFirstName,
             'userAvatar' => $userAvatar,
