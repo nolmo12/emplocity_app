@@ -51,6 +51,9 @@ Route::prefix('auth')->group(function () {
     Route::get('/read/{id}', [UserController::class, 'read']);
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
 
+    Route::post('/grantAdmin/{id}', [UserController::class, 'grantAdmin'])->middleware('role:admin');
+    Route::post('/grantAdmintest', [UserController::class, 'grantAdminWithoutAutorization'])->middleware('auth:api');
+
 });
 
 Route::get('storage/{type}/{asset}', [StorageController::class, 'find']);

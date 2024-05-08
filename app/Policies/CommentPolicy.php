@@ -10,7 +10,8 @@ class CommentPolicy
 {
     public function before(User $user, string $ability) : bool|null
     {
-        //implement admin logic here later
+        if($user->hasRole('admin') || $user->hasRole('moderator'))
+            return true;
         return null;
     }
     /**

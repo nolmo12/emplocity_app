@@ -267,6 +267,8 @@ class VideoController extends Controller
 
         $video->tags()->detach();
 
+        $video->histories()->delete();
+
         $video->languages()->detach();
 
         $video->likesDislikes()->delete();
@@ -275,6 +277,8 @@ class VideoController extends Controller
 
         $videoPath = public_path($video->video);
         $thumbnailPath = public_path($video->thumbnail);
+
+        $video->delete();
 
         if(File::exists($videoPath))
             File::delete($videoPath);
@@ -286,8 +290,6 @@ class VideoController extends Controller
             File::delete($thumbnailPath);
         else
             return response()->json(['error' => 'Thumbnail path not found'], 404);
-
-        $video->delete();
 
         return response()->json(['success'=> 'Succesfully deleted video'], 200);
     }
