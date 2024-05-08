@@ -245,7 +245,9 @@ export default function UploadPage() {
                         >
                             <option value="Public">Public</option>
                             <option value="Unlisted">Unlisted</option>
-                            {isLogged && <option value="Hidden">Hidden</option>}
+                            {isLogged() && (
+                                <option value="Hidden">Hidden</option>
+                            )}
                         </select>
                     </div>
 

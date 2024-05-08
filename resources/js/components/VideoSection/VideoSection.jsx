@@ -14,11 +14,12 @@ export default function VideoSection({ sectionType }) {
     const [offset, setOffset] = useState(0);
     const { videos, isLoading } = useFetchRecommendVideos({ offset });
     const { calculateLikeRatio } = useLikeCalculation();
-    const { userId, tag } = useParams();
+    const { tag } = useParams();
+    const { userId } = useParams();
     const [renderKey, setRenderKey] = useState(0);
     useEffect(() => {
         // pagination
-    }, [reference_code, isLoading, videos, userId, tag]);
+    }, [reference_code, isLoading, videos, userId]);
 
     const similarVideosObj = useFetchSimilarVideos({ reference_code, offset }); // for similar videos
 
@@ -39,7 +40,6 @@ export default function VideoSection({ sectionType }) {
     let view = undefined;
 
     if (sectionType === "reccommend" && isLoading === false) {
-        console.log(videos);
         if (videos) {
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
@@ -115,7 +115,6 @@ export default function VideoSection({ sectionType }) {
         }
     } else if (sectionType === "tag") {
         if (videos) {
-            let tagName = "";
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
                     <h2 className={styles.videoSectionH}>#{tag} videos</h2>

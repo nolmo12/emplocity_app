@@ -6,30 +6,22 @@ import { useNavigate } from "react-router-dom";
 import config from "../config";
 
 export default function authUser() {
-    const [token, setToken] = useState();
     const [csrfToken, setCsrfToken] = useState();
-    const [isLogged, setIsLogged] = useState(false);
     const navigate = useNavigate();
-    const { tempBaseUrl } = config();
+    const { baseUrl } = config();
+
+    const http = axios.create({
+        baseURL: baseUrl,
+    });
 
     const getToken = () => {
         const token = Cookies.get("token");
-        if (token) {
-            const decodedToken = jwtDecode(token);
-        }
         return token;
     };
 
     useEffect(() => {
-        if (getToken() && !isLogged) {
-            console.log(11);
-            setIsLogged(true);
-        }
-        if (!getToken() && isLogged) {
-            console.log(22);
-            setIsLogged(false);
-        }
-    }, [getToken(), isLogged]);
+        http.defaults.headers.Authorization = `Bearer ${getToken()}`;
+    }, [getToken]);
 
     const getCsrfToken = () => {
         const token = Cookies.get("XSRF-TOKEN");
@@ -40,24 +32,23 @@ export default function authUser() {
         const date = new Date(); // time from api
         date.setTime(date.getTime() + time * 5000);
         Cookies.set("token", tempToken, {
-            path: "/",
             expires: date,
         });
-        setToken(tempToken);
     };
 
     const logout = () => {
         Cookies.remove("token");
-        setToken(null);
         navigate("/");
     };
 
-    const http = axios.create({
-        baseURL: tempBaseUrl,
-        headers: {
-            Authorization: `Bearer ${getToken()}`,
-        },
-    });
+    const isLogged = () => {
+        const tempToken = getToken();
+        if (tempToken) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
     const getUser = async () => {
         try {
@@ -72,7 +63,6 @@ export default function authUser() {
         setToken: saveToken,
         logout,
         getToken,
-        token,
         http,
         isLogged,
         getCsrfToken,

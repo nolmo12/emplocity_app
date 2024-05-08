@@ -17,15 +17,21 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
-    const { logout, getUser } = authUser();
+    const { logout, getUser, isLogged } = authUser();
     const [historyPath, setHistoryPath] = useState();
     const [likedPath, setLikedPath] = useState();
 
     useEffect(() => {
-        getUser().then((data) => {
-            setHistoryPath(`/history/${data.id}`);
-            setLikedPath(`/user-likes/${data.id}`);
-        });
+        if (!isLogged()) {
+            return;
+        } else {
+            const getUserData = async () => {
+                const response = await getUser();
+                setHistoryPath(`/history/${response.id}`);
+                setLikedPath(`/user-likes/${response.id}`);
+            };
+            getUserData();
+        }
     }, [historyPath, likedPath]);
 
     return (

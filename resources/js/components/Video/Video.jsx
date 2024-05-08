@@ -53,7 +53,7 @@ export default function Video({ videoObj }) {
         const path = `/video/${reference_code}`;
 
         const sendVideoInfo = async (e) => {
-            if (!isLogged) return;
+            if (!isLogged()) return;
             await sendToHistory(reference_code);
         };
 

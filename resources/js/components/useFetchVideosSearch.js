@@ -39,14 +39,13 @@ export default function useFetchVideosSearch() {
     };
 
     useEffect(() => {
-        if (!isLogged) return;
-        console.log(1);
+        if (!isLogged()) return;
         // fetchLikedVideos();
         // fetchVideosHistory();
     }, []);
 
     const sendToHistory = async (reference_code) => {
-        if (!isLogged) return;
+        if (!isLogged()) return;
         try {
             await http.post(`/api/history/${reference_code}`);
         } catch (error) {

@@ -5,14 +5,14 @@ import authUser from "./authUser";
 export default function useFetchRecommendVideos({ offset }) {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { userId, tag } = useParams();
+    const { tag } = useParams();
+    const { userId } = useParams();
     const { http } = authUser();
     useEffect(() => {
         const fetchVideos = async () => {
             try {
                 setVideos([]);
                 const response = await axios.get(`/api/video/listing`);
-                console.log(response.data);
                 response.data.map((video) => {
                     setVideos((videos) => [...videos, video]);
                 });
@@ -24,7 +24,7 @@ export default function useFetchRecommendVideos({ offset }) {
         };
         const fetchOtherUserVideos = async (userId) => {
             try {
-                const response = await axios.get(`/api/read/${userId}`); // http => axios
+                const response = await axios.get(`/api/auth/read/${userId}`); // http => axios
                 const tempVideos = [];
                 response.data.videos.map((video) => {
                     tempVideos.push(video);
@@ -50,7 +50,6 @@ export default function useFetchRecommendVideos({ offset }) {
                 console.log(error);
             }
         };
-
         if (userId) {
             fetchOtherUserVideos(userId);
         } else if (tag) {

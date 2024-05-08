@@ -66,7 +66,7 @@ export default function VideoFrame() {
     };
 
     const fetchLikeInfo = async () => {
-        if (!isLogged) {
+        if (!isLogged()) {
             console.log("User is not logged in. Cannot fetch likes.");
             return;
         }
@@ -107,6 +107,7 @@ export default function VideoFrame() {
         const videoViews = videoObj.video.views;
         const videoDuration = videoObj.video.duration;
         const videoOwnerFirstName = videoObj.userFirstName;
+        const videoOwnerId = videoObj.userId;
         const tags = videoObj.tags;
         return (
             <>
@@ -219,15 +220,16 @@ export default function VideoFrame() {
                             <FontAwesomeIcon icon={faUser} />{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">
-                                    {videoOwnerFirstName == userFirstName ? (
-                                        <Link to={`/account`}>
-                                            {videoOwner}
-                                        </Link>
-                                    ) : (
-                                        <Link to={`/${userId}`}>
-                                            {videoOwner}
-                                        </Link>
-                                    )}
+                                    <Link
+                                        to={
+                                            videoOwnerFirstName ===
+                                            userFirstName
+                                                ? `/account`
+                                                : `/user/${videoOwnerId}`
+                                        } // need endpoint video -> ownerId
+                                    >
+                                        {videoOwner}
+                                    </Link>
                                 </p>
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
