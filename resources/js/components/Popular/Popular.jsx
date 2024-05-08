@@ -6,7 +6,8 @@ import styles from "./popular.module.css";
 
 export default function Popular() {
     const [popularData, setPopularData] = useState([]);
-    const { http } = authUser();
+    const [userId, setUserId] = useState();
+    const { getUser, isLogged } = authUser();
     const fetchPopularUser = async () => {
         try {
             const response = await axios.get("/api/users/listing");
@@ -16,15 +17,29 @@ export default function Popular() {
         }
     };
     useEffect(() => {
+        getUserData();
         fetchPopularUser();
     }, []);
+
+    const getUserData = async () => {
+        if (!isLogged()) return;
+        const response = await getUser();
+        setUserId(response.id);
+    };
     return (
         <div id={styles.Popular}>
             <h1>Popular</h1>
             <ul data-testid="guestVideoList">
                 {popularData.map((user) => {
                     return (
-                        <Link to={`/${user.id}`} key={user.id}>
+                        <Link
+                            to={
+                                userId === user.id
+                                    ? `/account`
+                                    : `/user/${user.id}`
+                            }
+                            key={user.id}
+                        >
                             <li key={user.id}>
                                 <img src="avatar" alt="avatar" />
                                 <p>{user.name}</p>

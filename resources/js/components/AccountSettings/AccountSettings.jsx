@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUserSettings from "../useUserSettings";
 import styles from "./accountSettings.module.css";
+import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { render } from "@testing-library/react";
@@ -13,6 +14,7 @@ export default function AccountSettings() {
     const { getUser, logout } = authUser();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
+    const [imageLoad, setImageLoad] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [userData, setUserData] = useState({
         nickname: "",
@@ -78,7 +80,6 @@ export default function AccountSettings() {
     const handleChangeAvatar = async (e) => {
         e.preventDefault();
         setUserData({ ...userData, avatar: e.target.files[0] });
-        console.log(e.target.files[0]);
     };
 
     const handleClickChangeAvatar = async (e) => {
@@ -87,7 +88,6 @@ export default function AccountSettings() {
 
         await changeAvatar(user.id, userData.avatar);
     };
-    console.log(user);
     return (
         <main>
             <div className={styles.settingsDiv}>
@@ -117,7 +117,15 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    <img src={user.avatar} alt="avatar" className={styles.userAvatar}/>
+                                    {!imageLoad && (
+                                        <ClipLoader color="#000"></ClipLoader>
+                                    )}
+                                    <img
+                                        src={user.avatar}
+                                        alt="avatar"
+                                        onLoad={() => setImageLoad(true)}
+                                        className={styles.userAvatar}
+                                    />
                                 </p>
                             </div>
                         </>

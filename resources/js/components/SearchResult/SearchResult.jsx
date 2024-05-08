@@ -120,8 +120,6 @@ export default function SearchResult({ searchType }) {
     if (searchType === "userSearch") {
         let matchedUser = [];
         let otherResults = [];
-
-        // <Link to={``}>  - when user profile is ready
         Object.entries(searchedObj).forEach(([key, value]) => {
             if (key === "users") {
                 value.forEach((user) => {
