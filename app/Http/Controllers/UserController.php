@@ -148,15 +148,17 @@ class UserController extends Controller
     }
     public function read(Request $request, $id)
     {
-    try {
-        if ($request->user()->id == $id) {
+        if($request->user() && $request->user()->id == $id)
+        {
             $user = User::with('videos')->findOrFail($id);
-        } else {
-            $user = User::with(['videos' => function ($query) {
+        }
+        else
+        {
+            $user = User::with(['videos' => function ($query){
                 $query->where('visibility', 'Public');
             }])->findOrFail($id);
         }
-
+            
         $userData = [
             'name' => $user->name,
             'email' => $user->email,
@@ -174,12 +176,6 @@ class UserController extends Controller
              'user' => $userData,
             'videos' => $videosData,
         ]);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'User not found',
-        ], 404);
-    }
     }
 
     public function listing()
