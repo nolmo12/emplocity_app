@@ -63,7 +63,7 @@ class VideoTest extends TestCase
 
         $video = $user->videos()->first();
 
-        $response = $this->patch('/api/video/update',[
+        $response = $this->post('/api/video/update',[
             'reference_code' => $video->reference_code,
             'title' => 'Bivowy film',
             'description' =>'Mega nie fajny opis',
