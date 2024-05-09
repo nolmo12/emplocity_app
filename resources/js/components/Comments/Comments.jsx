@@ -10,7 +10,7 @@ export default function Comments({ reference_code }) {
     const [mainCommentContent, setMainCommentContent] = useState();
     const { fetchComments, sendComment } = useComments();
     useEffect(() => {
-        fetchComments(reference_code, 0).then((data) => {
+        fetchComments(reference_code, offset).then((data) => {
             setCommentsObj(data);
         });
     }, [reference_code, renderKey]);
