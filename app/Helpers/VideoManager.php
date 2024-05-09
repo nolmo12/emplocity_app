@@ -40,8 +40,9 @@ class VideoManager
      */
     public function getDuration(string $type = 'minutes'): mixed
     {
-        $output = shell_exec("ffmpeg -i $this->videoPath 2>&1");
-
+        $escapedPath = escapeshellarg($this->videoPath);
+        $output = shell_exec("ffmpeg -i $escapedPath 2>&1");
+        
         $matches = [];
         if (preg_match('/Duration: (\d+):(\d+):(\d+)/', $output, $matches)) 
         {
