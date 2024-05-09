@@ -12,7 +12,10 @@ export default function useFetchRecommendVideos({ offset }) {
         const fetchVideos = async () => {
             try {
                 setVideos([]);
-                const response = await axios.get(`/api/video/listing`);
+                console.log(offset);
+                const response = await axios.get(
+                    `/api/video/listing?offset=${offset}`
+                );
                 response.data.map((video) => {
                     setVideos((videos) => [...videos, video]);
                 });
@@ -22,6 +25,7 @@ export default function useFetchRecommendVideos({ offset }) {
             }
             setIsLoading(false);
         };
+
         const fetchOtherUserVideos = async (userId) => {
             try {
                 const response = await axios.get(`/api/auth/read/${userId}`); // http => axios
@@ -60,5 +64,19 @@ export default function useFetchRecommendVideos({ offset }) {
         }
     }, [userId, tag]);
 
-    return { videos, isLoading };
+    const fetchNextVideos = async (offset) => {
+        try {
+            const response = await http.get(
+                `/api/video/listing?offset=${offset}`
+            );
+            response.data.map((video) => {
+                setVideos((videos) => [...videos, video]);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+        setIsLoading(false);
+    };
+
+    return { videos, isLoading, fetchNextVideos };
 }
