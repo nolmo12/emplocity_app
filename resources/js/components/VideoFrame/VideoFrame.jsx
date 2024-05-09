@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
@@ -20,19 +20,19 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
-    const { http, isLogged, getUser } = authUser();
+    const link = useRef();
+    const { isLogged, getUser } = authUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
-    const { fetchLikes, sendLikes } = useLike();
-    const { sendViews, startTimer, pauseTimer, resumeTimer, timeRemaining } =
-        useViews();
+    const { fetchLikes } = useLike();
+    const { startTimer, pauseTimer, timeRemaining } = useViews();
     const { reference_code } = useParams();
-    const { videoObj, isLoading } = useFetchVideo({ reference_code });
+    const { videoObj, isLoading, getVideoLink } = useFetchVideo({
+        reference_code,
+    });
     const [likesCount, setLikesCount] = useState(0);
     const [userFirstName, setUserFirstName] = useState();
-    const [userId, setUserId] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
-    const [shareIsClicked, setShareIsClicked] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [thumbObj, setThumbObj] = useState({
         like: false,
@@ -53,6 +53,7 @@ export default function VideoFrame() {
         setRenderKey((prev) => prev + 1);
 
         if (videoObj) {
+            getLink();
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
         }
@@ -61,8 +62,16 @@ export default function VideoFrame() {
 
     const getUserFirstNameAndId = async () => {
         const user = await getUser();
-        setUserId(user.id);
         setUserFirstName(user.first_name);
+    };
+
+    const getLink = async () => {
+        const tempLink = await getVideoLink();
+        link.current = tempLink.url;
+    };
+
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
     };
 
     const fetchLikeInfo = async () => {
@@ -92,10 +101,6 @@ export default function VideoFrame() {
         } catch (error) {
             console.log(error);
         }
-    };
-
-    const handleShareClick = (e) => {
-        setShareIsClicked(true);
     };
 
     if (!isLoading) {
@@ -136,7 +141,6 @@ export default function VideoFrame() {
                                 <FontAwesomeIcon
                                     icon={faShare}
                                     className={styles.videoFrameIcon}
-                                    onClick={handleShareClick}
                                 />
                             }
                             position="center"
@@ -145,12 +149,16 @@ export default function VideoFrame() {
                         >
                             {(close) => (
                                 <div className={styles.sharePopup}>
-                                    <p>
-                                        {JSON.stringify(videoObj.video.video)}
-                                    </p>
+                                    <p>{link.current}</p>
                                     <button
                                         onClick={() => {
-                                            setShareIsClicked(false);
+                                            copyToClipboard(link.current);
+                                        }}
+                                    >
+                                        Copy
+                                    </button>
+                                    <button
+                                        onClick={() => {
                                             close();
                                         }}
                                     >

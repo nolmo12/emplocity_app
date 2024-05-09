@@ -14,7 +14,7 @@ export default function AccountSettings() {
     const { getUser, logout } = authUser();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
-    const [imageLoad, setImageLoad] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState();
     const [renderKey, setRenderKey] = useState(0);
     const [userData, setUserData] = useState({
         nickname: "",
@@ -90,6 +90,7 @@ export default function AccountSettings() {
     };
     return (
         <main>
+            {console.log(userData.avatar)}
             <div className={styles.settingsDiv}>
                 {user && (
                     <div className={styles.userInfoForm}>
@@ -117,15 +118,15 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    {!imageLoad && (
-                                        <ClipLoader color="#000"></ClipLoader>
+                                    {console.log(user.avatar)}
+                                    {user.avatar && (
+                                        <img
+                                            src={user.avatar}
+                                            alt="avatar"
+                                            onLoad={() => setImageLoaded(true)}
+                                            className={styles.userAvatar}
+                                        />
                                     )}
-                                    <img
-                                        src={user.avatar}
-                                        alt="avatar"
-                                        onLoad={() => setImageLoad(true)}
-                                        className={styles.userAvatar}
-                                    />
                                 </p>
                             </div>
                         </>

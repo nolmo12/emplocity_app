@@ -39,8 +39,9 @@ export default function useFetchRecommendVideos({ offset }) {
 
         const fetchVideosOnTag = async (tag) => {
             try {
-                const response = await axios.get(`/api/video/${tag}`);
+                const response = await axios.get(`/api/tags/${tag}`);
                 const tempVideos = [];
+                console.log(response.data);
                 response.data.map((video) => {
                     tempVideos.push(video);
                 });
