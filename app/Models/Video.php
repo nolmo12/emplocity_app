@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Helpers\SearchInterface;
+use Laravel\Scout\Searchable;
 use App\Models\User;
 use App\Models\Report;
 use App\Helpers\VideoManager;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Video extends Model implements SearchInterface
 {
-    use HasFactory;
+    use HasFactory, Searchable;
 
     protected $fillable = [
         'thumbnail', 'video', 'user_id', 'tags'

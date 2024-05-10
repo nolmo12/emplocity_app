@@ -126,7 +126,7 @@ Route::prefix('video')->group(function () {
 
     Route::get('/search', [VideoController::class,'search']);
 
-    Route::get('/listing', [VideoController::class,'listing']);
+    Route::get('/listing', [VideoController::class,'list']);
 
     Route::get('/all', [VideoController::class,'all']);
 

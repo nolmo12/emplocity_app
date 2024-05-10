@@ -9,6 +9,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
+        "laravel/scout": "^10.9",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.4",
         "php-open-source-saver/jwt-auth": "^2.2",
@@ -34,7 +35,7 @@
         "files": [
             "app/Helpers/ValidateHelper.php",
             "app/Helpers/VideoManager.php",
-            "app/Helpers/Utils.php",
+            "app/Helpers/utils.php",
             "app/Helpers/SearchInterface.php"
         ]
     },
