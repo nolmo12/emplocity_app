@@ -19,9 +19,9 @@ export default function authUser() {
 
     const http = axios.create({
         baseURL: baseUrl,
-        headers: {
-            Authorization: `Bearer ${getToken()}`,
-        },
+        // headers: {
+        //     Authorization: `Bearer ${getToken()}`,
+        // },
     });
 
     const getCsrfToken = () => {

@@ -37,11 +37,8 @@ export default function Header() {
 
     const getUserData = async () => {
         // wait for token update
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await new Promise((resolve) => setTimeout(resolve, 100));
         const user = await getUser();
-        if (user.avatar === null) {
-            user.avatar = "ico.png";
-        }
         userAwatar.current = user.avatar;
         const avatarFileName = userAwatar.current.split("/").pop();
         userAwatar.current = avatarFileName;

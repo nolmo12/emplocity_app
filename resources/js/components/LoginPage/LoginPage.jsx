@@ -54,7 +54,7 @@ export default function LoginPage() {
                 navigate("/account");
             })
             .catch((error) => {
-                console.log(error);
+                if (error.response.status === 401) console.log(error);
                 setLoginValidation(true);
             });
     };

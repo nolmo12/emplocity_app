@@ -64,6 +64,7 @@ export default function AccountSettings() {
         e.preventDefault();
         const response = await changePassword(
             user.id,
+            userData.previousPassword,
             userData.password,
             userData.repeatPassword
         );
@@ -71,7 +72,7 @@ export default function AccountSettings() {
             logout();
             navigate("/login");
         } else {
-            console.log("error");
+            console.log("error changing password");
         }
     };
 
@@ -146,10 +147,8 @@ export default function AccountSettings() {
                     </button>
                     <input
                         type="password"
-                        onChange={(e) =>
-                            handleClickChangePassword(e, "previous")
-                        }
-                        value={userData.prevPassword}
+                        onChange={(e) => handlePasswordChange(e, "previous")}
+                        value={userData.previousPassword}
                         placeholder="Previous password"
                     ></input>
                     <input
