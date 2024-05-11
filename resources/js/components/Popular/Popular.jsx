@@ -2,12 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import styles from "./popular.module.css";
-
+import config from "../../config";
 export default function Popular() {
     const [popularData, setPopularData] = useState([]);
     const [userId, setUserId] = useState();
-    const { getUser, isLogged } = authUser();
+    const { isLogged } = authUser();
+    const { getUser } = useUser();
     const fetchPopularUser = async () => {
         try {
             const response = await axios.get("/api/users/listing");
@@ -22,9 +24,12 @@ export default function Popular() {
     }, []);
 
     const getUserData = async () => {
-        if (!isLogged()) return;
-        const response = await getUser();
-        setUserId(response.id);
+        if (isLogged()) {
+            // wait for token update
+            await new Promise((resolve) => setTimeout(resolve, 50));
+            const response = await getUser();
+            setUserId(response.id);
+        }
     };
     return (
         <div id={styles.Popular}>
@@ -44,8 +49,6 @@ export default function Popular() {
                             <li key={user.id}>
                                 <img
                                     src={awatarPath}
-                                    width={100}
-                                    height={100}
                                     alt="avatar"
                                 />
                                 <p>{user.name}</p>

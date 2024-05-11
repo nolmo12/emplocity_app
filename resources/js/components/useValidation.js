@@ -32,7 +32,6 @@ export default function useValidation() {
                 visibilityValidation: false,
             };
             data.forEach((errorObj) => {
-                console.log(errorObj);
                 Object.entries(errorObj).forEach(([key, value]) => {
                     if (key == 471) {
                         validationInfo.videoValidation = true;

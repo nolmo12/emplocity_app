@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -10,30 +10,40 @@ export default function authUser() {
     const navigate = useNavigate();
     const { baseUrl } = config();
 
-    const http = axios.create({
-        baseURL: baseUrl,
-    });
-
     const getToken = () => {
         const token = Cookies.get("token");
         return token;
     };
 
-    useEffect(() => {
-        http.defaults.headers.Authorization = `Bearer ${getToken()}`;
-    }, [getToken]);
+    const [token, setToken] = useState(getToken());
+
+    const http = axios.create({
+        baseURL: baseUrl,
+        // headers: {
+        //     Authorization: `Bearer ${getToken()}`,
+        // },
+    });
 
     const getCsrfToken = () => {
         const token = Cookies.get("XSRF-TOKEN");
         return token;
     };
 
+    useEffect(() => {
+        http.interceptors.request.use((config) => {
+            config.headers.Authorization = `Bearer ${token}`;
+            return config;
+        });
+    }, [token]);
+
     const saveToken = (tempToken, time) => {
         const date = new Date(); // time from api
-        date.setTime(date.getTime() + time * 5000);
+        const tempTime = Number(date.getTime() + time);
+        date.setTime(tempTime);
         Cookies.set("token", tempToken, {
             expires: date,
         });
+        setToken(tempToken);
     };
 
     const logout = () => {
@@ -50,15 +60,6 @@ export default function authUser() {
         }
     };
 
-    const getUser = async () => {
-        try {
-            const response = await http.get("/api/user");
-            return response.data;
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return {
         setToken: saveToken,
         logout,
@@ -66,6 +67,5 @@ export default function authUser() {
         http,
         isLogged,
         getCsrfToken,
-        getUser,
     };
 }

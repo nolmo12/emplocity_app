@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import useUserSettings from "../useUserSettings";
 import styles from "./accountSettings.module.css";
 import { ClipLoader } from "react-spinners";
@@ -11,13 +12,15 @@ import { render } from "@testing-library/react";
 
 export default function AccountSettings() {
     const navigate = useNavigate();
-    const { getUser, logout } = authUser();
+    const { logout } = authUser();
+    const { getUser } = useUser();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
-    const [imageLoad, setImageLoad] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState();
     const [renderKey, setRenderKey] = useState(0);
     const [userData, setUserData] = useState({
         nickname: "",
+        previousPassword: "",
         password: "",
         repeatPassword: "",
         avatar: "",
@@ -43,6 +46,8 @@ export default function AccountSettings() {
     const handlePasswordChange = (e, type) => {
         if (type === "password") {
             setUserData({ ...userData, password: e.target.value });
+        } else if (type === "previous") {
+            setUserData({ ...userData, previousPassword: e.target.value });
         } else {
             setUserData({ ...userData, repeatPassword: e.target.value });
         }
@@ -56,10 +61,10 @@ export default function AccountSettings() {
     };
 
     const handleClickChangePassword = async (e) => {
-        // tuy
         e.preventDefault();
         const response = await changePassword(
             user.id,
+            userData.previousPassword,
             userData.password,
             userData.repeatPassword
         );
@@ -67,7 +72,7 @@ export default function AccountSettings() {
             logout();
             navigate("/login");
         } else {
-            console.log("error");
+            console.log("error changing password");
         }
     };
 
@@ -117,15 +122,14 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    {!imageLoad && (
-                                        <ClipLoader color="#000"></ClipLoader>
+                                    {user.avatar && (
+                                        <img
+                                            src={user.avatar}
+                                            alt="avatar"
+                                            onLoad={() => setImageLoaded(true)}
+                                            className={styles.userAvatar}
+                                        />
                                     )}
-                                    <img
-                                        src={user.avatar}
-                                        alt="avatar"
-                                        onLoad={() => setImageLoad(true)}
-                                        className={styles.userAvatar}
-                                    />
                                 </p>
                             </div>
                         </>
@@ -141,6 +145,12 @@ export default function AccountSettings() {
                     <button onClick={(e) => handleClickChangeNickname(e)}>
                         Change nickname
                     </button>
+                    <input
+                        type="password"
+                        onChange={(e) => handlePasswordChange(e, "previous")}
+                        value={userData.previousPassword}
+                        placeholder="Previous password"
+                    ></input>
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "password")}
