@@ -2,19 +2,22 @@ import React, { useState, useEffect } from "react";
 import authUser from "../authUser";
 import { Link } from "react-router-dom";
 import styles from "./userVideoSection.module.css";
+import useUser from "../useUser";
 import { ClipLoader } from "react-spinners";
 
 export default function UserVideoSection() {
     const [videosObj, setVideosObj] = useState([]);
     const [renderKey, setRenderKey] = useState(0);
     const [imageLoaded, setImageLoaded] = useState(false);
-    const { http, getUser } = authUser();
+    const { http } = authUser();
+    const { getUser } = useUser();
 
     useEffect(() => {
         fetchUserId();
     }, [renderKey]);
 
     const fetchUserId = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
         const user = await getUser();
         fetchUserVideos(user.id);
     };

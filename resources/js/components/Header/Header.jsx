@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
 import fetchImgFromStorage from "../fetchImgFromStorage";
+import useUser from "../useUser";
 import styles from "./header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -31,11 +32,13 @@ export default function Header() {
     const [renderKey, setRenderKey] = useState(0);
     const [tempLogoPath, setTempLogoPath] = useState("");
     const [awatarPath, setAwatarPath] = useState("");
-    const { logout, isLogged, getUser, getToken } = authUser();
+    const { logout, isLogged, getToken } = authUser();
+    const { getUser } = useUser();
 
     const getUserData = async () => {
+        // wait for token update
+        await new Promise((resolve) => setTimeout(resolve, 50));
         const user = await getUser();
-
         if (user.avatar === null) {
             user.avatar = "ico.png";
         }
@@ -48,8 +51,6 @@ export default function Header() {
     useEffect(() => {
         const fetchData = async () => {
             if (isLogged()) {
-                // wait for token update
-                await new Promise((resolve) => setTimeout(resolve, 10));
                 await getUserData();
             } else {
                 userAwatar.current = "ico.png";
@@ -72,7 +73,8 @@ export default function Header() {
         };
 
         fetchData();
-    }, [renderKey, getToken, isLogged, getUserData]);
+    }, [renderKey, isLogged]);
+    // [renderKey, getToken, isLogged, getUserData]
 
     const handleLogout = () => {
         logout();

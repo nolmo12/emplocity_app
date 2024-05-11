@@ -4,6 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import useViews from "../useViews";
 import useLikeCalculation from "../useLikeCalculation";
 import useFetchVideosSearch from "../useFetchVideosSearch";
@@ -21,7 +22,8 @@ import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
     const link = useRef();
-    const { isLogged, getUser } = authUser();
+    const { isLogged } = authUser();
+    const { getUser } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
@@ -49,7 +51,7 @@ export default function VideoFrame() {
             userInteraction: null,
             thumbStyle: null,
         });
-        getUserFirstNameAndId();
+        if (isLogged()) getUserFirstNameAndId();
         setRenderKey((prev) => prev + 1);
 
         if (videoObj) {
@@ -72,6 +74,11 @@ export default function VideoFrame() {
 
     const copyToClipboard = (text) => {
         navigator.clipboard.writeText(text);
+    };
+
+    const handleTimeUpdate = (e, duration) => {
+        const currentTime = e.target.currentTime;
+        duration += currentTime;
     };
 
     const fetchLikeInfo = async () => {
@@ -132,6 +139,7 @@ export default function VideoFrame() {
                             )
                         }
                         onPause={() => pauseTimer()}
+                        onTimeUpdate={(e) => handleTimeUpdate(e, videoDuration)}
                         controls
                         className={styles.videoScreen}
                     ></video>

@@ -1,7 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
+import config from "../../config";
 import fetchImgFromStorage from "../fetchImgFromStorage";
 import styles from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +16,7 @@ export default function LoginPage() {
     });
     const [loginValidation, setLoginValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
+    const { baseTime } = config();
     const { http, setToken, getToken, isLogged } = authUser();
 
     const navigate = useNavigate();
@@ -48,7 +50,7 @@ export default function LoginPage() {
             password: loginData.password,
         })
             .then((res) => {
-                setToken(res.data.authorisation.token, 500);
+                setToken(res.data.authorisation.token, baseTime);
                 navigate("/account");
             })
             .catch((error) => {

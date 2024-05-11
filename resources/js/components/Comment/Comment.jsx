@@ -1,7 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useComments from "../useComments";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import styles from "../Comments/comments.module.css";
 
 export default function Comment({
@@ -10,7 +12,9 @@ export default function Comment({
     reference_code,
     isReply,
 }) {
-    const { getUser } = authUser();
+    const { getUser } = useUser();
+    const { isLogged } = authUser();
+    const navigate = useNavigate();
     const { deleteComment, sendReplyComment, fetchChildren, editComment } =
         useComments();
     const [replyFlag, setReplyFlag] = useState(false);
@@ -42,7 +46,6 @@ export default function Comment({
 
     const handleTextareaChange = (e) => {
         setReplyCommentContent(e.target.textContent);
-        console.log(replyCommentContent);
     };
 
     const handleClickReply = async (e) => {
@@ -50,6 +53,10 @@ export default function Comment({
     };
 
     const handleClickReplyComment = async (e, id) => {
+        if (!isLogged()) {
+            navigate("/login");
+            return;
+        }
         setReplyCommentContent("");
         await sendReplyComment(reference_code, replyCommentContent, id);
 

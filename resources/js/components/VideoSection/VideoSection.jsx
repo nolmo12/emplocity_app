@@ -26,24 +26,23 @@ export default function VideoSection({ sectionType }) {
     const similarVideosObj = useFetchSimilarVideos({ reference_code, offset }); // for similar videos
 
     const handleScroll = _.throttle((event) => {
-        if (sectionType === "reccommend") {
-            const target = event.target;
-            const scrollPercentage =
-                (target.scrollTop /
-                    (target.scrollHeight - target.clientHeight)) *
-                100;
-
-            if (scrollPercentage < 85 && scrollPercentage > 50)
-                setOffsetFlag(false);
-            if (scrollPercentage > 85 && !offsetFlag) {
-                const tempOffset = offset + 1;
-                console.log("tempOffset", tempOffset);
-                setOffset((prev) => prev + 1);
-                fetchNextVideos(tempOffset);
-                setOffsetFlag(true);
-                console.log("Scrollbar 80% event");
-            }
-        }
+        // if (sectionType === "reccommend") {
+        //     const target = event.target;
+        //     const scrollPercentage =
+        //         (target.scrollTop /
+        //             (target.scrollHeight - target.clientHeight)) *
+        //         100;
+        //     if (scrollPercentage < 85 && scrollPercentage > 50)
+        //         setOffsetFlag(false);
+        //     if (scrollPercentage > 85 && !offsetFlag) {
+        //         const tempOffset = offset + 1;
+        //         console.log("tempOffset", tempOffset);
+        //         setOffset((prev) => prev + 1);
+        //         fetchNextVideos(tempOffset);
+        //         setOffsetFlag(true);
+        //         console.log("Scrollbar 80% event");
+        //     }
+        // }
     }, 500);
 
     if (isLoading) {

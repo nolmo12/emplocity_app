@@ -12,7 +12,6 @@ export default function useFetchRecommendVideos({ offset }) {
         const fetchVideos = async () => {
             try {
                 setVideos([]);
-                console.log(offset);
                 const response = await axios.get(
                     `/api/video/listing?offset=${offset}`
                 );
@@ -33,7 +32,6 @@ export default function useFetchRecommendVideos({ offset }) {
                 response.data.videos.map((video) => {
                     tempVideos.push(video);
                 });
-                console.log(tempVideos);
                 setVideos(tempVideos);
                 // setIsLoading(false);
             } catch (error) {
@@ -47,7 +45,6 @@ export default function useFetchRecommendVideos({ offset }) {
                 setVideos([]);
                 const response = await axios.get(`/api/tags/${tag}`);
                 const tempVideos = [];
-                console.log(response.data);
                 response.data.map((video) => {
                     tempVideos.push(video);
                 });

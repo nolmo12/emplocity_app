@@ -24,7 +24,6 @@ export default function useFetchVideo({ reference_code }) {
             const response = await axios.get(
                 `/api/video/getUrl/${reference_code}`
             );
-            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);

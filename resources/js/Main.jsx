@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
@@ -11,9 +11,28 @@ import LoginPage from "./components/LoginPage/LoginPage";
 import AccountSettings from "./components/AccountSettings/AccountSettings";
 import authUser from "./components/authUser";
 import Footer from "./components/Footer/Footer";
+import axios from "axios";
+import config from "./config";
 
 function Main() {
-    const { getToken, isLogged } = authUser();
+    const { isLogged, setToken, getToken } = authUser();
+    const { baseUrl, baseTime } = config();
+    useEffect(() => {
+        const intervalId = setInterval(async () => {
+            if (isLogged()) {
+                const http = axios.create({
+                    baseURL: baseUrl,
+                });
+                http.interceptors.request.use((config) => {
+                    config.headers.Authorization = `Bearer ${getToken()}`;
+                    return config;
+                });
+                const response = await http.post("/api/auth/refresh");
+                setToken(response.data.authorisation.token, baseTime);
+            }
+        }, baseTime - 2000); //120
+        return () => clearInterval(intervalId);
+    }, []);
     return (
         <Routes>
             <Route
