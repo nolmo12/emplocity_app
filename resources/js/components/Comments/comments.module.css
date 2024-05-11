@@ -2,6 +2,9 @@
     position: relative;
     width: 50%;
     top: 5%;
+    overflow-x:hidden;
+    overflow-y:auto;
+    max-height:100px;
 }
 
 .commentDiv p {
