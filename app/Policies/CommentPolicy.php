@@ -53,7 +53,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment): Response
     {
-        return $comment->user->id === $user->id 
+        return $comment->user->id === $user->id || $comment->video->user_id === $user->id
             ? Response::allow()
             : Response::deny('You do not own the comment');
     }

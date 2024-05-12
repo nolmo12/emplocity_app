@@ -15,6 +15,7 @@ use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -566,66 +567,36 @@ class VideoController extends Controller
         return $result;
     }
 
-    public function listing(Request $request)
+    public function list(Request $request)
     {
-        $request->validate([
-            'offset' => 'nullable|integer|min:0',
-        ]);
-        
-        $offset = $request->input('offset', 0);
         $user = $request->user();
 
-        $listedVideos = collect();
-        $watchedTags = collect();
-        $videos = collect();
-
-
-        if(!$user)
-        {
-            $videos = Video::inRandomOrder()->where('visibility', 'Public')->offset(12 * $offset)->limit(12)->get();
-        }
-        else
-        {
-            $watchedVideos = $user->histories()->with('video.tags')->get();
-            foreach($watchedVideos as $history)
-            {
-                $watchedTags = $watchedTags->merge($history->video->tags);
-            }
-
-            foreach ($watchedTags as &$tag)
-            {
-                unset($tag['pivot']);
-            }
-            
-            $videos = Video::whereHas('tags', function($query) use ($watchedTags) {
-                $query->whereIn('name', $watchedTags->pluck('name'));
-            })
-            ->whereNotIn('id', $videos->pluck('id'))
-            ->where('visibility', 'Public')
-            ->inRandomOrder()
-            ->limit(12)
-            ->get();
-        }
-
-        if($videos->count() < 12)
-        {
-            $additionalVideos = Video::inRandomOrder()
-            ->whereNotIn('id', $videos->pluck('id'))
-            ->limit(12 - $videos->count())
-            ->where('visibility', 'Public')
-            ->get();
+        $token = csrf_token();
+        
+        $hash = hash('sha256', $token);
     
-            $videos = $videos->merge($additionalVideos);
-        }
+        $decimal = hexdec($hash);
+        
+        $seed = $decimal / (pow(2, 256) - 1);
 
-        foreach($videos as $video)
+        $seed = min(max($seed, 0), 1);
+
+        DB::statement("SELECT SETSEED($seed)");
+
+        $randomVideos = collect();
+
+        $randomVideos = Video::where('visibility', 'Public')
+        ->orderByRaw('RANDOM()')
+        ->simplePaginate(12);
+
+        foreach ($randomVideos as $key => $video)
         {
             $stats = $video->stats();
             unset($stats['tags']);
-            $listedVideos->push($stats);
+            $randomVideos[$key] = $stats;
         }
 
-        return $listedVideos;
+        return $randomVideos;
     }
     
     public function countView(Request $request, string $referenceCode)
