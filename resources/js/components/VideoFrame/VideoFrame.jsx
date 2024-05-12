@@ -21,6 +21,8 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+    const MAX_DESCRIPTION_LENGTH = 50;
     const link = useRef();
     const { isLogged } = authUser();
     const { getUser } = useUser();
@@ -175,12 +177,6 @@ export default function VideoFrame() {
                                 </div>
                             )}
                         </Popup>
-                        <div className={styles.videoFrameInfoViews}>
-                            <p>
-                                <FontAwesomeIcon icon={faUser} /> {videoViews}
-                            </p>
-                        </div>
-                        {/*views views views views views views views */}
                         <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
@@ -197,7 +193,7 @@ export default function VideoFrame() {
                                 } // 0 for dislike
                                 icon={faThumbsDown}
                                 data-testid="dislike-button"
-                                className={`${styles.videoFrameIconTD} ${
+                                className={`${styles.videoFrameIcon} ${
                                     thumbObj.thumbStyle === "dislike" &&
                                     styles.dislike
                                 }`}
@@ -229,11 +225,17 @@ export default function VideoFrame() {
                             <p>{likesCount}</p>
                         </div>
 
-                        <h1 className={styles.videoFrameInfoTitle}>
+                        <p className={styles.videoFrameInfoTitle}>
                             <p data-testid="video-title">{videoTitle}</p>
-                        </h1>
-                        <h1>
-                            <FontAwesomeIcon icon={faUser} />{" "}
+                        </p>
+                        <div className={styles.videoFrameInfoViews}>
+                            <p>
+                                {videoViews} {"views"}
+                            </p>
+                        </div>
+                        {/*views views views views views views views */}
+                        <p className={styles.videoFrameOwner}>
+                            <FontAwesomeIcon icon={faUser} className={styles.videoFrameOwnerAvatar}/>{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">
                                     <Link
@@ -250,12 +252,21 @@ export default function VideoFrame() {
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
                             )}
-                        </h1>
-                        <h1 className={styles.videoFrameInfoDesc}>
+                        </p>
+                        <p className={styles.videoFrameInfoDesc}>
                             {videoDescription ? (
-                                <p data-testid="video-description">
-                                    {videoDescription}
-                                </p>
+                                <>
+                                    <p data-testid="video-description" className={!isDescriptionExpanded ? styles.collapsed : ''}>
+                                        {isDescriptionExpanded ? videoDescription : videoDescription.length > MAX_DESCRIPTION_LENGTH ? `${videoDescription.slice(0, MAX_DESCRIPTION_LENGTH)}...` : videoDescription}
+                                    </p>
+                                    {videoDescription.length > MAX_DESCRIPTION_LENGTH && (
+                                        !isDescriptionExpanded ? (
+                                            <button onClick={() => setIsDescriptionExpanded(true)}>Show more...</button>
+                                        ) : (
+                                            <button onClick={() => setIsDescriptionExpanded(false)}>Show less...</button>
+                                        )
+                                    )}
+                                </>
                             ) : (
                                 <p data-testid="video-description">
                                     No description
@@ -272,7 +283,7 @@ export default function VideoFrame() {
                                     );
                                 })}
                             </p>
-                        </h1>
+                        </p>
                     </div>
                     <Comments reference_code={reference_code} />
                 </div>

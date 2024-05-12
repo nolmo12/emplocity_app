@@ -49,8 +49,6 @@ export default function Popular() {
                             <li key={user.id}>
                                 <img
                                     src={awatarPath}
-                                    width={100}
-                                    height={100}
                                     alt="avatar"
                                 />
                                 <p>{user.name}</p>

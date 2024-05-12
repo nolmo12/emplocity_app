@@ -256,6 +256,7 @@ class UserController extends Controller
     public function grantAdmin(Request $request)
     {
         $user = User::findOrFail($request->user_id);
+        $this->authorize('update', $user);
         error_log('you have an admin wow:o');
     }
 

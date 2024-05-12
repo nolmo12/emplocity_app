@@ -126,7 +126,7 @@ Route::prefix('video')->group(function () {
 
     Route::get('/search', [VideoController::class,'search']);
 
-    Route::get('/listing', [VideoController::class,'listing']);
+    Route::get('/listing', [VideoController::class,'list']);
 
     Route::get('/all', [VideoController::class,'all']);
 
@@ -170,3 +170,7 @@ Route::prefix('history')->group(function () {
     Route::get('/read', [HistoryController::class,'read']);
 
 });
+
+// Route::group(['middleware' => ['auth:api', 'checkAdmin'], 'prefix' => 'admin'], function (){
+    
+// });

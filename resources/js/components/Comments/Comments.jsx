@@ -5,6 +5,7 @@ import useComments from "../useComments";
 import authUser from "../authUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
+import _ from "lodash";
 
 export default function Comments({ reference_code }) {
     const [renderKey, setRenderKey] = useState(0);
@@ -34,8 +35,19 @@ export default function Comments({ reference_code }) {
         setRenderKey((prev) => prev + 1);
     };
 
+    const handleScroll = _.throttle((e) => {
+        const element = e.target;
+        if (
+            element.scrollHeight - element.scrollTop ===
+                element.clientHeight ||
+            element.scrollHeight - element.scrollTop === element.clientHeight + 1
+        ) {
+            console.log("Bottom of scroll reached!");
+        }
+    }, 300);
+
     return (
-        <div className={styles.commentDiv}>
+        <div className={styles.commentDiv} onScroll={handleScroll}>
             <div>
                 <div
                     className={styles.commentTextarea}

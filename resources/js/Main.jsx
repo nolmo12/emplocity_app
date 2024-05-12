@@ -187,6 +187,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="aboutUs" />
+                        <Footer />
                     </>
                 }
             />
@@ -196,6 +197,7 @@ function Main() {
                     <>
                         <Header />
                         <MainContent contentType="rules" />
+                        <Footer />
                     </>
                 }
             />
