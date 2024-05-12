@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
 import fetchImgFromStorage from "../fetchImgFromStorage";
+import useUser from "../useUser";
 import styles from "./header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -21,17 +22,32 @@ import { ClipLoader } from "react-spinners";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
+    const [imageLoaded, setImageLoaded] = useState({
+        awatar: false,
+        tempLogo: false,
+    });
     const userAwatar = useRef("");
     const userId = useRef("");
     const [path, setPath] = useState(null);
+    const [renderKey, setRenderKey] = useState(0);
     const [tempLogoPath, setTempLogoPath] = useState("");
     const [awatarPath, setAwatarPath] = useState("");
-    const { logout, isLogged, getUser } = authUser();
+    const { logout, isLogged, getToken } = authUser();
+    const { getUser } = useUser();
+
+    const getUserData = async () => {
+        // wait for token update
+        await new Promise((resolve) => setTimeout(resolve, 100));
+        const user = await getUser();
+        userAwatar.current = user.avatar;
+        const avatarFileName = userAwatar.current.split("/").pop();
+        userAwatar.current = avatarFileName;
+        userId.current = user.id;
+    };
 
     useEffect(() => {
         const fetchData = async () => {
-            if (isLogged) {
-                console.log("isLogged");
+            if (isLogged()) {
                 await getUserData();
             } else {
                 userAwatar.current = "ico.png";
@@ -52,18 +68,14 @@ export default function Header() {
                 }
             }
         };
-        fetchData();
-    }, [isLogged]);
 
-    const getUserData = async () => {
-        const user = await getUser();
-        if (user.avatar === null) {
-            user.avatar = "ico.png";
-        }
-        userAwatar.current = user.avatar;
-        const avatarFileName = userAwatar.current.split("/").pop();
-        userAwatar.current = avatarFileName;
-        userId.current = user.id;
+        fetchData();
+    }, [renderKey, isLogged]);
+    // [renderKey, getToken, isLogged, getUserData]
+
+    const handleLogout = () => {
+        logout();
+        setRenderKey((prev) => prev + 1);
     };
 
     const toggleMenu = () => {
@@ -84,7 +96,7 @@ export default function Header() {
 
     const logoutElement = (
         <li onClick={toggleMenu}>
-            <button onClick={logout} id={styles.logout}>
+            <button onClick={() => handleLogout()} id={styles.logout}>
                 <FontAwesomeIcon
                     icon={faSignOutAlt}
                     className={styles.imgMenu}
@@ -194,26 +206,44 @@ export default function Header() {
         <>
             <header>
                 {tempLogoPath ? (
-                    <Link to="/">
-                        <img
-                            src={tempLogoPath}
-                            alt="Logo"
-                            data-testid="tempLogo"
-                            id={styles.imgLogo}
-                        ></img>
-                    </Link>
+                    <>
+                        {!imageLoaded.tempLogo && <ClipLoader color="#000" />}
+                        <Link to="/">
+                            <img
+                                src={tempLogoPath}
+                                alt="Logo"
+                                data-testid="tempLogo"
+                                onLoad={() =>
+                                    setImageLoaded((prev) => ({
+                                        ...prev,
+                                        tempLogo: true,
+                                    }))
+                                }
+                                id={styles.imgLogo}
+                            ></img>
+                        </Link>
+                    </>
                 ) : (
                     <ClipLoader color="#000" />
                 )}
                 <SearchBar />
                 {awatarPath ? (
-                    <img
-                        src={awatarPath}
-                        alt="Icon"
-                        data-testid="icon"
-                        id={styles.imgIcon}
-                        onClick={toggleMenu}
-                    ></img>
+                    <>
+                        {!imageLoaded.awatar && <ClipLoader color="#000" />}
+                        <img
+                            src={awatarPath}
+                            alt="Icon"
+                            data-testid="icon"
+                            id={styles.imgIcon}
+                            onLoad={() =>
+                                setImageLoaded((prev) => ({
+                                    ...prev,
+                                    awatar: true,
+                                }))
+                            }
+                            onClick={toggleMenu}
+                        ></img>
+                    </>
                 ) : (
                     <ClipLoader color="#000" />
                 )}
@@ -223,8 +253,8 @@ export default function Header() {
                 data-testid="ulMenu"
                 className={showMenu ? styles.menuVisible : ""}
             >
-                {!isLogged && registerElement}
-                {isLogged ? logoutElement : loginElement}
+                {!isLogged() && registerElement}
+                {isLogged() ? logoutElement : loginElement}
                 {uploadElement}
                 {accountElement}
                 {historyElement}

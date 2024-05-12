@@ -13,9 +13,15 @@ export default function useUserSettings() {
         }
     };
 
-    const changePassword = async (id, newPassword, newPasswordRepeat) => {
+    const changePassword = async (
+        id,
+        prevPassword,
+        newPassword,
+        newPasswordRepeat
+    ) => {
         try {
             const repsonse = await http.post(`/api/auth/update/${id}`, {
+                currentPassword: prevPassword,
                 password: newPassword,
                 repeatPassword: newPasswordRepeat,
             });

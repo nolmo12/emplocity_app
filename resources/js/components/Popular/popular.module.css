@@ -6,10 +6,21 @@
     transform: translate(-5%, 5%); 
 }
 
+#Popular p {
+    padding-left:0.5em;
+    padding-top:0.5em;
+}
+
+#Popular a {
+    color:white;
+    text-decoration: none;
+}
+
 #Popular li {
     margin-bottom:1.5em;
-    width:75%;
+    width:90%;
     list-style-type: none;
+    display:flex;
 }
 
 #Popular h1 {
@@ -27,6 +38,13 @@
 
 #Popular li:active {
     transform: scale(0.95);
+}
+
+#Popular img {
+    width:2em;
+    height:2em;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 

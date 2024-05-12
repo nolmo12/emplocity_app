@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import authUser from "../authUser";
 import Message from "../Message/Message";
-import fetchImage from "../fetchImgFromStorage";
+import fetchImgFromStorage from "../fetchImgFromStorage";
 import styles from "./forgotPassword.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
@@ -22,8 +22,10 @@ export default function ForgotPasswordPage() {
 
     useEffect(() => {
         const fetchData = async () => {
+            const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
+                console.log(iconPath);
                 setIconPath(iconPath);
             } catch (error) {
                 console.error(error);

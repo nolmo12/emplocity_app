@@ -120,8 +120,6 @@ export default function SearchResult({ searchType }) {
     if (searchType === "userSearch") {
         let matchedUser = [];
         let otherResults = [];
-
-        // <Link to={``}>  - when user profile is ready
         Object.entries(searchedObj).forEach(([key, value]) => {
             if (key === "users") {
                 value.forEach((user) => {
@@ -203,6 +201,7 @@ export default function SearchResult({ searchType }) {
                 <select
                     onChange={(e) => handleChangeSort(e)}
                     value={checkUrl()}
+                    className={styles.searchSort}
                 >
                     <option value="upload_date_desc">desc</option>
                     <option value="upload_date_asc">asc</option>

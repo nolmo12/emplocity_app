@@ -157,7 +157,7 @@ Route::prefix('video')->group(function () {
     Route::delete('/comment/delete', [CommentController::class, 'delete']);
     Route::patch('/comment/update', [CommentController::class, 'update']);
 
-    
+    Route::get('/getUrl/{reference_code}', [VideoController::class, 'getVideoUrl']);
 });
 
 Route::prefix('tags')->group(function (){

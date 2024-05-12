@@ -95,8 +95,9 @@ class UserController extends Controller
             // Validate the request data
         $validateUser = Validator::make($request->all(), [
             'name' => 'string|max:255',
-            'password' => 'string',
-            'repeatPassword' => 'same:password',
+            'currentPassword' => 'string',
+            'password' => 'string|required_with:current_password',
+            'repeatPassword' => 'string|required_with:password',
             'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
         ]);
 
@@ -117,7 +118,25 @@ class UserController extends Controller
         if ($request->filled('name')) {
             $user->name = $request->name;
         }
-        if ($request->filled('password')) {
+        if ($request->filled('password') && $request->filled('currentPassword')) {
+            if (!Hash::check($request->currentPassword, $user->password)) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Current password is incorrect',
+                ], 401);
+            }
+            if ($request->password != $request->repeatPassword) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Passwords do not match',
+                ], 401);
+            }
+            if ($request->password == $request->currentPassword) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'New password cannot be the same as the current password',
+                ], 401);
+            }
             $user->password = Hash::make($request->password);
         }
 

@@ -33,15 +33,46 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     font-size: 0.5em;
 }
 
+.videoFrameInfo a{
+    color:white;
+}
+
 .videoFrameInfoTitle {
     width: 80%;
 }
 
 .videoFrameInfoDesc {
     height: 10vh;
+    width:60%;
+    word-wrap: break-word;
 }
 
-.videoFrameInfoTitle p, .videoFrameInfoDesc p, .videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar{
+.videoFrameInfoDesc p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+}
+
+.videoFrameInfoDesc .collapsed {
+    white-space: normal;
+}
+
+.videoFrameInfoDesc button {
+    display: block;
+    margin-top: 5px;
+    border:none;
+    background-color: #14213d;
+    color:white;
+    font-size:0.8rem;
+    cursor: pointer;
+    margin-bottom:1em;
+}
+
+.videoFrameInfoTitle p {
+    font-size:1.2rem;
+}
+
+.videoFrameInfoDesc p, .videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar, .videoFrameInfoViews{
     font-size:1rem;
 }
 
@@ -75,23 +106,18 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     width: 3em;
     margin-left: 1em;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.videoFrameIcon:active{
+    transform: scale(0.80);
 }
 
 .videoFrameIcon.like {
     color: green;
 }
 
-.videoFrameIconTD {
-    position: relative;
-    float: right;
-    height: 3em;
-    width: 3em;
-    margin-left: 1em;
-    transform: scaleX(-1);
-    cursor: pointer;
-}
-
-.videoFrameIconTD.dislike {
+.videoFrameIcon.dislike {
     color: red;
 }
 

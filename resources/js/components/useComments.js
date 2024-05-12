@@ -24,9 +24,6 @@ export default function useComments() {
                 content: content.replace(/\n/g, "<br>"),
             });
         } catch (error) {
-            if (error.response.status === 401) {
-                navigate("/login");
-            }
             console.log(error);
         }
     };
@@ -39,9 +36,6 @@ export default function useComments() {
                 parent: parentId,
             });
         } catch (error) {
-            if (error.response.status === 401) {
-                navigate("/login");
-            }
             console.log(error);
         }
     };

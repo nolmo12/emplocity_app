@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
@@ -6,41 +6,41 @@ import { useNavigate } from "react-router-dom";
 import config from "../config";
 
 export default function authUser() {
-    const [token, setToken] = useState();
     const [csrfToken, setCsrfToken] = useState();
-    const [isLogged, setIsLogged] = useState(false);
     const navigate = useNavigate();
-    const { tempBaseUrl } = config();
+    const { baseUrl } = config();
 
     const getToken = () => {
         const token = Cookies.get("token");
-        if (token) {
-            const decodedToken = jwtDecode(token);
-        }
         return token;
     };
 
-    useEffect(() => {
-        if (getToken() && !isLogged) {
-            console.log(11);
-            setIsLogged(true);
-        }
-        if (!getToken() && isLogged) {
-            console.log(22);
-            setIsLogged(false);
-        }
-    }, [getToken(), isLogged]);
+    const [token, setToken] = useState(getToken());
+
+    const http = axios.create({
+        baseURL: baseUrl,
+        // headers: {
+        //     Authorization: `Bearer ${getToken()}`,
+        // },
+    });
 
     const getCsrfToken = () => {
         const token = Cookies.get("XSRF-TOKEN");
         return token;
     };
 
+    useEffect(() => {
+        http.interceptors.request.use((config) => {
+            config.headers.Authorization = `Bearer ${token}`;
+            return config;
+        });
+    }, [token]);
+
     const saveToken = (tempToken, time) => {
         const date = new Date(); // time from api
-        date.setTime(date.getTime() + time * 5000);
+        const tempTime = Number(date.getTime() + time);
+        date.setTime(tempTime);
         Cookies.set("token", tempToken, {
-            path: "/",
             expires: date,
         });
         setToken(tempToken);
@@ -48,23 +48,15 @@ export default function authUser() {
 
     const logout = () => {
         Cookies.remove("token");
-        setToken(null);
         navigate("/");
     };
 
-    const http = axios.create({
-        baseURL: tempBaseUrl,
-        headers: {
-            Authorization: `Bearer ${getToken()}`,
-        },
-    });
-
-    const getUser = async () => {
-        try {
-            const response = await http.get("/api/user");
-            return response.data;
-        } catch (error) {
-            console.log(error);
+    const isLogged = () => {
+        const tempToken = getToken();
+        if (tempToken) {
+            return true;
+        } else {
+            return false;
         }
     };
 
@@ -72,10 +64,8 @@ export default function authUser() {
         setToken: saveToken,
         logout,
         getToken,
-        token,
         http,
         isLogged,
         getCsrfToken,
-        getUser,
     };
 }

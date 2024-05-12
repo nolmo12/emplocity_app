@@ -625,4 +625,14 @@ class VideoController extends Controller
             }
         }
     }
+
+   
+    public function getVideoUrl(Request $request, $reference_code)
+    {
+        $video = Video::where('reference_code', $reference_code)->firstOrFail();
+
+        $videoUrl = asset('video/' . $video->reference_code);
+
+        return response()->json(['url' => $videoUrl]);
+    }
 }

@@ -2,20 +2,25 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import useUserSettings from "../useUserSettings";
 import styles from "./accountSettings.module.css";
+import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { render } from "@testing-library/react";
 
 export default function AccountSettings() {
     const navigate = useNavigate();
-    const { getUser, logout } = authUser();
+    const { logout } = authUser();
+    const { getUser } = useUser();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
+    const [imageLoaded, setImageLoaded] = useState();
     const [renderKey, setRenderKey] = useState(0);
     const [userData, setUserData] = useState({
         nickname: "",
+        previousPassword: "",
         password: "",
         repeatPassword: "",
         avatar: "",
@@ -41,6 +46,8 @@ export default function AccountSettings() {
     const handlePasswordChange = (e, type) => {
         if (type === "password") {
             setUserData({ ...userData, password: e.target.value });
+        } else if (type === "previous") {
+            setUserData({ ...userData, previousPassword: e.target.value });
         } else {
             setUserData({ ...userData, repeatPassword: e.target.value });
         }
@@ -54,10 +61,10 @@ export default function AccountSettings() {
     };
 
     const handleClickChangePassword = async (e) => {
-        // tuy
         e.preventDefault();
         const response = await changePassword(
             user.id,
+            userData.previousPassword,
             userData.password,
             userData.repeatPassword
         );
@@ -65,7 +72,7 @@ export default function AccountSettings() {
             logout();
             navigate("/login");
         } else {
-            console.log("error");
+            console.log("error changing password");
         }
     };
 
@@ -78,7 +85,6 @@ export default function AccountSettings() {
     const handleChangeAvatar = async (e) => {
         e.preventDefault();
         setUserData({ ...userData, avatar: e.target.files[0] });
-        console.log(e.target.files[0]);
     };
 
     const handleClickChangeAvatar = async (e) => {
@@ -87,7 +93,6 @@ export default function AccountSettings() {
 
         await changeAvatar(user.id, userData.avatar);
     };
-    console.log(user);
     return (
         <main>
             <div className={styles.settingsDiv}>
@@ -117,7 +122,14 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    <img src={user.avatar} alt="avatar" className={styles.userAvatar}/>
+                                    {user.avatar && (
+                                        <img
+                                            src={user.avatar}
+                                            alt="avatar"
+                                            onLoad={() => setImageLoaded(true)}
+                                            className={styles.userAvatar}
+                                        />
+                                    )}
                                 </p>
                             </div>
                         </>
@@ -133,6 +145,12 @@ export default function AccountSettings() {
                     <button onClick={(e) => handleClickChangeNickname(e)}>
                         Change nickname
                     </button>
+                    <input
+                        type="password"
+                        onChange={(e) => handlePasswordChange(e, "previous")}
+                        value={userData.previousPassword}
+                        placeholder="Previous password"
+                    ></input>
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "password")}

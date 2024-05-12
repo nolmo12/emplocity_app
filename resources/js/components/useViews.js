@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import authUser from "./authUser";
 export default function useViews() {
     const [timerFlag, setTimerFlag] = useState(false);
-    const timeRemaining = useRef(10);
+    const timeRemaining = useRef();
     const timeoutId = useRef(null);
     const { http } = authUser();
     const sendViews = async (reference_code) => {
@@ -15,11 +15,9 @@ export default function useViews() {
     };
 
     const startTimer = (duration, reference_code) => {
-        console.log(duration);
         if (timerFlag === false) {
             setTimerFlag(true);
             timeoutId.current = setTimeout(async () => {
-                console.log("Timer is up");
                 await sendViews(reference_code);
             }, (duration - timeRemaining.current.currentTime) * 1000);
         } else {
@@ -29,7 +27,6 @@ export default function useViews() {
 
     const pauseTimer = () => {
         clearTimeout(timeoutId.current);
-        console.log(timeRemaining.current.currentTime);
     };
 
     const resumeTimer = (duration, reference_code) => {
@@ -37,7 +34,6 @@ export default function useViews() {
             console.log("Timer is up2");
             await sendViews(reference_code);
         }, (duration - timeRemaining.current.currentTime) * 1000);
-        console.log(timeRemaining.current.currentTime);
     };
 
     return {

@@ -2,33 +2,36 @@ import React, { useState, useEffect } from "react";
 import authUser from "../authUser";
 import { Link } from "react-router-dom";
 import styles from "./userVideoSection.module.css";
+import useUser from "../useUser";
 import { ClipLoader } from "react-spinners";
 
 export default function UserVideoSection() {
     const [videosObj, setVideosObj] = useState([]);
-    const { http, getUser } = authUser();
+    const [renderKey, setRenderKey] = useState(0);
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const { http } = authUser();
+    const { getUser } = useUser();
 
     useEffect(() => {
         fetchUserId();
-    }, []);
+    }, [renderKey]);
 
     const fetchUserId = async () => {
+        await new Promise((resolve) => setTimeout(resolve, 50));
         const user = await getUser();
-        console.log(user);
         fetchUserVideos(user.id);
     };
 
     const fetchUserVideos = async (id) => {
         const response = await http.get(`/api/auth/read/${id}`);
         setVideosObj(response.data);
-        console.log(response.data);
     };
 
     const handleClickRemove = async (reference_code) => {
-        console.log(reference_code);
-        await http.delete(`/api/video/delete/`, {
-            reference_code: reference_code,
+        await http.delete(`/api/video/delete`, {
+            params: { reference_code: reference_code },
         });
+        setRenderKey((prev) => prev + 1);
     };
 
     return (
@@ -46,16 +49,22 @@ export default function UserVideoSection() {
                     </tr>
                 </thead>
                 <tbody>
-                    {videosObj.videos &&
+                    {videosObj.videos ? (
                         videosObj.videos.map((video) => {
                             const path = `/video/${video.video.reference_code}`;
                             return (
                                 <tr key={video.video.id}>
                                     <td>
+                                        {!imageLoaded && (
+                                            <ClipLoader color="#000"></ClipLoader>
+                                        )}
                                         <Link to={path}>
                                             <img
                                                 src={video.video.thumbnail}
                                                 alt="thumbnail"
+                                                onLoad={() =>
+                                                    setImageLoaded(true)
+                                                }
                                             />
                                         </Link>
                                     </td>
@@ -93,7 +102,10 @@ export default function UserVideoSection() {
                                     </td>
                                 </tr>
                             );
-                        })}
+                        })
+                    ) : (
+                        <ClipLoader color="#000" size={200}></ClipLoader>
+                    )}
                 </tbody>
             </table>
         </div>

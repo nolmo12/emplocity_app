@@ -17,12 +17,12 @@ export default function SearchBar() {
 
     function handleKeyDown(e) {
         if (e.key === "Enter") {
-            search();
+            if (data) search();
         }
     }
 
     const handleClick = () => {
-        search();
+        if (data) search();
     };
 
     const search = async () => {
