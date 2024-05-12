@@ -18,6 +18,7 @@ function Main() {
     const { isLogged, setToken, getToken } = authUser();
     const { baseUrl, baseTime } = config();
     useEffect(() => {
+        const min = 1000 * 60;
         if (isLogged()) {
             setToken(getToken(), baseTime);
         }
@@ -35,7 +36,7 @@ function Main() {
             const response = await http.post("/api/auth/refresh");
             console.log(response.data);
             setToken(response.data.authorisation.token, baseTime);
-        }, baseTime - 3000); //3 sec before
+        }, baseTime - min);
     }, []);
     return (
         <Routes>

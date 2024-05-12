@@ -2,6 +2,14 @@ import React from "react";
 import { useState } from "react";
 
 export default function useValidation() {
+    const [passwordValidation, setPasswordValidation] = useState({
+        previousPasswordValidation: false,
+        passwordValidation: false,
+        repeatPasswordValidation: false,
+    });
+    const [nicknameValidation, setNicknameValidation] = useState({
+        nicknameValidation: false,
+    });
     const validateForm = (type, data) => {
         if (type === "register" && data) {
             const validationInfo = {
@@ -48,6 +56,41 @@ export default function useValidation() {
                 });
             });
             return validationInfo;
+        }
+        if (type === "accountSettings" && data) {
+            if (data.length === 1) {
+                if (data[0].includes("The name field must be a string.")) {
+                    setNicknameValidation({
+                        nicknameValidation: true,
+                    });
+                }
+            } else {
+                data.forEach((errorObj) => {
+                    Object.entries(errorObj).forEach(([key, value]) => {
+                        console.log(key);
+                        if (key == 461) {
+                            setPasswordValidation((prev) => ({
+                                ...prev,
+                                previousPasswordValidation: true,
+                            }));
+                        }
+                        if (key == 462) {
+                            passwordValidation.passwordValidation = true;
+                            setPasswordValidation((prev) => ({
+                                ...prev,
+                                passwordValidation: true,
+                            }));
+                        }
+                        if (key == 463) {
+                            setPasswordValidation((prev) => ({
+                                ...prev,
+                                repeatPasswordValidation: true,
+                            }));
+                        }
+                    });
+                });
+            }
+            return { passwordValidation, nicknameValidation };
         }
     };
 

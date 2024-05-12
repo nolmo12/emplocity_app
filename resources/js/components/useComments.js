@@ -21,7 +21,7 @@ export default function useComments() {
         try {
             await http.post(`/api/video/comment`, {
                 reference_code: reference_code,
-                content: content.replace(/\n/g, "<br>"),
+                content: content, //.replace(/\n/g, "<br>")
             });
         } catch (error) {
             console.log(error);

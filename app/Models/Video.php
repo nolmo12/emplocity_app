@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Video extends Model implements SearchInterface
 {
-    use HasFactory, Searchable;
+    use HasFactory; // ,Searchable
 
     protected $fillable = [
         'thumbnail', 'video', 'user_id', 'tags'

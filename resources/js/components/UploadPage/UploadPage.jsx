@@ -82,6 +82,7 @@ export default function UploadPage() {
             setVideoSent(true);
         } catch (error) {
             if (error.response && error.response.data) {
+                console.log(error);
                 const errors = error.response.data.errors;
                 const validationResult = validateForm("upload", errors);
                 setValidationInfo(validationResult);

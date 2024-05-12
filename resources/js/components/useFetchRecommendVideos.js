@@ -2,20 +2,23 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import authUser from "./authUser";
-export default function useFetchRecommendVideos({ offset }) {
+export default function useFetchRecommendVideos({ pageNumber }) {
     const [videos, setVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const { tag } = useParams();
     const { userId } = useParams();
     const { http } = authUser();
     useEffect(() => {
+        setVideos([]);
         const fetchVideos = async () => {
             try {
                 setVideos([]);
                 const response = await axios.get(
-                    `/api/video/listing?offset=${offset}`
+                    `/api/video/listing?page=${pageNumber}`
                 );
-                response.data.map((video) => {
+                console.log(response.data);
+                response.data.data.map((video) => {
+                    console.log(videos);
                     setVideos((videos) => [...videos, video]);
                 });
                 // setIsLoading(false);
@@ -63,12 +66,12 @@ export default function useFetchRecommendVideos({ offset }) {
         }
     }, [userId, tag]);
 
-    const fetchNextVideos = async (offset) => {
+    const fetchNextVideos = async (pageNumber) => {
         try {
             const response = await http.get(
-                `/api/video/listing?offset=${offset}`
+                `/api/video/listing?page=${pageNumber}`
             );
-            response.data.map((video) => {
+            response.data.data.map((video) => {
                 setVideos((videos) => [...videos, video]);
             });
         } catch (error) {
