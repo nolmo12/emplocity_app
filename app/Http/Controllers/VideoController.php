@@ -477,12 +477,17 @@ class VideoController extends Controller
                 $soundexWord = soundex($word);
                 $query->whereRaw("SOUNDEX(name) = '$soundexWord'");
             })
+            ->orWhereHas('tags', function ($query) use ($word) {
+                $query->where('name', 'like', "%$word%");
+            })
             ->offset(12 * $offset)
             ->get();
         
             $users = User::where(function ($query) use ($word) {
                 $query->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$word])
-                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX(?)", [$word]);
+                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX(?)", [$word])
+                      ->orWhere('name', 'like', "%$word%")
+                      ->orWhere('first_name', 'like', "%$word%");
             })
             ->get();
 
@@ -624,15 +629,5 @@ class VideoController extends Controller
                 return response()->json('Succesfully added view');
             }
         }
-    }
-
-   
-    public function getVideoUrl(Request $request, $reference_code)
-    {
-        $video = Video::where('reference_code', $reference_code)->firstOrFail();
-
-        $videoUrl = asset('video/' . $video->reference_code);
-
-        return response()->json(['url' => $videoUrl]);
     }
 }
