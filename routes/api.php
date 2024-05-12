@@ -170,3 +170,7 @@ Route::prefix('history')->group(function () {
     Route::get('/read', [HistoryController::class,'read']);
 
 });
+
+// Route::group(['middleware' => ['auth:api', 'checkAdmin'], 'prefix' => 'admin'], function (){
+    
+// });
