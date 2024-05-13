@@ -1,9 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import useFetchVideo from "../useFetchVideo";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import useViews from "../useViews";
 import useLikeCalculation from "../useLikeCalculation";
 import useFetchVideosSearch from "../useFetchVideosSearch";
@@ -20,19 +21,22 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
-    const { http, isLogged, getUser } = authUser();
+    const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+    const MAX_DESCRIPTION_LENGTH = 50;
+    const link = useRef();
+    const { isLogged } = authUser();
+    const { getUser } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
-    const { fetchLikes, sendLikes } = useLike();
-    const { sendViews, startTimer, pauseTimer, resumeTimer, timeRemaining } =
-        useViews();
+    const { fetchLikes } = useLike();
+    const { startTimer, pauseTimer, timeRemaining } = useViews();
     const { reference_code } = useParams();
-    const { videoObj, isLoading } = useFetchVideo({ reference_code });
+    const { videoObj, isLoading, getVideoLink } = useFetchVideo({
+        reference_code,
+    });
     const [likesCount, setLikesCount] = useState(0);
     const [userFirstName, setUserFirstName] = useState();
-    const [userId, setUserId] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
-    const [shareIsClicked, setShareIsClicked] = useState(false);
     const [renderKey, setRenderKey] = useState(0);
     const [thumbObj, setThumbObj] = useState({
         like: false,
@@ -49,10 +53,11 @@ export default function VideoFrame() {
             userInteraction: null,
             thumbStyle: null,
         });
-        getUserFirstNameAndId();
+        if (isLogged()) getUserFirstNameAndId();
         setRenderKey((prev) => prev + 1);
 
         if (videoObj) {
+            getLink();
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
         }
@@ -61,8 +66,21 @@ export default function VideoFrame() {
 
     const getUserFirstNameAndId = async () => {
         const user = await getUser();
-        setUserId(user.id);
         setUserFirstName(user.first_name);
+    };
+
+    const getLink = async () => {
+        const tempLink = await getVideoLink();
+        link.current = tempLink.url;
+    };
+
+    const copyToClipboard = (text) => {
+        navigator.clipboard.writeText(text);
+    };
+
+    const handleTimeUpdate = (e, duration) => {
+        const currentTime = e.target.currentTime;
+        duration += currentTime;
     };
 
     const fetchLikeInfo = async () => {
@@ -94,10 +112,6 @@ export default function VideoFrame() {
         }
     };
 
-    const handleShareClick = (e) => {
-        setShareIsClicked(true);
-    };
-
     if (!isLoading) {
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
@@ -127,6 +141,7 @@ export default function VideoFrame() {
                             )
                         }
                         onPause={() => pauseTimer()}
+                        onTimeUpdate={(e) => handleTimeUpdate(e, videoDuration)}
                         controls
                         className={styles.videoScreen}
                     ></video>
@@ -136,7 +151,6 @@ export default function VideoFrame() {
                                 <FontAwesomeIcon
                                     icon={faShare}
                                     className={styles.videoFrameIcon}
-                                    onClick={handleShareClick}
                                 />
                             }
                             position="center"
@@ -145,12 +159,16 @@ export default function VideoFrame() {
                         >
                             {(close) => (
                                 <div className={styles.sharePopup}>
-                                    <p>
-                                        {JSON.stringify(videoObj.video.video)}
-                                    </p>
+                                    <p>{link.current}</p>
                                     <button
                                         onClick={() => {
-                                            setShareIsClicked(false);
+                                            copyToClipboard(link.current);
+                                        }}
+                                    >
+                                        Copy
+                                    </button>
+                                    <button
+                                        onClick={() => {
                                             close();
                                         }}
                                     >
@@ -159,12 +177,6 @@ export default function VideoFrame() {
                                 </div>
                             )}
                         </Popup>
-                        <div className={styles.videoFrameInfoViews}>
-                            <p>
-                                <FontAwesomeIcon icon={faUser} /> {videoViews}
-                            </p>
-                        </div>
-                        {/*views views views views views views views */}
                         <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
@@ -181,7 +193,7 @@ export default function VideoFrame() {
                                 } // 0 for dislike
                                 icon={faThumbsDown}
                                 data-testid="dislike-button"
-                                className={`${styles.videoFrameIconTD} ${
+                                className={`${styles.videoFrameIcon} ${
                                     thumbObj.thumbStyle === "dislike" &&
                                     styles.dislike
                                 }`}
@@ -213,11 +225,17 @@ export default function VideoFrame() {
                             <p>{likesCount}</p>
                         </div>
 
-                        <h1 className={styles.videoFrameInfoTitle}>
+                        <p className={styles.videoFrameInfoTitle}>
                             <p data-testid="video-title">{videoTitle}</p>
-                        </h1>
-                        <h1>
-                            <FontAwesomeIcon icon={faUser} />{" "}
+                        </p>
+                        <div className={styles.videoFrameInfoViews}>
+                            <p>
+                                {videoViews} {"views"}
+                            </p>
+                        </div>
+                        {/*views views views views views views views */}
+                        <p className={styles.videoFrameOwner}>
+                            <FontAwesomeIcon icon={faUser} className={styles.videoFrameOwnerAvatar}/>{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">
                                     <Link
@@ -234,12 +252,21 @@ export default function VideoFrame() {
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
                             )}
-                        </h1>
-                        <h1 className={styles.videoFrameInfoDesc}>
+                        </p>
+                        <p className={styles.videoFrameInfoDesc}>
                             {videoDescription ? (
-                                <p data-testid="video-description">
-                                    {videoDescription}
-                                </p>
+                                <>
+                                    <p data-testid="video-description" className={!isDescriptionExpanded ? styles.collapsed : ''}>
+                                        {isDescriptionExpanded ? videoDescription : videoDescription.length > MAX_DESCRIPTION_LENGTH ? `${videoDescription.slice(0, MAX_DESCRIPTION_LENGTH)}...` : videoDescription}
+                                    </p>
+                                    {videoDescription.length > MAX_DESCRIPTION_LENGTH && (
+                                        !isDescriptionExpanded ? (
+                                            <button onClick={() => setIsDescriptionExpanded(true)}>Show more...</button>
+                                        ) : (
+                                            <button onClick={() => setIsDescriptionExpanded(false)}>Show less...</button>
+                                        )
+                                    )}
+                                </>
                             ) : (
                                 <p data-testid="video-description">
                                     No description
@@ -256,7 +283,7 @@ export default function VideoFrame() {
                                     );
                                 })}
                             </p>
-                        </h1>
+                        </p>
                     </div>
                     <Comments reference_code={reference_code} />
                 </div>

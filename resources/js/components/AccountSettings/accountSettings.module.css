@@ -37,9 +37,11 @@
 
 .userInfoForm .userAvatar {
     height:4em;
-    width:6em;
+    width:4em;
     position:relative;
-    left:25%;
+    left:35%;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 .settingsDiv input {
@@ -64,6 +66,16 @@
     color:white;
 }
 
+form .selectedAvatar {
+    height:4em;
+    width:4em;
+    margin-bottom:1em;
+    border-radius: 50%;
+    overflow: hidden;
+    position:relative;
+    left:15%;
+}
+
 .settingsDiv .avatarButton {
     display:block;
 }
@@ -73,7 +85,7 @@
     height:2em;
     width: 5%;
     left:51%;
-    bottom:23%;
+    bottom:20%;
     background-color: white;
     color:black;
 }
@@ -118,12 +130,6 @@
 
 .avatarInput[type="file"]:active::file-selector-button {
     transform: scale(0.95);
-}
-
-form .selectedAvatar {
-    width:9em;
-    height:6em;
-    margin-bottom:1em;
 }
 
 .avatarSettings p {

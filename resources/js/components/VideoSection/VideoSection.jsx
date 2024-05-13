@@ -12,25 +12,37 @@ import styles from "./videoSection.module.css";
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const [offset, setOffset] = useState(0);
-    const { videos, isLoading } = useFetchRecommendVideos({ offset });
+    const [offsetFlag, setOffsetFlag] = useState(false);
+    const { videos, isLoading, fetchNextVideos } = useFetchRecommendVideos({
+        offset,
+    });
     const { calculateLikeRatio } = useLikeCalculation();
     const { tag } = useParams();
     const { userId } = useParams();
     const [renderKey, setRenderKey] = useState(0);
-    useEffect(() => {
-        // pagination
-    }, [reference_code, isLoading, videos, userId]);
+
+    useEffect(() => {}, [reference_code, isLoading, videos, userId, offset]);
 
     const similarVideosObj = useFetchSimilarVideos({ reference_code, offset }); // for similar videos
 
     const handleScroll = _.throttle((event) => {
-        const target = event.target;
-        const scrollPercentage =
-            (target.scrollTop / (target.scrollHeight - target.clientHeight)) *
-            100;
-        if (scrollPercentage >= 80) {
-            console.log("Scrollbar 80% event");
-        }
+        // if (sectionType === "reccommend") {
+        //     const target = event.target;
+        //     const scrollPercentage =
+        //         (target.scrollTop /
+        //             (target.scrollHeight - target.clientHeight)) *
+        //         100;
+        //     if (scrollPercentage < 85 && scrollPercentage > 50)
+        //         setOffsetFlag(false);
+        //     if (scrollPercentage > 85 && !offsetFlag) {
+        //         const tempOffset = offset + 1;
+        //         console.log("tempOffset", tempOffset);
+        //         setOffset((prev) => prev + 1);
+        //         fetchNextVideos(tempOffset);
+        //         setOffsetFlag(true);
+        //         console.log("Scrollbar 80% event");
+        //     }
+        // }
     }, 500);
 
     if (isLoading) {

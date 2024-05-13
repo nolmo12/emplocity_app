@@ -1,0 +1,24 @@
+.rules {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    width: 73.5%;
+    height: 73%;
+    top:10%;
+    left: 10%;
+    transform: translate(20%, 5%);
+}
+
+.rules h3{
+    font-size:2em;
+    margin-bottom:1em;
+}
+
+.rules ol {
+    position:relative;
+    left:2%;
+}
+
+.rules ol>li {
+    margin-bottom:0.5em;
+}

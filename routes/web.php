@@ -21,7 +21,32 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 
 Route::get('/{path?}', function () {
     return view('welcome');
-})->where('path', '.*');
+})
+->where('path', '^(?!account|account-settings|history/[^/]+$|user-likes/[^/]+$|shop|login).*$');
+
+Route::get('/account', function () {
+    return view('welcome');
+})->middleware('auth:api');
+
+Route::get('/account-settings', function () {
+    return view('welcome');
+})->middleware('auth:api');
+
+Route::get('/history/{id}', function () {
+    return view('welcome');
+})->middleware('auth:api');
+
+Route::get('/user-likes/{id}', function () {
+    return view('welcome');
+})->middleware('auth:api');
+
+Route::get('/shop', function () {
+    return view('welcome');
+})->middleware('auth:api');
+
+Route::get('/login', function () {
+    return view('welcome');
+})->middleware('guest');
 
 
 

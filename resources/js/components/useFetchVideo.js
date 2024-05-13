@@ -18,5 +18,16 @@ export default function useFetchVideo({ reference_code }) {
         };
         fetchVideo();
     }, [reference_code]);
-    return { videoObj, isLoading };
+
+    const getVideoLink = async () => {
+        try {
+            const response = await axios.get(
+                `/api/video/getUrl/${reference_code}`
+            );
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    return { videoObj, isLoading, getVideoLink };
 }

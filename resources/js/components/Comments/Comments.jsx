@@ -1,32 +1,53 @@
 import { React } from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useComments from "../useComments";
+import authUser from "../authUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
+import _ from "lodash";
 
 export default function Comments({ reference_code }) {
     const [renderKey, setRenderKey] = useState(0);
     const [commentsObj, setCommentsObj] = useState({});
     const [mainCommentContent, setMainCommentContent] = useState();
+    const [offset, setOffset] = useState(0);
     const { fetchComments, sendComment } = useComments();
+    const { isLogged } = authUser();
+    const navigate = useNavigate();
+
     useEffect(() => {
-        fetchComments(reference_code, 0).then((data) => {
+        fetchComments(reference_code, offset).then((data) => {
             setCommentsObj(data);
         });
     }, [reference_code, renderKey]);
     const handleTextareaChange = (e) => {
-        console.log(e.target.innerText);
         setMainCommentContent(e.target.innerText);
     };
     const handleClickComment = async (e) => {
-        console.log(mainCommentContent);
+        if (!isLogged()) {
+            navigate("/login");
+            return;
+        }
+
         await sendComment(reference_code, mainCommentContent);
         e.target.previousElementSibling.innerText = "";
         setRenderKey((prev) => prev + 1);
     };
 
+    const handleScroll = _.throttle((e) => {
+        const element = e.target;
+        if (
+            element.scrollHeight - element.scrollTop ===
+                element.clientHeight ||
+            element.scrollHeight - element.scrollTop === element.clientHeight + 1
+        ) {
+            console.log("Bottom of scroll reached!");
+        }
+    }, 300);
+
     return (
-        <div className={styles.commentDiv}>
+        <div className={styles.commentDiv} onScroll={handleScroll}>
             <div>
                 <div
                     className={styles.commentTextarea}

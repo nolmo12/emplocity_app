@@ -70,3 +70,10 @@
 .searchResultsDiv::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.searchSort {
+    font-size:1em;
+    color:white;
+    background-color:#14213d;
+    border:none;
+}

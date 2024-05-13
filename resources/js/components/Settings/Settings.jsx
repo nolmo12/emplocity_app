@@ -15,20 +15,24 @@ import {
     faInfoCircle,
     faGavel,
 } from "@fortawesome/free-solid-svg-icons";
+import useUser from "../useUser";
 
 export default function Settings() {
-    const { logout, getUser, isLogged } = authUser();
+    const { logout, isLogged } = authUser();
     const [historyPath, setHistoryPath] = useState();
     const [likedPath, setLikedPath] = useState();
+    const { getUser } = useUser();
 
     useEffect(() => {
         if (!isLogged()) {
             return;
         } else {
             const getUserData = async () => {
-                const response = await getUser();
-                setHistoryPath(`/history/${response.id}`);
-                setLikedPath(`/user-likes/${response.id}`);
+                // wait for token update
+                await new Promise((resolve) => setTimeout(resolve, 50));
+                const user = await getUser();
+                setHistoryPath(`/history/${user.id}`);
+                setLikedPath(`/user-likes/${user.id}`);
             };
             getUserData();
         }

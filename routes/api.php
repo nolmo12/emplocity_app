@@ -127,7 +127,7 @@ Route::prefix('video')->group(function () {
 
     Route::get('/search', [VideoController::class,'search']);
 
-    Route::get('/listing', [VideoController::class,'listing']);
+    Route::get('/listing', [VideoController::class,'list']);
 
     Route::get('/all', [VideoController::class,'all']);
 
@@ -172,6 +172,7 @@ Route::prefix('history')->group(function () {
 
 });
 
+
 Route::prefix('report')->group(function () {
     Route::post('/user', [ReportController::class, 'userReport']);
     Route::post('/video/{referenceCode}', [ReportController::class, 'videoReport']);
@@ -180,3 +181,8 @@ Route::prefix('report')->group(function () {
     Route::get('/read', [ReportController::class, 'read']);
     Route::delete('/delete', [ReportController::class, 'delete']);
 });
+
+// Route::group(['middleware' => ['auth:api', 'checkAdmin'], 'prefix' => 'admin'], function (){
+    
+// });
+

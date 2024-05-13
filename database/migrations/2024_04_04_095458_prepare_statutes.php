@@ -18,10 +18,6 @@ return new class extends Migration
         Schema::table('videos', function (Blueprint $table) {
             $table->enum('status', ['Marked', 'Removed', 'Uploading', 'Ok'])->nullable();
         });
-        
-        Schema::table('payments', function (Blueprint $table) {
-            $table->enum('status', ['Processening', 'Error', 'Succesfull'])->nullable();
-        });
     }
 
     /**
