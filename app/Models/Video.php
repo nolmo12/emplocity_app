@@ -70,6 +70,12 @@ class Video extends Model implements SearchInterface
     {
         return $this->hasMany(History::class);
     }
+
+    public function report()
+    {
+        return $this->morphToMany(Report::class, 'reportable');
+    }
+
     
     public function stats()
     {

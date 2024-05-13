@@ -179,6 +179,7 @@ class UserController extends Controller
         }
             
         $userData = [
+            'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
         ];
