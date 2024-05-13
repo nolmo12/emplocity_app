@@ -30,7 +30,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
 
         const fetchOtherUserVideos = async (userId) => {
             try {
-                const response = await axios.get(`/api/auth/read/${userId}`); // http => axios
+                const response = await axios.get(`/api/auth/read/${userId}`);
                 const tempVideos = [];
                 response.data.videos.map((video) => {
                     tempVideos.push(video);

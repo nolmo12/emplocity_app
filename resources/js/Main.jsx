@@ -4,6 +4,7 @@ import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import Header from "./components/Header/Header";
+import ReportPage from "./components/ReportPage/ReportPage";
 import AboutUs from "./components/AboutUs/AboutUs";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
@@ -199,6 +200,14 @@ function Main() {
                         <Header />
                         <MainContent contentType="rules" />
                         <Footer />
+                    </>
+                }
+            />
+            <Route
+                path="/report/:type/:reference_code"
+                element={
+                    <>
+                        <ReportPage />
                     </>
                 }
             />

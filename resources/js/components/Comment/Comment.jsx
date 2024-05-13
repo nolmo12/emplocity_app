@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import useComments from "../useComments";
 import authUser from "../authUser";
 import useUser from "../useUser";
@@ -76,6 +76,10 @@ export default function Comment({
         }
     };
 
+    const isAdmin = () => {
+        return true;
+    };
+
     const handleBlur = async () => {
         if (isEditable) {
             await editComment(comment.id, replyCommentContent);
@@ -117,6 +121,7 @@ export default function Comment({
                         view {comment.children_count}
                     </button>
                 )}
+
                 {viewFlag &&
                     comment.children.map((child) => {
                         return (
@@ -137,6 +142,10 @@ export default function Comment({
                         reply
                     </button>
                 )}
+                {isAdmin() && <button>Remove comment</button>}
+                <Link to={`/report/comment/${comment.user_id}`}>
+                    <button>Report video</button>
+                </Link>
                 {replyFlag && (
                     <>
                         <div
