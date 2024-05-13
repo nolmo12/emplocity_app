@@ -1,21 +1,23 @@
 import React from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import useReport from "../useReport";
 
 export default function ReportPage({ id }) {
     const [email, setEmail] = useState("");
     const [content, setContent] = useState("");
-    // when type is "user" reference_code is user_id,  when type is "comment" reference_code is comment_id
     const { type, reference_code } = useParams();
+    const { sendReport } = useReport();
+    // when type is "user" reference_code is user_id,  when type is "comment" reference_code is comment_id
     const handleChangeEmail = (e) => {
         setEmail(e.target.value);
     };
     const handleChangeTextarea = (e) => {
         setContent(e.target.value);
     };
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(email, content);
+        sendReport(type, reference_code, content);
     };
     return (
         <main>

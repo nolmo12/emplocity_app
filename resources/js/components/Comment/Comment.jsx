@@ -143,9 +143,11 @@ export default function Comment({
                     </button>
                 )}
                 {isAdmin() && <button>Remove comment</button>}
-                <Link to={`/report/comment/${comment.user_id}`}>
-                    <button>Report video</button>
-                </Link>
+                {isLogged() && (
+                    <Link to={`/report/comment/${comment.user_id}`}>
+                        <button>Report video</button>
+                    </Link>
+                )}
                 {replyFlag && (
                     <>
                         <div

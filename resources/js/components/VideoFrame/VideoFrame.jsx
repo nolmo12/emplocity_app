@@ -151,13 +151,18 @@ export default function VideoFrame() {
                     ></video>
                     <div className={styles.videoFrameInfo}>
                         {/* here here here here here here here here here here*/}
-                        <Link to={`/report/video/${reference_code}`}>
-                            <button>Report video</button>
-                        </Link>
+                        {isLogged() && (
+                            <Link to={`/report/video/${reference_code}`}>
+                                <button>Report video</button>
+                            </Link>
+                        )}
+
                         {/* here here here here here here here here here here*/}
-                        <Link to={`/report/user/${videoOwnerId}`}>
-                            <button>Report user</button>
-                        </Link>
+                        {isLogged() && (
+                            <Link to={`/report/user/${videoOwnerId}`}>
+                                <button>Report user</button>
+                            </Link>
+                        )}
                         <Popup
                             trigger={
                                 <FontAwesomeIcon

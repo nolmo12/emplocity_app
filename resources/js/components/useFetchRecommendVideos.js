@@ -16,9 +16,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
                 const response = await axios.get(
                     `/api/video/listing?page=${pageNumber}`
                 );
-                console.log(response.data);
                 response.data.data.map((video) => {
-                    console.log(videos);
                     setVideos((videos) => [...videos, video]);
                 });
                 // setIsLoading(false);
