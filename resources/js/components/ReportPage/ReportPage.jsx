@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import useReport from "../useReport";
+import styles from "./reportPage.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAlignLeft, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export default function ReportPage({ id }) {
     const [email, setEmail] = useState("");
@@ -21,22 +24,38 @@ export default function ReportPage({ id }) {
     };
     return (
         <main>
-            <h3>{type} report</h3>
-            {type === "video" && <p>Video Reference code: {reference_code}</p>}
-            {type === "user" && <p>User ID: {reference_code}</p>}
-            {type === "comment" && <p>Comment ID: {reference_code}</p>}
-            <form onSubmit={(e) => handleSubmit(e)}>
-                <input
-                    onChange={(e) => handleChangeEmail(e)}
-                    type="text"
-                    placeholder="Email"
-                />
-                <textarea
-                    onChange={(e) => handleChangeTextarea(e)}
-                    placeholder="Describe your problem"
-                />
-                <button>Send</button>
-            </form>
+            <div className={styles.reportForm}>
+                <h3>{type} report</h3>
+                {type === "video" && <p>Video Reference code: {reference_code}</p>}
+                {type === "user" && <p>User ID: {reference_code}</p>}
+                {type === "comment" && <p>Comment ID: {reference_code}</p>}
+                <form onSubmit={(e) => handleSubmit(e)}>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faEnvelope}
+                            className={styles.reportFormIcon}
+                        />
+                        <input
+                            onChange={(e) => handleChangeEmail(e)}
+                            type="text"
+                            placeholder="Email"
+                        />
+                    </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faAlignLeft}
+                            className={styles.reportFormIcon}
+                        />
+                        <textarea
+                            onChange={(e) => handleChangeTextarea(e)}
+                            placeholder="Describe your problem"
+                            rows="5"
+                        />
+                    </div>
+
+                    <button>Send</button>
+                </form>
+            </div>
         </main>
     );
 }

@@ -51,6 +51,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre-wrap;
+    font-size:0.8rem;
 }
 
 .videoFrameInfoDesc .collapsed {
@@ -72,7 +73,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     font-size:1.2rem;
 }
 
-.videoFrameInfoDesc p, .videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar, .videoFrameInfoViews{
+.videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar, .videoFrameInfoViews{
     font-size:1rem;
 }
 
@@ -148,6 +149,49 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 }
 
 .sharePopup button:active{
+    transform: scale(0.95);
+}
+
+.reportMenu {
+    position:relative;
+   
+}
+
+.reportMenu .buttonsContainer {
+    position: absolute;
+    top: 3em;
+    right: 0;
+    padding: 5px;
+    z-index: 999;
+    transition: opacity 0.3s ease, visibility 0.3s ease, all 0.3s ease-in-out; 
+    transform-origin: top;
+    transform: scaleY(0);
+    visibility: hidden; 
+}
+
+.buttonsContainer.menuVisible {
+    opacity: 1;
+    transform: scaleY(1);
+    visibility: visible; 
+}
+
+.buttonsContainer button{
+    display:block;
+    text-align:center;
+    width: 7em;
+    height: 2em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    text-align: left;
+}
+
+.buttonsContainer button:hover{
+    background-color: #f0f0f0;
+}
+
+.buttonsContainer button:active{
     transform: scale(0.95);
 }
 

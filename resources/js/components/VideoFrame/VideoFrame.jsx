@@ -16,11 +16,13 @@ import {
     faThumbsUp,
     faThumbsDown,
     faShare,
+    faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
+    const [showButtons, setShowButtons] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const MAX_DESCRIPTION_LENGTH = 50;
     const link = useRef();
@@ -44,6 +46,10 @@ export default function VideoFrame() {
         userInteraction: null,
         thumbStyle: null,
     });
+
+    const toggleButtons = () => {
+        setShowButtons(!showButtons);
+    };
 
     useEffect(() => {
         sendToHistory(reference_code);
@@ -150,19 +156,26 @@ export default function VideoFrame() {
                         className={styles.videoScreen}
                     ></video>
                     <div className={styles.videoFrameInfo}>
-                        {/* here here here here here here here here here here*/}
-                        {isLogged() && (
-                            <Link to={`/report/video/${reference_code}`}>
-                                <button>Report video</button>
-                            </Link>
-                        )}
-
-                        {/* here here here here here here here here here here*/}
-                        {isLogged() && (
-                            <Link to={`/report/user/${videoOwnerId}`}>
-                                <button>Report user</button>
-                            </Link>
-                        )}
+                        <div className={styles.reportMenu}>
+                            <FontAwesomeIcon
+                                icon={faEllipsisV}
+                                className={styles.videoFrameIcon}
+                                onClick={toggleButtons}
+                            />
+                            <div 
+                                className={`${styles.buttonsContainer} ${showButtons ? styles.menuVisible : ''}`}>
+                                {isLogged() && (
+                                    <div>
+                                        <Link to={`/report/video/${reference_code}`}>
+                                            <button>Report video</button>
+                                        </Link>
+                                        <Link to={`/report/user/${videoOwnerId}`}>
+                                            <button>Report user</button>
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                         <Popup
                             trigger={
                                 <FontAwesomeIcon

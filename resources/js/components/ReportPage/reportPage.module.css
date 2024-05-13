@@ -1,0 +1,74 @@
+.reportForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    padding: 5%;
+    background-color: #f4f4f4;
+    width: 30%;
+    max-width: 300px;
+    height: auto;
+    color: black;
+    text-align: left;
+    border: 2px solid black;
+    height:50%;
+    border-radius:6px;
+}
+
+.reportForm h3 {
+    font-weight:600;
+    font-size:1.5em;
+    margin-bottom:1em;
+}
+
+.reportForm p {
+    margin-bottom:1em;
+}
+
+.reportFormIcon {
+    color: black;
+    left: 0.8em;
+    top: 1.7em;
+    position: relative;
+}
+
+.reportForm input {
+    width: 90%;
+    height: 2.5em;
+    margin-bottom: 5%; 
+    padding-left: 2.5em;
+    border: solid 2px #a0a0a0;
+}
+
+.reportForm textarea {
+    width: 90%;
+    height:auto;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    padding-top:0.5em;
+    padding-left: 2.5em;
+    border: solid 2px #a0a0a0;
+    resize: none;
+}
+
+.reportForm button {
+    width: 50%;
+    height: 2em;
+    margin: auto;
+    margin-top: 1em; 
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+    transform: translate(50%);
+}
+
+.reportForm button:hover {
+    background-color: #f0f0f0;
+}
+
+.reportForm button:active {
+    transform: translate(50%) scale(0.95); 
+}
