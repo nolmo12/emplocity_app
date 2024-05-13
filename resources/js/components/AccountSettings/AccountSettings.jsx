@@ -65,12 +65,13 @@ export default function AccountSettings() {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
         console.log(response);
-        if (response.status) {
+        if (response.passwordValidation) {
+            console.log(response);
+            setValidationNicknameData(response);
+        } else {
+            setValidationNicknameData(false);
             setUserData({ ...userData, nickname: "" });
             setRenderKey((prev) => prev + 1);
-        } else {
-            setValidationNicknameData(response);
-            console.log(response);
         }
     };
 
