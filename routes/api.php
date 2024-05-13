@@ -17,6 +17,7 @@ use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -171,6 +172,17 @@ Route::prefix('history')->group(function () {
 
 });
 
+
+Route::prefix('report')->group(function () {
+    Route::post('/user', [ReportController::class, 'userReport']);
+    Route::post('/video/{referenceCode}', [ReportController::class, 'videoReport']);
+    Route::post('/comment', [ReportController::class, 'commentReport']);
+
+    Route::get('/read', [ReportController::class, 'read']);
+    Route::delete('/delete', [ReportController::class, 'delete']);
+});
+
 // Route::group(['middleware' => ['auth:api', 'checkAdmin'], 'prefix' => 'admin'], function (){
     
 // });
+
