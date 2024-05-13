@@ -630,4 +630,15 @@ class VideoController extends Controller
             }
         }
     }
+
+    public function getVideoUrl(Request $request, $reference_code)
+    {   
+        try {
+            $video = Video::where('reference_code', $reference_code)->firstOrFail();
+            $videoUrl = asset('video/' . $video->reference_code);
+            return response()->json(['url' => $videoUrl]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
+    }
 }
