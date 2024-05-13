@@ -16,11 +16,11 @@ export default function useUserSettings() {
         } catch (error) {
             if (error.response.status === 401) {
                 console.log(error);
-                const response = validateForm(
+                const tempResponse = validateForm(
                     "accountSettings",
                     error.response.data.errors
                 );
-                return response;
+                return tempResponse;
             }
             console.log(error);
         }
