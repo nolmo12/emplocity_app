@@ -136,4 +136,10 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Searc
     {
         return $this->morphToMany(Permission::class, 'model', 'model_has_permissions', 'model_id', 'permission_id');
     }
+
+    public function report()
+    {
+        return $this->morphToMany(Report::class, 'reportable');
+    }
+
 }
