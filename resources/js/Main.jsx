@@ -4,6 +4,7 @@ import UploadPage from "./components/UploadPage/UploadPage";
 import ForgotPasswordPage from "./components/ForgotPasswordPage/ForgotPasswordPage";
 import ResetPasswordPage from "./components/ResetPasswordPage/ResetPasswordPage";
 import Header from "./components/Header/Header";
+import ReportPage from "./components/ReportPage/ReportPage";
 import AboutUs from "./components/AboutUs/AboutUs";
 import MainContent from "./components/MainContent/MainContent";
 import RegisterPage from "./components/RegisterPage/RegisterPage";
@@ -18,20 +19,25 @@ function Main() {
     const { isLogged, setToken, getToken } = authUser();
     const { baseUrl, baseTime } = config();
     useEffect(() => {
-        const intervalId = setInterval(async () => {
-            if (isLogged()) {
-                const http = axios.create({
-                    baseURL: baseUrl,
-                });
-                http.interceptors.request.use((config) => {
-                    config.headers.Authorization = `Bearer ${getToken()}`;
-                    return config;
-                });
-                const response = await http.post("/api/auth/refresh");
-                setToken(response.data.authorisation.token, baseTime);
-            }
-        }, baseTime - 2000); //120
-        return () => clearInterval(intervalId);
+        const min = 1000 * 60;
+        if (isLogged()) {
+            setToken(getToken(), baseTime);
+        }
+        setInterval(async () => {
+            console.log("Main.jsx");
+
+            const http = axios.create({
+                baseURL: baseUrl,
+            });
+            http.interceptors.request.use((config) => {
+                config.headers.Authorization = `Bearer ${getToken()}`;
+                return config;
+            });
+
+            const response = await http.post("/api/auth/refresh");
+            console.log(response.data);
+            setToken(response.data.authorisation.token, baseTime);
+        }, baseTime - min);
     }, []);
     return (
         <Routes>
@@ -194,6 +200,14 @@ function Main() {
                         <Header />
                         <MainContent contentType="rules" />
                         <Footer />
+                    </>
+                }
+            />
+            <Route
+                path="/report/:type/:reference_code"
+                element={
+                    <>
+                        <ReportPage />
                     </>
                 }
             />
