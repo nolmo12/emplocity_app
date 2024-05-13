@@ -118,25 +118,25 @@ class UserController extends Controller
         if ($request->filled('name')) {
             $user->name = $request->name;
         }
+        $errors = [];
         if ($request->filled('password') && $request->filled('currentPassword')) {
             if (!Hash::check($request->currentPassword, $user->password)) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Current password is incorrect',
-                ], 401);
+                $errors[] = 'Current password is incorrect';
             }
             if ($request->password != $request->repeatPassword) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Passwords do not match',
-                ], 401);
+                $errors[] = 'Passwords do not match';
             }
             if ($request->password == $request->currentPassword) {
+                $errors[] = 'New password cannot be the same as the current password';
+            }
+            $formattedErrors = ValidateHelper::getChangePasswordCodes($errors);
+            if (!empty($formattedErrors)) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'New password cannot be the same as the current password',
+                    'errors' => $formattedErrors,
                 ], 401);
             }
+
             $user->password = Hash::make($request->password);
         }
 
