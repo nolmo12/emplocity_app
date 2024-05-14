@@ -260,12 +260,4 @@ class UserController extends Controller
         error_log('you have an admin wow:o');
     }
 
-    public function grantAdminWithoutAutorization(Request $request)
-    {
-        $user = $request->user();
-        $user->assignRole('admin');
-        
-        return response()->json('You got admin yay!');
-    }
-
 }
