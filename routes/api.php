@@ -13,13 +13,14 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\VideoController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BorderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -208,7 +209,7 @@ Route::prefix('report')->group(function () {
     Route::delete('/delete', [ReportController::class, 'delete']);
 });
 
-// Route::group(['middleware' => ['auth:api', 'checkAdmin'], 'prefix' => 'admin'], function (){
-    
-// });
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'shop'], function (){
+    Route::get('/show', [BorderController::class, 'all']);
+});
 

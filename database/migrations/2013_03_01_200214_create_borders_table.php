@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('borders', function (Blueprint $table) {
             $table->id();
+            $table->integer('rarity')->default(1);
             $table->string('type');
+            $table->float('price');
             $table->timestamps();
         });
     }

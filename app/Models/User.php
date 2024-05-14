@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Exception;
+
 use App\Helpers\SearchInterface;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,9 +17,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail, SearchInterface
 {
@@ -140,6 +142,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Searc
     public function report()
     {
         return $this->morphToMany(Report::class, 'reportable');
+    }
+
+    public function borders(): BelongsToMany
+    {
+        return $this->belongsToMany(Border::class);
     }
 
 }
