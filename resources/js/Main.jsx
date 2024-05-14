@@ -144,7 +144,7 @@ function Main() {
                 }
             />
             <Route
-                path="/:tag"
+                path="/tag/:tag"
                 element={
                     <>
                         <Header />
