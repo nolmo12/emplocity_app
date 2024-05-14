@@ -6,32 +6,42 @@ import authUser from "../authUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
 import _ from "lodash";
-export default function Comments({ reference_code }) {
+export default function Comments({ reference_code, mainRef }) {
+    console.log(mainRef);
     const [renderKey, setRenderKey] = useState(0);
     const [commentsObj, setCommentsObj] = useState({});
+    const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const [mainCommentContent, setMainCommentContent] = useState();
     const [offset, setOffset] = useState(0);
     const { fetchComments, sendComment } = useComments();
     const { isLogged } = authUser();
     const navigate = useNavigate();
-    const handleScroll = _.throttle((e) => {
-        const element = e.target;
-        const scrollHeight = element.scrollHeight;
-        const scrollTop = element.scrollTop;
-        const clientHeight = element.clientHeight;
 
-        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
-
-        if (scrollPercentage >= 0.8) {
-            console.log(commentsObj);
-            console.log("80% sfsdfsdfsdfsdcroll event");
-        }
-    }, 1500);
     useEffect(() => {
         fetchComments(reference_code, offset).then((data) => {
             setCommentsObj(data);
         });
     }, [reference_code, renderKey]);
+
+    useEffect(() => {
+        const handleScroll = _.throttle((event) => {
+            const target = event.target;
+            const scrollPercentage =
+                (target.scrollTop /
+                    (target.scrollHeight - target.clientHeight)) *
+                100;
+
+            if (scrollPercentage > 85 && !hasScrolledPast85) {
+                const tempNumber = 1;
+
+                console.log("Scrollbar 80% event");
+            } else if (scrollPercentage < 85) {
+                setHasScrolledPast85(false);
+            }
+            // here here here here here
+        }, 1500);
+        mainRef.current.addEventListener("scroll", handleScroll);
+    }, [mainRef]);
 
     const handleTextareaChange = (e) => {
         setMainCommentContent(e.target.innerText);
@@ -66,7 +76,6 @@ export default function Comments({ reference_code }) {
                             <div
                                 className={styles.commentContainer}
                                 key={index}
-                                onScroll={handleScroll}
                             >
                                 <Comment
                                     comment={comment}

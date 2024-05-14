@@ -21,7 +21,7 @@ import {
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
-export default function VideoFrame() {
+export default function VideoFrame({ mainRef }) {
     const [showButtons, setShowButtons] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const MAX_DESCRIPTION_LENGTH = 50;
@@ -364,7 +364,10 @@ export default function VideoFrame() {
                             </button>
                         )}
                     </div>
-                    <Comments reference_code={reference_code} />
+                    <Comments
+                        reference_code={reference_code}
+                        mainRef={mainRef}
+                    />
                 </div>
             </>
         );

@@ -10,6 +10,7 @@ export default function useUser() {
         config.headers.Authorization = `Bearer ${getToken()}`;
         return config;
     });
+
     const getUser = async () => {
         try {
             const response = await http.get("/api/user");
@@ -21,7 +22,6 @@ export default function useUser() {
 
     const isAdmin = async () => {
         if ((await getUser().id) === 1) {
-            console.log("is admin");
             return true;
         }
         return false;
