@@ -156,6 +156,7 @@ export default function Comment({
                             className={styles.commentTextarea}
                             contentEditable="true"
                             onInput={handleTextareaChange}
+                            data-text="Write comment..."
                         ></div>
                         <button
                             onClick={(e) =>
