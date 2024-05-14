@@ -127,8 +127,6 @@ class AuthController extends Controller
                     'message' => 'Email & Password does not match with our record.',
                 ], 401);
             }
-
-            error_log(Auth::user()->email_verified_at);
             
             if (!Auth::user()->email_verified_at)
             {

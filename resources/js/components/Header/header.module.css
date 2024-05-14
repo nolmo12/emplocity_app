@@ -23,6 +23,8 @@ header img {
     right: 1em;
     top: 10%;
     cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
 }
 
 #menu {

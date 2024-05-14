@@ -1,23 +1,26 @@
 <?php
 
 use App\Models\User;
+use App\Mail\SendHelp;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\VideoController;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\BorderController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\StorageController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\EnsureUserOwnsModel;
 use App\Http\Controllers\Auth\VerificationController;
-use App\Http\Controllers\HistoryController;
-use App\Http\Controllers\TagController;
-use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +73,30 @@ Route::prefix('email')->group(function () {
      
         return back()->with('message', 'Verification link sent!');
     })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+    Route::post('/help', function (Request $request)
+    {
+        $email = $request->email;
+        $message = $request->message;
+        $type = $request->type;
+
+        $admins = User::with('roles')->whereHas('roles', function($query){
+            $query->where('name', 'admin');
+        })
+        ->get();
+
+        foreach($admins as $admin)
+        {
+            $hiddenAttributes = $admin->getAttributes();
+            $adminEmail = $hiddenAttributes['email'];
+
+            Mail::to($adminEmail)
+            ->send(new SendHelp($email, $message, $type));
+        }
+        
+        return response()->json('Emails send succesfully');        
+    });
+
 });
 
 //Password recovery
@@ -182,7 +209,7 @@ Route::prefix('report')->group(function () {
     Route::delete('/delete', [ReportController::class, 'delete']);
 });
 
-// Route::group(['middleware' => ['auth:api', 'checkAdmin'], 'prefix' => 'admin'], function (){
-    
-// });
+Route::group(['middleware' => ['auth:api'], 'prefix' => 'shop'], function (){
+    Route::get('/show', [BorderController::class, 'all']);
+});
 
