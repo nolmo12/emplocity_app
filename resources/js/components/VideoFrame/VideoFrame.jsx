@@ -16,11 +16,13 @@ import {
     faThumbsUp,
     faThumbsDown,
     faShare,
+    faEllipsisV,
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame() {
+    const [showButtons, setShowButtons] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const MAX_DESCRIPTION_LENGTH = 50;
     const link = useRef();
@@ -44,6 +46,10 @@ export default function VideoFrame() {
         userInteraction: null,
         thumbStyle: null,
     });
+
+    const toggleButtons = () => {
+        setShowButtons(!showButtons);
+    };
 
     useEffect(() => {
         sendToHistory(reference_code);
@@ -81,6 +87,10 @@ export default function VideoFrame() {
     const handleTimeUpdate = (e, duration) => {
         const currentTime = e.target.currentTime;
         duration += currentTime;
+    };
+
+    const isAdmin = () => {
+        return true;
     };
 
     const fetchLikeInfo = async () => {
@@ -146,6 +156,26 @@ export default function VideoFrame() {
                         className={styles.videoScreen}
                     ></video>
                     <div className={styles.videoFrameInfo}>
+                        <div className={styles.reportMenu}>
+                            <FontAwesomeIcon
+                                icon={faEllipsisV}
+                                className={styles.videoFrameIcon}
+                                onClick={toggleButtons}
+                            />
+                            <div 
+                                className={`${styles.buttonsContainer} ${showButtons ? styles.menuVisible : ''}`}>
+                                {isLogged() && (
+                                    <div>
+                                        <Link to={`/report/video/${reference_code}`}>
+                                            <button>Report video</button>
+                                        </Link>
+                                        <Link to={`/report/user/${videoOwnerId}`}>
+                                            <button>Report user</button>
+                                        </Link>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                         <Popup
                             trigger={
                                 <FontAwesomeIcon
@@ -177,6 +207,7 @@ export default function VideoFrame() {
                                 </div>
                             )}
                         </Popup>
+
                         <div className={styles.videoLDContainer}>
                             <FontAwesomeIcon
                                 onClick={() =>
@@ -235,7 +266,10 @@ export default function VideoFrame() {
                         </div>
                         {/*views views views views views views views */}
                         <p className={styles.videoFrameOwner}>
-                            <FontAwesomeIcon icon={faUser} className={styles.videoFrameOwnerAvatar}/>{" "}
+                            <FontAwesomeIcon
+                                icon={faUser}
+                                className={styles.videoFrameOwnerAvatar}
+                            />{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">
                                     <Link
@@ -256,16 +290,47 @@ export default function VideoFrame() {
                         <p className={styles.videoFrameInfoDesc}>
                             {videoDescription ? (
                                 <>
-                                    <p data-testid="video-description" className={!isDescriptionExpanded ? styles.collapsed : ''}>
-                                        {isDescriptionExpanded ? videoDescription : videoDescription.length > MAX_DESCRIPTION_LENGTH ? `${videoDescription.slice(0, MAX_DESCRIPTION_LENGTH)}...` : videoDescription}
+                                    <p
+                                        data-testid="video-description"
+                                        className={
+                                            !isDescriptionExpanded
+                                                ? styles.collapsed
+                                                : ""
+                                        }
+                                    >
+                                        {isDescriptionExpanded
+                                            ? videoDescription
+                                            : videoDescription.length >
+                                              MAX_DESCRIPTION_LENGTH
+                                            ? `${videoDescription.slice(
+                                                  0,
+                                                  MAX_DESCRIPTION_LENGTH
+                                              )}...`
+                                            : videoDescription}
                                     </p>
-                                    {videoDescription.length > MAX_DESCRIPTION_LENGTH && (
-                                        !isDescriptionExpanded ? (
-                                            <button onClick={() => setIsDescriptionExpanded(true)}>Show more...</button>
+                                    {videoDescription.length >
+                                        MAX_DESCRIPTION_LENGTH &&
+                                        (!isDescriptionExpanded ? (
+                                            <button
+                                                onClick={() =>
+                                                    setIsDescriptionExpanded(
+                                                        true
+                                                    )
+                                                }
+                                            >
+                                                Show more...
+                                            </button>
                                         ) : (
-                                            <button onClick={() => setIsDescriptionExpanded(false)}>Show less...</button>
-                                        )
-                                    )}
+                                            <button
+                                                onClick={() =>
+                                                    setIsDescriptionExpanded(
+                                                        false
+                                                    )
+                                                }
+                                            >
+                                                Show less...
+                                            </button>
+                                        ))}
                                 </>
                             ) : (
                                 <p data-testid="video-description">
@@ -284,6 +349,7 @@ export default function VideoFrame() {
                                 })}
                             </p>
                         </p>
+                        {isAdmin() && <button>Remove Video</button>}
                     </div>
                     <Comments reference_code={reference_code} />
                 </div>

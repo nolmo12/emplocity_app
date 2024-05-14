@@ -35,6 +35,12 @@ class HistoryController extends Controller
                           ->orderBy('updated_at', 'desc')
                           ->get();
 
-        return response()->json($history);
+        $videoData = [];
+        foreach ($history as $item) {
+            $stats = $item->video->stats();
+            unset($stats['tags']);
+            $videoData[] = $stats;
+        }             
+        return response()->json($videoData);
     }
 }

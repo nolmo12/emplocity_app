@@ -22,6 +22,7 @@ function VideoThumbnail({ videoObj }) {
 }
 
 function VideoInfo({ videoObj }) {
+    const truncatedDescription = videoObj.description && videoObj.description.length > 30 ? videoObj.description.slice(0, 30) + "..." : videoObj.description;
     const { calculateLikeRatio } = useLikeCalculation();
     const likeRatio = calculateLikeRatio(
         videoObj.likesCount,
@@ -39,7 +40,7 @@ function VideoInfo({ videoObj }) {
                 <span style={{ color: ratingStyle.color }}>{likeRatio}</span>
             </p>
             <p>Views: {videoObj.video.views}</p>
-            <p>{videoObj.description}</p>
+            <p className={styles.videoDescription}>{truncatedDescription}</p>
         </div>
     );
 }
@@ -164,11 +165,13 @@ export default function SearchResult({ searchType }) {
             </ul>
         );
     } else if (searchType === "userHistory") {
+        console.log(videos);
         view = (
             <ul>
                 <h2>History</h2>
                 {videos.map((video) => (
-                    <li key={video.id}>
+                    <li key={video.video.id}>
+                        {console.log(video)}
                         <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>
