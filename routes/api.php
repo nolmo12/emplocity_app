@@ -77,7 +77,7 @@ Route::prefix('email')->group(function () {
     Route::post('/help', function (Request $request)
     {
         $email = $request->email;
-        $message = $request->message;
+        $content = $request->content;
         $type = $request->type;
 
         $admins = User::with('roles')->whereHas('roles', function($query){
@@ -91,7 +91,7 @@ Route::prefix('email')->group(function () {
             $adminEmail = $hiddenAttributes['email'];
 
             Mail::to($adminEmail)
-            ->send(new SendHelp($email, $message, $type));
+            ->send(new SendHelp($email, $content, $type));
         }
         
         return response()->json('Emails send succesfully');        

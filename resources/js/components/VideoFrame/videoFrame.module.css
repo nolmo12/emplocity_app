@@ -74,7 +74,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 }
 
 .videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar, .videoFrameInfoViews{
-    font-size:1rem;
+    font-size:0.9rem;
 }
 
 .videoFrameOwner {
