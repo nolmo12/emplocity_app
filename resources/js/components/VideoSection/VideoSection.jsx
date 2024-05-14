@@ -143,9 +143,12 @@ export default function VideoSection({ sectionType }) {
         }
     } else if (sectionType === "tag") {
         if (videos) {
+            const videosCount = Object.keys(videos).length;
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
-                    <h2 className={styles.videoSectionH}>#{tag} videos</h2>
+                    <h2 className={styles.videoSectionH}>
+                        #{tag} videos {videosCount}
+                    </h2>
                     {Object.entries(videos).map(([key, video]) => {
                         return (
                             <Video
