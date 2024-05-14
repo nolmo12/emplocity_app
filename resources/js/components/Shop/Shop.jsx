@@ -1,16 +1,44 @@
 import React from "react";
+import { useState, useEffect } from "react";
+import authUser from "../authUser";
 export default function Shop() {
-    const handleClickBuy = async (buttonId) => {
-        console.log(buttonId);
+    const { http } = authUser();
+    const [borders, setBorders] = useState([]);
+
+    const fetchBorders = async () => {
+        const response = await http.get("/api/shop/show");
+        const responseData = response.data.toSorted(
+            (a, b) => b.rarity - a.rarity
+        );
+        console.log(responseData);
+        setBorders(responseData);
     };
+
+    const handleClickBuy = async (borderId) => {
+        // api call to buy border
+        console.log(borderId);
+    };
+
+    useEffect(() => {
+        fetchBorders();
+    }, []);
+
     return (
-        <>
-            <img src="border1" alt="border1" />
-            <button onClick={() => handleClickBuy(1)}>Buy</button>
-            <img src="border2" alt="border2" />
-            <button onClick={() => handleClickBuy(2)}>Buy</button>
-            <img src="border3" alt="border3" />
-            <button onClick={() => handleClickBuy(3)}>Buy</button>
-        </>
+        <ul>
+            {borders.map((border) => {
+                return (
+                    <li key={`shop-${border.id}`}>
+                        <img
+                            style={{ width: "50px", height: "50px" }}
+                            src={border.type}
+                        ></img>
+                        {border.price}
+                        <button onClick={(e) => handleClickBuy(border.id)}>
+                            Buy
+                        </button>
+                    </li>
+                );
+            })}
+        </ul>
     );
 }
