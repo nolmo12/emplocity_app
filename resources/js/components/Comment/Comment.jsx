@@ -12,7 +12,7 @@ export default function Comment({
     reference_code,
     isReply,
 }) {
-    const { getUser } = useUser();
+    const { getUser, isAdmin, removeComment } = useUser();
     const { isLogged } = authUser();
     const navigate = useNavigate();
     const { deleteComment, sendReplyComment, fetchChildren, editComment } =
@@ -39,7 +39,7 @@ export default function Comment({
     }, [comment.user_id]);
 
     const handleClickDelete = async (e) => {
-        await deleteComment(comment.id);
+        await deleteComment(reference_code, comment.id);
 
         setRenderKey((prev) => prev + 1);
     };
@@ -74,10 +74,6 @@ export default function Comment({
         if (!isEditable) {
             setReplyCommentContent(comment.content);
         }
-    };
-
-    const isAdmin = () => {
-        return true;
     };
 
     const handleBlur = async () => {
@@ -142,7 +138,13 @@ export default function Comment({
                         reply
                     </button>
                 )}
-                {isAdmin() && <button>Remove comment</button>}
+                {isAdmin() && (
+                    <button
+                        onClick={(e) => removeComment(setRenderKey, comment.id)}
+                    >
+                        Remove comment
+                    </button>
+                )}
                 {isLogged() && (
                     <Link to={`/report/comment/${comment.user_id}`}>
                         <button>Report video</button>

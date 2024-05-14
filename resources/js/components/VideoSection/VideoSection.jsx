@@ -1,33 +1,28 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import _ from "lodash";
 import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
 import useFetchRecommendVideos from "../useFetchRecommendVideos";
 import useLikeCalculation from "../useLikeCalculation";
+import useUser from "../useUser";
 import { getLikeRatioStyle } from "../Video/Video";
 import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const [pageNumber, setPageNumber] = useState(1);
+    const username = useRef("");
     const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const { videos, isLoading, fetchNextVideos } = useFetchRecommendVideos({
         pageNumber,
     });
+    const { removeUser, isAdmin } = useUser();
     const { calculateLikeRatio } = useLikeCalculation();
     const { tag } = useParams();
     const { userId } = useParams();
-    const [renderKey, setRenderKey] = useState(0);
-
-    // useEffect(() => {}, [
-    //     reference_code,
-    //     isLoading,
-    //     videos,
-    //     userId,
-    //     pageNumber,
-    // ]);
+    const [testKey, setTestKey] = useState(0);
 
     const similarVideosObj = useFetchSimilarVideos({
         reference_code,
@@ -68,7 +63,7 @@ export default function VideoSection({ sectionType }) {
                     {Object.entries(videos).map(([key, video]) => {
                         return (
                             <Video
-                                data-testid={`video-${renderKey}`}
+                                data-testid={`video-${testKey}`}
                                 key={`recommend-${video.video.id}`}
                                 videoObj={video}
                             />
@@ -114,24 +109,36 @@ export default function VideoSection({ sectionType }) {
         );
     } else if (sectionType === "otherAccount") {
         if (videos) {
-            let userName = "";
             if (videos.length > 0) {
-                userName = videos[0].userName;
-                console.log(userName);
+                username.current = videos[0].userName;
+            } else {
+                username.current = "No videos";
             }
             view = (
-                <div id={styles.videoSection} onScroll={handleScroll}>
-                    <h2 className={styles.videoSectionH}>{userName} videos</h2>
-                    {Object.entries(videos).map(([key, video]) => {
-                        return (
-                            <Video
-                                data-testid={`video-${renderKey}`}
-                                key={`otherUser-${video.video.id}`}
-                                videoObj={video}
-                            />
-                        );
-                    })}
-                </div>
+                <>
+                    {isAdmin() === true && (
+                        <button
+                            style={{ zIndex: 999 }}
+                            // onClick={(e) => removeUser(userId)}
+                        >
+                            Remove user
+                        </button>
+                    )}
+                    <div id={styles.videoSection} onScroll={handleScroll}>
+                        <h2 className={styles.videoSectionH}>
+                            {username.current}
+                        </h2>
+                        {Object.entries(videos).map(([key, video]) => {
+                            return (
+                                <Video
+                                    data-testid={`video-${testKey}`}
+                                    key={`otherUser-${video.video.id}`}
+                                    videoObj={video}
+                                />
+                            );
+                        })}
+                    </div>
+                </>
             );
         }
     } else if (sectionType === "tag") {
@@ -142,7 +149,7 @@ export default function VideoSection({ sectionType }) {
                     {Object.entries(videos).map(([key, video]) => {
                         return (
                             <Video
-                                data-testid={`video-${renderKey}`}
+                                data-testid={`video-${testKey}`}
                                 key={`tag-${video.video.id}`}
                                 videoObj={video}
                             />

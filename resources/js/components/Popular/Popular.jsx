@@ -47,10 +47,7 @@ export default function Popular() {
                             key={user.id}
                         >
                             <li key={user.id}>
-                                <img
-                                    src={awatarPath}
-                                    alt="avatar"
-                                />
+                                <img src={awatarPath} alt="avatar" />
                                 <p>{user.name}</p>
                             </li>
                         </Link>

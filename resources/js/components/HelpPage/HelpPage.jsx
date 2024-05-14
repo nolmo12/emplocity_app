@@ -6,12 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAlignLeft, faEnvelope } from "@fortawesome/free-solid-svg-icons";
 
 export default function HelpPage() {
-    const [problem, setProblem] = useState("");
+    const [content, setContent] = useState("");
+    const [problemType, setProblemType] = useState("");
     const [email, setEmail] = useState("");
     const { http } = authUser();
 
-    const handleChangeProblem = (e) => {
-        setProblem(e.target.value);
+    const handleChangeContent = (e) => {
+        setContent(e.target.value);
+    };
+
+    const handleChangeProblemType = (e) => {
+        setProblemType(e.target.value);
     };
 
     const handleChangeEmail = (e) => {
@@ -20,10 +25,19 @@ export default function HelpPage() {
 
     const handleClickSend = async (e) => {
         e.preventDefault();
-        // const response = http.post("/api/help", {
-        //     email: email,
-        //     problem: problem,
-        // });
+        try {
+            const response = http.post(
+                "/api/email/help",
+                JSON.stringify({
+                    email: email,
+                    content: content,
+                    type: problemType,
+                })
+            );
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -40,6 +54,11 @@ export default function HelpPage() {
                             placeholder="Enter your email"
                             onChange={(e) => handleChangeEmail(e)}
                         ></input>
+                        <input
+                            type="text"
+                            placeholder="Enter problem type"
+                            onChange={(e) => handleChangeProblemType(e)}
+                        ></input>
                         <FontAwesomeIcon
                             icon={faAlignLeft}
                             className={styles.helpFormIcon}
@@ -48,7 +67,7 @@ export default function HelpPage() {
                             placeholder="Describe your problem"
                             data-testid="problemInput"
                             className={styles.descriptionArea}
-                            onChange={(e) => handleChangeProblem(e)}
+                            onChange={(e) => handleChangeContent(e)}
                             rows="5"
                         />
                     </div>

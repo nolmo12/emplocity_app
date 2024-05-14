@@ -27,7 +27,8 @@ export default function VideoFrame() {
     const MAX_DESCRIPTION_LENGTH = 50;
     const link = useRef();
     const { isLogged } = authUser();
-    const { getUser } = useUser();
+    const { getUser, isAdmin, removeVideo, removeUser, removeComment } =
+        useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
@@ -89,10 +90,6 @@ export default function VideoFrame() {
         duration += currentTime;
     };
 
-    const isAdmin = () => {
-        return true;
-    };
-
     const fetchLikeInfo = async () => {
         if (!isLogged()) {
             console.log("User is not logged in. Cannot fetch likes.");
@@ -124,6 +121,7 @@ export default function VideoFrame() {
 
     if (!isLoading) {
         const videoTitle = videoObj.title;
+        console.log(videoObj);
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
@@ -162,14 +160,21 @@ export default function VideoFrame() {
                                 className={styles.videoFrameIcon}
                                 onClick={toggleButtons}
                             />
-                            <div 
-                                className={`${styles.buttonsContainer} ${showButtons ? styles.menuVisible : ''}`}>
+                            <div
+                                className={`${styles.buttonsContainer} ${
+                                    showButtons ? styles.menuVisible : ""
+                                }`}
+                            >
                                 {isLogged() && (
                                     <div>
-                                        <Link to={`/report/video/${reference_code}`}>
+                                        <Link
+                                            to={`/report/video/${reference_code}`}
+                                        >
                                             <button>Report video</button>
                                         </Link>
-                                        <Link to={`/report/user/${videoOwnerId}`}>
+                                        <Link
+                                            to={`/report/user/${videoOwnerId}`}
+                                        >
                                             <button>Report user</button>
                                         </Link>
                                     </div>
@@ -340,7 +345,10 @@ export default function VideoFrame() {
                             <p>
                                 {tags.map((tag, index) => {
                                     return (
-                                        <Link to={`/${tag.name}`} key={index}>
+                                        <Link
+                                            to={`/tag/${tag.name}`}
+                                            key={index}
+                                        >
                                             <span
                                                 key={index}
                                             >{` #${tag.name}`}</span>{" "}
@@ -349,7 +357,13 @@ export default function VideoFrame() {
                                 })}
                             </p>
                         </p>
-                        {isAdmin() && <button>Remove Video</button>}
+                        {isAdmin() && (
+                            <button
+                                onClick={(e) => removeVideo(reference_code)}
+                            >
+                                Remove Video
+                            </button>
+                        )}
                     </div>
                     <Comments reference_code={reference_code} />
                 </div>
