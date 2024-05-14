@@ -18,7 +18,7 @@
 
 #Popular li {
     margin-bottom:1.5em;
-    width:90%;
+    width:100%;
     list-style-type: none;
     display:flex;
 }

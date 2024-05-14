@@ -15,13 +15,17 @@ export default function authUser() {
         return token;
     };
 
-    const [token, setToken] = useState(getToken());
+    // const [token, setToken] = useState(getToken());
 
     const http = axios.create({
         baseURL: baseUrl,
         // headers: {
         //     Authorization: `Bearer ${getToken()}`,
         // },
+    });
+    http.interceptors.request.use((config) => {
+        config.headers.Authorization = `Bearer ${getToken()}`;
+        return config;
     });
 
     const getCsrfToken = () => {
@@ -31,19 +35,20 @@ export default function authUser() {
 
     useEffect(() => {
         http.interceptors.request.use((config) => {
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.Authorization = `Bearer ${getToken()}`;
             return config;
         });
-    }, [token]);
+    }, [getToken()]);
 
     const saveToken = (tempToken, time) => {
+        console.log("saveToken");
         const date = new Date(); // time from api
         const tempTime = Number(date.getTime() + time);
         date.setTime(tempTime);
+        console.log(date);
         Cookies.set("token", tempToken, {
             expires: date,
         });
-        setToken(tempToken);
     };
 
     const logout = () => {

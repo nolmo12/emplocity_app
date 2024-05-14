@@ -30,6 +30,11 @@ class Comment extends Model
         return Comment::where('parent', $this->id)->exists();
     }
 
+    public function report()
+    {
+        return $this->morphToMany(Report::class, 'reportable');
+    }
+
     public function getChildren(int $offset = 0)
     {
        $children = Comment::where('parent', $this->id)->offset($offset)->get();
@@ -51,4 +56,5 @@ class Comment extends Model
     {
         return Comment::where('parent', $this->id)->count();
     }
+
 }

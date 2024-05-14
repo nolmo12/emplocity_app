@@ -11,6 +11,11 @@ class Report extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'type',
+        'description',
+    ];
+
     public function reportable(): MorphTo
     {
         return $this->morphTo();

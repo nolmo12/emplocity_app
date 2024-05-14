@@ -32,7 +32,7 @@ export default function Header() {
     const [renderKey, setRenderKey] = useState(0);
     const [tempLogoPath, setTempLogoPath] = useState("");
     const [awatarPath, setAwatarPath] = useState("");
-    const { logout, isLogged, getToken } = authUser();
+    const { logout, isLogged } = authUser();
     const { getUser } = useUser();
 
     const getUserData = async () => {
@@ -137,7 +137,7 @@ export default function Header() {
 
     const accountElement = (
         <li onClick={toggleMenu}>
-            <Link to="/account">
+            <Link to={isLogged() ? "/account" : "/login"}>
                 <button id={styles.account}>
                     <FontAwesomeIcon icon={faUser} className={styles.imgMenu} />
                     Account
@@ -148,7 +148,7 @@ export default function Header() {
 
     const historyElement = (
         <li onClick={toggleMenu}>
-            <Link to={path}>
+            <Link to={isLogged() ? path : "/login"}>
                 <button id={styles.history}>
                     <FontAwesomeIcon
                         icon={faHistory}

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUser from "../useUser";
 import useUserSettings from "../useUserSettings";
+import useValidation from "../useValidation";
 import styles from "./accountSettings.module.css";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +15,7 @@ export default function AccountSettings() {
     const navigate = useNavigate();
     const { logout } = authUser();
     const { getUser } = useUser();
+    const { formValidation } = useValidation();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
     const [imageLoaded, setImageLoaded] = useState();
@@ -25,6 +27,12 @@ export default function AccountSettings() {
         repeatPassword: "",
         avatar: "",
     });
+    const [validationPasswordData, setValidationPasswordData] = useState({
+        previousPasswordValidation: false,
+        passwordValidation: false,
+        repeatPasswordValidation: false,
+    });
+    const [validationNicknameData, setValidationNicknameData] = useState(false);
 
     useEffect(() => {
         const getUserId = async () => {
@@ -55,9 +63,16 @@ export default function AccountSettings() {
 
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
-        await changeNickname(user.id, userData.nickname);
-        setUserData({ ...userData, nickname: "" });
-        setRenderKey((prev) => prev + 1);
+        const response = await changeNickname(user.id, userData.nickname);
+        console.log(response);
+        if (response.passwordValidation) {
+            console.log(response);
+            setValidationNicknameData(response);
+        } else {
+            setValidationNicknameData(false);
+            setUserData({ ...userData, nickname: "" });
+            setRenderKey((prev) => prev + 1);
+        }
     };
 
     const handleClickChangePassword = async (e) => {
@@ -68,11 +83,11 @@ export default function AccountSettings() {
             userData.password,
             userData.repeatPassword
         );
-        if (response) {
+        if (response.status) {
             logout();
             navigate("/login");
         } else {
-            console.log("error changing password");
+            setValidationPasswordData(response);
         }
     };
 
@@ -96,7 +111,7 @@ export default function AccountSettings() {
     return (
         <main>
             <div className={styles.settingsDiv}>
-                {user && (
+                {user ? (
                     <div className={styles.userInfoForm}>
                         <>
                             <h3>User Info</h3>
@@ -134,6 +149,8 @@ export default function AccountSettings() {
                             </div>
                         </>
                     </div>
+                ) : (
+                    <ClipLoader />
                 )}
                 <form>
                     <input
@@ -145,24 +162,36 @@ export default function AccountSettings() {
                     <button onClick={(e) => handleClickChangeNickname(e)}>
                         Change nickname
                     </button>
+                    {validationNicknameData.nicknameValidation && (
+                        <p>The Nickname field must be a string</p>
+                    )}
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "previous")}
                         value={userData.previousPassword}
                         placeholder="Previous password"
                     ></input>
+                    {validationPasswordData.previousPasswordValidation && (
+                        <p>The current password field must be a string</p>
+                    )}
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "password")}
                         value={userData.password}
                         placeholder="New password"
                     />
+                    {validationPasswordData.previousPasswordValidation && (
+                        <p>The password field must be a string</p>
+                    )}
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "repeat")}
                         value={userData.repeatPassword}
                         placeholder="Repeat new password"
                     ></input>
+                    {validationPasswordData.previousPasswordValidation && (
+                        <p>The repeat password field must be a string</p>
+                    )}
                     <button onClick={(e) => handleClickChangePassword(e)}>
                         Change password
                     </button>

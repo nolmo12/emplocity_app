@@ -11,39 +11,48 @@ import styles from "./videoSection.module.css";
 
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
-    const [offset, setOffset] = useState(0);
-    const [offsetFlag, setOffsetFlag] = useState(false);
+    const [pageNumber, setPageNumber] = useState(1);
+    const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const { videos, isLoading, fetchNextVideos } = useFetchRecommendVideos({
-        offset,
+        pageNumber,
     });
     const { calculateLikeRatio } = useLikeCalculation();
     const { tag } = useParams();
     const { userId } = useParams();
     const [renderKey, setRenderKey] = useState(0);
 
-    useEffect(() => {}, [reference_code, isLoading, videos, userId, offset]);
+    // useEffect(() => {}, [
+    //     reference_code,
+    //     isLoading,
+    //     videos,
+    //     userId,
+    //     pageNumber,
+    // ]);
 
-    const similarVideosObj = useFetchSimilarVideos({ reference_code, offset }); // for similar videos
+    const similarVideosObj = useFetchSimilarVideos({
+        reference_code,
+        pageNumber,
+    }); // for similar videos
 
     const handleScroll = _.throttle((event) => {
-        // if (sectionType === "reccommend") {
-        //     const target = event.target;
-        //     const scrollPercentage =
-        //         (target.scrollTop /
-        //             (target.scrollHeight - target.clientHeight)) *
-        //         100;
-        //     if (scrollPercentage < 85 && scrollPercentage > 50)
-        //         setOffsetFlag(false);
-        //     if (scrollPercentage > 85 && !offsetFlag) {
-        //         const tempOffset = offset + 1;
-        //         console.log("tempOffset", tempOffset);
-        //         setOffset((prev) => prev + 1);
-        //         fetchNextVideos(tempOffset);
-        //         setOffsetFlag(true);
-        //         console.log("Scrollbar 80% event");
-        //     }
-        // }
-    }, 500);
+        if (sectionType === "reccommend") {
+            const target = event.target;
+            const scrollPercentage =
+                (target.scrollTop /
+                    (target.scrollHeight - target.clientHeight)) *
+                100;
+
+            if (scrollPercentage > 85 && !hasScrolledPast85) {
+                const tempNumber = pageNumber + 1;
+                setPageNumber((prev) => prev + 1);
+                fetchNextVideos(tempNumber);
+                console.log("Scrollbar 80% event");
+            } else if (scrollPercentage < 85) {
+                setHasScrolledPast85(false);
+            }
+            // potentially rework
+        }
+    }, 1500);
 
     if (isLoading) {
         return <h1>Loading...</h1>;
