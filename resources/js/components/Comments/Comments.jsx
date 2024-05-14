@@ -5,7 +5,7 @@ import useComments from "../useComments";
 import authUser from "../authUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
-
+import _ from "lodash";
 export default function Comments({ reference_code }) {
     const [renderKey, setRenderKey] = useState(0);
     const [commentsObj, setCommentsObj] = useState({});
@@ -14,15 +14,29 @@ export default function Comments({ reference_code }) {
     const { fetchComments, sendComment } = useComments();
     const { isLogged } = authUser();
     const navigate = useNavigate();
+    const handleScroll = _.throttle((e) => {
+        const element = e.target;
+        const scrollHeight = element.scrollHeight;
+        const scrollTop = element.scrollTop;
+        const clientHeight = element.clientHeight;
 
+        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+
+        if (scrollPercentage >= 0.8) {
+            console.log(commentsObj);
+            console.log("80% sfsdfsdfsdfsdcroll event");
+        }
+    }, 1500);
     useEffect(() => {
         fetchComments(reference_code, offset).then((data) => {
             setCommentsObj(data);
         });
     }, [reference_code, renderKey]);
+
     const handleTextareaChange = (e) => {
         setMainCommentContent(e.target.innerText);
     };
+
     const handleClickComment = async (e) => {
         if (!isLogged()) {
             navigate("/login");
@@ -52,6 +66,7 @@ export default function Comments({ reference_code }) {
                             <div
                                 className={styles.commentContainer}
                                 key={index}
+                                onScroll={handleScroll}
                             >
                                 <Comment
                                     comment={comment}

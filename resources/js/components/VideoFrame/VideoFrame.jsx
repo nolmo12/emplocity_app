@@ -121,7 +121,6 @@ export default function VideoFrame() {
 
     if (!isLoading) {
         const videoTitle = videoObj.title;
-        console.log(videoObj);
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
         const videoThumbnail = videoObj.video.thumbnail;
