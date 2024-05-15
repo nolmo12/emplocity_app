@@ -23,15 +23,15 @@ import { ClipLoader } from "react-spinners";
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
     const [imageLoaded, setImageLoaded] = useState({
-        awatar: false,
+        avatar: false,
         tempLogo: false,
     });
-    const userAwatar = useRef("");
+    const userAvatar = useRef("");
     const userId = useRef("");
     const [path, setPath] = useState(null);
     const [renderKey, setRenderKey] = useState(0);
     const [tempLogoPath, setTempLogoPath] = useState("");
-    const [awatarPath, setAwatarPath] = useState("");
+    const [avatarPath, setAvatarPath] = useState("");
     const { logout, isLogged } = authUser();
     const { getUser } = useUser();
 
@@ -39,9 +39,9 @@ export default function Header() {
         // wait for token update
         await new Promise((resolve) => setTimeout(resolve, 100));
         const user = await getUser();
-        userAwatar.current = user.avatar;
-        const avatarFileName = userAwatar.current.split("/").pop();
-        userAwatar.current = avatarFileName;
+        userAvatar.current = user.avatar;
+        const avatarFileName = userAvatar.current.split("/").pop();
+        userAvatar.current = avatarFileName;
         userId.current = user.id;
     };
 
@@ -50,19 +50,19 @@ export default function Header() {
             if (isLogged()) {
                 await getUserData();
             } else {
-                userAwatar.current = "ico.png";
+                userAvatar.current = "ico.png";
             }
-            const { fetchImage, fetchAwatar } = await fetchImgFromStorage();
-            if (userAwatar.current) {
+            const { fetchImage, fetchAvatar } = await fetchImgFromStorage();
+            if (userAvatar.current) {
                 setPath(`/history/${userId.current}`);
                 try {
-                    const [awatarPath, tempLogoPath] = await Promise.all([
-                        fetchAwatar(userAwatar.current),
+                    const [avatarPath, tempLogoPath] = await Promise.all([
+                        fetchAvatar(userAvatar.current),
                         fetchImage("tempLogo.png"),
                     ]);
 
                     setTempLogoPath(tempLogoPath);
-                    setAwatarPath(awatarPath);
+                    setAvatarPath(avatarPath);
                 } catch (error) {
                     console.error(error);
                 }
@@ -70,8 +70,7 @@ export default function Header() {
         };
 
         fetchData();
-    }, [renderKey, isLogged]);
-    // [renderKey, getToken, isLogged, getUserData]
+    }, [renderKey]); // isLogged
 
     const handleLogout = () => {
         logout();
@@ -227,18 +226,18 @@ export default function Header() {
                     <ClipLoader color="#000" />
                 )}
                 <SearchBar />
-                {awatarPath ? (
+                {avatarPath ? (
                     <>
-                        {!imageLoaded.awatar && <ClipLoader color="#000" />}
+                        {!imageLoaded.avatar && <ClipLoader color="#000" />}
                         <img
-                            src={awatarPath}
+                            src={avatarPath}
                             alt="Icon"
                             data-testid="icon"
                             id={styles.imgIcon}
                             onLoad={() =>
                                 setImageLoaded((prev) => ({
                                     ...prev,
-                                    awatar: true,
+                                    avatar: true,
                                 }))
                             }
                             onClick={toggleMenu}

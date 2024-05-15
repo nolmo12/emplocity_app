@@ -10,7 +10,7 @@ export default async function fetchImgFromStorage() {
         }
     };
 
-    const fetchAwatar = async (path) => {
+    const fetchAvatar = async (path) => {
         try {
             const response = await axios.get(`/api/storage/avatars/${path}`);
             return response.data[0];
@@ -20,5 +20,5 @@ export default async function fetchImgFromStorage() {
         }
     };
 
-    return { fetchImage, fetchAwatar };
+    return { fetchImage, fetchAvatar };
 }
