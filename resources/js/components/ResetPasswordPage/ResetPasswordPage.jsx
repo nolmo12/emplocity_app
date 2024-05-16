@@ -48,7 +48,7 @@ export default function ResetPasswordPage() {
                 setIsReset(true);
             })
             .catch((error) => {
-                console.log(error.response);
+                console.log(error);
                 setPasswordValidation(true);
             });
     };

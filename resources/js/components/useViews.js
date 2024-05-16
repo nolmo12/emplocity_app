@@ -31,7 +31,6 @@ export default function useViews() {
 
     const resumeTimer = (duration, reference_code) => {
         timeoutId.current = setTimeout(async () => {
-            console.log("Timer is up2");
             await sendViews(reference_code);
         }, (duration - timeRemaining.current.currentTime) * 1000);
     };

@@ -64,9 +64,7 @@ export default function AccountSettings() {
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
-        console.log(response);
         if (response.passwordValidation) {
-            console.log(response);
             setValidationNicknameData(response);
         } else {
             setValidationNicknameData(false);

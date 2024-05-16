@@ -6,14 +6,14 @@ import authUser from "./authUser";
 export default function useComments() {
     const navigate = useNavigate();
     const { http } = authUser();
-    const [videosObj, setVideosObj] = useState();
+    const [commentsObj, setCommentsObj] = useState();
 
     const fetchComments = async (reference_code, offset) => {
         try {
             const response = await http.get(
                 `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
             );
-            console.log(response.data);
+            setCommentsObj(response.data);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -25,7 +25,11 @@ export default function useComments() {
             const response = await http.get(
                 `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
             );
-
+            console.log(response.data);
+            setCommentsObj((prev) => ({
+                ...prev,
+                comments: [...prev.comments, ...response.data.comments],
+            }));
             return response.data;
         } catch (error) {
             console.log(error);
@@ -95,6 +99,7 @@ export default function useComments() {
         editComment,
         deleteComment,
         fetchNextComments,
-        commentsObjFrom: videosObj,
+        commentsObjFrom: commentsObj,
+        setCommentsObjFrom: setCommentsObj,
     };
 }

@@ -24,8 +24,6 @@ function Main() {
             setToken(getToken(), baseTime);
         }
         setInterval(async () => {
-            console.log("Main.jsx");
-
             const http = axios.create({
                 baseURL: baseUrl,
             });
@@ -35,7 +33,6 @@ function Main() {
             });
 
             const response = await http.post("/api/auth/refresh");
-            console.log(response.data);
             setToken(response.data.authorisation.token, baseTime);
         }, baseTime - min);
     }, []);

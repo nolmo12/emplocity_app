@@ -40,7 +40,7 @@ export default function Comment({
 
     const handleClickDelete = async (e) => {
         await deleteComment(comment.id);
-
+        console.log("delete comment");
         setRenderKey((prev) => prev + 1);
     };
 
