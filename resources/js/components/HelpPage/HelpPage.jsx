@@ -24,17 +24,12 @@ export default function HelpPage() {
     };
 
     const handleClickSend = async (e) => {
-        e.preventDefault();
         try {
-            const response = http.post(
-                "/api/email/help",
-                JSON.stringify({
-                    email: email,
-                    content: content,
-                    type: problemType,
-                })
-            );
-            console.log(response.data);
+            const response = http.post("/api/email/help", {
+                email: email,
+                content: content,
+                type: problemType,
+            });
         } catch (error) {
             console.log(error);
         }
