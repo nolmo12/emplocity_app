@@ -22,10 +22,22 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame({ mainRef }) {
+    const [likesCount, setLikesCount] = useState(0);
+    const [userFirstName, setUserFirstName] = useState();
+    const [dislikesCount, setDislikesCount] = useState(0);
+    const [renderKey, setRenderKey] = useState(0);
+    const [thumbFlag, setThumbFlag] = useState(false);
+    const [thumbObj, setThumbObj] = useState({
+        like: false,
+        dislike: false,
+        userInteraction: null,
+        thumbStyle: null,
+    });
     const [showButtons, setShowButtons] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-    const MAX_DESCRIPTION_LENGTH = 50;
+    const [adminFlag, setAdminFlag] = useState(false);
     const link = useRef();
+    const user = useRef("");
     const { isLogged } = authUser();
     const { getUser, isAdmin, removeVideo, removeUser, removeComment } =
         useUser();
@@ -37,20 +49,16 @@ export default function VideoFrame({ mainRef }) {
     const { videoObj, isLoading, getVideoLink } = useFetchVideo({
         reference_code,
     });
-    const [likesCount, setLikesCount] = useState(0);
-    const [userFirstName, setUserFirstName] = useState();
-    const [dislikesCount, setDislikesCount] = useState(0);
-    const [renderKey, setRenderKey] = useState(0);
-    const [thumbObj, setThumbObj] = useState({
-        like: false,
-        dislike: false,
-        userInteraction: null,
-        thumbStyle: null,
-    });
+    const MAX_DESCRIPTION_LENGTH = 50;
 
     const toggleButtons = () => {
         setShowButtons(!showButtons);
     };
+
+    useEffect(() => {
+        setUser();
+        fetchLikeInfo();
+    }, []);
 
     useEffect(() => {
         sendToHistory(reference_code);
@@ -68,12 +76,16 @@ export default function VideoFrame({ mainRef }) {
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
         }
-        fetchLikeInfo();
+        // fetchLikeInfo();
     }, [reference_code, videoObj]);
 
-    const getUserFirstNameAndId = async () => {
-        const user = await getUser();
+    const getUserFirstNameAndId = () => {
         setUserFirstName(user.first_name);
+    };
+
+    const setUser = async () => {
+        user.current = await getUser();
+        setAdminFlag(await isAdmin());
     };
 
     const getLink = async () => {
@@ -98,6 +110,7 @@ export default function VideoFrame({ mainRef }) {
         try {
             const likeInfo = await fetchLikes(reference_code);
             if (likeInfo || likeInfo === 0) {
+                console.log("likeInfo: ", likeInfo);
                 if (likeInfo === 1) {
                     setThumbObj({
                         like: true,
@@ -356,7 +369,7 @@ export default function VideoFrame({ mainRef }) {
                                 })}
                             </p>
                         </p>
-                        {isAdmin() && (
+                        {adminFlag && (
                             <button
                                 onClick={(e) => removeVideo(reference_code)}
                             >
@@ -367,6 +380,7 @@ export default function VideoFrame({ mainRef }) {
                     <Comments
                         reference_code={reference_code}
                         mainRef={mainRef}
+                        adminFlag={adminFlag}
                     />
                 </div>
             </>

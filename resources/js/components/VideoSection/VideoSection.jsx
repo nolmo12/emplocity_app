@@ -42,6 +42,7 @@ export default function VideoSection({ sectionType }) {
                 setPageNumber((prev) => prev + 1);
                 fetchNextVideos(tempNumber);
                 console.log("Scrollbar 80% event");
+                // setHasScrolledPast85(true);
             } else if (scrollPercentage < 85) {
                 setHasScrolledPast85(false);
             }

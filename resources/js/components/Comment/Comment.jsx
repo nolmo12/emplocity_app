@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import useComments from "../useComments";
 import authUser from "../authUser";
@@ -11,8 +11,9 @@ export default function Comment({
     setRenderKey,
     reference_code,
     isReply,
+    adminFlag,
 }) {
-    const { getUser, isAdmin, removeComment } = useUser();
+    const { getUser, removeComment } = useUser();
     const { isLogged } = authUser();
     const navigate = useNavigate();
     const { deleteComment, sendReplyComment, editComment } = useComments();
@@ -38,7 +39,7 @@ export default function Comment({
     }, [comment.user_id]);
 
     const handleClickDelete = async (e) => {
-        await deleteComment(reference_code, comment.id);
+        await deleteComment(comment.id);
 
         setRenderKey((prev) => prev + 1);
     };
@@ -137,7 +138,7 @@ export default function Comment({
                         reply
                     </button>
                 )}
-                {isAdmin() === true && (
+                {adminFlag && (
                     <button
                         onClick={(e) => removeComment(setRenderKey, comment.id)}
                     >
@@ -146,7 +147,7 @@ export default function Comment({
                 )}
                 {isLogged() && (
                     <Link to={`/report/comment/${comment.user_id}`}>
-                        <button>Report video</button>
+                        <button>Report comment</button>
                     </Link>
                 )}
                 {replyFlag && (
