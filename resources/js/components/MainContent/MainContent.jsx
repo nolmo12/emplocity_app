@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Popular from "../Popular/Popular";
 import VideoSection from "../VideoSection/VideoSection";
 import VideoFrame from "../VideoFrame/VideoFrame";
@@ -11,23 +11,11 @@ import Settings from "../Settings/Settings";
 import Shop from "../Shop/Shop";
 import UserVideoSection from "../UserVideoSection/UserVideoSection";
 import styles from "./mainContent.module.css";
-import _ from "lodash";
 
 export default function MainContent({ contentType }) {
-    const handleScroll = _.throttle((e) => {
-        const element = e.target;
-        const scrollHeight = element.scrollHeight;
-        const scrollTop = element.scrollTop;
-        const clientHeight = element.clientHeight;
-    
-        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
-    
-        if (scrollPercentage >= 0.8) {
-            console.log("80% scroll event");
-        }
-    }, 300);
-    
+    const mainRef = useRef();
     let view = undefined;
+
     if (contentType === "guest") {
         view = (
             <main>
@@ -85,8 +73,8 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "video") {
         view = (
-            <main className={styles.videoFrameMain}  onScroll={handleScroll}>
-                <VideoFrame />
+            <main className={styles.videoFrameMain} ref={mainRef}>
+                <VideoFrame mainRef={mainRef} />
                 <VideoSection sectionType="similar" />
             </main>
         );

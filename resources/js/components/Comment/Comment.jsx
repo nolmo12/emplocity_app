@@ -15,8 +15,7 @@ export default function Comment({
     const { getUser, isAdmin, removeComment } = useUser();
     const { isLogged } = authUser();
     const navigate = useNavigate();
-    const { deleteComment, sendReplyComment, fetchChildren, editComment } =
-        useComments();
+    const { deleteComment, sendReplyComment, editComment } = useComments();
     const [replyFlag, setReplyFlag] = useState(false);
     const [viewFlag, setViewFlag] = useState(false);
     const [editUserFlag, setEditUserFlag] = useState(false);
@@ -138,7 +137,7 @@ export default function Comment({
                         reply
                     </button>
                 )}
-                {isAdmin() && (
+                {isAdmin() === true && (
                     <button
                         onClick={(e) => removeComment(setRenderKey, comment.id)}
                     >
