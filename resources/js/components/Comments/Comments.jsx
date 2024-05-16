@@ -14,37 +14,33 @@ export default function Comments({
     renderKeyFromParent,
 }) {
     const [renderKey, setRenderKey] = useState(0);
-    // const [commentsObj, setCommentsObj] = useState({});
-    const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const [mainCommentContent, setMainCommentContent] = useState();
-    const offset = useRef(0);
+    const previousScroll = useRef(0);
     const {
         fetchComments,
         fetchNextComments,
         sendComment,
         commentsObjFrom,
         setCommentsObjFrom,
+        offset,
     } = useComments();
     const { isLogged } = authUser();
     const navigate = useNavigate();
 
     const handleScroll = _.throttle((event) => {
         const target = event.target;
+        const currentScroll = target.scrollTop;
         const scrollPercentage =
             (target.scrollTop / (target.scrollHeight - target.clientHeight)) *
             100;
 
-        if (scrollPercentage > 85 && !hasScrolledPast85) {
-            console.log(offset.current);
-            offset.current += 1;
-            getCommentsObj(reference_code, offset.current);
-            setHasScrolledPast85(true);
-        } // musze zablokowac mozliwosc szybkiego wyslanei zeby offset nie zmienial wartosci w gore nikontrolowanie
-        // else if (scrollPercentage < 85) {
-        //     setHasScrolledPast85(false);
-        // }
-        // here here here here here
-    }, 3000);
+        if (previousScroll.current < currentScroll) {
+            if (scrollPercentage > 85) {
+                getCommentsObj(reference_code, offset);
+            }
+        }
+        previousScroll.current = currentScroll;
+    }, 1000);
 
     useEffect(() => {
         if (offset.current === 0) {
@@ -52,24 +48,16 @@ export default function Comments({
                 setCommentsObjFrom(data);
             });
         } else {
-            console.log(offset.current);
-
-            getCommentsObj(reference_code, 1);
+            getCommentsObj(reference_code, offset);
         }
     }, [reference_code, renderKey]);
-
-    // useEffect(() => {
-    //     offset.current = 0;
-    //     setCommentsObj({});
-    //     setHasScrolledPast85(false);
-    // }, [renderKeyFromParent]);
 
     useEffect(() => {
         mainRef.current.addEventListener("scroll", handleScroll);
     }, [mainRef]);
 
     const getCommentsObj = async (reference_code, offset) => {
-        const response = await fetchNextComments(reference_code, offset);
+        await fetchNextComments(reference_code, offset);
     };
 
     const handleTextareaChange = (e) => {
@@ -113,6 +101,7 @@ export default function Comments({
                                     reference_code={reference_code}
                                     isReply={false}
                                     adminFlag={adminFlag}
+                                    setCommentsObjFrom={setCommentsObjFrom}
                                 />
                             </div>
                         );

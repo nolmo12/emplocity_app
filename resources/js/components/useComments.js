@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "./authUser";
 
@@ -7,11 +6,12 @@ export default function useComments() {
     const navigate = useNavigate();
     const { http } = authUser();
     const [commentsObj, setCommentsObj] = useState();
+    const offset = useRef(0);
 
-    const fetchComments = async (reference_code, offset) => {
+    const fetchComments = async (reference_code, offsetValue) => {
         try {
             const response = await http.get(
-                `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
+                `/api/video/comments?reference_code=${reference_code}&offset=${offsetValue}`
             );
             setCommentsObj(response.data);
             return response.data;
@@ -20,16 +20,22 @@ export default function useComments() {
         }
     };
 
-    const fetchNextComments = async (reference_code, offset) => {
+    const fetchNextComments = async (reference_code) => {
         try {
+            const tempOffset = offset.current + 1;
+
             const response = await http.get(
-                `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
+                `/api/video/comments?reference_code=${reference_code}&offset=${tempOffset}`
             );
-            console.log(response.data);
+
+            if (response.data.comments.length !== 0) {
+                offset.current += 1;
+            }
             setCommentsObj((prev) => ({
                 ...prev,
                 comments: [...prev.comments, ...response.data.comments],
             }));
+
             return response.data;
         } catch (error) {
             console.log(error);
@@ -40,8 +46,12 @@ export default function useComments() {
         try {
             await http.post(`/api/video/comment`, {
                 reference_code: reference_code,
-                content: content, //.replace(/\n/g, "<br>")
+                content: content,
             });
+            const response = await http.get(
+                `/api/video/comments?reference_code=${reference_code}&offset=0`
+            );
+            setCommentsObj(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -54,6 +64,10 @@ export default function useComments() {
                 content: content,
                 parent: parentId,
             });
+            const response = await http.get(
+                `/api/video/comments?reference_code=${reference_code}&offset=0`
+            );
+            setCommentsObj(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -89,8 +103,6 @@ export default function useComments() {
         }
     };
 
-    // ---------------------------------------------------
-
     return {
         fetchComments,
         sendComment,
@@ -101,5 +113,6 @@ export default function useComments() {
         fetchNextComments,
         commentsObjFrom: commentsObj,
         setCommentsObjFrom: setCommentsObj,
+        offset,
     };
 }
