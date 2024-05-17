@@ -1,13 +1,10 @@
 #Popular {
     position: absolute;
     top: 10%; 
-    left: 5%; 
-    width: 15%; 
-    transform: translate(-5%, 5%); 
+    width: 90%; 
 }
 
 #Popular p {
-    padding-left:0.5em;
     padding-top:0.5em;
 }
 
@@ -16,17 +13,27 @@
     text-decoration: none;
 }
 
+#Popular ul {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; 
+    gap: 1.5em; 
+    list-style: none; 
+}
+
 #Popular li {
-    margin-bottom:1.5em;
-    width:100%;
+    width: auto; 
     list-style-type: none;
-    display:flex;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #Popular h1 {
-    margin-top:0;
+    margin-top:0.5em;
     margin-bottom:0.5em;
     font-weight:600;
+    text-align:center;
 }
 
 #Popular li:hover {
@@ -41,8 +48,8 @@
 }
 
 #Popular img {
-    width:2em;
-    height:2em;
+    width:2.5em;
+    height:2.5em;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -50,33 +57,81 @@
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #Popular {
-        position:relative;
-        width: 30%;
-        height:90%;
-        top:-7%;
-        left:-25%;
-        font-size:0.5em;
+        position: absolute;
+        top: 8%; 
+        width: 95%; 
     }
 
     #Popular li {
-        width: 80%;
-        height:10%;
+        width: auto; 
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #Popular ul {
+        display: flex;
+        flex-wrap: wrap; 
+        gap: 1.5em; 
+        list-style: none; 
+    }
+
+    #Popular img {
+        width:1em;
+        height:1em;
+    }
+
+    #Popular p {
+        padding-top:0.5em;
+        font-size:0.5em;
+    }
+
+    #Popular h1 {
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+        font-weight:600;
+        font-size:1em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #Popular {
-        position:relative;
-        width: 20%;
-        height:80%;
-        top:-13%;
-        left:-35%;
-        font-size:0.6em;
+        position: absolute;
+        top: 10%; 
+        width: 95%; 
     }
 
     #Popular li {
-        width: 70%;
-        height:10%;
+        width: auto; 
+        list-style-type: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #Popular ul {
+        display: flex;
+        flex-wrap: wrap; 
+        gap: 1.5em; 
+        list-style: none; 
+    }
+
+    #Popular img {
+        width:1em;
+        height:1em;
+    }
+
+    #Popular p {
+        padding-top:0.5em;
+        font-size:0.5em;
+    }
+
+    #Popular h1 {
+        margin-top:0.5em;
+        margin-bottom:0.5em;
+        font-weight:600;
+        font-size:1em;
     }
 }
 

@@ -1,17 +1,16 @@
 #videoSection {
     display: flex;
     position: absolute;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
-    width: 73.5%;
-    height: 73%;
+    width: 100%;
+    height: 65%;
     color: black;
     background-color: #101b32;
-    top:10%;
-    left: 10%;
-    border: inset 2px #060c1a; 
-    padding-bottom: 1em;
-    padding-right: 1em;
+    top:25%;
+    left: -20%;
+    border-top: inset 2px #060c1a; 
+    border-bottom: inset 2px #060c1a; 
     transform: translate(20%, 5%);
     overflow-y: auto;
     padding-top: 2em;
@@ -30,7 +29,7 @@
 }
 
 #videoSection> *:not(h2) {
-    flex: 0 0 calc(25%);
+    flex: 0 0 calc(18%);
     margin-right: 1em;
     height: 40%; 
 }
@@ -77,17 +76,15 @@
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #videoSection {
-        width: 60%;
-        height:100%;
-        left: 20%;
-        top:5%;
-        margin-top:5%;
-        padding-bottom:0;
+        width: 100%;
+        height:95%;
+        overflow-y:auto;
     }
 
     #videoSection> *:not(h2) {
         flex: 0 0 calc(40%);
         margin-right: 1em;
+        margin-bottom:1em;
         height: 15%; 
     }
 
@@ -110,16 +107,18 @@
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #videoSection {
-        width: 75%;
-        height:80%;
-        left: 5%;
-        top: 5%;
+        width: 100%;
+        height:65%;
         margin-top:3%;
-        padding-bottom:0;
-        padding-right:0;
     }
 
     h2 {
         font-size:1em;
+    }
+
+    #videoSection> *:not(h2) {
+        flex: 0 0 calc(20%);
+        margin-right: 1em;
+        height: 40%; 
     }
 }
