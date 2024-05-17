@@ -21,7 +21,8 @@ export default function useUser() {
     };
 
     const isAdmin = async () => {
-        if ((await getUser().id) === 1) {
+        const user = await getUser();
+        if (user.id && user.id === 1) {
             return true;
         }
         return false;

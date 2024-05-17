@@ -1,16 +1,31 @@
 import axios from "axios";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "./authUser";
 
 export default function useComments() {
     const navigate = useNavigate();
     const { http } = authUser();
+    const [videosObj, setVideosObj] = useState();
 
     const fetchComments = async (reference_code, offset) => {
         try {
             const response = await http.get(
                 `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
             );
+            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const fetchNextComments = async (reference_code, offset) => {
+        try {
+            const response = await http.get(
+                `/api/video/comments?reference_code=${reference_code}&offset=${offset}`
+            );
+
             return response.data;
         } catch (error) {
             console.log(error);
@@ -79,5 +94,7 @@ export default function useComments() {
         fetchChildren,
         editComment,
         deleteComment,
+        fetchNextComments,
+        commentsObjFrom: videosObj,
     };
 }

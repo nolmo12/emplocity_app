@@ -7,20 +7,20 @@ header {
 }
 
 header img {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
     top: 5%;
 }
 
 #imgLogo {
     position: relative;
-    left: 1em;
+    left: 2em;
     top: 10%;
 }
 
 #imgIcon {
     position: relative;
-    right: 1em;
+    right: 2em;
     top: 10%;
     cursor: pointer;
     border-radius: 50%;
@@ -30,7 +30,7 @@ header img {
 #menu {
     list-style: none;
     position: absolute;
-    right: 1em;
+    right: 1.5em;
     top: 3em;
     transform: translateY(-50%);
     z-index: 2;
@@ -126,6 +126,14 @@ header img {
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
+    header {
+        height:7vh;
+    }
+
+    #menu {
+        top:3%;
+    }
+
     #menu button {
         position: relative;
         width: 6em;
@@ -154,6 +162,10 @@ header img {
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
+    #menu {
+        top:5%;
+    }
+
     #menu button {
         position: relative;
         width: 6em;
