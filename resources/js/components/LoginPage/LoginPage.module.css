@@ -1,3 +1,7 @@
+.loginPageMain {
+    height:100vh;
+}
+
 .loginForm {
     display: flex;
     justify-content: center;
@@ -75,8 +79,8 @@
     transform: scale(0.95);
 }
 
-.invalid {
-    border: 1px solid red;
+.loginForm .invalid {
+    color: red;
 }
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
@@ -98,6 +102,17 @@
     .loginForm input,
     .loginForm button {
         width: 60%;
+    }
+
+    .loginForm input
+    {
+        transform:translate(7%);
+    }
+
+    .loginForm .loginMailIcon, .loginForm .loginPassIcon {
+        top:0;
+        left:15%;
+        z-index: 2;
     }
 
     .loginForm img {
