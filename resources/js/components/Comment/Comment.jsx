@@ -11,12 +11,17 @@ export default function Comment({
     reference_code,
     isReply,
     adminFlag,
-    setCommentsObjFrom,
+    setCommentsObj,
 }) {
     const { getUser, removeComment } = useUser();
     const { isLogged } = authUser();
     const navigate = useNavigate();
-    const { deleteComment, sendReplyComment, editComment } = useComments();
+    const {
+        deleteComment,
+        sendReplyComment,
+        fetchChildrenComments,
+        editComment,
+    } = useComments();
     const [replyFlag, setReplyFlag] = useState(false);
     const [viewFlag, setViewFlag] = useState(false);
     const [editUserFlag, setEditUserFlag] = useState(false);
@@ -39,7 +44,7 @@ export default function Comment({
         await deleteComment(comment.id);
         setRenderKey((prev) => prev + 1);
 
-        setCommentsObjFrom((prev) => ({
+        setCommentsObj((prev) => ({
             ...prev,
             comments: prev.comments.filter((c) => c.id !== comment.id),
         }));
@@ -59,10 +64,29 @@ export default function Comment({
             return;
         }
         setReplyCommentContent("");
-        await sendReplyComment(reference_code, replyCommentContent, id);
+        const newReply = await sendReplyComment(
+            reference_code,
+            replyCommentContent,
+            id
+        );
+
+        // Update the state with the new reply
+        setCommentsObj((prev) => {
+            const updatedComments = prev.comments.map((c) => {
+                if (c.id === id) {
+                    return {
+                        ...c,
+                        children: [...c.children, newReply],
+                        children_count: c.children_count + 1,
+                    };
+                }
+                return c;
+            });
+            return { ...prev, comments: updatedComments };
+        });
 
         setReplyFlag(!replyFlag);
-        // setRenderKey((prev) => prev + 1);
+        setRenderKey((prev) => prev + 1);
     };
 
     const handleClickView = () => {
@@ -126,7 +150,7 @@ export default function Comment({
                         setRenderKey={setRenderKey}
                         reference_code={reference_code}
                         isReply={true}
-                        setCommentsObjFrom={setCommentsObjFrom} // pass down the state setter
+                        setCommentsObj={setCommentsObj} // pass down the state setter
                     />
                 ))}
             {!isReply && (

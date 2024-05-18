@@ -7,22 +7,17 @@ import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
 import _ from "lodash";
 
-export default function Comments({
-    reference_code,
-    mainRef,
-    adminFlag,
-    renderKeyFromParent,
-}) {
+export default function Comments({ reference_code, mainRef, adminFlag }) {
     const [renderKey, setRenderKey] = useState(0);
     const [mainCommentContent, setMainCommentContent] = useState();
     const previousScroll = useRef(0);
+    const offset = useRef(0);
     const {
-        fetchComments,
-        fetchNextComments,
+        fetchVideosSets,
+        getAllComments,
         sendComment,
-        commentsObjFrom,
-        setCommentsObjFrom,
-        offset,
+        commentsObj,
+        setCommentsObj,
     } = useComments();
     const { isLogged } = authUser();
     const navigate = useNavigate();
@@ -36,7 +31,10 @@ export default function Comments({
 
         if (previousScroll.current < currentScroll) {
             if (scrollPercentage > 85) {
+                console.log("offset with api: ", offset.current);
                 getCommentsObj(reference_code, offset);
+                offset.current += 1;
+                console.log("after: ", offset.current);
             }
         }
         previousScroll.current = currentScroll;
@@ -44,23 +42,18 @@ export default function Comments({
 
     useEffect(() => {
         if (offset.current === 0) {
-            getStartCommentsObj(reference_code);
+            getCommentsObj();
         } else {
-            getCommentsObj(reference_code);
+            getAllComments();
         }
-    }, [reference_code, renderKey]);
+    }, [renderKey]);
 
     useEffect(() => {
         mainRef.current.addEventListener("scroll", handleScroll);
     }, [mainRef]);
 
-    const getCommentsObj = async (reference_code) => {
-        console.log(commentsObjFrom);
-        await fetchNextComments(reference_code, false);
-    };
-
-    const getStartCommentsObj = async (reference_code) => {
-        await fetchComments(reference_code, 0);
+    const getCommentsObj = async () => {
+        await fetchVideosSets(reference_code, offset.current);
     };
 
     const handleTextareaChange = (e) => {
@@ -89,9 +82,9 @@ export default function Comments({
                 ></div>
                 <button onClick={(e) => handleClickComment(e)}>Comment</button>
             </div>
-            {commentsObjFrom &&
-                commentsObjFrom.comments &&
-                Object.entries(commentsObjFrom).map(([key, commentObj]) => {
+            {commentsObj &&
+                commentsObj.comments &&
+                Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {
                         return (
                             <div
@@ -104,7 +97,7 @@ export default function Comments({
                                     reference_code={reference_code}
                                     isReply={false}
                                     adminFlag={adminFlag}
-                                    setCommentsObjFrom={setCommentsObjFrom}
+                                    setCommentsObj={setCommentsObj}
                                 />
                             </div>
                         );
