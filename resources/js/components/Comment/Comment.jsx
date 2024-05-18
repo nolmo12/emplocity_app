@@ -39,7 +39,6 @@ export default function Comment({
         await deleteComment(comment.id);
         setRenderKey((prev) => prev + 1);
 
-        // Update the comments object directly after deletion
         setCommentsObjFrom((prev) => ({
             ...prev,
             comments: prev.comments.filter((c) => c.id !== comment.id),
@@ -63,7 +62,7 @@ export default function Comment({
         await sendReplyComment(reference_code, replyCommentContent, id);
 
         setReplyFlag(!replyFlag);
-        setRenderKey((prev) => prev + 1);
+        // setRenderKey((prev) => prev + 1);
     };
 
     const handleClickView = () => {

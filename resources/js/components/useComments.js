@@ -22,11 +22,12 @@ export default function useComments() {
 
     const fetchNextComments = async (reference_code) => {
         try {
-            const tempOffset = offset.current + 1;
+            // const tempOffset = offset.current + 1;
 
             const response = await http.get(
-                `/api/video/comments?reference_code=${reference_code}&offset=${tempOffset}`
+                `/api/video/comments?reference_code=${reference_code}&offset=${offset.current}`
             );
+            console.log(response.data);
 
             if (response.data.comments.length !== 0) {
                 offset.current += 1;
@@ -35,8 +36,7 @@ export default function useComments() {
                 ...prev,
                 comments: [...prev.comments, ...response.data.comments],
             }));
-
-            return response.data;
+            return response;
         } catch (error) {
             console.log(error);
         }
@@ -48,10 +48,6 @@ export default function useComments() {
                 reference_code: reference_code,
                 content: content,
             });
-            const response = await http.get(
-                `/api/video/comments?reference_code=${reference_code}&offset=0`
-            );
-            setCommentsObj(response.data);
         } catch (error) {
             console.log(error);
         }
@@ -64,10 +60,9 @@ export default function useComments() {
                 content: content,
                 parent: parentId,
             });
-            const response = await http.get(
-                `/api/video/comments?reference_code=${reference_code}&offset=0`
-            );
-            setCommentsObj(response.data);
+            // const response = await fetchNextComments(reference_code);
+            // console.log(response.data);
+            console.log("sendReplyComment");
         } catch (error) {
             console.log(error);
         }

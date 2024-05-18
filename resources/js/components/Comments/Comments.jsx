@@ -44,11 +44,9 @@ export default function Comments({
 
     useEffect(() => {
         if (offset.current === 0) {
-            fetchComments(reference_code, offset.current).then((data) => {
-                setCommentsObjFrom(data);
-            });
+            getStartCommentsObj(reference_code);
         } else {
-            getCommentsObj(reference_code, offset);
+            getCommentsObj(reference_code);
         }
     }, [reference_code, renderKey]);
 
@@ -56,8 +54,13 @@ export default function Comments({
         mainRef.current.addEventListener("scroll", handleScroll);
     }, [mainRef]);
 
-    const getCommentsObj = async (reference_code, offset) => {
-        await fetchNextComments(reference_code, offset);
+    const getCommentsObj = async (reference_code) => {
+        console.log(commentsObjFrom);
+        await fetchNextComments(reference_code, false);
+    };
+
+    const getStartCommentsObj = async (reference_code) => {
+        await fetchComments(reference_code, 0);
     };
 
     const handleTextareaChange = (e) => {

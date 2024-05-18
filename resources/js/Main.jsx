@@ -141,6 +141,16 @@ function Main() {
                 }
             />
             <Route
+                path="/video/:reference_code/:time"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="video" />
+                        <Footer />
+                    </>
+                }
+            />
+            <Route
                 path="/tag/:tag"
                 element={
                     <>

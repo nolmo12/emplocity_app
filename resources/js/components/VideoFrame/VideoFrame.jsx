@@ -44,7 +44,7 @@ export default function VideoFrame({ mainRef }) {
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
     const { startTimer, pauseTimer, timeRemaining } = useViews();
-    const { reference_code } = useParams();
+    const { reference_code, time } = useParams();
     const { videoObj, isLoading, getVideoLink } = useFetchVideo({
         reference_code,
     });
@@ -122,6 +122,10 @@ export default function VideoFrame({ mainRef }) {
         duration += currentTime;
     };
 
+    const handleClickDownload = async () => {
+        // api call to download video
+    };
+
     const fetchLikeInfo = async () => {
         if (!isLogged()) {
             console.log("User is not logged in. Cannot fetch likes.");
@@ -180,7 +184,10 @@ export default function VideoFrame({ mainRef }) {
                         onPlay={() =>
                             startTimer(
                                 Number(videoDuration * 0.3),
-                                reference_code
+                                reference_code,
+                                (timeRemaining.current.currentTime = time
+                                    ? time.split("=")[1]
+                                    : 0)
                             )
                         }
                         onPause={() => pauseTimer()}
@@ -394,6 +401,9 @@ export default function VideoFrame({ mainRef }) {
                             </p>
                         </p>
                         <p>{uploadedTimeAgo}</p>
+                        <button onClick={() => handleClickDownload()}>
+                            Download video
+                        </button>
                         {adminFlag && (
                             <button
                                 onClick={(e) => removeVideo(reference_code)}
