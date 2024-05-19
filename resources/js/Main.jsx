@@ -84,7 +84,6 @@ function Main() {
                 path="/upload"
                 element={
                     <>
-                        <Header />
                         <UploadPage />
                         <Footer />
                     </>
