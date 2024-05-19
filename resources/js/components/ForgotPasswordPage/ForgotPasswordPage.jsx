@@ -25,7 +25,6 @@ export default function ForgotPasswordPage() {
             const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
-                console.log(iconPath);
                 setIconPath(iconPath);
             } catch (error) {
                 console.error(error);

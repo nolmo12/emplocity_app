@@ -25,7 +25,7 @@ export default function UploadPage() {
         title: null,
         tags: null,
         description: null,
-        language: null,
+        language: "1",
         video: null,
         thumbnail: null,
         visibility: "Public",
@@ -155,6 +155,7 @@ export default function UploadPage() {
                             </p>
                         )}
 
+
                         <div>
                             <FontAwesomeIcon
                                 icon={faFilm}
@@ -166,6 +167,35 @@ export default function UploadPage() {
                                 placeholder="Title"
                             ></input>
                             {validationInfo && validationInfo.titleValidation && (
+
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faAlignLeft}
+                            className={styles.uploadFormIcon}
+                        />
+                        <textarea
+                            onChange={(e) => handleInupt("description", e)}
+                            placeholder="Description"
+                            className={styles.descriptionArea}
+                            rows="5"
+                        ></textarea>
+                    </div>
+
+                    <div>
+                        <select
+                            className={styles.languageSelect}
+                            onChange={(e) => handleInupt("language", e)}
+                            data-testid="language-select"
+                            defaultValue="1"
+                        >
+                            <option value="" disabled hidden>
+                                Language
+                            </option>
+                            <option value="1">English</option>
+                        </select>
+                        {validationInfo &&
+                            validationInfo.languageValidation && (
+
                                 <p className={styles.validationInfo}>
                                     The title field is required
                                 </p>

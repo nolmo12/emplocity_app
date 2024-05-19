@@ -16,24 +16,38 @@ export default function useViews() {
 
     const startTimer = (duration, reference_code) => {
         if (timerFlag === false) {
+            console.log("start timer");
             setTimerFlag(true);
             timeoutId.current = setTimeout(async () => {
+                console.log("timer expired");
                 await sendViews(reference_code);
-            }, (duration - timeRemaining.current.currentTime) * 1000);
+                setTimerFlag(false); //
+            }, duration * 1000);
         } else {
             resumeTimer(duration, reference_code);
         }
     };
 
     const pauseTimer = () => {
-        clearTimeout(timeoutId.current);
+        if (timeoutId.current) {
+            clearTimeout(timeoutId.current);
+            timeoutId.current = null;
+            setTimerFlag(false);
+        }
     };
 
-    const resumeTimer = (duration, reference_code) => {
-        timeoutId.current = setTimeout(async () => {
-            console.log("Timer is up2");
-            await sendViews(reference_code);
-        }, (duration - timeRemaining.current.currentTime) * 1000);
+    const resumeTimer = (remainingDuration, reference_code) => {
+        if (!timerFlag) {
+            setTimerFlag(true);
+            timeoutId.current = setTimeout(async () => {
+                await sendViews(reference_code);
+                setTimerFlag(false);
+            }, remainingDuration * 1000);
+        }
+    };
+
+    const updateRemainingTime = (currentTime, totalDuration) => {
+        timeRemaining.current = totalDuration - currentTime;
     };
 
     return {
@@ -41,6 +55,7 @@ export default function useViews() {
         startTimer,
         pauseTimer,
         resumeTimer,
+        updateRemainingTime,
         timeRemaining,
     };
 }

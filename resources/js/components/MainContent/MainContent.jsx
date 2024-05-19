@@ -87,14 +87,12 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "aboutUs") {
         view = (
             <main>
-                <Popular />
                 <AboutUs />
             </main>
         );
     } else if (contentType === "rules") {
         view = (
             <main>
-                <Popular />
                 <Rules />
             </main>
         );
