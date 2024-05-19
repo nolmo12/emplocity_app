@@ -177,6 +177,22 @@ export default function UploadPage() {
 
                         <div>
                             <FontAwesomeIcon
+                                icon={faTags}
+                                className={styles.uploadFormIcon}
+                            />
+                            <input
+                                type="text"
+                                onChange={(e) => handleTags(e)}
+                                placeholder="Tags"
+                            ></input>
+                            <p>
+                                tags must be separated by space Ex. "polishboy
+                                warsaw"
+                            </p>
+                        </div>
+
+                        <div>
+                            <FontAwesomeIcon
                                 icon={faAlignLeft}
                                 className={styles.uploadFormIcon}
                             />
