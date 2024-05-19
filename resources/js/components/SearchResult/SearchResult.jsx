@@ -22,7 +22,10 @@ function VideoThumbnail({ videoObj }) {
 }
 
 function VideoInfo({ videoObj }) {
-    const truncatedDescription = videoObj.description && videoObj.description.length > 30 ? videoObj.description.slice(0, 30) + "..." : videoObj.description;
+    const truncatedDescription =
+        videoObj.description && videoObj.description.length > 30
+            ? videoObj.description.slice(0, 30) + "..."
+            : videoObj.description;
     const { calculateLikeRatio } = useLikeCalculation();
     const likeRatio = calculateLikeRatio(
         videoObj.likesCount,
@@ -48,7 +51,8 @@ function VideoInfo({ videoObj }) {
 function UserInfo({ userObj }) {
     return (
         <div className={styles.userInfo}>
-            <img src="fdf" alt="user avatar" />
+            {console.log(userObj)}
+            <img src={userObj.avatar} alt="user avatar" />
             <p>{userObj.name}</p>
             <p>{userObj.email}</p>
         </div>
@@ -124,7 +128,6 @@ export default function SearchResult({ searchType }) {
         Object.entries(searchedObj).forEach(([key, value]) => {
             if (key === "users") {
                 value.forEach((user) => {
-                    console.log(user);
                     if (user.name === query) {
                         matchedUser.push(
                             <li key={`user-${user.id}`}>
@@ -165,13 +168,11 @@ export default function SearchResult({ searchType }) {
             </ul>
         );
     } else if (searchType === "userHistory") {
-        console.log(videos);
         view = (
             <ul>
                 <h2>History</h2>
                 {videos.map((video) => (
                     <li key={video.video.id}>
-                        {console.log(video)}
                         <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>

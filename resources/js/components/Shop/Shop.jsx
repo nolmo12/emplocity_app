@@ -10,7 +10,6 @@ export default function Shop() {
         const responseData = response.data.toSorted(
             (a, b) => b.rarity - a.rarity
         );
-        console.log(responseData);
         setBorders(responseData);
     };
 

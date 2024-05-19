@@ -2,7 +2,7 @@ import authUser from "./authUser";
 import useComments from "./useComments";
 import { useNavigate } from "react-router-dom";
 export default function useUser() {
-    const { http, getToken } = authUser();
+    const { http, getToken, isLogged, logout } = authUser();
     const { deleteComment } = useComments();
     const navigate = useNavigate();
 
@@ -12,20 +12,24 @@ export default function useUser() {
     });
 
     const getUser = async () => {
-        try {
-            const response = await http.get("/api/user");
-            return response.data;
-        } catch (error) {
-            // console.log(error);
+        if (isLogged()) {
+            try {
+                const response = await http.get("/api/user");
+                return response.data;
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
     const isAdmin = async () => {
-        const user = await getUser();
-        if (user.id && user.id === 1) {
-            return true;
+        if (isLogged()) {
+            const user = await getUser();
+            if (user.id && user.id === 1) {
+                return true;
+            }
+            return false;
         }
-        return false;
     };
 
     const removeVideo = async (reference_code) => {
@@ -41,9 +45,9 @@ export default function useUser() {
 
     const removeUser = async (id) => {
         try {
-            console.log(id);
-            await http.delete(`/api/auth/delete/${id}`);
+            await http.delete(`/api/auth/delete`, { params: { user_id: id } });
             navigate("/");
+            logout();
         } catch (error) {
             console.log(error);
         }

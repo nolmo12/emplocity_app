@@ -9,6 +9,10 @@
     width: 15%;
     max-width: 300px;
     color:black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .postSendMessage p {

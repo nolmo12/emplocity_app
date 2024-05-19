@@ -25,7 +25,7 @@ export default function UploadPage() {
         title: null,
         tags: null,
         description: null,
-        language: null,
+        language: "1",
         video: null,
         thumbnail: null,
         visibility: "Public",
@@ -128,8 +128,8 @@ export default function UploadPage() {
                         className={styles.uploadForm}
                     >
                         <Link to="/">
-                            <FontAwesomeIcon 
-                                icon={faTimes} 
+                            <FontAwesomeIcon
+                                icon={faTimes}
                                 className={styles.uploadFormCloseIcon}
                             />
                         </Link>
@@ -148,7 +148,9 @@ export default function UploadPage() {
                             />
                         </div>
 
-                        {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
+                        {droppedFileName && (
+                            <p>Uploaded file: {droppedFileName}</p>
+                        )}
                         {validationInfo && validationInfo.videoValidation && (
                             <p className={styles.validationInfo}>
                                 The video field is required
@@ -165,11 +167,12 @@ export default function UploadPage() {
                                 onChange={(e) => handleInupt("title", e)}
                                 placeholder="Title"
                             ></input>
-                            {validationInfo && validationInfo.titleValidation && (
-                                <p className={styles.validationInfo}>
-                                    The title field is required
-                                </p>
-                            )}
+                            {validationInfo &&
+                                validationInfo.titleValidation && (
+                                    <p className={styles.validationInfo}>
+                                        The title field is required
+                                    </p>
+                                )}
                         </div>
 
                         <div>
@@ -222,7 +225,9 @@ export default function UploadPage() {
                         </div>
 
                         <div>
-                            <p className={styles.uploadFormOption}>Thumbnail: </p>
+                            <p className={styles.uploadFormOption}>
+                                Thumbnail:{" "}
+                            </p>
                             <input
                                 type="file"
                                 id="thumbnail-input"
@@ -232,7 +237,9 @@ export default function UploadPage() {
                             {data.thumbnail && (
                                 <div>
                                     <img
-                                        src={URL.createObjectURL(data.thumbnail)}
+                                        src={URL.createObjectURL(
+                                            data.thumbnail
+                                        )}
                                         alt="Thumbnail Preview"
                                         className={styles.thumbnailPreview}
                                     />
@@ -248,7 +255,9 @@ export default function UploadPage() {
                         </div>
 
                         <div>
-                            <p className={styles.uploadFormOption}>Visibility: </p>
+                            <p className={styles.uploadFormOption}>
+                                Visibility:{" "}
+                            </p>
                             <select
                                 onChange={(e) => handleVisibility(e)}
                                 data-testid="visibility-select"

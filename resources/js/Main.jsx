@@ -20,12 +20,10 @@ function Main() {
     const { baseUrl, baseTime } = config();
     useEffect(() => {
         const min = 1000 * 60;
-        if (isLogged()) {
-            setToken(getToken(), baseTime);
-        }
+        // if (isLogged()) {
+        //     setToken(getToken(), baseTime);
+        // }
         setInterval(async () => {
-            console.log("Main.jsx");
-
             const http = axios.create({
                 baseURL: baseUrl,
             });
@@ -35,7 +33,6 @@ function Main() {
             });
 
             const response = await http.post("/api/auth/refresh");
-            console.log(response.data);
             setToken(response.data.authorisation.token, baseTime);
         }, baseTime - min);
     }, []);
@@ -134,6 +131,16 @@ function Main() {
             />
             <Route
                 path="/video/:reference_code"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="video" />
+                        <Footer />
+                    </>
+                }
+            />
+            <Route
+                path="/video/:reference_code/:time"
                 element={
                     <>
                         <Header />

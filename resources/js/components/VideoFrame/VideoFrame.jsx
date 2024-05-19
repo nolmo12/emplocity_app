@@ -26,7 +26,6 @@ export default function VideoFrame({ mainRef }) {
     const [userFirstName, setUserFirstName] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
     const [renderKey, setRenderKey] = useState(0);
-    const [thumbFlag, setThumbFlag] = useState(false);
     const [thumbObj, setThumbObj] = useState({
         like: false,
         dislike: false,
@@ -36,16 +35,19 @@ export default function VideoFrame({ mainRef }) {
     const [showButtons, setShowButtons] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const [adminFlag, setAdminFlag] = useState(false);
+    const [watchTime, setWatchTime] = useState(0);
     const link = useRef();
     const user = useRef("");
+    const playStartTime = useRef(0);
     const { isLogged } = authUser();
     const { getUser, isAdmin, removeVideo, removeUser, removeComment } =
         useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
-    const { startTimer, pauseTimer, timeRemaining } = useViews();
-    const { reference_code } = useParams();
+    const { startTimer, pauseTimer, timeRemaining, updateRemainingTime } =
+        useViews();
+    const { reference_code, time } = useParams();
     const { videoObj, isLoading, getVideoLink } = useFetchVideo({
         reference_code,
     });
@@ -79,6 +81,27 @@ export default function VideoFrame({ mainRef }) {
         // fetchLikeInfo();
     }, [reference_code, videoObj]);
 
+    const calculateTime = (created, current) => {
+        const minute = 60;
+        const hour = minute * 60;
+        const day = hour * 24;
+        const month = day * 30;
+        const year = day * 365;
+
+        let result = Math.floor((current - new Date(created)) / 1000);
+        if (result < minute) return `uploaded ${result} seconds ago`;
+        if (result < hour)
+            return `uploaded ${Math.floor(result / minute)} minutes ago`;
+        if (result < day)
+            return `uploaded ${Math.floor(result / hour)} hours ago`;
+        if (result < month)
+            return `uploaded ${Math.floor(result / day)} days ago`;
+        if (result < year)
+            return `uploaded ${Math.floor(result / month)} months ago`;
+
+        return `uploaded ${Math.floor(result / year)} years ago`;
+    };
+
     const getUserFirstNameAndId = () => {
         setUserFirstName(user.first_name);
     };
@@ -97,9 +120,33 @@ export default function VideoFrame({ mainRef }) {
         navigator.clipboard.writeText(text);
     };
 
+    const handlePlay = () => {
+        const videoDuration = videoObj.video.duration * 0.3;
+        playStartTime.current = Date.now();
+        startTimer(
+            videoDuration,
+            reference_code,
+            (timeRemaining.current.currentTime = time ? time.split("=")[1] : 0)
+        );
+    };
+
+    const handlePause = () => {
+        if (playStartTime.current) {
+            const tempTime = Date.now() - playStartTime.current;
+            setWatchTime((prev) => prev + tempTime);
+            playStartTime.current = 0;
+        }
+        pauseTimer();
+    };
+
     const handleTimeUpdate = (e, duration) => {
         const currentTime = e.target.currentTime;
-        duration += currentTime;
+        const totalDuration = e.target.duration;
+        updateRemainingTime(currentTime, totalDuration);
+    };
+
+    const handleClickDownload = async () => {
+        // api call to download video
     };
 
     const fetchLikeInfo = async () => {
@@ -110,7 +157,6 @@ export default function VideoFrame({ mainRef }) {
         try {
             const likeInfo = await fetchLikes(reference_code);
             if (likeInfo || likeInfo === 0) {
-                console.log("likeInfo: ", likeInfo);
                 if (likeInfo === 1) {
                     setThumbObj({
                         like: true,
@@ -142,6 +188,10 @@ export default function VideoFrame({ mainRef }) {
         const videoDuration = videoObj.video.duration;
         const videoOwnerFirstName = videoObj.userFirstName;
         const videoOwnerId = videoObj.userId;
+        const uploadedTimeAgo = calculateTime(
+            videoObj.video.created_at,
+            new Date()
+        );
         const tags = videoObj.tags;
         return (
             <>
@@ -154,13 +204,8 @@ export default function VideoFrame({ mainRef }) {
                         width={320}
                         src={videoPath}
                         poster={videoThumbnail}
-                        onPlay={() =>
-                            startTimer(
-                                Number(videoDuration * 0.3),
-                                reference_code
-                            )
-                        }
-                        onPause={() => pauseTimer()}
+                        onPlay={handlePlay}
+                        onPause={handlePause}
                         onTimeUpdate={(e) => handleTimeUpdate(e, videoDuration)}
                         controls
                         className={styles.videoScreen}
@@ -304,6 +349,7 @@ export default function VideoFrame({ mainRef }) {
                                 <p data-testid="video-owner">Guest</p>
                             )}
                         </p>
+
                         <p className={styles.videoFrameInfoDesc}>
                             {videoDescription ? (
                                 <>
@@ -369,6 +415,10 @@ export default function VideoFrame({ mainRef }) {
                                 })}
                             </p>
                         </p>
+                        <p>{uploadedTimeAgo}</p>
+                        <button onClick={() => handleClickDownload()}>
+                            Download video
+                        </button>
                         {adminFlag && (
                             <button
                                 onClick={(e) => removeVideo(reference_code)}
@@ -376,11 +426,17 @@ export default function VideoFrame({ mainRef }) {
                                 Remove Video
                             </button>
                         )}
+                        {adminFlag && videoOwnerFirstName && (
+                            <button onClick={(e) => removeUser(videoOwnerId)}>
+                                Remove User
+                            </button>
+                        )}
                     </div>
                     <Comments
                         reference_code={reference_code}
                         mainRef={mainRef}
                         adminFlag={adminFlag}
+                        renderKeyFromParent={renderKey}
                     />
                 </div>
             </>
