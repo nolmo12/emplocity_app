@@ -1,11 +1,22 @@
 .videoUploadPage {
-    overflow-y: auto;
+    height:95vh;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
 .uploadForm {
-    display: flex;
-    position:relative;
-    top:5%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     justify-content: center;
     flex-direction: column;
     border: solid 2px black;
@@ -16,7 +27,27 @@
     padding-top: 2%;
     width: 30%;
     max-width: 300px;
+    z-index: 2;
+    max-height: 90vh;
+    overflow-y: auto;
 }
+
+.uploadForm::-webkit-scrollbar{
+    width: 0.2em; 
+}
+
+.uploadForm::-webkit-scrollbar-track{
+    background: rgba(229, 229, 229, 0.8);
+}
+
+.uploadForm::-webkit-scrollbar-thumb{
+    background: #888; 
+}
+
+.uploadForm::-webkit-scrollbar-thumb:hover{
+    background: #555;
+}
+
 
 .thumbnailInput[type="file"] {
     border: none;
@@ -74,6 +105,7 @@
 
 .uploadForm button {
     width: 50%;
+    max-width: 150px;
     height: 2em;
     margin: 0 auto;
     border-radius: 10px;
@@ -82,6 +114,10 @@
     cursor: pointer;
     border: solid 2px #a0a0a0;
     background-color: white;
+    box-sizing: border-box;
+    display: inline-block;
+    left: 25%;
+    position:relative;
 }
 
 .uploadForm button:hover {
@@ -97,6 +133,7 @@
     width: 8em;
     height: 8em;
     margin-bottom: 2em;
+    padding-top:1em;
     align-self: center;
     transform: translate(70%);
 }
@@ -106,6 +143,20 @@
     left: 0.7em;
     top: 1.7em;
     position: relative;
+}
+
+.uploadForm .uploadFormCloseIcon {
+    position: relative;
+    left: 20em;
+    top:-1em;
+    width:1.5em;
+    height:1.5em;
+    color:black;
+    transition: transform 0.3s ease;
+}
+
+.uploadForm .uploadFormCloseIcon:active {
+    transform: scale(0.80);
 }
 
 .uploadForm .descriptionArea {
@@ -141,37 +192,51 @@
 
 .uploadForm .validationInfo {
     color: red;
-    font-size: 0.7em;
+    font-size: 0.6em;
     text-align: center;
 }
 
 .uploadForm p {
     color: black;
-    font-size: 0.7em;
+    font-size: 0.6em;
     text-align: center;
 }
 
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
     .uploadForm {
-        width: 90%;
+        width: 100%;
+        padding: 6%;
     }
 
     .uploadForm .uploadIcon {
-        width: 40%;
-        height: 40%;
+        width: 30%;
+        height: 30%;
+        transform: translate(120%);
+    }
+
+    .uploadForm .uploadFormCloseIcon {
+        left:95%;
+    }
+
+    .uploadForm .clearThumbnailButton {
+        font-size:0.7em;
     }
 }
 
 @media only screen and (max-width: 800px) and (orientation: landscape) {
     .uploadForm {
-        width: 30%;
-        height: 70%;
+        width: 100%;
+    }
+
+    .uploadForm .uploadArea {
+        position:relative;
+        left:0.5em;
     }
 
     .uploadForm input,
     .uploadForm button {
-        width: 60%;
+        width: 90%;
     }
 
     .uploadForm .uploadIcon {
@@ -179,7 +244,15 @@
     }
 
     .uploadForm .uploadFormIcon {
-        top: -1%;
-        left: 10%;
+        left: 6%;
+        top:1.8em;
+    }
+
+    .uploadForm .uploadFormCloseIcon {
+        left:100%;
+    }
+
+    .uploadForm .clearThumbnailButton {
+        font-size:0.7em;
     }
 }

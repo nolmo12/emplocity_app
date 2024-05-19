@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./uploadPage.module.css";
 import authUser from "../authUser";
+import { Link } from "react-router-dom";
 import useValidation from "../useValidation";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +13,7 @@ import {
     faAlignLeft,
     faLanguage,
     faTimesCircle,
+    faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function UploadPage() {
@@ -116,145 +118,153 @@ export default function UploadPage() {
 
     return (
         <main className={styles.videoUploadPage}>
-            {videoSent ? (
-                <Message message={"Video has been sent"} />
-            ) : (
-                <form
-                    data-testid="upload-area"
-                    onSubmit={(e) => handleSubmit(e)}
-                    className={styles.uploadForm}
-                >
-                    <div
-                        ref={uploadAreaRef}
-                        className={`${styles.uploadArea} ${
-                            draggingOver ? styles.draggingOver : ""
-                        }`}
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
+            <div className={styles.overlay}>
+                {videoSent ? (
+                    <Message message={"Video has been sent"} />
+                ) : (
+                    <form
+                        data-testid="upload-area"
+                        onSubmit={(e) => handleSubmit(e)}
+                        className={styles.uploadForm}
                     >
-                        <FontAwesomeIcon
-                            icon={faUpload}
-                            className={styles.uploadIcon}
-                        />
-                    </div>
+                        <Link to="/">
+                            <FontAwesomeIcon 
+                                icon={faTimes} 
+                                className={styles.uploadFormCloseIcon}
+                            />
+                        </Link>
+                        <div
+                            ref={uploadAreaRef}
+                            className={`${styles.uploadArea} ${
+                                draggingOver ? styles.draggingOver : ""
+                            }`}
+                            onDrop={handleDrop}
+                            onDragOver={handleDragOver}
+                            onDragLeave={handleDragLeave}
+                        >
+                            <FontAwesomeIcon
+                                icon={faUpload}
+                                className={styles.uploadIcon}
+                            />
+                        </div>
 
-                    {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
-                    {validationInfo && validationInfo.videoValidation && (
-                        <p className={styles.validationInfo}>
-                            The video field is required
-                        </p>
-                    )}
-
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faFilm}
-                            className={styles.uploadFormIcon}
-                        />
-                        <input
-                            type="text"
-                            onChange={(e) => handleInupt("title", e)}
-                            placeholder="Title"
-                        ></input>
-                        {validationInfo && validationInfo.titleValidation && (
+                        {droppedFileName && <p>Uploaded file: {droppedFileName}</p>}
+                        {validationInfo && validationInfo.videoValidation && (
                             <p className={styles.validationInfo}>
-                                The title field is required
+                                The video field is required
                             </p>
                         )}
-                    </div>
 
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faTags}
-                            className={styles.uploadFormIcon}
-                        />
-                        <input
-                            type="text"
-                            onChange={(e) => handleTags(e)}
-                            placeholder="Tags"
-                        ></input>
-                        <p>
-                            tags must be separated by space Ex. "polishboy
-                            warsaw"
-                        </p>
-                    </div>
-
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faAlignLeft}
-                            className={styles.uploadFormIcon}
-                        />
-                        <textarea
-                            onChange={(e) => handleInupt("description", e)}
-                            placeholder="Description"
-                            className={styles.descriptionArea}
-                            rows="5"
-                        ></textarea>
-                    </div>
-
-                    <div>
-                        <select
-                            className={styles.languageSelect}
-                            onChange={(e) => handleInupt("language", e)}
-                            data-testid="language-select"
-                            defaultValue=""
-                        >
-                            <option value="" disabled selected hidden>
-                                Language
-                            </option>
-                            <option value="1">English</option>
-                        </select>
-                        {validationInfo &&
-                            validationInfo.languageValidation && (
+                        <div>
+                            <FontAwesomeIcon
+                                icon={faFilm}
+                                className={styles.uploadFormIcon}
+                            />
+                            <input
+                                type="text"
+                                onChange={(e) => handleInupt("title", e)}
+                                placeholder="Title"
+                            ></input>
+                            {validationInfo && validationInfo.titleValidation && (
                                 <p className={styles.validationInfo}>
-                                    The language field is required
+                                    The title field is required
                                 </p>
                             )}
-                    </div>
+                        </div>
 
-                    <div>
-                        <p className={styles.uploadFormOption}>Thumbnail: </p>
-                        <input
-                            type="file"
-                            id="thumbnail-input"
-                            onChange={(e) => handleThumbnail(e)}
-                            className={styles.thumbnailInput}
-                        />
-                        {data.thumbnail && (
-                            <div>
-                                <img
-                                    src={URL.createObjectURL(data.thumbnail)}
-                                    alt="Thumbnail Preview"
-                                    className={styles.thumbnailPreview}
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleClearThumbnail}
-                                    className={styles.clearThumbnailButton}
-                                >
-                                    Clear Thumbnail
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                        <div>
+                            <FontAwesomeIcon
+                                icon={faTags}
+                                className={styles.uploadFormIcon}
+                            />
+                            <input
+                                type="text"
+                                onChange={(e) => handleTags(e)}
+                                placeholder="Tags"
+                            ></input>
+                            <p>
+                                tags must be separated by space Ex. "polishboy
+                                warsaw"
+                            </p>
+                        </div>
 
-                    <div>
-                        <p className={styles.uploadFormOption}>Visibility: </p>
-                        <select
-                            onChange={(e) => handleVisibility(e)}
-                            data-testid="visibility-select"
-                        >
-                            <option value="Public">Public</option>
-                            <option value="Unlisted">Unlisted</option>
-                            {isLogged() && (
-                                <option value="Hidden">Hidden</option>
+                        <div>
+                            <FontAwesomeIcon
+                                icon={faAlignLeft}
+                                className={styles.uploadFormIcon}
+                            />
+                            <textarea
+                                onChange={(e) => handleInupt("description", e)}
+                                placeholder="Description"
+                                className={styles.descriptionArea}
+                                rows="5"
+                            ></textarea>
+                        </div>
+
+                        <div>
+                            <select
+                                className={styles.languageSelect}
+                                onChange={(e) => handleInupt("language", e)}
+                                data-testid="language-select"
+                                defaultValue=""
+                            >
+                                <option value="" disabled selected hidden>
+                                    Language
+                                </option>
+                                <option value="1">English</option>
+                            </select>
+                            {validationInfo &&
+                                validationInfo.languageValidation && (
+                                    <p className={styles.validationInfo}>
+                                        The language field is required
+                                    </p>
+                                )}
+                        </div>
+
+                        <div>
+                            <p className={styles.uploadFormOption}>Thumbnail: </p>
+                            <input
+                                type="file"
+                                id="thumbnail-input"
+                                onChange={(e) => handleThumbnail(e)}
+                                className={styles.thumbnailInput}
+                            />
+                            {data.thumbnail && (
+                                <div>
+                                    <img
+                                        src={URL.createObjectURL(data.thumbnail)}
+                                        alt="Thumbnail Preview"
+                                        className={styles.thumbnailPreview}
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={handleClearThumbnail}
+                                        className={styles.clearThumbnailButton}
+                                    >
+                                        Clear Thumbnail
+                                    </button>
+                                </div>
                             )}
-                        </select>
-                    </div>
+                        </div>
 
-                    <button onClick={handleSubmit}>Submit</button>
-                </form>
-            )}
+                        <div>
+                            <p className={styles.uploadFormOption}>Visibility: </p>
+                            <select
+                                onChange={(e) => handleVisibility(e)}
+                                data-testid="visibility-select"
+                            >
+                                <option value="Public">Public</option>
+                                <option value="Unlisted">Unlisted</option>
+                                {isLogged() && (
+                                    <option value="Hidden">Hidden</option>
+                                )}
+                            </select>
+                        </div>
+
+                        <button onClick={handleSubmit}>Submit</button>
+                    </form>
+                )}
+            </div>
         </main>
     );
 }
