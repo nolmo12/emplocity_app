@@ -12,9 +12,10 @@ import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import { render } from "@testing-library/react";
 
 export default function AccountSettings() {
+    const [removeFlag, setRemoveFlag] = useState(false);
     const navigate = useNavigate();
     const { logout } = authUser();
-    const { getUser } = useUser();
+    const { getUser, removeUser, isAdmin } = useUser();
     const { formValidation } = useValidation();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
@@ -87,6 +88,10 @@ export default function AccountSettings() {
         } else {
             setValidationPasswordData(response);
         }
+    };
+
+    const handleClickRemoveAccount = async () => {
+        setRemoveFlag(!removeFlag);
     };
 
     const handleClickClearAvatar = (e) => {
@@ -223,6 +228,20 @@ export default function AccountSettings() {
                     >
                         Change avatar
                     </button>
+                    <button onClick={() => handleClickRemoveAccount()}>
+                        Remove Account
+                    </button>
+                    {removeFlag && (
+                        <>
+                            <p>Are you sure?</p>
+                            <button onClick={() => removeUser(user.id)}>
+                                Yes
+                            </button>
+                            <button onClick={() => setRemoveFlag(!removeFlag)}>
+                                No
+                            </button>
+                        </>
+                    )}
                 </form>
             </div>
         </main>

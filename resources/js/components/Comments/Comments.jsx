@@ -30,7 +30,8 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
             100;
 
         if (previousScroll.current < currentScroll) {
-            if (scrollPercentage > 85) {
+            console.log(commentsObj);
+            if (scrollPercentage > 85 && commentsObj?.comments?.length > 9) {
                 console.log("offset with api: ", offset.current);
                 getCommentsObj(reference_code, offset);
                 offset.current += 1;
@@ -46,11 +47,13 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         } else {
             getAllComments();
         }
-    }, [renderKey]);
+    }, [renderKey, reference_code]);
 
     useEffect(() => {
-        mainRef.current.addEventListener("scroll", handleScroll);
-    }, [mainRef]);
+        if (commentsObj?.comments?.length > 9) {
+            mainRef.current.addEventListener("scroll", handleScroll);
+        }
+    }, [mainRef, commentsObj]);
 
     const getCommentsObj = async () => {
         await fetchVideosSets(reference_code, offset.current);

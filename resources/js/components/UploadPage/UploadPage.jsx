@@ -23,7 +23,7 @@ export default function UploadPage() {
         title: null,
         tags: null,
         description: null,
-        language: null,
+        language: "1",
         video: null,
         thumbnail: null,
         visibility: "Public",
@@ -197,9 +197,9 @@ export default function UploadPage() {
                             className={styles.languageSelect}
                             onChange={(e) => handleInupt("language", e)}
                             data-testid="language-select"
-                            defaultValue=""
+                            defaultValue="1"
                         >
-                            <option value="" disabled selected hidden>
+                            <option value="" disabled hidden>
                                 Language
                             </option>
                             <option value="1">English</option>

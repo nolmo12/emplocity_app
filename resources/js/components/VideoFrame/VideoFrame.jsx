@@ -35,15 +35,18 @@ export default function VideoFrame({ mainRef }) {
     const [showButtons, setShowButtons] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const [adminFlag, setAdminFlag] = useState(false);
+    const [watchTime, setWatchTime] = useState(0);
     const link = useRef();
     const user = useRef("");
+    const playStartTime = useRef(0);
     const { isLogged } = authUser();
     const { getUser, isAdmin, removeVideo, removeUser, removeComment } =
         useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
-    const { startTimer, pauseTimer, timeRemaining } = useViews();
+    const { startTimer, pauseTimer, timeRemaining, updateRemainingTime } =
+        useViews();
     const { reference_code, time } = useParams();
     const { videoObj, isLoading, getVideoLink } = useFetchVideo({
         reference_code,
@@ -117,9 +120,29 @@ export default function VideoFrame({ mainRef }) {
         navigator.clipboard.writeText(text);
     };
 
+    const handlePlay = () => {
+        const videoDuration = videoObj.video.duration * 0.3;
+        playStartTime.current = Date.now();
+        startTimer(
+            videoDuration,
+            reference_code,
+            (timeRemaining.current.currentTime = time ? time.split("=")[1] : 0)
+        );
+    };
+
+    const handlePause = () => {
+        if (playStartTime.current) {
+            const tempTime = Date.now() - playStartTime.current;
+            setWatchTime((prev) => prev + tempTime);
+            playStartTime.current = 0;
+        }
+        pauseTimer();
+    };
+
     const handleTimeUpdate = (e, duration) => {
         const currentTime = e.target.currentTime;
-        duration += currentTime;
+        const totalDuration = e.target.duration;
+        updateRemainingTime(currentTime, totalDuration);
     };
 
     const handleClickDownload = async () => {
@@ -181,16 +204,8 @@ export default function VideoFrame({ mainRef }) {
                         width={320}
                         src={videoPath}
                         poster={videoThumbnail}
-                        onPlay={() =>
-                            startTimer(
-                                Number(videoDuration * 0.3),
-                                reference_code,
-                                (timeRemaining.current.currentTime = time
-                                    ? time.split("=")[1]
-                                    : 0)
-                            )
-                        }
-                        onPause={() => pauseTimer()}
+                        onPlay={handlePlay}
+                        onPause={handlePause}
                         onTimeUpdate={(e) => handleTimeUpdate(e, videoDuration)}
                         controls
                         className={styles.videoScreen}
@@ -409,6 +424,11 @@ export default function VideoFrame({ mainRef }) {
                                 onClick={(e) => removeVideo(reference_code)}
                             >
                                 Remove Video
+                            </button>
+                        )}
+                        {adminFlag && videoOwnerFirstName && (
+                            <button onClick={(e) => removeUser(videoOwnerId)}>
+                                Remove User
                             </button>
                         )}
                     </div>

@@ -7,10 +7,6 @@ export default function useComments() {
     const { http } = authUser();
     const [commentsObj, setCommentsObj] = useState([]);
 
-    useEffect(() => {
-        console.log(commentsObj);
-    }, [commentsObj]);
-
     const fetchVideosSets = async (reference_code, offsetInt) => {
         const response = await http.get(
             `/api/video/comments?reference_code=${reference_code}&offset=${offsetInt}`

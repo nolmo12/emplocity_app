@@ -20,9 +20,9 @@ function Main() {
     const { baseUrl, baseTime } = config();
     useEffect(() => {
         const min = 1000 * 60;
-        if (isLogged()) {
-            setToken(getToken(), baseTime);
-        }
+        // if (isLogged()) {
+        //     setToken(getToken(), baseTime);
+        // }
         setInterval(async () => {
             const http = axios.create({
                 baseURL: baseUrl,
