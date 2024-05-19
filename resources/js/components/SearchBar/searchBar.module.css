@@ -4,8 +4,8 @@
     top: 2%;
     height: 6%;
     transform: translateY(-10%); 
-    left: 43%;
-    width:30%;
+    left: 40%;
+    width:40%;
 }
 
 #searchBar {
@@ -32,6 +32,11 @@
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
+    #searchBarLoop {
+        top: 1%;
+        left:40%;
+    }
+
     #searchBar {
         width: 80%;
         height:25%;
@@ -49,13 +54,13 @@
 @media screen and (max-width: 800px) and (orientation: landscape){
     #searchBar {
         top:5%;
-        left:-15%;
-        width: 150%;
+        left:-25%;
+        width: 140%;
         height:50%;
     }
 
     #searchLoop {
-        left:100%;
+        left:90%;
         top:40%;
         height:0.6em;
     }

@@ -59,7 +59,7 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <main>
+        <main className={styles.forgotPasswordPageMain}>
             {passwordSent ? (
                 <Message
                     message="Link sent. Check your mail."

@@ -18,3 +18,9 @@
     left: 2%;
     right: 2%; 
 }
+
+@media screen and (max-width: 800px) and (orientation: landscape) {
+    .footer {
+        height:7vh;
+    }
+}

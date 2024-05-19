@@ -17,7 +17,8 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -70,17 +71,66 @@ class UserController extends Controller
             return $likesDislikes->is_like ? 1 : 0;
         }
     }
-    public function delete(Request $request, $id)
+    public function delete(Request $request)
     {
-        $user = User::findOrFail($id);
-        $this->authorize('delete', $user);
-        if ($user) 
-        {
-            User::where('id', $id)->delete();
-            Auth::logout();
-            return redirect('/');
+        $user = User::find($request->user_id);
+
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
         }
-        return redirect('/login');
+
+        $this->authorize('delete', $user);
+
+        $user->permissions()->detach();
+
+        $user->roles()->detach();
+
+        $user->histories()->delete();
+
+        $avatarPath = public_path($user->avatar);
+        if(!$user->avatar == '/storage/avatars/ico.png')
+            if(File::exists($avatarPath))
+                File::delete($avatarPath);
+
+        $videos = $user->videos;
+        foreach ($videos as $video) {
+
+            $video->tags()->detach();
+
+            $video->histories()->delete();
+
+            $video->languages()->detach();
+
+            $video->likesDislikes()->delete();
+
+            $video->comments()->delete();
+
+            $video->views()->delete();
+
+            $videoPath = public_path($video->video);
+            $thumbnailPath = public_path($video->thumbnail);
+
+            $video->delete();
+
+            if(File::exists($videoPath))
+                File::delete($videoPath);
+            else
+                return response()->json(['error' => 'Video path not found'], 404);
+
+            if(File::exists($thumbnailPath))
+                File::delete($thumbnailPath);
+            else
+                return response()->json(['error' => 'Thumbnail path not found'], 404);
+        }
+
+        $user->comments()->delete();
+
+        $user->likesDislikes()->delete();
+
+        $user->delete();
+        Auth::logout();
+
+        return response()->json(['success' => 'Successfully deleted user'], 200);
     }
 
     /**
@@ -88,83 +138,83 @@ class UserController extends Controller
  * @param Request $request
  * @return User
  */
-    public function update(Request $request, $id)
-    {
+public function update(Request $request, $id)
+{
 
-        try{
-            // Validate the request data
-        $validateUser = Validator::make($request->all(), [
-            'name' => 'string|max:255',
-            'currentPassword' => 'string',
-            'password' => 'string|required_with:current_password',
-            'repeatPassword' => 'string|required_with:password',
-            'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
-        ]);
+    try{
+        // Validate the request data
+    $validateUser = Validator::make($request->all(), [
+        'name' => 'string|max:255',
+        'currentPassword' => 'string',
+        'password' => 'string|required_with:current_password',
+        'repeatPassword' => 'string|required_with:password',
+        'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
+    ]);
 
-        if ($validateUser->fails()) {
-            $errors = $validateUser->errors();
-            $formattedErrors = ValidateHelper::getAllAuthErrorCodes($errors);
-
-            return response()->json([
-                'status' => false,
-                'message' => 'Validation error',
-                'errors' => $formattedErrors,
-            ], 401);
-        }
-
-        $user = User::findOrFail($id);
-        $this->authorize('update', $user);
-
-        if ($request->filled('name')) {
-            $user->name = $request->name;
-        }
-        $errors = [];
-        if ($request->filled('password') && $request->filled('currentPassword')) {
-            if (!Hash::check($request->currentPassword, $user->password)) {
-                $errors[] = 'Current password is incorrect';
-            }
-            if ($request->password != $request->repeatPassword) {
-                $errors[] = 'Passwords do not match';
-            }
-            if ($request->password == $request->currentPassword) {
-                $errors[] = 'New password cannot be the same as the current password';
-            }
-            $formattedErrors = ValidateHelper::getChangePasswordCodes($errors);
-            if (!empty($formattedErrors)) {
-                return response()->json([
-                    'status' => false,
-                    'errors' => $formattedErrors,
-                ], 401);
-            }
-
-            $user->password = Hash::make($request->password);
-        }
-
-        if ($request->hasFile('thumbnail')) {
-            $thumbnailName = $user->id . '_' . time() . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-            $path = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
-            $request->file('thumbnail')->move(public_path('storage/avatars'), $thumbnailName);
-            $publicPath = Storage::url($path);
-            error_log($publicPath);
-            Storage::delete($path);
-            $user->avatar = $publicPath;
-        }
-
-        $user->save();
+    if ($validateUser->fails()) {
+        $errors = $validateUser->errors();
+        $formattedErrors = ValidateHelper::getAllAuthErrorCodes($errors);
 
         return response()->json([
-            'status' => 'success',
-            'message' => 'User updated successfully',
-            'user' => $user,
-        ]);
+            'status' => false,
+            'message' => 'Validation error',
+            'errors' => $formattedErrors,
+        ], 401);
+    }
 
-        } catch (\Throwable $th) {
+    $user = User::findOrFail($id);
+    $this->authorize('update', $user);
+
+    if ($request->filled('name')) {
+        $user->name = $request->name;
+    }
+    if ($request->filled('password') && $request->filled('currentPassword')) {
+        if (!Hash::check($request->currentPassword, $user->password)) {
             return response()->json([
                 'status' => false,
-                'message' => $th->getMessage()
-            ], 500);
+                'message' => 'Current password is incorrect',
+            ], 401);
         }
+        if ($request->password != $request->repeatPassword) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Passwords do not match',
+            ], 401);
+        }
+        if ($request->password == $request->currentPassword) {
+            return response()->json([
+                'status' => false,
+                'message' => 'New password cannot be the same as the current password',
+            ], 401);
+        }
+        $user->password = Hash::make($request->password);
     }
+
+    if ($request->hasFile('thumbnail')) {
+        $thumbnailName = $user->id . '_' . time() . '.' . $request->file('thumbnail')->getClientOriginalExtension();
+        $path = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
+        $request->file('thumbnail')->move(public_path('storage/avatars'), $thumbnailName);
+        $publicPath = Storage::url($path);
+        error_log($publicPath);
+        Storage::delete($path);
+        $user->avatar = $publicPath;
+    }
+
+    $user->save();
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'User updated successfully',
+        'user' => $user,
+    ]);
+
+    } catch (\Throwable $th) {
+        return response()->json([
+            'status' => false,
+            'message' => $th->getMessage()
+        ], 500);
+    }
+}
     public function read(Request $request, $id)
     {
         if($request->user() && $request->user()->id == $id)

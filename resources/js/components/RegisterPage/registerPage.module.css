@@ -1,3 +1,7 @@
+.registerPageMain {
+    height:100vh;
+}
+
 main {
     display: flex;
     justify-content: center;
@@ -74,8 +78,8 @@ main {
     transform: scale(0.95);
 }
 
-.invalid {
-    border: 1px solid red;
+.registerForm .invalid {
+    color: red;
 }
 
 .registerForm .registerMailIcon, .registerForm .registerPassIcon  {
@@ -98,7 +102,12 @@ main {
 @media only screen and (max-width: 800px) and (orientation: landscape) {
     .registerForm {
         width: 30%;
-        height: 70%;
+        height: 75%;
+    }
+
+    .registerForm input
+    {
+        transform:translate(7%);
     }
 
     .registerForm input,
@@ -107,11 +116,12 @@ main {
     }
 
     .registerForm img {
-        width: 40%;
+        width: 25%;
     }
 
     .registerForm .registerMailIcon, .registerForm .registerPassIcon {
-        top:-1%;
-        left:10%;
+        top:0;
+        left:15%;
+        z-index: 2;
     }
 }

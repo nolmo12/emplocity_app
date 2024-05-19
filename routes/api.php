@@ -50,7 +50,7 @@ Route::prefix('auth')->group(function () {
     ->middleware('guest')
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
-    Route::delete('/delete/{id}', [UserController::class, 'delete']);
+    Route::delete('/delete', [UserController::class, 'delete']);
     Route::post('/update/{id}', [UserController::class, 'update']);
     Route::get('/read/{id}', [UserController::class, 'read']);
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');

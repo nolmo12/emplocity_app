@@ -69,7 +69,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <main>
+        <main className={styles.registerPageMain}>
             {emailVerification ? (
                 <Message message="Email verification sent" />
             ) : (
@@ -106,7 +106,7 @@ export default function RegisterPage() {
                     </div>
 
                     {validationInfo && validationInfo.emailValidation && (
-                        <p>Invalid or used by other user</p>
+                        <p className={styles.invalid}>Invalid or used by other user</p>
                     )}
 
                     <div>
@@ -130,7 +130,7 @@ export default function RegisterPage() {
                     </div>
 
                     {validationInfo && validationInfo.passwordValidation && (
-                        <p>Invalid password</p>
+                        <p className={styles.invalid}>Invalid password</p>
                     )}
 
                     <div>
@@ -155,7 +155,7 @@ export default function RegisterPage() {
 
                     {validationInfo &&
                         validationInfo.repeatPasswordValidation && (
-                            <p data-testid="notSameAsPassword">
+                            <p data-testid="notSameAsPassword" className={styles.invalid}>
                                 Not same as password
                             </p>
                         )}
