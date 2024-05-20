@@ -63,19 +63,27 @@ class Video extends Model implements SearchInterface
     // Relationship with Comments
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class, 'video_id');
     }
 
     // Relationship with History
     public function histories()
     {
-        return $this->hasMany(History::class);
+        return $this->hasMany(History::class, 'video_id');
     }
 
+    // Relationship with Playlist
     public function report()
     {
         return $this->morphToMany(Report::class, 'reportable');
     }
+
+    // Relationship with VideoView
+    public function views()
+    {
+        return $this->hasMany(VideoView::class, 'video_id');
+    }
+
 
     
     public function stats()

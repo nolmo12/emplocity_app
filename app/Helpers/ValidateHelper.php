@@ -76,31 +76,4 @@ class ValidateHelper
             return $formattedErrors;
     }
 
-    static function getChangePasswordCodes($errors) : array
-    {
-       
-        $formattedErrors = [];
-        $code = 0;
-        foreach ($errors as $error)
-        {
-            $code = 0;
-            if(str_contains($error, 'incorrect'))
-            {
-                $code = 461;
-            }
-            if(str_contains($error, 'match'))
-            {
-                $code = 462;
-            }
-            if(str_contains($error, 'same'))
-            {
-                $code = 463;
-            }
-            $formattedErrors[] = [
-                $code => $error
-                ];
-            }
-    
-            return $formattedErrors;
-    }
 }

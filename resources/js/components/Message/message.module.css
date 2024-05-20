@@ -9,6 +9,10 @@
     width: 15%;
     max-width: 300px;
     color:black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .postSendMessage p {
@@ -39,13 +43,14 @@
 @media only screen and (max-width: 800px) and (orientation: portrait) {
     .postSendMessage {
         width: 90%;
+        height:20%;
     }
 }
 
 @media only screen and (max-width: 800px) and (orientation: landscape) {
     .postSendMessage {
         width: 30%;
-        height: 70%;
+        height: 30%;
     }
 
     .postSendMessage button {

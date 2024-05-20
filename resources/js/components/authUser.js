@@ -1,12 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
 
 export default function authUser() {
-    const [csrfToken, setCsrfToken] = useState();
     const navigate = useNavigate();
     const { baseUrl } = config();
 
@@ -23,12 +21,14 @@ export default function authUser() {
         //     Authorization: `Bearer ${getToken()}`,
         // },
     });
+
     http.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ${getToken()}`;
+        const token = getToken();
+        config.headers.Authorization = `Bearer ${token}`;
         return config;
     });
 
-    const getCsrfToken = () => {
+    const getCSRFToken = () => {
         const token = Cookies.get("XSRF-TOKEN");
         return token;
     };
@@ -41,11 +41,9 @@ export default function authUser() {
     }, [getToken()]);
 
     const saveToken = (tempToken, time) => {
-        console.log("saveToken");
         const date = new Date(); // time from api
         const tempTime = Number(date.getTime() + time);
         date.setTime(tempTime);
-        console.log(date);
         Cookies.set("token", tempToken, {
             expires: date,
         });
@@ -55,6 +53,20 @@ export default function authUser() {
         Cookies.remove("token");
         navigate("/");
     };
+
+    // const getJWTToken = async () => {
+    //     const tempToken = getToken();
+    //     if (!tempToken) {
+    //         try {
+    //             const response = await http.post("/api/auth/refresh");
+    //             console.log(response.data);
+    //             saveToken(response.data.authorisation.token, baseTime);
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    //     return tempToken;
+    // };
 
     const isLogged = () => {
         const tempToken = getToken();
@@ -71,6 +83,5 @@ export default function authUser() {
         getToken,
         http,
         isLogged,
-        getCsrfToken,
     };
 }

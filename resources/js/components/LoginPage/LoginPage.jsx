@@ -60,7 +60,7 @@ export default function LoginPage() {
     };
 
     return (
-        <main>
+        <main className={styles.loginPageMain}>
             <form
                 data-testid="form"
                 onSubmit={(e) => handleSubmit(e)}
@@ -101,7 +101,7 @@ export default function LoginPage() {
                         onChange={(e) => handleInputPassword(e)}
                     ></input>
                 </div>
-                {loginValidation ? <p>Invalid email or password</p> : ""}
+                {loginValidation ? <p className={styles.invalid}>Invalid email or password</p> : ""}
                 <Link to="/forgotPassword">
                     <a data-testid="forgotPassword">Forgot password?</a>
                 </Link>

@@ -278,6 +278,8 @@ class VideoController extends Controller
 
         $video->comments()->delete();
 
+        $video->views()->delete();
+
         $videoPath = public_path($video->video);
         $thumbnailPath = public_path($video->thumbnail);
 
@@ -288,7 +290,7 @@ class VideoController extends Controller
         else
             return response()->json(['error' => 'Video path not found'], 404);
 
-        
+        // to fix if the thumbnail is not added to the video throws errors
         if(File::exists($thumbnailPath))
             File::delete($thumbnailPath);
         else

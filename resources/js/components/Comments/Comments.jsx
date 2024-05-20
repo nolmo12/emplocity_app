@@ -9,47 +9,55 @@ import _ from "lodash";
 
 export default function Comments({ reference_code, mainRef, adminFlag }) {
     const [renderKey, setRenderKey] = useState(0);
-    const [commentsObj, setCommentsObj] = useState({});
-    const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const [mainCommentContent, setMainCommentContent] = useState();
+    const previousScroll = useRef(0);
     const offset = useRef(0);
-    const { fetchComments, fetchNextComments, sendComment } = useComments();
+    const {
+        fetchVideosSets,
+        getAllComments,
+        sendComment,
+        commentsObj,
+        setCommentsObj,
+    } = useComments();
     const { isLogged } = authUser();
     const navigate = useNavigate();
 
     const handleScroll = _.throttle((event) => {
         const target = event.target;
+        const currentScroll = target.scrollTop;
         const scrollPercentage =
             (target.scrollTop / (target.scrollHeight - target.clientHeight)) *
             100;
 
-        if (scrollPercentage > 85 && !hasScrolledPast85) {
-            offset.current = offset.current + 1;
-            fetchNextComments(reference_code, offset.current).then((data) => {
-                setCommentsObj((prev) => ({
-                    ...prev,
-                    comments: [...prev.comments, ...data.comments],
-                }));
-            });
-
-            console.log("Scrollbar 80% event");
-            setHasScrolledPast85(true);
-        } else if (scrollPercentage < 85) {
-            setHasScrolledPast85(false);
+        if (previousScroll.current < currentScroll) {
+            console.log(commentsObj);
+            if (scrollPercentage > 85 && commentsObj?.comments?.length > 9) {
+                console.log("offset with api: ", offset.current);
+                getCommentsObj(reference_code, offset);
+                offset.current += 1;
+                console.log("after: ", offset.current);
+            }
         }
-        // here here here here here
-    }, 1500);
+        previousScroll.current = currentScroll;
+    }, 1000);
 
     useEffect(() => {
-        fetchComments(reference_code, 0).then((data) => {
-            setCommentsObj(data);
-        });
-    }, [reference_code, renderKey]);
-    console.log(commentsObj);
+        if (offset.current === 0) {
+            getCommentsObj();
+        } else {
+            getAllComments();
+        }
+    }, [renderKey, reference_code]);
 
     useEffect(() => {
-        mainRef.current.addEventListener("scroll", handleScroll);
-    }, [mainRef]);
+        if (commentsObj?.comments?.length > 9) {
+            mainRef.current.addEventListener("scroll", handleScroll);
+        }
+    }, [mainRef, commentsObj]);
+
+    const getCommentsObj = async () => {
+        await fetchVideosSets(reference_code, offset.current);
+    };
 
     const handleTextareaChange = (e) => {
         setMainCommentContent(e.target.innerText);
@@ -77,7 +85,8 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                 ></div>
                 <button onClick={(e) => handleClickComment(e)}>Comment</button>
             </div>
-            {commentsObj.comments &&
+            {commentsObj &&
+                commentsObj.comments &&
                 Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {
                         return (
@@ -91,6 +100,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                                     reference_code={reference_code}
                                     isReply={false}
                                     adminFlag={adminFlag}
+                                    setCommentsObj={setCommentsObj}
                                 />
                             </div>
                         );
