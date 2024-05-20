@@ -88,7 +88,7 @@ class UserController extends Controller
         $user->histories()->delete();
 
         $avatarPath = public_path($user->avatar);
-        if(!$user->avatar == '/storage/avatars/ico.png')
+        if($user->avatar != '/storage/avatars/ico.png')
             if(File::exists($avatarPath))
                 File::delete($avatarPath);
 
