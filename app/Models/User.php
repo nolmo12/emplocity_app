@@ -149,6 +149,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Searc
         return $this->belongsToMany(Border::class);
     }
 
+    public function currentBorder()
+    {
+        return $this->borders()->orderByPivot('created_at', 'desc')->first();
+    }
+
     public function orders(): hasMany
     {
         return $this->hasMany(Order::class);

@@ -56,7 +56,10 @@ Route::prefix('auth')->group(function () {
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
 
     Route::post('/grantAdmin/{id}', [UserController::class, 'grantAdmin'])->middleware('role:admin');
-    Route::post('/grantAdmintest', [UserController::class, 'grantAdminWithoutAutorization'])->middleware('auth:api');
+
+    Route::get('/borders', [BorderController::class, 'getUserBorders'])->middleware('auth:api');
+    Route::get('/currentBorder', [UserController::class, 'showCurrentBorder'])->middleware('auth:api');
+    Route::patch('/changeCurrentBorder', [UserController::class, 'changeCurrentBorder'])->middleware('auth:api');
 
 });
 
