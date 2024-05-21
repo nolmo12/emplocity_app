@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use Payu\Events\PayuPaymentCreated;
+use Payu\Events\PayuPaymentConfirmed;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -19,8 +19,12 @@ class PaymentConfirmedNotification
     /**
      * Handle the event.
      */
-    public function handle(PayuPaymentCreated $event): void
+    public function handle(PayuPaymentConfirmed $event): void
     {
-        //
+        $order = $event->order;
+        $user = $order->user;
+        $orderable = $order->orderable;
+
+        $user->attach($orderable);
     }
 }
