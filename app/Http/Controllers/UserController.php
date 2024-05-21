@@ -332,7 +332,16 @@ public function update(Request $request, $id)
     {
         $user = $request->user();
 
-        $user->borders()->updateExistingPivot($request->borderId);
+        $existingBorders = $user->borders()->get();
+
+        if ($existingBorders->contains($request->borderId))
+        {
+            $user->borders()->updateExistingPivot($request->borderId, [], false);
+        } 
+        else 
+        {
+            $user->borders()->syncWithoutDetaching([$request->borderId]);
+        }
         
         return response()->json(['message' => 'Current border updated successfully']);
     }
