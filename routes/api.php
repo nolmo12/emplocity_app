@@ -75,7 +75,7 @@ Route::prefix('email')->group(function () {
         $request->user()->sendEmailVerificationNotification();
      
         return back()->with('message', 'Verification link sent!');
-    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+    })->middleware(['auth', 'throttle:20,1'])->name('verification.send');
 
     Route::post('/help', function (Request $request)
     {
