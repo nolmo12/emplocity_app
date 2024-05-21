@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Payu\Interfaces\PayuOrderInterface;
 use Payu\Models\Payment;
+use Illuminate\Database\Eloquent\Model;
+use Payu\Interfaces\PayuOrderInterface;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Order extends Model implements PayuOrderInterface
 {
@@ -53,5 +55,15 @@ class Order extends Model implements PayuOrderInterface
   function orderEmail()
   {
     return $this->email;
+  }
+
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
+
+  public function orderable(): MorphTo
+  {
+    return $this->morphTo();
   }
 }

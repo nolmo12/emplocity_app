@@ -62,10 +62,11 @@ class VideoController extends Controller
         
         if($request->hasFile('video'))
         {
-            $videoName = $video->reference_code . str_replace(' ', '', $request->file('video')->getClientOriginalName());
-            $path = $request->file('video')->storeAs('public/videos', $videoName);
+            $file = $request->file('video');
+            $videoName = hash('sha256', $file->getClientOriginalName()) .'.'. $file->extension();
+            $path = $file->storeAs('public/videos', $videoName);
 
-            $request->file('video')->move(public_path('storage/videos'), $videoName);
+            $file->move(public_path('storage/videos'), $videoName);
 
             $publicPath = Storage::url($path);
 
@@ -97,7 +98,8 @@ class VideoController extends Controller
         }
         else
         {
-            $thumbnailName = $video->reference_code . str_replace(' ', '', $request->file('thumbnail')->getClientOriginalName());
+            $file = $request->file('thumbnail');
+            $thumbnailName = hash('sha256', $file->getClientOriginalName()) .'.'. $file->extension();;
             $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
             $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
@@ -594,7 +596,7 @@ class VideoController extends Controller
 
         $randomVideos = Video::where('visibility', 'Public')
         ->orderByRaw('RANDOM()')
-        ->simplePaginate(12);
+        ->simplePaginate(20);
 
         foreach ($randomVideos as $key => $video)
         {
