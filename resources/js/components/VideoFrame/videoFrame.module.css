@@ -184,7 +184,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     cursor: pointer;
     border: none;
     background-color: white;
-    text-align: left;
+    text-align: center;
 }
 
 .buttonsContainer button:hover{
