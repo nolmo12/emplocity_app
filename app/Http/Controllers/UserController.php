@@ -331,7 +331,8 @@ public function update(Request $request, $id)
     public function changeCurrentBorder(Request $request)
     {
         $user = $request->user();
-        $user->borders()->sync([$request->borderId]);
+
+        $user->borders()->updateExistingPivot($request->borderId);
         
         return response()->json(['message' => 'Current border updated successfully']);
     }
