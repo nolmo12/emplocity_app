@@ -33,7 +33,7 @@ export default function Shop() {
 
     const handleClickBuy = async (borderId) => {
         try {
-            const response = await http.post(
+            const response = await http.get(
                 `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=123456789`
             );
             if (response.data) navigate(response.data.url);
