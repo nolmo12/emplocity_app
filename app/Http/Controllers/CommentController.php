@@ -32,7 +32,10 @@ class CommentController extends Controller
         $comment->video()->associate($video);
         $comment->save();
 
-        return response()->json('Properly added a comment');
+        return response()->json([
+            'comment' => $comment,
+            'status' => 'Properly added a comment'
+        ]);
     }
 
     public function show(Request $request)
