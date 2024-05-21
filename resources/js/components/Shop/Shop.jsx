@@ -2,11 +2,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 import authUser from "../authUser";
 import useUser from "../useUser";
+import useBorders from "../useBorders";
 export default function Shop() {
     const [userData, setUserData] = useState({});
+    const [userBorders, setUserBorders] = useState([]);
+    const [borders, setBorders] = useState([]);
+    const { getBorders } = useBorders();
     const { http } = authUser();
     const { getUser } = useUser();
-    const [borders, setBorders] = useState([]);
 
     useEffect(() => {
         getUserData();
@@ -14,6 +17,7 @@ export default function Shop() {
 
     const getUserData = async () => {
         setUserData(await getUser());
+        setUserBorders(await fetchBorders());
     };
 
     const fetchBorders = async () => {

@@ -9,12 +9,12 @@ import styles from "./accountSettings.module.css";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-
+import useBorders from "../useBorders";
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
+    const [userBorders, setUserBorders] = useState([]);
     const [imageLoaded, setImageLoaded] = useState();
     const [renderKey, setRenderKey] = useState(0);
-    const [borders, setBorders] = useState([]);
     const [currentBorder, setCurrentBorder] = useState(null);
     const [userData, setUserData] = useState({
         nickname: "",
@@ -29,7 +29,7 @@ export default function AccountSettings() {
         repeatPasswordValidation: false,
     });
     const [validationNicknameData, setValidationNicknameData] = useState(false);
-
+    const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
     const navigate = useNavigate();
     const { logout, http } = authUser();
@@ -116,26 +116,9 @@ export default function AccountSettings() {
     const handleClickChangeAvatar = async (e) => {
         const formData = new FormData();
         formData.append("avatar", userData.avatar);
-
         await changeAvatar(user.id, userData.avatar);
     };
 
-    const getBorders = async () => {
-        const response = await http.get(`/api/auth/borders`);
-        setBorders(response.data);
-    };
-
-    const getCurrentBorder = async () => {
-        const response = await http.get(`/api/auth/currentBorder`);
-        setCurrentBorder(response.data);
-    };
-
-    const handleClickBorder = async (borderId) => {
-        const response = await http.patch(
-            `/api/auth/changeCurrentBorder/${borderId}`
-        );
-        setRenderKey((prev) => prev + 1);
-    };
     return (
         <main>
             <div className={styles.settingsDiv}>
