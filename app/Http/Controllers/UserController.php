@@ -6,19 +6,20 @@ use DateTime;
 use App\Models\User;
 use App\Models\Video;
 
-use App\Models\Comment;
+use App\Models\Border;
 
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\File;
 
 class UserController extends Controller
 {
@@ -309,6 +310,31 @@ public function update(Request $request, $id)
         $user = User::findOrFail($request->user_id);
         $this->authorize('update', $user);
         error_log('you have an admin wow:o');
+    }
+
+    public function showCurrentBorder($userId)
+    {
+        $user = User::findOrFail($userId);
+        $currentBorder = $user->currentBorder();
+
+        if ($currentBorder)
+        {
+            return response()->json([
+                'message' => 'Current Border found',
+                'current_border' => $currentBorder
+            ]);
+        } 
+        else 
+        {
+            return response()->json(['message' => 'No borders found for this user'], 404);
+        }
+    }
+    public function changeCurrentBorder(Request $request)
+    {
+        $user = $request->user();
+        $user->borders()->sync([$request->borderId]);
+        
+        return response()->json(['message' => 'Current border updated successfully']);
     }
 
 }
