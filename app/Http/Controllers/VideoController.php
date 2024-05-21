@@ -63,7 +63,7 @@ class VideoController extends Controller
         if($request->hasFile('video'))
         {
             $file = $request->file('video');
-            $videoName = hash('sha256', $file->getClientOriginalName()) . $file->extension();
+            $videoName = hash('sha256', $file->getClientOriginalName()) .'.'. $file->extension();
             $path = $file->storeAs('public/videos', $videoName);
 
             $file->move(public_path('storage/videos'), $videoName);
@@ -99,7 +99,7 @@ class VideoController extends Controller
         else
         {
             $file = $request->file('thumbnail');
-            $thumbnailName = hash('sha256', $file->getClientOriginalName()) . $file->extension();;
+            $thumbnailName = hash('sha256', $file->getClientOriginalName()) .'.'. $file->extension();;
             $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
 
             $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);

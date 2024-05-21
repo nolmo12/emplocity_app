@@ -149,4 +149,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Searc
         return $this->belongsToMany(Border::class);
     }
 
+    public function orders(): hasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }
