@@ -30,10 +30,11 @@
 }
 
 #UserVideoSection table {
-    width: 100%;
+    width: 95%;
     margin: 0;
     padding: 0;
     table-layout: fixed; 
+    border-collapse: collapse;
 }
 
 #UserVideoSection th,
@@ -54,74 +55,133 @@
     text-align: center;
 }
 
+#UserVideoSection tbody tr {
+    border-top:solid 1px grey;
+    transition: background-color 0.3s ease
+}
+
+#UserVideoSection tbody tr:hover {
+    background-color: #0e182c;
+}
+
 #UserVideoSection section {
     width: 60%;
     transform: translateX(20%);
 }
 
 #UserVideoSection img {
-    width:12em;
-    height:8em;
+    width:10em;
+    height:6em;
+}
+
+.tableRow {
+    position: relative;
+}
+
+.actionCell {
+    position: relative;
+}
+
+.userVideoIcon {
+    cursor: pointer;
+    visibility: hidden;
+    width:1.2em;
+    height:1.2em;
+    padding:1em;
+}
+
+.userVideoIcon:hover {
+    color:lightgrey;
+    transition: color 0.3s ease; 
+}
+
+.tableRow:hover .userVideoIcon {
+    visibility: visible;
+}
+
+.buttonsContainer {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    right: 0;
+    z-index: 999;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    transform-origin: top;
+    transform: scaleY(0);
+    visibility: hidden;
+    opacity: 0;
+    right:1em;
+    top:2.5em;
+}
+
+.buttonsContainer button{
+    display:block;
+    text-align:center;
+    width: 7em;
+    height: 2em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    text-align: center;
+}
+
+.buttonsContainer button:hover{
+    background-color: #f0f0f0;
+}
+
+.buttonsContainer button:active{
+    transform: scale(0.90);
+}
+
+.menuVisible {
+    opacity: 1;
+    transform: scaleY(1);
+    visibility: visible;
+}
+
+.editVideoMenu {
+    position: relative;
+    display: inline-block;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #UserVideoSection {
-        width:65%;
-        height:95%;
-        left: -1%;
-        margin-top: 5%;
-        padding-bottom: 0;
-        align-items: flex-start;
-    }
-    
-    #UserVideoSection th {
-        display: block;
-        width: 15%;
-        padding-left: 0em;
-        margin-bottom: 2em;
-        font-size:1em;
-    }
-
-    #UserVideoSection #VideoHeader {
-        margin-bottom:6em;
+        width:70%;
+        left:-3%;
+        display:block;
+        font-size:0.8em;
     }
 
     #UserVideoSection section {
-        left:-15%;
-        position:relative;
-        height: 9em;
-        width: 8em;
-        margin-bottom: 2em;
+        width: 60%;
+        height:15em;
+        transform: translateX(15%);
     }
 
-    #UserVideoSection .tdContent {
-        left:10%;
-        top:-24.8em;
-        position:relative;
+    #UserVideoSection table {
+        width:300%;
+    }
+
+    #UserVideoSection img {
+        width:6em;
+        height:4em;
     }
     
-    #UserVideoSection td {
-        display: block;
-        width:70%;
-        margin-bottom: 2em;
-        float: right; 
-        clear: right; 
-        position:relative;
-        top:-21em;
-        left:2em;
-    }
+
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #UserVideoSection {
-        width: 70%;
+        width: 80%;
         height: 90%;
-        left: -5%;
+        left: -1%;
         top: -5%;
         margin-top: 5%;
         padding-bottom: 0;
         align-items: flex-start;
         font-size:0.5em;
+        overflow-x: hidden;
     }
 
     #UserVideoSection section {
