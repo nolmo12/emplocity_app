@@ -9,18 +9,13 @@ import styles from "./accountSettings.module.css";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
-import { render } from "@testing-library/react";
 
 export default function AccountSettings() {
-    const [removeFlag, setRemoveFlag] = useState(false);
-    const navigate = useNavigate();
-    const { logout } = authUser();
-    const { getUser, removeUser, isAdmin } = useUser();
-    const { formValidation } = useValidation();
-    const { changeNickname, changePassword, changeAvatar } = useUserSettings();
     const [user, setUser] = useState(null);
     const [imageLoaded, setImageLoaded] = useState();
     const [renderKey, setRenderKey] = useState(0);
+    const [borders, setBorders] = useState([]);
+    const [currentBorder, setCurrentBorder] = useState(null);
     const [userData, setUserData] = useState({
         nickname: "",
         previousPassword: "",
@@ -35,6 +30,13 @@ export default function AccountSettings() {
     });
     const [validationNicknameData, setValidationNicknameData] = useState(false);
 
+    const [removeFlag, setRemoveFlag] = useState(false);
+    const navigate = useNavigate();
+    const { logout, http } = authUser();
+    const { getUser, removeUser, isAdmin } = useUser();
+    const { formValidation } = useValidation();
+    const { changeNickname, changePassword, changeAvatar } = useUserSettings();
+
     useEffect(() => {
         const getUserId = async () => {
             try {
@@ -45,7 +47,12 @@ export default function AccountSettings() {
             }
         };
         getUserId();
+        getCurrentBorder();
     }, [renderKey]);
+
+    useEffect(() => {
+        getBorders();
+    }, []);
 
     const handleNicknameChange = (e) => {
         e.preventDefault();
@@ -90,7 +97,8 @@ export default function AccountSettings() {
         }
     };
 
-    const handleClickRemoveAccount = async () => {
+    const handleClickRemoveAccount = async (e) => {
+        e.preventDefault();
         setRemoveFlag(!removeFlag);
     };
 
@@ -110,6 +118,23 @@ export default function AccountSettings() {
         formData.append("avatar", userData.avatar);
 
         await changeAvatar(user.id, userData.avatar);
+    };
+
+    const getBorders = async () => {
+        const response = await http.get(`/api/auth/borders`);
+        setBorders(response.data);
+    };
+
+    const getCurrentBorder = async () => {
+        const response = await http.get(`/api/auth/currentBorder`);
+        setCurrentBorder(response.data);
+    };
+
+    const handleClickBorder = async (borderId) => {
+        const response = await http.patch(
+            `/api/auth/changeCurrentBorder/${borderId}`
+        );
+        setRenderKey((prev) => prev + 1);
     };
     return (
         <main>
@@ -149,6 +174,9 @@ export default function AccountSettings() {
                                         />
                                     )}
                                 </p>
+                                <p className={styles.label}>User borders: </p>
+                                <p>{}</p>
+                                <p></p>
                             </div>
                         </>
                     </div>
@@ -228,7 +256,7 @@ export default function AccountSettings() {
                     >
                         Change avatar
                     </button>
-                    <button onClick={() => handleClickRemoveAccount()}>
+                    <button onClick={(e) => handleClickRemoveAccount(e)}>
                         Remove Account
                     </button>
                     {removeFlag && (

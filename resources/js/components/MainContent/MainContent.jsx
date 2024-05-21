@@ -9,6 +9,7 @@ import Rules from "../Rules/Rules";
 import AboutUs from "../AboutUs/AboutUs";
 import Settings from "../Settings/Settings";
 import Shop from "../Shop/Shop";
+import VideoSettings from "../VideoSettings/VideoSettings";
 import UserVideoSection from "../UserVideoSection/UserVideoSection";
 import styles from "./mainContent.module.css";
 
@@ -94,6 +95,12 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <Rules />
+            </main>
+        );
+    } else if (contentType === "videoSettings") {
+        view = (
+            <main>
+                <VideoSettings />
             </main>
         );
     }

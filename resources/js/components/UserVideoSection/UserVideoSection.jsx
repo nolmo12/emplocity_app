@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import styles from "./userVideoSection.module.css";
 import useUser from "../useUser";
 import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 export default function UserVideoSection() {
     const [videosObj, setVideosObj] = useState([]);
@@ -11,6 +12,7 @@ export default function UserVideoSection() {
     const [imageLoaded, setImageLoaded] = useState(false);
     const { http } = authUser();
     const { getUser } = useUser();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchUserId();
@@ -27,12 +29,12 @@ export default function UserVideoSection() {
         setVideosObj(response.data);
     };
 
-    const handleClickRemove = async (reference_code) => {
-        await http.delete(`/api/video/delete`, {
-            params: { reference_code: reference_code },
-        });
-        setRenderKey((prev) => prev + 1);
-    };
+    // const handleClickRemove = async (reference_code) => {
+    //     await http.delete(`/api/video/delete`, {
+    //         params: { reference_code: reference_code },
+    //     });
+    //     setRenderKey((prev) => prev + 1);
+    // };
 
     return (
         <div id={styles.UserVideoSection}>
@@ -90,7 +92,7 @@ export default function UserVideoSection() {
                                         {video.dislikesCount}
                                     </td>
                                     <td>
-                                        <button
+                                        {/* <button
                                             onClick={() =>
                                                 handleClickRemove(
                                                     video.video.reference_code
@@ -98,6 +100,15 @@ export default function UserVideoSection() {
                                             }
                                         >
                                             Remove
+                                        </button> */}
+                                        <button
+                                            onClick={() =>
+                                                navigate(
+                                                    `/video-settings/${video.video.reference_code}`
+                                                )
+                                            }
+                                        >
+                                            Edit video
                                         </button>
                                     </td>
                                 </tr>
