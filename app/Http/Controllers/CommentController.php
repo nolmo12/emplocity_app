@@ -130,7 +130,10 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return response()->json('Comment deleted succesfully');
+        return response()->json(
+            ['Comment' => $comment,
+                'Comment removed succesfully',
+            ]);
     }
 
     public function update(Request $request)
@@ -148,7 +151,10 @@ class CommentController extends Controller
 
         $comment->save();
 
-        return response()->json('Comment updated succesfully');
+        return response()->json(
+            ['Comment' => $comment,
+                'Comment updated succesfully',
+            ]);
 
     }
 

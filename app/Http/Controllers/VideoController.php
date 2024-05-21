@@ -296,7 +296,9 @@ class VideoController extends Controller
         else
             return response()->json(['error' => 'Thumbnail path not found'], 404);
 
-        return response()->json(['success'=> 'Succesfully deleted video'], 200);
+        return response()->json([
+            'success'=> 'Succesfully deleted video',
+            'video' => $video], 200);
     }
 
     public function updateLikes(Request $request, string $referenceCode)
@@ -352,7 +354,11 @@ class VideoController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Likes updated successfully'], 200);
+        $this->countView($request, $referenceCode);
+
+        return response()->json([
+            'message' => 'Likes updated successfully'
+        ], 200);
     }
 
     public function update(Request $request)
@@ -450,7 +456,8 @@ class VideoController extends Controller
         if($request->tags)
             $video->addTags($request->tags);
 
-        $video->save();  
+        $video->save();
+        return $video;
     }
 
 
@@ -476,22 +483,24 @@ class VideoController extends Controller
         
         foreach($searchQueryArray as $word)
         {
+            $wordLength = strlen($word);
+            $maxDistance = intval($wordLength * 0.4);
+
+            $escapedWord = str_replace('%', '\\%', $word);
+            $escapedWord = str_replace('_', '\\_', $escapedWord);
+            
             $videos = Video::where('visibility', 'Public')
-            ->whereHas('tags', function ($query) use ($word) {
-                $soundexWord = soundex($word);
-                $query->whereRaw("SOUNDEX(name) = '$soundexWord'");
-            })
-            ->orWhereHas('tags', function ($query) use ($word) {
-                $query->where('name', 'like', "%$word%");
-            })
-            ->offset(12 * $offset)
-            ->get();
+                ->whereHas('tags', function ($query) use ($word, $escapedWord, $maxDistance) {
+                    $query->whereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
+                        ->orWhere('name', 'like', '%' . $escapedWord . '%');
+                })
+                ->offset(12 * $offset)
+                ->get();
         
-            $users = User::where(function ($query) use ($word) {
-                $query->whereRaw("SOUNDEX(name) = SOUNDEX(?)", [$word])
-                      ->orWhereRaw("SOUNDEX(first_name) = SOUNDEX(?)", [$word])
-                      ->orWhere('name', 'like', "%$word%")
-                      ->orWhere('first_name', 'like', "%$word%");
+            $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {
+                $query->orWhereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
+                ->orWhere('name', 'like', '%' . $escapedWord . '%')
+                ->orWhere('first_name', 'like', '%' . $escapedWord . '%');
             })
             ->get();
 

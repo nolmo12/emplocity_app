@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Border::class);
             $table->foreignIdFor(User::class);
+            $table->timestamps();
         });
     }
 
