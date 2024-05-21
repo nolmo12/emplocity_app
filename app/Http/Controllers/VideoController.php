@@ -392,8 +392,8 @@ class VideoController extends Controller
         $video = Video::with('languages', 'tags')->where('reference_code', $referenceCode)->first();
 
         $this->authorize('update', $video);
-
-        $video->visibility = $request->visibility;
+        if($request->visibility)
+            $video->visibility = $request->visibility;
 
         if($request->hasFile('thumbnail'))
         {
