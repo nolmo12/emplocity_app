@@ -596,7 +596,7 @@ class VideoController extends Controller
 
         $randomVideos = Video::where('visibility', 'Public')
         ->orderByRaw('RANDOM()')
-        ->simplePaginate(12);
+        ->simplePaginate(20);
 
         foreach ($randomVideos as $key => $video)
         {
