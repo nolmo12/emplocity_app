@@ -334,12 +334,14 @@ public function update(Request $request, $id)
 
         $existingBorders = $user->borders()->get();
 
-        if ($existingBorders->contains($request->borderId))
+        if ($existingBorders->contains(Border::findOrFail($request->borderId)))
         {
             $user->borders()->updateExistingPivot($request->borderId, ['updated_at' => now()], false);
-        } 
+            return response()->json(['message' => 'Current border updated successfully']);
+        }
+        return response()->json(['message' => 'You dont own that border']);
         
-        return response()->json(['message' => 'Current border updated successfully']);
+        
     }
 
 }
