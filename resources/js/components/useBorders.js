@@ -1,5 +1,7 @@
 import { useState } from "react";
+import authUser from "./authUser";
 export default function useBorders() {
+    const { http } = authUser();
     const getBorders = async () => {
         const response = await http.get(`/api/auth/borders`);
         return response.data;
@@ -14,6 +16,6 @@ export default function useBorders() {
         const response = await http.patch(
             `/api/auth/changeCurrentBorder/${borderId}`
         );
-        setRenderKey((prev) => prev + 1);
     };
+    return { getBorders, getCurrentBorder, handleClickBorder };
 }

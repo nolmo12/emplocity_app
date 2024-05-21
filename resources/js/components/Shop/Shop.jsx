@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUser from "../useUser";
 import useBorders from "../useBorders";
@@ -10,10 +11,7 @@ export default function Shop() {
     const { getBorders } = useBorders();
     const { http } = authUser();
     const { getUser } = useUser();
-
-    useEffect(() => {
-        getUserData();
-    }, []);
+    const navigate = useNavigate();
 
     const getUserData = async () => {
         setUserData(await getUser());
@@ -21,20 +19,27 @@ export default function Shop() {
     };
 
     const fetchBorders = async () => {
-        const response = await http.get("/api/shop/show");
-        console.log(response.data);
-        const responseData = response.data.toSorted(
-            (a, b) => b.rarity - a.rarity
-        );
-        setBorders(responseData);
+        try {
+            const response = await http.get("/api/shop/show");
+            console.log(response.data);
+            const responseData = response.data.toSorted(
+                (a, b) => b.rarity - a.rarity
+            );
+            setBorders(responseData);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const handleClickBuy = async (borderId) => {
-        console.log(borders[borderId]);
-        console.log(userData);
-        const response = await http.post(
-            `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=123456789`
-        );
+        try {
+            const response = await http.post(
+                `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=123456789`
+            );
+            if (response.data) navigate(response.data.url);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     useEffect(() => {

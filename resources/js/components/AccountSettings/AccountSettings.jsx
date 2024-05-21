@@ -10,6 +10,7 @@ import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import useBorders from "../useBorders";
+import { render } from "@testing-library/react";
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [userBorders, setUserBorders] = useState([]);
@@ -51,8 +52,20 @@ export default function AccountSettings() {
     }, [renderKey]);
 
     useEffect(() => {
-        getBorders();
-    }, []);
+        getUserBorders();
+        getCurrentUserBorder();
+    }, [renderKey]);
+
+    const getUserBorders = async () => {
+        const response = await getBorders();
+        setUserBorders(response);
+    };
+
+    const getCurrentUserBorder = async () => {
+        const response = await getCurrentBorder();
+        setCurrentBorder(response);
+        setRenderKey((prev) => prev + 1);
+    };
 
     const handleNicknameChange = (e) => {
         e.preventDefault();
@@ -158,7 +171,24 @@ export default function AccountSettings() {
                                     )}
                                 </p>
                                 <p className={styles.label}>User borders: </p>
-                                <p>{}</p>
+                                <img
+                                    src={currentBorder.current_border.type}
+                                    alt="current border"
+                                />
+                                <p>
+                                    {userBorders.borders.map((item) => {
+                                        return (
+                                            <img
+                                                src={item.type}
+                                                alt="border"
+                                                onClick={() =>
+                                                    handleClickBorder(item.id)
+                                                }
+                                                key={`userBorder${item.id}`}
+                                            />
+                                        );
+                                    })}
+                                </p>
                                 <p></p>
                             </div>
                         </>
