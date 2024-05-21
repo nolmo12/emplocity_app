@@ -51,7 +51,7 @@ export default function Comment({
     };
 
     const handleTextareaChange = (e) => {
-        setReplyCommentContent(e.target.textContent);
+        setReplyCommentContent(e.target.innerHTML);
     };
 
     const handleClickReply = () => {
@@ -63,14 +63,14 @@ export default function Comment({
             navigate("/login");
             return;
         }
-        setReplyCommentContent("");
+        setReplyCommentContent(""); //////
         const newReply = await sendReplyComment(
-            reference_code,
-            replyCommentContent,
-            id
+            //////
+            reference_code, /////
+            replyCommentContent, /////
+            id /////
         );
 
-        // Update the state with the new reply
         setCommentsObj((prev) => {
             const updatedComments = prev.comments.map((c) => {
                 if (c.id === id) {
@@ -143,16 +143,21 @@ export default function Comment({
             )}
 
             {viewFlag &&
-                comment.children.map((child) => (
-                    <Comment
-                        key={child.id}
-                        comment={child}
-                        setRenderKey={setRenderKey}
-                        reference_code={reference_code}
-                        isReply={true}
-                        setCommentsObj={setCommentsObj} // pass down the state setter
-                    />
-                ))}
+                comment.children.map(
+                    (child) => (
+                        console.log(child),
+                        (
+                            <Comment
+                                key={child.id}
+                                comment={child}
+                                setRenderKey={setRenderKey}
+                                reference_code={reference_code}
+                                isReply={true}
+                                setCommentsObj={setCommentsObj} // pass down the state setter
+                            />
+                        )
+                    )
+                )}
             {!isReply && (
                 <button
                     onClick={handleClickReply}

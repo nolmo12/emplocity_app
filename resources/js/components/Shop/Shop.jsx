@@ -1,12 +1,28 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import authUser from "../authUser";
+import useUser from "../useUser";
+import useBorders from "../useBorders";
 export default function Shop() {
-    const { http } = authUser();
+    const [userData, setUserData] = useState({});
+    const [userBorders, setUserBorders] = useState([]);
     const [borders, setBorders] = useState([]);
+    const { getBorders } = useBorders();
+    const { http } = authUser();
+    const { getUser } = useUser();
+
+    useEffect(() => {
+        getUserData();
+    }, []);
+
+    const getUserData = async () => {
+        setUserData(await getUser());
+        setUserBorders(await fetchBorders());
+    };
 
     const fetchBorders = async () => {
         const response = await http.get("/api/shop/show");
+        console.log(response.data);
         const responseData = response.data.toSorted(
             (a, b) => b.rarity - a.rarity
         );
@@ -14,8 +30,11 @@ export default function Shop() {
     };
 
     const handleClickBuy = async (borderId) => {
-        // api call to buy border
-        console.log(borderId);
+        console.log(borders[borderId]);
+        console.log(userData);
+        const response = await http.post(
+            `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=123456789`
+        );
     };
 
     useEffect(() => {

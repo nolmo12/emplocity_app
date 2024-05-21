@@ -217,6 +217,16 @@ function Main() {
                     </>
                 }
             />
+            <Route
+                path="/video-settings/:reference_code"
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="videoSettings" />
+                        <Footer />
+                    </>
+                }
+            />
         </Routes>
     );
 }
