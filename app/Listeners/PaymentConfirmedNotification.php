@@ -25,6 +25,6 @@ class PaymentConfirmedNotification
         $user = $order->user;
         $orderable = $order->orderable;
 
-        $user->attach($orderable);
+        $user->borders()->attach($orderable);
     }
 }
