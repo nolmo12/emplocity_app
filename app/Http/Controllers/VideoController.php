@@ -296,7 +296,9 @@ class VideoController extends Controller
         else
             return response()->json(['error' => 'Thumbnail path not found'], 404);
 
-        return response()->json(['success'=> 'Succesfully deleted video'], 200);
+        return response()->json([
+            'success'=> 'Succesfully deleted video',
+            'video' => $video], 200);
     }
 
     public function updateLikes(Request $request, string $referenceCode)
@@ -352,7 +354,11 @@ class VideoController extends Controller
             ]);
         }
 
-        return response()->json(['message' => 'Likes updated successfully'], 200);
+        $this->countView($request, $referenceCode);
+
+        return response()->json([
+            'message' => 'Likes updated successfully'
+        ], 200);
     }
 
     public function update(Request $request)
@@ -450,7 +456,8 @@ class VideoController extends Controller
         if($request->tags)
             $video->addTags($request->tags);
 
-        $video->save();  
+        $video->save();
+        return $video;
     }
 
 

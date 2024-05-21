@@ -253,11 +253,10 @@ public function update(Request $request, $id)
     {    
         $limit = 10;
 
-        $twentyFourHoursAgo = new DateTime('-24 hours');
 
-        $users = User::with(['videos' => function ($query) use ($twentyFourHoursAgo) {
-            $query->where('created_at', '<=', $twentyFourHoursAgo->format('Y-m-d H:i:s'))
-                  ->where('visibility', 'public');
+        $users = User::with(['videos' => function ($query)
+        {
+            $query->where('visibility', 'Public');
         }])->get();
 
         $userScores = [];
@@ -273,7 +272,7 @@ public function update(Request $request, $id)
                 if($likes + $dislikes == 0 || $video->views == 0)
                     continue;
 
-                $likeToDisLikeRatio = $video->$likes / max(1, $likes + $dislikes);
+                $likeToDisLikeRatio = $likes / max(1, $likes + $dislikes);
 
                 if($likeToDisLikeRatio > 0.5)
                     $videoScore  = $video->views * $likeToDisLikeRatio;
