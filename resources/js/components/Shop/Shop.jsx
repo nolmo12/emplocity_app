@@ -34,9 +34,9 @@ export default function Shop() {
     const handleClickBuy = async (borderId) => {
         try {
             const response = await http.get(
-                `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=123456789`
+                `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=48123456789`
             );
-            if (response.data) navigate(response.data.url);
+            if (response.data)   window.location.href = response.data.url;
         } catch (error) {
             console.log(error);
         }

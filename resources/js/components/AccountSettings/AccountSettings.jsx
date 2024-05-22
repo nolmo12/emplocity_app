@@ -16,7 +16,7 @@ export default function AccountSettings() {
     const [userBorders, setUserBorders] = useState([]);
     const [imageLoaded, setImageLoaded] = useState();
     const [renderKey, setRenderKey] = useState(0);
-    const [currentBorder, setCurrentBorder] = useState(null);
+    const [currentBorder, setCurrentBorder] = useState([]);
     const [userData, setUserData] = useState({
         nickname: "",
         previousPassword: "",
@@ -48,13 +48,18 @@ export default function AccountSettings() {
             }
         };
         getUserId();
-        getCurrentBorder();
     }, [renderKey]);
 
     useEffect(() => {
         getUserBorders();
+                
+    }, []);
+    
+useEffect(() => {
+    if (user && user.id) {
         getCurrentUserBorder();
-    }, [renderKey]);
+    }
+}, [user, renderKey]);
 
     const getUserBorders = async () => {
         const response = await getBorders();
@@ -62,10 +67,12 @@ export default function AccountSettings() {
     };
 
     const getCurrentUserBorder = async () => {
-        const response = await getCurrentBorder();
-        setCurrentBorder(response);
-        setRenderKey((prev) => prev + 1);
+        const response = await getCurrentBorder(user.id);       
+ setCurrentBorder(response);
+
+       
     };
+
 
     const handleNicknameChange = (e) => {
         e.preventDefault();
@@ -81,7 +88,9 @@ export default function AccountSettings() {
             setUserData({ ...userData, repeatPassword: e.target.value });
         }
     };
+    console.log("settings user borders: ", userBorders);
 
+    console.log("settings current border: ", currentBorder);
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
@@ -171,18 +180,20 @@ export default function AccountSettings() {
                                     )}
                                 </p>
                                 <p className={styles.label}>User borders: </p>
-                                <img
+                               {currentBorder && currentBorder.current_border && <img
                                     src={currentBorder.current_border.type}
                                     alt="current border"
-                                />
+                                />}
                                 <p>
-                                    {userBorders.borders.map((item) => {
+{console.log("test ", currentBorder)};
+                                    {userBorders && userBorders.borders && userBorders.borders.map((item) => {
                                         return (
                                             <img
                                                 src={item.type}
                                                 alt="border"
+                                                style={{width: "50px", height: "50px"}}
                                                 onClick={() =>
-                                                    handleClickBorder(item.id)
+                                                    handleClickBorder(item.id, setRenderKey)
                                                 }
                                                 key={`userBorder${item.id}`}
                                             />
