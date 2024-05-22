@@ -81,7 +81,7 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "shop") {
         view = (
-            <main className={styles.videoFrameMain}>
+            <main className={styles.shopPage}>
                 <Shop />
             </main>
         );
@@ -99,7 +99,7 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "videoSettings") {
         view = (
-            <main>
+            <main  className={styles.videoSettingsPage}>
                 <VideoSettings />
             </main>
         );

@@ -1,0 +1,199 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.videoSettingsForm {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    flex-direction: column;
+    border: solid 2px black;
+    border-radius: 6px;
+    background-color: rgba(229, 229, 229, 0.8);
+    padding: 4%;
+    padding-bottom: 2%;
+    padding-top: 2%;
+    width: 30%;
+    max-width: 300px;
+    z-index: 2;
+    max-height: 90vh;
+}
+
+.videoSettingsForm input,
+.videoSettingsForm button,
+.videoSettingsForm select,
+.videoSettingsForm textarea {
+    display: block;
+    width: 100%;
+    box-sizing: border-box; 
+}
+
+.videoSettingsForm select {
+    width:50%;
+    margin: 0 auto;
+}
+
+.videoSettingsForm .selectButton {
+    margin: 0 auto;
+    margin-bottom:1em;
+}
+
+.videoSettingsForm .thumbnailButtonContainer {
+    width:100%;
+    display: flex;
+}
+
+.thumbnailButtonContainer  .thumbnailButton {
+    height:10%;
+}
+
+.videoSettingsForm button {
+    width:50%;
+}
+
+
+.videoSettingsForm input {
+    height: 2.5em;
+    padding-left: 2.5em;
+    border: solid 2px #a0a0a0;
+    border-radius:4px;
+}
+
+.videoSettingsForm button {
+    width: auto;
+    padding-left: 1em;
+    padding-right: 1em;
+    height: 2.5em;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    margin-bottom: 1em;
+    margin-left:auto;
+    background-color: rgb(54, 83, 243);
+    color:white;
+}
+
+.videoSettingsForm button:first-child {
+    margin-right: 1em;
+}
+
+.videoSettingsForm button:disabled {
+    background-color: #ccc;
+    cursor:default;
+}
+
+.videoSettingsForm button:hover:not(:disabled) {
+    background-color: rgb(43, 73, 245);
+}
+
+.videoSettingsForm button:active:not(:disabled) {
+    transform: scale(0.95);
+}
+
+.videoSettingsForm input[type="file"] {
+    border: none;
+    color: black;
+    margin-bottom:1em;
+}
+
+.videoSettingsForm input[type="file"]::file-selector-button {
+    content: "Select file";
+    display: inline-block;
+    background-color: white;
+    color: black;
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: solid 2px #a0a0a0;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.videoSettingsForm input[type="file"]:hover::file-selector-button {
+    background-color: #f0f0f0;
+}
+
+.videoSettingsForm input[type="file"]:active::file-selector-button {
+    transform: scale(0.95);
+}
+
+.videoSettingsForm .videoSettingsFormCloseIcon {
+    position: relative;
+    left: 20em;
+    top:-1em;
+    width:1.5em;
+    height:1.5em;
+    color:black;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.videoSettingsForm .videoSettingsFormCloseIcon:hover {
+    color: #555;
+}
+
+.videoSettingsForm .videoSettingsFormCloseIcon:active {
+    transform: scale(0.80);
+}
+
+.videoSettingsForm .videoSettingsFormIcon {
+    color: black;
+    left: 0.7em;
+    top: 1.7em;
+    position: relative;
+}
+
+.videoSettingsForm select {
+    height: 2.5em;
+    border: solid 2px #a0a0a0;
+}
+
+.videoSettingsForm .thumbnailPreview {
+    width: 10em;
+    height: 6em;
+    display: block;
+    margin: 0 auto;
+    border-radius:4px;
+}
+
+.videoSettingsForm textarea {
+    height: auto;
+    padding-top: 0.5em;
+    padding-left: 2.5em;
+    border: solid 2px #a0a0a0;
+    resize: none;
+    border-radius:4px;
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait) {
+    .videoSettingsForm {
+        width: 100%;
+        padding: 6%;
+    }
+
+    .videoSettingsForm .videoSettingsFormCloseIcon {
+        left:95%;
+    }
+}
+
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .videoSettingsForm {
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    .videoSettingsForm .videoSettingsFormCloseIcon {
+        left:100%;
+    }
+
+    .videoSettingsForm button {
+        width:auto;
+    }
+}

@@ -48,6 +48,7 @@ main {
     margin-bottom: 1em;
     padding-left:2.5em;
     border: solid 2px #a0a0a0;
+    border-radius:4px;
 }
 
 .registerForm p {

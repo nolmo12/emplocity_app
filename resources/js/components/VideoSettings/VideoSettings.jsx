@@ -1,8 +1,18 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import authUser from "../authUser";
 import useVideoSettings from "../useVideoSettings";
 import { useParams, useNavigate } from "react-router-dom";
+import styles from "./videoSettings.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { 
+    faTimes,
+    faFilm,
+    faTags,
+    faAlignLeft,
+    faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
+
 export default function VideoSettings() {
     const [data, setData] = useState({
         title: "",
@@ -13,9 +23,11 @@ export default function VideoSettings() {
     });
     const [videoObj, setVideoObj] = useState({});
     const [loaded, setIsLoaded] = useState(false);
+    const [fileSelected, setFileSelected] = useState(false);
     const { http, isLogged } = authUser();
     const { reference_code } = useParams();
     const { sendData } = useVideoSettings();
+    const fileInputRef = useRef(null); 
 
     useEffect(() => {
         getVideo();
@@ -55,55 +67,104 @@ export default function VideoSettings() {
         const formData = new FormData();
         formData.append("thumbnail", file);
         setData({ ...data, thumbnail: formData });
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            setVideoObj({ ...videoObj, thumbnail: reader.result });
+        };
+        reader.readAsDataURL(file);
+
+        setFileSelected(true);
+    };
+
+    const handleClearThumbnail = () => {
+        setVideoObj({ ...videoObj, thumbnail: "" });
+        setFileSelected(false);
+        if (fileInputRef.current) {
+            fileInputRef.current.value = null;
+        }
     };
 
     return (
-        <main>
+        <div className={styles.overlay}>
             {loaded && (
-                <form>
-                    <input
-                        type="text"
-                        onChange={(e) => handleChangeTitle(e)}
-                        defaultValue={videoObj.title}
-                    ></input>
-                    <button
-                        onClick={(e) =>
-                            sendData("title", reference_code, data.title, e)
-                        }
-                    >
-                        Change title
-                    </button>
-                    <input
-                        type="text"
-                        onChange={(e) => handleChangeDescription(e)}
-                        defaultValue={videoObj.description}
-                    ></input>
-                    <button
-                        onClick={(e) =>
-                            sendData(
-                                "description",
-                                reference_code,
-                                data.description,
-                                e
-                            )
-                        }
-                    >
-                        Change description
-                    </button>
-                    <input
-                        type="text"
-                        onChange={(e) => handleChangeTags(e)}
-                        defaultValue={videoObj.tags.map((tag) => {
-                            return `#${tag.name}`;
-                        })}
-                    ></input>
-                    <button
-                        onClick={(e) =>
-                            sendData("tags", reference_code, data.tags, e)
-                        }
-                    >
-                        Change tags
-                    </button>
+                <form className={styles.videoSettingsForm}>
+                    <Link to="/account">
+                        <FontAwesomeIcon
+                            icon={faTimes}
+                            className={styles.videoSettingsFormCloseIcon}
+                        />
+                    </Link>
+                    <div>
+                        <img
+                            src={videoObj.thumbnail || videoObj.video.thumbnail}
+                            alt="Current Thumbnail"
+                            className={styles.thumbnailPreview}
+                        />
+                    </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faFilm}
+                            className={styles.videoSettingsFormIcon}
+                        />
+                        <input
+                            type="text"
+                            onChange={(e) => handleChangeTitle(e)}
+                            defaultValue={videoObj.title}
+                        ></input>
+                        <button
+                            onClick={(e) =>
+                                sendData("title", reference_code, data.title, e)
+                            }
+                        >
+                            Change title
+                        </button>
+                    </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faAlignLeft}
+                            className={styles.videoSettingsFormIcon}
+                        />
+                         <textarea
+                            type="text"
+                            onChange={(e) => handleChangeDescription(e)}
+                            defaultValue={videoObj.description}
+                            rows="5"
+                        ></textarea>
+                        <button
+                            onClick={(e) =>
+                                sendData(
+                                    "description",
+                                    reference_code,
+                                    data.description,
+                                    e
+                                )
+                            }
+                        >
+                            Change description
+                        </button>
+                    </div>
+                    <div>
+                        <FontAwesomeIcon
+                            icon={faTags}
+                            className={styles.videoSettingsFormIcon}
+                        />
+                        <input
+                            type="text"
+                            onChange={(e) => handleChangeTags(e)}
+                            defaultValue={videoObj.tags.map((tag) => {
+                                return `#${tag.name}`;
+                            })}
+                        ></input>
+                        <button
+                            onClick={(e) =>
+                                sendData("tags", reference_code, data.tags, e)
+                            }
+                        >
+                            Change tags
+                        </button>
+                    </div>
+
                     <select
                         defaultValue={videoObj.visibility}
                         onChange={(e) => handleChangeVisibility(e)}
@@ -121,30 +182,43 @@ export default function VideoSettings() {
                                 e
                             )
                         }
+                        className={styles.selectButton}
                     >
                         Change Visibility
                     </button>
                     <input
                         type="file"
                         onChange={(e) => handleChangeThumbnail(e)}
+                        ref={fileInputRef} 
                     ></input>
-                    <button
-                        onClick={(e) =>
-                            sendData(
-                                "thumbnail",
-                                reference_code,
-                                data.thumbnail,
-                                e
-                            )
-                        }
-                    >
-                        Change thumbnail
-                    </button>
-                    <button onClick={() => handleClickRemove()}>
+                    <div className={styles.thumbnailButtonContainer}>
+                        <button
+                            onClick={handleClearThumbnail}
+                            className={styles.thumbnailButton}
+                            disabled={!fileSelected}
+                        >
+                            Clear Thumbnail
+                        </button>
+                        <button
+                            onClick={(e) =>
+                                sendData(
+                                    "thumbnail",
+                                    reference_code,
+                                    data.thumbnail,
+                                    e
+                                )
+                            }
+                            className={styles.thumbnailButton}
+                            disabled={!fileSelected}
+                        >
+                            Change Thumbnail
+                        </button>
+                    </div>
+                    <button onClick={() => handleClickRemove()} className={styles.selectButton}>
                         Remove video
                     </button>
                 </form>
             )}
-        </main>
+        </div>
     );
 }
