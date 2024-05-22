@@ -1,0 +1,91 @@
+.borderShop {
+    width: 90%;
+    position:relative;
+    overflow-x:hidden;
+    justify-content: center;
+    flex-wrap: wrap; 
+    gap: 1.5em; 
+    list-style: none; 
+}
+
+.borderShop h1 {
+    margin-top:1em;
+    margin-bottom:1em;
+    border-bottom: solid 1px grey;
+    text-align:center;
+}
+
+.borderShop li {
+    float: left; 
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 50%; 
+    width:20%;
+    margin-bottom:1em;
+    transition: background-color 0.5s ease, transform 0.3s ease;
+}
+
+.borderShop li:hover {
+    background-color: #111d36;
+    cursor:pointer;
+}
+
+.borderShop li:active {
+    transform: scale(0.95);
+}
+
+.borderShop ul li:last-child {
+    margin-right: 0;
+}
+
+.border {
+    width: 12em;
+    height: 9em;
+    margin-bottom:1em;
+}
+
+.borderShop p {
+    margin-bottom:0.5em;
+}
+
+.borderShop button {
+    display:block;
+    text-align:center;
+    width: 5em;
+    height: 1.5em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    text-align: center;
+    border-radius:5px;
+    border: solid 2px #a0a0a0;
+}
+
+.borderShop button:hover {
+    background-color: #f0f0f0;
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait) {
+    .border {
+        width:7em;
+        height:5em
+    }
+
+    .borderShop li {
+        width:33%;
+    }
+}
+
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .border {
+        width:9em;
+        height:7em
+    }
+
+    .borderShop li {
+        width:25%;
+    }
+}

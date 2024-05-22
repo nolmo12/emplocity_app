@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUser from "../useUser";
 import useBorders from "../useBorders";
+import styles from "./shop.module.css";
+
 export default function Shop() {
     const [userData, setUserData] = useState({});
     const [userBorders, setUserBorders] = useState([]);
@@ -47,15 +49,18 @@ export default function Shop() {
     }, []);
 
     return (
-        <ul>
+        <ul className={styles.borderShop} onClick={(e) => handleClickBuy(border.id)}>
+            <h1>Border Shop</h1>
             {borders.map((border) => {
                 return (
                     <li key={`shop-${border.id}`}>
                         <img
-                            style={{ width: "50px", height: "50px" }}
                             src={border.type}
+                            className={styles.border}
                         ></img>
-                        {border.price}
+                        <p>
+                            Price: <span>{border.price}</span>
+                        </p>
                         <button onClick={(e) => handleClickBuy(border.id)}>
                             Buy
                         </button>

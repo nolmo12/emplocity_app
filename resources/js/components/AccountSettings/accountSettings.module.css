@@ -57,13 +57,13 @@
     width: 50%;
     height: 2.5em;
     border-radius:10px;
-    margin: 0 auto;
     margin-bottom: 1em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: solid 2px #a0a0a0;
     background-color: rgb(54, 83, 243);
     color:white;
+    left:10%;
 }
 
 form .selectedAvatar {
