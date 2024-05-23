@@ -9,8 +9,7 @@ import {
     faTimes,
     faFilm,
     faTags,
-    faAlignLeft,
-    faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+    faAlignLeft } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 export default function VideoSettings() {
@@ -24,10 +23,15 @@ export default function VideoSettings() {
     const [videoObj, setVideoObj] = useState({});
     const [loaded, setIsLoaded] = useState(false);
     const [fileSelected, setFileSelected] = useState(false);
+    const [titleChanged, setTitleChanged] = useState(false);
+    const [descriptionChanged, setDescriptionChanged] = useState(false);
+    const [tagsChanged, setTagsChanged] = useState(false);
+    const [visibilityChanged, setVisibilityChanged] = useState(false);
+    const [thumbnailChanged, setThumbnailChanged] = useState(false);
     const { http, isLogged } = authUser();
     const { reference_code } = useParams();
     const { sendData } = useVideoSettings();
-    const fileInputRef = useRef(null); 
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         getVideo();
@@ -47,19 +51,23 @@ export default function VideoSettings() {
 
     const handleChangeTitle = (e) => {
         setData({ ...data, title: e.target.value });
+        setTitleChanged(true);
     };
 
     const handleChangeDescription = async (e) => {
         setData({ ...data, description: e.target.value });
+        setDescriptionChanged(true);
     };
 
     const handleChangeVisibility = (e) => {
         setData({ ...data, visibility: e.target.value });
+        setVisibilityChanged(true);
     };
 
     const handleChangeTags = (e) => {
         const arr = e.target.value.split(" ");
         setData((prev) => ({ ...prev, tags: arr }));
+        setTagsChanged(true);
     };
 
     const handleChangeThumbnail = (e) => {
@@ -75,6 +83,7 @@ export default function VideoSettings() {
         reader.readAsDataURL(file);
 
         setFileSelected(true);
+        setThumbnailChanged(true);
     };
 
     const handleClearThumbnail = () => {
@@ -83,6 +92,7 @@ export default function VideoSettings() {
         if (fileInputRef.current) {
             fileInputRef.current.value = null;
         }
+        setThumbnailChanged(false);
     };
 
     return (
@@ -116,6 +126,7 @@ export default function VideoSettings() {
                             onClick={(e) =>
                                 sendData("title", reference_code, data.title, e)
                             }
+                            disabled={!titleChanged}
                         >
                             Change title
                         </button>
@@ -125,7 +136,7 @@ export default function VideoSettings() {
                             icon={faAlignLeft}
                             className={styles.videoSettingsFormIcon}
                         />
-                         <textarea
+                        <textarea
                             type="text"
                             onChange={(e) => handleChangeDescription(e)}
                             defaultValue={videoObj.description}
@@ -140,6 +151,7 @@ export default function VideoSettings() {
                                     e
                                 )
                             }
+                            disabled={!descriptionChanged}
                         >
                             Change description
                         </button>
@@ -160,6 +172,7 @@ export default function VideoSettings() {
                             onClick={(e) =>
                                 sendData("tags", reference_code, data.tags, e)
                             }
+                            disabled={!tagsChanged}
                         >
                             Change tags
                         </button>
@@ -183,19 +196,20 @@ export default function VideoSettings() {
                             )
                         }
                         className={styles.selectButton}
+                        disabled={!visibilityChanged}
                     >
                         Change Visibility
                     </button>
                     <input
                         type="file"
                         onChange={(e) => handleChangeThumbnail(e)}
-                        ref={fileInputRef} 
+                        ref={fileInputRef}
                     ></input>
                     <div className={styles.thumbnailButtonContainer}>
                         <button
                             onClick={handleClearThumbnail}
                             className={styles.thumbnailButton}
-                            disabled={!fileSelected}
+                            disabled={!thumbnailChanged}
                         >
                             Clear Thumbnail
                         </button>
@@ -209,7 +223,7 @@ export default function VideoSettings() {
                                 )
                             }
                             className={styles.thumbnailButton}
-                            disabled={!fileSelected}
+                            disabled={!thumbnailChanged}
                         >
                             Change Thumbnail
                         </button>
