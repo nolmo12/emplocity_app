@@ -94,14 +94,15 @@ export default function RegisterPage() {
                         <input
                             id={styles.Email}
                             className={
-                                validationInfo && validationInfo.emailValidation
-                                    ? styles.invalid
-                                    : ""
+                                validationInfo && 
+                                validationInfo.emailValidation
+                                ? `${styles.invalid} ${styles.floatingInput}`
+                                : styles.floatingInput
                             }
                             type="text"
-                            placeholder="Email"
                             value={registeredData.email}
                             onChange={handleInputEmail}
+                            placeholder="Email"
                         />
                     </div>
 
@@ -117,10 +118,10 @@ export default function RegisterPage() {
                         <input
                             id={styles.Password}
                             className={
-                                validationInfo &&
+                                validationInfo && 
                                 validationInfo.passwordValidation
-                                    ? styles.invalid
-                                    : ""
+                                ? `${styles.invalid} ${styles.floatingInput}`
+                                : styles.floatingInput
                             }
                             type="password"
                             placeholder="Password"
@@ -141,10 +142,10 @@ export default function RegisterPage() {
                         <input
                             id={styles.RepeatPassword}
                             className={
-                                validationInfo &&
+                                validationInfo && 
                                 validationInfo.repeatPasswordValidation
-                                    ? styles.invalid
-                                    : ""
+                                ? `${styles.invalid} ${styles.floatingInput}`
+                                : styles.floatingInput
                             }
                             type="password"
                             placeholder="Repeat password"

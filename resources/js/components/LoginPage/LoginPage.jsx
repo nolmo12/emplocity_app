@@ -85,6 +85,7 @@ export default function LoginPage() {
                         placeholder="Email"
                         value={loginData.email}
                         onChange={(e) => handleInuptEmail(e)}
+                        className={styles.floatingInput}
                     ></input>
                 </div>
 
@@ -99,6 +100,7 @@ export default function LoginPage() {
                         placeholder="Password"
                         value={loginData.password}
                         onChange={(e) => handleInputPassword(e)}
+                        className={styles.floatingInput}
                     ></input>
                 </div>
                 {loginValidation ? <p className={styles.invalid}>Invalid email or password</p> : ""}
