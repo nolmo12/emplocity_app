@@ -13,11 +13,12 @@ main {
     justify-content: center;
     flex-direction: column;
     border: solid 2px black;
-    border-radius: 6px;
     background-color: rgba(229, 229, 229, 0.8);
     padding: 5%;
     width: 30%;
     max-width: 300px;
+    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    border-radius: 10px;
 }
 
 .registerForm img {
@@ -41,14 +42,27 @@ main {
     color: #7474e1;
 }
 
+.formInfo {
+    position:relative;
+}
+
 .registerForm input {
     width: 90%;
     height: 2.5em;
     margin: 0 auto;
     margin-bottom: 1em;
     padding-left:2.5em;
-    border: solid 2px #a0a0a0;
-    border-radius:4px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background:transparent;
+    color:black;
+    font-size:1em;
+}
+
+.registerForm input::placeholder {
+    color: black;
+    font-size: 1em; 
 }
 
 .registerForm p {
@@ -60,15 +74,17 @@ main {
 }
 
 .registerForm button {
-    width: 50%;
-    height: 2em;
+    width: 60%;
+    height: 2.5em;
     margin: 0 auto;
     border-radius: 10px;
+    margin-top:2em;
     margin-bottom: 1em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: solid 2px #a0a0a0;
     background-color: white;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
 }
 
 .registerForm button:hover {
@@ -87,7 +103,7 @@ main {
     color:black;
     position:relative;
     left:0.7em;
-    top:1.7em;
+    top:1.9em;
 }
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
