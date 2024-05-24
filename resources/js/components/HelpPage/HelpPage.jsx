@@ -3,7 +3,7 @@ import { useState } from "react";
 import authUser from "../authUser";
 import styles from "./helpPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAlignLeft, faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faAlignLeft, faEnvelope, faQuestionCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function HelpPage() {
     const [content, setContent] = useState("");
@@ -49,6 +49,10 @@ export default function HelpPage() {
                             placeholder="Enter your email"
                             onChange={(e) => handleChangeEmail(e)}
                         ></input>
+                        <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                            className={styles.helpFormIcon}
+                        />
                         <input
                             type="text"
                             placeholder="Enter problem type"
@@ -56,7 +60,7 @@ export default function HelpPage() {
                         ></input>
                         <FontAwesomeIcon
                             icon={faAlignLeft}
-                            className={styles.helpFormIcon}
+                            className={styles.helpFormDescriptionIcon}
                         />
                         <textarea
                             placeholder="Describe your problem"

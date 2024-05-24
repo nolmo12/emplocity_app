@@ -8,24 +8,19 @@ console.log("user borders: ", response.data);
         return response.data;
     };
 
-    const getCurrentBorder = async (userId) => {
-        const response = await http.get(`/api/auth/currentBorder/${userId}`);
-<<<<<<< HEAD
-        console.log("user current border: ", response.data);     
+    const getCurrentBorder = async () => {
+        const response = await http.get(`/api/auth/currentBorder`);
+        console.log("current user border: ", response.data);     
    return response.data;
-=======
-        return response.data;
->>>>>>> 583caf152344adbe5fda595dcdeb32c87cd997ef
     };
 
-    const handleClickBorder = async (borderId, setRenderKey) => {
+    const handleClickBorder = async (borderId) => {
         const response = await http.patch(
             `/api/auth/changeCurrentBorder`, {
             borderId: borderId,                 
 }
         );
-if(response) setRenderKey((prev) => prev + 1);
-console.log("user clicl border: ", response.data)
+ci
     };
     return { getBorders, getCurrentBorder, handleClickBorder };
 }

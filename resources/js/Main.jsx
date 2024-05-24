@@ -221,7 +221,6 @@ function Main() {
                 path="/video-settings/:reference_code"
                 element={
                     <>
-                        <Header />
                         <MainContent contentType="videoSettings" />
                         <Footer />
                     </>
