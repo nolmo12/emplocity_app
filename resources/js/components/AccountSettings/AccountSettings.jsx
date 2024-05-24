@@ -62,7 +62,7 @@ export default function AccountSettings() {
     };
 
     const getCurrentUserBorder = async () => {
-        const response = await getCurrentBorder();
+        const response = await getCurrentBorder(user.id);
         setCurrentBorder(response);
         setRenderKey((prev) => prev + 1);
     };
@@ -171,10 +171,11 @@ export default function AccountSettings() {
                                     )}
                                 </p>
                                 <p className={styles.label}>User borders: </p>
-                                <img
+                                {currentBorder && <img
                                     src={currentBorder.current_border.type}
                                     alt="current border"
-                                />
+                                />}
+                                
                                 <p>
                                     {userBorders.borders.map((item) => {
                                         return (

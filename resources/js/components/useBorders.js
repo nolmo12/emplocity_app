@@ -7,8 +7,8 @@ export default function useBorders() {
         return response.data;
     };
 
-    const getCurrentBorder = async () => {
-        const response = await http.get(`/api/auth/currentBorder`);
+    const getCurrentBorder = async (userId) => {
+        const response = await http.get(`/api/auth/currentBorder/${userId}`);
         return response.data;
     };
 

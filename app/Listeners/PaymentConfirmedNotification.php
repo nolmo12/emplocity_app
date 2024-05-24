@@ -25,12 +25,12 @@ class PaymentConfirmedNotification
         $user = $order->user;
         $orderable = $order->orderable;
 
-        switch($orderable->type)
+        switch($order->orderable_type)
         {
             case 'App\Models\Border':
                 if (!$user->borders->contains($orderable->id))
                 {
-                    $user->borders()->attach($orderable);
+                    $user->borders()->attach($orderable, ['created_at' => now(), 'updated_at' => now()]);
                 }
                 break;
         }  
