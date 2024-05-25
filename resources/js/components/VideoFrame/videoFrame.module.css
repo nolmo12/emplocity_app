@@ -23,8 +23,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 
 .videoScreen {
     width: 80%;
-    height: 100%;
-    top: -10%;
+    height:100%;
 }
 
 .videoFrameInfo {
@@ -198,59 +197,52 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 @media screen and (max-width: 800px) and (orientation: portrait) {
     .videoFrameDiv {
         position: relative;
-        width: 120%;
+        width: 85%;
         height: 20%;
         top: -35%;
-        left: 20%;
+        left: 10%;
     }
 
     .videoScreen {
-        width: 120%;
+        width: 100%;
         height: 100%;
         top: -10%;
     }
 
     .videoFrameInfo {
         position: relative;
-        width: 120%;
+        width: 100%;
         font-size: 0.4em;
     }
 
     .videoFrameDiv p {
-        position: relative;
-        float: right;
-        font-size: 1.5em;
-        margin-top: 7%;
-        display: block;
-        right: -6%;
+        font-size: 0.5rem;
+    }
+
+    .videoFrameInfoTitle p {
+        font-size:0.8rem;
+    }
+
+    .videoLDContainer p {
+        left:7%;
+        top:1.5em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
-    .videoFrameDiv {
-        position: relative;
-        width: 70%;
-        height: 80%;
+
+    .videoLDContainer p {
+        left:5%;
+        top:0.5em;
+    }
+
+    .videoFrameInfo {
+        width:90%;
     }
 
     .videoScreen {
         width: 90%;
         height: 90%;
         top: -15%;
-    }
-
-    .videoFrameInfo {
-        position: relative;
-        width: 90%;
-        font-size: 0.4em;
-    }
-
-    .videoFrameDiv p {
-        position: relative;
-        float: right;
-        font-size: 2em;
-        margin-top: 5%;
-        display: block;
-        right: -4%;
     }
 }

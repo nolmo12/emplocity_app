@@ -90,6 +90,7 @@ export default function ForgotPasswordPage() {
                             type="text"
                             onChange={(e) => handleInputEmail(e)}
                             placeholder="Email"
+                            className={styles.floatingInput}
                         ></input>
                     </div>
                     {emailValidation ? <p>Invalid email</p> : ""}
