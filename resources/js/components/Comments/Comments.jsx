@@ -8,13 +8,14 @@ import styles from "./comments.module.css";
 import _ from "lodash";
 
 export default function Comments({ reference_code, mainRef, adminFlag }) {
+    const [isTextareaClicked, setIsTextareaClicked] = useState(false);
+    const commentTextareaRef = useRef(null);
     const [renderKey, setRenderKey] = useState(0);
     const [mainCommentContent, setMainCommentContent] = useState();
     const previousScroll = useRef(0);
     const offset = useRef(0);
     const {
         fetchVideosSets,
-
         sendComment,
         commentsObj,
         setCommentsObj,
@@ -80,6 +81,18 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         setMainCommentContent(e.target.innerText);
     };
 
+    const handleTextareaClick = () => {
+        setIsTextareaClicked(true);
+    };
+
+    const handleCancelComment = () => {
+        setIsTextareaClicked(false);
+        setMainCommentContent('');
+        if (commentTextareaRef.current) {
+            commentTextareaRef.current.textContent = '';
+        }
+    };
+
     const handleClickComment = async (e) => {
         if (!isLogged()) {
             navigate("/login");
@@ -93,14 +106,21 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     return (
         <div className={styles.commentDiv}>
-            <div>
+            <div className={styles.commentTextareaContainer}>
                 <div
+                    ref={commentTextareaRef}
                     className={styles.commentTextarea}
                     contentEditable="true"
                     onInput={(e) => handleTextareaChange(e)}
+                    onClick={handleTextareaClick}
                     data-text="Write comment..."
                 ></div>
-                <button onClick={(e) => handleClickComment(e)}>Comment</button>
+                {isTextareaClicked && (
+                    <div>
+                        <button onClick={(e) => handleClickComment(e)}>Comment</button>
+                        <button onClick={(e) => handleCancelComment(e)} className={styles.cancelButton}>Cancel</button>
+                    </div>
+                )}
             </div>
             {commentsObj &&
                 commentsObj.comments &&

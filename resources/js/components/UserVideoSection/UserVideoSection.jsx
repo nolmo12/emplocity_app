@@ -4,10 +4,8 @@ import { Link } from "react-router-dom";
 import styles from "./userVideoSection.module.css";
 import useUser from "../useUser";
 import { ClipLoader } from "react-spinners";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-
 import { useNavigate } from "react-router-dom";
 
 export default function UserVideoSection() {
@@ -115,14 +113,14 @@ export default function UserVideoSection() {
                                                 }`}
                                             >
                                                 <button
-                                            onClick={() =>
-                                                navigate(
-                                                    `/video-settings/${video.video.reference_code}`
-                                                )
-                                            }
-                                        >
-                                            Edit video
-                                        </button>
+                                                    onClick={() =>
+                                                        navigate(
+                                                            `/video-settings/${video.video.reference_code}`
+                                                        )
+                                                    }
+                                                >
+                                                    Edit video
+                                                </button>
                                             </div>
                                         </div>
 
