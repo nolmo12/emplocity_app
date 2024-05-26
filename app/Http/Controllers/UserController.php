@@ -339,9 +339,7 @@ public function update(Request $request, $id)
             $user->borders()->updateExistingPivot($request->borderId, ['updated_at' => now()], false);
             return response()->json(['message' => 'Current border updated successfully']);
         }
-        return response()->json(['message' => 'You dont own that border']);
-        
-        
+        return response()->json(['message' => 'You dont own that border or there was an error updating']);   
     }
 
 }
