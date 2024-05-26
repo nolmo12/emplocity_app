@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "./authUser";
+import { offset } from "@popperjs/core";
 
 export default function useComments() {
     const navigate = useNavigate();
     const { http } = authUser();
-    const [commentsObj, setCommentsObj] = useState([]);
+    const [commentsObj, setCommentsObj] = useState({ comments: [] });
 
     const fetchVideosSets = async (reference_code, offsetInt) => {
         const response = await http.get(
@@ -13,16 +14,13 @@ export default function useComments() {
         );
         if (offsetInt === 0) {
             setCommentsObj(response.data);
-        } else {
+        } else if (offsetInt > 0) {
             setCommentsObj((prev) => ({
                 ...prev,
                 comments: [...prev.comments, ...response.data.comments],
             }));
         }
-    };
-
-    const getAllComments = () => {
-        return commentsObj;
+        return response;
     };
 
     const sendComment = async (reference_code, content) => {
@@ -53,7 +51,6 @@ export default function useComments() {
 
     return {
         fetchVideosSets,
-        getAllComments,
         sendComment,
         commentsObj,
         setCommentsObj,

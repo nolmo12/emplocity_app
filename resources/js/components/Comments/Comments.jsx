@@ -8,13 +8,14 @@ import styles from "./comments.module.css";
 import _ from "lodash";
 
 export default function Comments({ reference_code, mainRef, adminFlag }) {
+    const [isTextareaClicked, setIsTextareaClicked] = useState(false);
+    const commentTextareaRef = useRef(null);
     const [renderKey, setRenderKey] = useState(0);
     const [mainCommentContent, setMainCommentContent] = useState();
     const previousScroll = useRef(0);
     const offset = useRef(0);
     const {
         fetchVideosSets,
-        getAllComments,
         sendComment,
         commentsObj,
         setCommentsObj,
@@ -22,45 +23,74 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const { isLogged } = authUser();
     const navigate = useNavigate();
 
-    const handleScroll = _.throttle((event) => {
-        const target = event.target;
-        const currentScroll = target.scrollTop;
-        const scrollPercentage =
-            (target.scrollTop / (target.scrollHeight - target.clientHeight)) *
-            100;
-
-        if (previousScroll.current < currentScroll) {
-            console.log(commentsObj);
-            if (scrollPercentage > 85 && commentsObj?.comments?.length > 9) {
-                console.log("offset with api: ", offset.current);
-                getCommentsObj(reference_code, offset);
-                offset.current += 1;
-                console.log("after: ", offset.current);
-            }
-        }
-        previousScroll.current = currentScroll;
-    }, 1000);
-
     useEffect(() => {
         if (offset.current === 0) {
             getCommentsObj();
-        } else {
-            getAllComments();
         }
-    }, [renderKey, reference_code]);
+    }, [renderKey]);
 
     useEffect(() => {
-        if (commentsObj?.comments?.length > 9) {
-            mainRef.current.addEventListener("scroll", handleScroll);
+        setCommentsObj({ comments: [] });
+        offset.current = 0;
+        getCommentsObj();
+    }, [reference_code]);
+
+    useEffect(() => {
+        const scrollElement = mainRef.current;
+
+        const handleScroll = _.throttle((event) => {
+            const target = event.target;
+            const currentScroll = target.scrollTop;
+            const scrollPercentage =
+                (target.scrollTop /
+                    (target.scrollHeight - target.clientHeight)) *
+                100;
+
+            if (previousScroll.current < currentScroll) {
+                if (
+                    scrollPercentage > 85 &&
+                    commentsObj?.comments?.length > 9
+                ) {
+                    getCommentsObj();
+                }
+            }
+            previousScroll.current = currentScroll;
+        }, 1000);
+
+        if (scrollElement) {
+            scrollElement.addEventListener("scroll", handleScroll);
         }
-    }, [mainRef, commentsObj]);
+
+        return () => {
+            if (scrollElement) {
+                scrollElement.removeEventListener("scroll", handleScroll);
+            }
+        };
+    }, [commentsObj, mainRef]);
 
     const getCommentsObj = async () => {
-        await fetchVideosSets(reference_code, offset.current);
+        console.log(reference_code);
+        const response = await fetchVideosSets(reference_code, offset.current);
+        if (response.data.comments.length > 0) {
+            console.log(response.data);
+            offset.current += 1;
+        }
     };
 
     const handleTextareaChange = (e) => {
         setMainCommentContent(e.target.innerText);
+    };
+
+    const handleTextareaClick = () => {
+        setIsTextareaClicked(true);
+    };
+
+    const handleCancelComment = () => {
+        setIsTextareaClicked(false);
+        setMainCommentContent('');
+        if (commentTextareaRef.current) {
+            commentTextareaRef.current.textContent = '';
+        }
     };
 
     const handleClickComment = async (e) => {
@@ -76,14 +106,21 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     return (
         <div className={styles.commentDiv}>
-            <div>
+            <div className={styles.commentTextareaContainer}>
                 <div
+                    ref={commentTextareaRef}
                     className={styles.commentTextarea}
                     contentEditable="true"
                     onInput={(e) => handleTextareaChange(e)}
+                    onClick={handleTextareaClick}
                     data-text="Write comment..."
                 ></div>
-                <button onClick={(e) => handleClickComment(e)}>Comment</button>
+                {isTextareaClicked && (
+                    <div>
+                        <button onClick={(e) => handleClickComment(e)}>Comment</button>
+                        <button onClick={(e) => handleCancelComment(e)} className={styles.cancelButton}>Cancel</button>
+                    </div>
+                )}
             </div>
             {commentsObj &&
                 commentsObj.comments &&

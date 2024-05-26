@@ -8,16 +8,45 @@
     font-size: 0.8em;
 }
 
-.commentTextarea {
-    margin-top: 1em;
+.commentDiv .dateComm {
+    font-size: 0.8em;
+    color:grey;
+    margin-bottom:0.5em;
+}
+
+.commentContainer {
+    position: relative;
+    padding-top:2em;
+    padding-bottom:2em;
     width: 100%;
-    height: 12vh;
-    background-color: #101b32;
-    border: inset 2px #060c1a;
-    border-radius: 6px;
+}
+
+.commentContainer .commentTextareaContainer {
+    margin-top:5em;
+    margin-left:5em;
+    width:90%;
+}
+
+.commentTextareaContainer {
+    position: relative;
+    padding-top:1em;
+    padding-bottom:1em;
+    width: 100%;
+    border-bottom: solid 1px grey;
+}
+
+.commentTextarea {
+    width: 100%;
     color: white;
     resize: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+    border: none; 
+    transition: border-bottom 0.3s ease-in-out; 
+    overflow-wrap: break-word; 
+}
+
+.commentTextarea:focus {
+    outline: none;
 }
 
 .commentTextarea[contentEditable=true]:empty:not(:focus):before {
@@ -25,21 +54,65 @@
     color:#999;
 }
 
+.commentTextareaContainer::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.commentTextareaContainer:focus-within::after {
+    width: 100%;
+    left: 0;
+}
+
 .commentDiv button {
     width: 15%;
     height: 2.5em;
     font-size: 0.8em;
-    margin: 0 auto;
+    margin-top:1.5em;
     margin-bottom: 1em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
-    border: solid 2px #a0a0a0;
+    border: solid 2px white;
     background-color: white;
     float: right;
+    border-radius:15px;
+}
+
+.commentDiv .cancelButton {
+    background-color:transparent;
+    border:none;
+    color:white;
+    font-weight: 700;
+}
+
+.commentDiv .replyButton {
+    background-color:transparent;
+    border:none;
+    color:white;
+    font-weight: 700;
+    margin-top:2.5em;
+    float:left;
+    width:10%;
+    margin-right:1em;
+    margin-left:-1em;
+}
+
+.commentDiv .replyButton:hover {
+    background-color: transparent !important;
+}
+
+.commentDiv .cancelButton:hover {
+    background-color:transparent;
 }
 
 .commentDiv button:hover {
-    background-color: #f0f0f0;
+    background-color: #d6d2d2;
 }
 
 .commentDiv button:active {
@@ -52,14 +125,106 @@
 
 .replyContainer {
     margin-left: 5em;
-    margin-top: 2em;
+    margin-top: 3em;
+    padding-top:2em;
 }
 
 .replyContainer .commentTextarea {
-    height: 10vh;
-    border: inset 1px #060c1a;
+    font-size:0.8em;
+    width: 100%;
+    color: white;
+    resize: none;
+    outline: none;
+    border: none; 
+    transition: border-bottom 0.3s ease-in-out; 
+    overflow-wrap: break-word; 
 }
 
 .isClick {
-    color: red;
+    color: red !important;
+}
+
+.commMenu {
+    position: absolute;
+    top: 2em; 
+    right: 0; 
+    font-size:1em;
+    cursor:pointer;
+    width:2em;
+}
+
+.buttonsContainer {
+    position: absolute;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    right: -1.5em;
+    top: 3em;
+    z-index: 999;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    transform-origin: top;
+    transform: scaleY(0);
+    visibility: hidden;
+    opacity: 0;
+}
+
+.buttonsContainerVisible {
+    transform: scaleY(1);
+    visibility: visible;
+    opacity: 1;
+}
+
+.buttonsContainer button {
+    display:block;
+    text-align:center;
+    width: 7em;
+    height: auto;
+    min-height: 2em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+    text-align: center;
+    float:none;
+    margin:0;
+    border-radius: 0;
+}
+
+.buttonsContainer a {
+    text-decoration: none;
+}
+
+.buttonsContainer button:hover {
+    background-color: #f0f0f0;
+}
+
+.buttonsContainer button:active {
+    transform: scale(0.90);
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait) {
+
+    .commentDiv button {
+        width:30%;
+    }
+
+    .commentContainer .replyButton {
+        width:30%;
+        font-size:0.7em;
+        margin-right:1em;
+    }
+
+    .commentDiv {
+        font-size:0.7em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape) {
+    .commentDiv button {
+        width:30%;
+    }
+
+    .commentContainer .replyButton {
+        width:20%;
+        margin-right:1em;
+    }
 }

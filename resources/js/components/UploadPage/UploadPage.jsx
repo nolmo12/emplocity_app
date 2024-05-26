@@ -209,9 +209,9 @@ export default function UploadPage() {
                                 className={styles.languageSelect}
                                 onChange={(e) => handleInupt("language", e)}
                                 data-testid="language-select"
-                                defaultValue=""
+                                defaultValue="1"
                             >
-                                <option value="" disabled selected hidden>
+                                <option value="" disabled hidden>
                                     Language
                                 </option>
                                 <option value="1">English</option>

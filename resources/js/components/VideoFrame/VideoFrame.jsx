@@ -201,7 +201,6 @@ export default function VideoFrame({ mainRef }) {
                 >
                     <video
                         ref={timeRemaining}
-                        width={320}
                         src={videoPath}
                         poster={videoThumbnail}
                         onPlay={handlePlay}

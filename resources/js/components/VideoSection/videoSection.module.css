@@ -96,13 +96,18 @@
         width:100%;
         position:relative;
         display: inline-block;
-        bottom:-20%;
+        bottom:-15%;
         right:10%;
         height:90%;
-        overflow-y: auto;
-        overflow-x: hidden;
         max-height: 60%;
+        font-size:0.7em;
     }
+
+    #video img{
+        height:7vh;
+        width:10vh;
+    }
+    
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
