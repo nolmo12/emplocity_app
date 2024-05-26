@@ -25,7 +25,7 @@ class PaymentConfirmedNotification
         $user = $order->user;
         $orderable = $order->orderable;
 
-        switch($orderable->type)
+        switch($order->orderable_type)
         {
             case 'App\Models\Border':
                 if (!$user->borders->contains($orderable->id))
