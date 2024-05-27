@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Video;
 use App\Models\Comment;
+use App\Rules\Enumerate;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -32,7 +33,10 @@ class CommentController extends Controller
         $comment->video()->associate($video);
         $comment->save();
 
-        return response()->json('Properly added a comment');
+        return response()->json([
+            'comment' => $comment,
+            'status' => 'Properly added a comment'
+        ]);
     }
 
     public function show(Request $request)
@@ -40,11 +44,13 @@ class CommentController extends Controller
         $request->validate([
             'reference_code' => 'required|exists:videos,reference_code',
             'offset' => 'nullable|integer|min:0',
-            'children_offset' => 'nullable|integer|min:0'
+            'children_offset' => 'nullable|integer|min:0',
+            'order' => new Enumerate(['asc', 'desc']),
         ]);
 
         $offset = $request->input('offset', 0);
         $children_offset = $request->input('children_offset', 0);
+        $order = $request->input('order', 'asc');
 
 
         $referenceCode = $request->reference_code;
@@ -53,6 +59,7 @@ class CommentController extends Controller
         
         $comments = $video->comments()
         ->where('parent', 0)
+        ->orderBy('created_at', $order)
         ->offset(10 * $offset)
         ->limit(10)
         ->get();
@@ -60,6 +67,7 @@ class CommentController extends Controller
         foreach($comments as &$comment)
         {
             $user = User::find($comment['user_id']);
+            $comment['content'] = nl2br(e($comment['content']));
             $comment['user_name'] = $user->name;
             $comment['user_first_name'] = $user->first_name;
             $comment['user_avatar'] = $user->avatar;

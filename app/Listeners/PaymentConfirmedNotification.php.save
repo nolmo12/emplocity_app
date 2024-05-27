@@ -30,8 +30,9 @@ class PaymentConfirmedNotification
             case 'App\Models\Border':
                 if (!$user->borders->contains($orderable->id))
                 {
-                    $user->borders()->attach($orderable, ['created_at' => now(), 'updated_at' => now()]);
-                }
+                    $user->borders()->attach($orderable);
+                    $user->borders()->updateExistingPivot($orderable->id, ['updated_at' => now()], false);
+		}
                 break;
         }  
     }

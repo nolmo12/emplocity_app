@@ -331,9 +331,15 @@ public function update(Request $request, $id)
     public function changeCurrentBorder(Request $request)
     {
         $user = $request->user();
-        $user->borders()->sync([$request->borderId]);
-        
-        return response()->json(['message' => 'Current border updated successfully']);
+
+        $existingBorders = $user->borders()->get();
+
+        if ($existingBorders->contains(Border::findOrFail($request->borderId)))
+        {
+            $user->borders()->updateExistingPivot($request->borderId, ['updated_at' => now()], false);
+            return response()->json(['message' => 'Current border updated successfully']);
+        }
+        return response()->json(['message' => 'You dont own that border or there was an error updating']);   
     }
 
 }
