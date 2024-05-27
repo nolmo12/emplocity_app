@@ -10,12 +10,7 @@ console.log("user borders: ", response.data);
 
     const getCurrentBorder = async (userId) => {
         const response = await http.get(`/api/auth/currentBorder/${userId}`);
-<<<<<<< HEAD
-        console.log("user current border: ", response.data);     
-   return response.data;
-=======
         return response.data;
->>>>>>> 583caf152344adbe5fda595dcdeb32c87cd997ef
     };
 
     const handleClickBorder = async (borderId, setRenderKey) => {
