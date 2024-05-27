@@ -8,36 +8,78 @@ export default function useAuth() {
     const navigate = useNavigate();
     const { baseUrl } = config();
 
-    const getToken = () => {
-        return Cookies.get("token");
-    };
-
-    const getRefreshToken = () => {
-        return Cookies.get("refresh_token");
-    };
+    const getToken = () => Cookies.get("token");
+    const getRefreshToken = () => Cookies.get("refresh_token");
 
     const [token, setToken] = useState(getToken());
     const [refreshToken, setRefreshToken] = useState(getRefreshToken());
+
+    useEffect(() => {
+        setToken(getToken());
+        setRefreshToken(getRefreshToken());
+    }, []);
 
     const http = axios.create({
         baseURL: baseUrl,
     });
 
-    http.interceptors.request.use((config) => {
-        const token = getToken();
-        console.log("Token:", token);
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+    http.interceptors.request.use(
+        async (config) => {
+            const token = getToken();
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            config.withCredentials = true;
+            return config;
+        },
+        (error) => Promise.reject(error)
+    );
+    // nie wiem skonczone na withCredentials nie przepuszcza lini 40 blad 401
+    const refreshJWT = async () => {
+        try {
+            const response = await axios.post(
+                `${baseUrl}/api/auth/refresh`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${getRefreshToken()}`,
+                    },
+                    withCredentials: true,
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.log("Error during token refresh", error);
         }
-        return config;
-    });
+    };
+
+    http.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            const originalRequest = error.config;
+            if (error.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+                const refreshToken = getRefreshToken();
+                if (refreshToken) {
+                    const response = await refreshJWT();
+                    console.log("Response", response);
+                    if (response) {
+                        const newToken = response.authorisation.token;
+                        console.log("New token", newToken);
+                        saveToken(newToken);
+                        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                        return axios(originalRequest);
+                    }
+                }
+            }
+            return Promise.reject(error);
+        }
+    );
 
     const saveToken = (tempToken) => {
-        const fourMin = 1000 * 60 * 4;
-        const date = new Date();
-        date.setTime(date.getTime() + fourMin);
+        const expires = new Date(new Date().getTime() + 10000); // 5 minutes
         setToken(tempToken);
-        Cookies.set("token", tempToken, { expires: date });
+        Cookies.set("token", tempToken, { expires });
     };
 
     const saveRefreshToken = (refreshToken) => {
@@ -53,51 +95,11 @@ export default function useAuth() {
         navigate("/");
     };
 
-    const refreshJWT = async () => {
-        const refreshToken = getRefreshToken();
-        if (refreshToken) {
-            try {
-                console.log("Refreshing token...");
-                const res = await http.post("/api/auth/refresh", null, {
-                    headers: {
-                        Authorization: `Bearer ${refreshToken}`,
-                    },
-                });
-                console.log("Token refreshed successfully:", res.data);
-                saveToken(res.data.authorisation.token);
-            } catch (error) {
-                console.error("Error refreshing token:", error);
-                // Consider logging out the user on token refresh failure
-            }
-        } else {
-            console.log("No refresh token available.");
-            // Consider logging out the user if no refresh token is available
-        }
-    };
-
-    const isLogged = () => {
-        if (token) {
-            console.log("logged");
-            return true;
-        } else if (refreshToken) {
-            console.log("refreshing token...");
-            refreshJWT();
-            return true;
-        }
-        console.log("not logged");
-        return false;
-    };
-
-    // useEffect(() => {
-    //     if (!token && refreshToken) {
-    //         refreshJWT();
-    //     }
-    // }, [token, refreshToken]);
+    const isLogged = () => !!token || !!refreshToken;
 
     return {
         setToken: saveToken,
         setRefreshToken: saveRefreshToken,
-        refreshJWT,
         logout,
         getToken,
         http,

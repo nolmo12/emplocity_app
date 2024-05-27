@@ -23,9 +23,9 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        //if (offset.current === 0) {
-        getCommentsObj();
-        //}
+        if (offset.current === 0) {
+            getCommentsObj();
+        }
     }, [renderKey]);
 
     useEffect(() => {

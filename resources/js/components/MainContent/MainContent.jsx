@@ -19,18 +19,6 @@ export default function MainContent({ contentType }) {
     const mainRef = useRef();
     let view = undefined;
 
-    const { isLogged, refreshJWT } = authUser();
-    useEffect(() => {
-        const time = 1000 * 60 * 4 - 1000 * 4; //4min -
-        const refreshInterval = setInterval(() => {
-            if (isLogged()) {
-                console.log("Refreshing token...");
-                refreshJWT();
-            }
-        }, time); // Refresh token every 60 seconds
-        return () => clearInterval(refreshInterval);
-    }, []);
-
     if (contentType === "guest") {
         view = (
             <main>

@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import authUser from "../authUser";
 import useVideoSettings from "../useVideoSettings";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import styles from "./videoSettings.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -11,7 +11,6 @@ import {
     faTags,
     faAlignLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
 
 export default function VideoSettings() {
     const [data, setData] = useState({
@@ -33,15 +32,20 @@ export default function VideoSettings() {
     const { reference_code } = useParams();
     const { sendData } = useVideoSettings();
     const fileInputRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getVideo();
     }, []);
 
-    const handleClickRemove = async () => {
-        await http.delete(`/api/video/delete`, {
+    const handleClickRemove = async (e) => {
+        e.preventDefault();
+        const repsonse = await http.delete(`/api/video/delete`, {
             params: { reference_code: reference_code },
         });
+        if (repsonse.status === 200) {
+            navigate("/account");
+        }
     };
 
     const getVideo = async () => {
@@ -229,8 +233,9 @@ export default function VideoSettings() {
                             Change Thumbnail
                         </button>
                     </div>
+
                     <button
-                        onClick={() => handleClickRemove()}
+                        onClick={(e) => handleClickRemove(e)}
                         className={styles.selectButton}
                     >
                         Remove video
