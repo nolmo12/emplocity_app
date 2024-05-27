@@ -40,7 +40,8 @@
             "app/Helpers/ValidateHelper.php",
             "app/Helpers/VideoManager.php",
             "app/Helpers/utils.php",
-            "app/Helpers/SearchInterface.php"
+            "app/Helpers/SearchInterface.php",
+            "app/Helpers/FileRequestManager.php"
         ]
     },
     "autoload-dev": {

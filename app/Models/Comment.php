@@ -41,11 +41,11 @@ class Comment extends Model
 
        foreach($children as &$child)
        {
-        $user = User::find($child['user_id']);
-        $child['user_name'] = $user->name;
-        $child['user_first_name'] = $user->first_name;
-        $child['user_avatar'] = $user->avatar;
-        $child['children'] = $child->getChildren();
+            $user = User::find($child['user_id']);
+            $child['user_name'] = $user->name;
+            $child['user_first_name'] = $user->first_name;
+            $child['user_avatar'] = $user->avatar;
+            $child['children'] = $child->getChildren($offset);
        }
 
        return $children;

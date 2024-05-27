@@ -32,6 +32,8 @@ class CommentController extends Controller
 
         $comment->video()->associate($video);
         $comment->save();
+        $comment['user_name'] = $request->user()->name;
+        $comment['user_first_name'] = $request->user()->first_name;
 
         return response()->json([
             'comment' => $comment,
@@ -67,7 +69,6 @@ class CommentController extends Controller
         foreach($comments as &$comment)
         {
             $user = User::find($comment['user_id']);
-            $comment['content'] = nl2br(e($comment['content']));
             $comment['user_name'] = $user->name;
             $comment['user_first_name'] = $user->first_name;
             $comment['user_avatar'] = $user->avatar;

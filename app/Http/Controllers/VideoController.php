@@ -12,11 +12,13 @@ use App\Models\History;
 use App\Rules\Enumerate;
 use App\Models\VideoView;
 use Illuminate\Http\Request;
+use App\Helpers\ImageManager;
 use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\FileRequestManager;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -99,11 +101,10 @@ class VideoController extends Controller
         }
         else
         {
-            $file = $request->file('thumbnail');
-            $thumbnailName = hash('sha256', $file->getClientOriginalName()) .'.'. $file->extension();;
-            $path = $request->file('thumbnail')->storeAs('public/videos', $thumbnailName);
+            $fileManager = new FileRequestManager($request, 'thumbnail');
+            $path = $fileManager->save('public/videos');
+            $fileManager->move('storage/videos');
 
-            $request->file('thumbnail')->move(public_path('storage/videos'), $thumbnailName);
             $publicPath = Storage::url($path);
             Storage::delete($path);
 
