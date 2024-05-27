@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 import Popular from "../Popular/Popular";
 import VideoSection from "../VideoSection/VideoSection";
@@ -11,11 +11,25 @@ import Settings from "../Settings/Settings";
 import Shop from "../Shop/Shop";
 import VideoSettings from "../VideoSettings/VideoSettings";
 import UserVideoSection from "../UserVideoSection/UserVideoSection";
+import authUser from "../authUser";
+import config from "../../config";
 import styles from "./mainContent.module.css";
 
 export default function MainContent({ contentType }) {
     const mainRef = useRef();
     let view = undefined;
+
+    const { isLogged, refreshJWT } = authUser();
+    useEffect(() => {
+        const time = 1000 * 60 * 4 - 1000 * 4; //4min -
+        const refreshInterval = setInterval(() => {
+            if (isLogged()) {
+                console.log("Refreshing token...");
+                refreshJWT();
+            }
+        }, time); // Refresh token every 60 seconds
+        return () => clearInterval(refreshInterval);
+    }, []);
 
     if (contentType === "guest") {
         view = (
@@ -99,7 +113,7 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "videoSettings") {
         view = (
-            <main  className={styles.videoSettingsPage}>
+            <main className={styles.videoSettingsPage}>
                 <VideoSettings />
             </main>
         );

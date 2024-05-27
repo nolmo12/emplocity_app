@@ -162,6 +162,7 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
+                                    {console.log(user.avatar)}
                                     {user.avatar && (
                                         <img
                                             src={user.avatar}

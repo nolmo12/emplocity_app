@@ -6,11 +6,6 @@ export default function useUser() {
     const { deleteComment } = useComments();
     const navigate = useNavigate();
 
-    http.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ${getToken()}`;
-        return config;
-    });
-
     const getUser = async () => {
         if (isLogged()) {
             try {

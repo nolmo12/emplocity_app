@@ -178,7 +178,6 @@ export default function VideoFrame({ mainRef }) {
     };
 
     if (!isLoading) {
-        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;

@@ -16,26 +16,6 @@ import axios from "axios";
 import config from "./config";
 
 function Main() {
-    const { isLogged, setToken, getToken } = authUser();
-    const { baseUrl, baseTime } = config();
-    useEffect(() => {
-        const min = 1000 * 60;
-        // if (isLogged()) {
-        //     setToken(getToken(), baseTime);
-        // }
-        setInterval(async () => {
-            const http = axios.create({
-                baseURL: baseUrl,
-            });
-            http.interceptors.request.use((config) => {
-                config.headers.Authorization = `Bearer ${getToken()}`;
-                return config;
-            });
-
-            const response = await http.post("/api/auth/refresh");
-            setToken(response.data.authorisation.token, baseTime);
-        }, baseTime - min);
-    }, []);
     return (
         <Routes>
             <Route

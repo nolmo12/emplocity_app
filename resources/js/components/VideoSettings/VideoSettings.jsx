@@ -5,11 +5,12 @@ import useVideoSettings from "../useVideoSettings";
 import { useParams, useNavigate } from "react-router-dom";
 import styles from "./videoSettings.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { 
+import {
     faTimes,
     faFilm,
     faTags,
-    faAlignLeft } from "@fortawesome/free-solid-svg-icons";
+    faAlignLeft,
+} from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 export default function VideoSettings() {
@@ -228,7 +229,10 @@ export default function VideoSettings() {
                             Change Thumbnail
                         </button>
                     </div>
-                    <button onClick={() => handleClickRemove()} className={styles.selectButton}>
+                    <button
+                        onClick={() => handleClickRemove()}
+                        className={styles.selectButton}
+                    >
                         Remove video
                     </button>
                 </form>

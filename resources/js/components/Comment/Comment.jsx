@@ -146,6 +146,7 @@ export default function Comment({
             onMouseLeave={handleMouseLeave}
         >
             <img src="avatar" alt="avatar" />
+
             <p>{comment.user_name}</p>
             <p className={styles.dateComm}></p>
             <div>

@@ -16,8 +16,7 @@ export default function LoginPage() {
     });
     const [loginValidation, setLoginValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const { baseTime } = config();
-    const { http, setToken, getToken, isLogged } = authUser();
+    const { http, setToken, setRefreshToken } = authUser();
 
     const navigate = useNavigate();
 
@@ -45,13 +44,13 @@ export default function LoginPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoginValidation(false);
-        console.log(loginData);
         http.post("/api/auth/login", {
             email: loginData.email,
             password: loginData.password,
         })
             .then((res) => {
-                setToken(res.data.authorisation.token, baseTime);
+                setToken(res.data.authorisation.token);
+                setRefreshToken(res.data.authorisation.refresh_token);
                 navigate("/account");
             })
             .catch((error) => {
