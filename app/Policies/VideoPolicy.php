@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class VideoPolicy
 {
@@ -29,15 +30,21 @@ class VideoPolicy
      */
     public function view(?User $user, Video $video): Response
     {
+        $user = Auth::user();
+
+        if (!$user)
+        {
+            return Response::deny("You are not authenticated.");
+        }
+        
         if ($video->visibility === 'Hidden')
         {
             return $video->user->id === $user->id
-                ? Response::allow()
-                : Response::deny("You don't have permission to view this video");
+            ? Response::allow()
+            : Response::deny('You are not allowed to watch the video');
         }
         return Response::allow();
     }
-    //izDj0f89Cy
 
     /**
      * Determine whether the user can create models.
