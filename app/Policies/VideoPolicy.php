@@ -31,14 +31,15 @@ class VideoPolicy
     public function view(?User $user, Video $video): Response
     {
         $user = Auth::user();
-
-        if (!$user)
-        {
-            return Response::deny("You are not authenticated.");
-        }
         
         if ($video->visibility === 'Hidden')
         {
+
+            if (!$user)
+            {
+                return Response::deny("You are not authenticated.");
+            }
+
             return $video->user->id === $user->id
             ? Response::allow()
             : Response::deny('You are not allowed to watch the video');
