@@ -67,16 +67,9 @@ useEffect(() => {
     };
 
     const getCurrentUserBorder = async () => {
-<<<<<<< HEAD
-        const response = await getCurrentBorder(user.id);       
- setCurrentBorder(response);
-
-       
-=======
         const response = await getCurrentBorder(user.id);
         setCurrentBorder(response);
         setRenderKey((prev) => prev + 1);
->>>>>>> 583caf152344adbe5fda595dcdeb32c87cd997ef
     };
 
 
@@ -186,18 +179,12 @@ useEffect(() => {
                                     )}
                                 </p>
                                 <p className={styles.label}>User borders: </p>
-<<<<<<< HEAD
+
                                {currentBorder && currentBorder.current_border && <img
                                     src={currentBorder.current_border.type}
                                     alt="current border"
                                 />}
-=======
-                                {currentBorder && <img
-                                    src={currentBorder.current_border.type}
-                                    alt="current border"
-                                />}
                                 
->>>>>>> 583caf152344adbe5fda595dcdeb32c87cd997ef
                                 <p>
 {console.log("test ", currentBorder)};
                                     {userBorders && userBorders.borders && userBorders.borders.map((item) => {
