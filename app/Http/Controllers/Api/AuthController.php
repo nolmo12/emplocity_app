@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Helpers\ValidateHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Auth\Events\Registered;
-use App\Helpers\ValidateHelper;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 /**
  * AuthController class which controlls everything related to authentication.
  */
@@ -71,16 +72,10 @@ class AuthController extends Controller
             // user registered event
             event(new Registered($user));
 
-            $token = Auth::attempt($request->only(['email', 'password']));
-
             return response()->json([
                 'status' => 'success',
                 'message' => 'User created successfully',
                 'user' => $user,
-                'authorisation' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ]
             ]);
 
         } catch (\Throwable $th) {
@@ -119,6 +114,9 @@ class AuthController extends Controller
             }
 
             $token = Auth::attempt($request->only(['email', 'password']));
+            $user = Auth::user();
+            
+            $refreshToken = JWTAuth::fromUser($user, ['exp' => now()->addDays(30)->timestamp]);
 
             if(!$token)
             {
@@ -144,6 +142,7 @@ class AuthController extends Controller
                 'user' => $user,
                 'authorisation' => [
                     'token' => $token,
+                    'refresh_token' => $refreshToken,
                     'type' => 'bearer',
                 ]
                 ]);
@@ -173,13 +172,15 @@ class AuthController extends Controller
         {
             return response()->json(['status' => 'error', 'message' => 'Token not provided'], 400);
         }
+
+        $user = Auth::user();
+
         $newToken = Auth::refresh($currentToken);
         return response()->json([
             'status' => 'success',
-            'user' => Auth::user(),
+            'user' => $user,
             'authorisation' => [
-                'old_token' => $currentToken,
-                    'token' => $newToken,
+                'token' => $newToken,
                 'type' => 'bearer',
             ]
         ]);

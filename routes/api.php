@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Mail\SendHelp;
+use App\Jobs\SendHelpEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -77,27 +78,14 @@ Route::prefix('email')->group(function () {
         return back()->with('message', 'Verification link sent!');
     })->middleware(['auth', 'throttle:20,1'])->name('verification.send');
 
-    Route::post('/help', function (Request $request)
-    {
+    Route::post('/help', function (Request $request) {
         $email = $request->email;
         $content = $request->content;
         $type = $request->type;
-
-        $admins = User::with('roles')->whereHas('roles', function($query){
-            $query->where('name', 'admin');
-        })
-        ->get();
-
-        foreach($admins as $admin)
-        {
-            $hiddenAttributes = $admin->getAttributes();
-            $adminEmail = $hiddenAttributes['email'];
-
-            Mail::to($adminEmail)
-            ->send(new SendHelp($email, $content, $type));
-        }
-        
-        return response()->json('Emails send succesfully');        
+    
+        SendHelpEmail::dispatch($email, $content, $type)->onQueue('emails');
+    
+        return response()->json('Emails queued successfully');
     });
 
 });

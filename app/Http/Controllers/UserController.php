@@ -12,6 +12,7 @@ use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
+use App\Helpers\FileRequestManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
@@ -192,12 +193,13 @@ public function update(Request $request, $id)
     }
 
     if ($request->hasFile('thumbnail')) {
-        $thumbnailName = $user->id . '_' . time() . '.' . $request->file('thumbnail')->getClientOriginalExtension();
-        $path = $request->file('thumbnail')->storeAs('public/avatars', $thumbnailName);
-        $request->file('thumbnail')->move(public_path('storage/avatars'), $thumbnailName);
+        $fileManager = new FileRequestManager($request, 'thumbnail');
+        $path = $fileManager->save('public/avatars');
+        $fileManager->move('storage/videos');
+
         $publicPath = Storage::url($path);
-        error_log($publicPath);
         Storage::delete($path);
+        
         $user->avatar = $publicPath;
     }
 
@@ -325,7 +327,7 @@ public function update(Request $request, $id)
         } 
         else 
         {
-            return response()->json(['message' => 'No borders found for this user'], 404);
+            return response()->json(['message' => 'No borders found for this user']);
         }
     }
     public function changeCurrentBorder(Request $request)
