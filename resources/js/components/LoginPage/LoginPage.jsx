@@ -45,6 +45,7 @@ export default function LoginPage() {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoginValidation(false);
+        console.log(loginData);
         http.post("/api/auth/login", {
             email: loginData.email,
             password: loginData.password,
@@ -103,7 +104,11 @@ export default function LoginPage() {
                         className={styles.floatingInput}
                     ></input>
                 </div>
-                {loginValidation ? <p className={styles.invalid}>Invalid email or password</p> : ""}
+                {loginValidation ? (
+                    <p className={styles.invalid}>Invalid email or password</p>
+                ) : (
+                    ""
+                )}
                 <Link to="/forgotPassword">
                     <a data-testid="forgotPassword">Forgot password?</a>
                 </Link>

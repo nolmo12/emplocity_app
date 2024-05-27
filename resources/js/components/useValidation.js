@@ -67,24 +67,11 @@ export default function useValidation() {
             } else {
                 data.forEach((errorObj) => {
                     Object.entries(errorObj).forEach(([key, value]) => {
-                        console.log(key);
-                        if (key == 461) {
-                            setPasswordValidation((prev) => ({
-                                ...prev,
-                                previousPasswordValidation: true,
-                            }));
-                        }
                         if (key == 462) {
                             passwordValidation.passwordValidation = true;
                             setPasswordValidation((prev) => ({
                                 ...prev,
                                 passwordValidation: true,
-                            }));
-                        }
-                        if (key == 463) {
-                            setPasswordValidation((prev) => ({
-                                ...prev,
-                                repeatPasswordValidation: true,
                             }));
                         }
                     });

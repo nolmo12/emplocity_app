@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useComments from "../useComments";
 import authUser from "../authUser";
+import useUser from "../useUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
 import _ from "lodash";
@@ -11,29 +12,33 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const [isTextareaClicked, setIsTextareaClicked] = useState(false);
     const commentTextareaRef = useRef(null);
     const [renderKey, setRenderKey] = useState(0);
+    const [userName, setUserName] = useState("");
     const [mainCommentContent, setMainCommentContent] = useState();
     const previousScroll = useRef(0);
     const offset = useRef(0);
-    const {
-        fetchVideosSets,
-        sendComment,
-        commentsObj,
-        setCommentsObj,
-    } = useComments();
+    const { fetchVideosSets, sendComment, commentsObj, setCommentsObj } =
+        useComments();
     const { isLogged } = authUser();
+    const { getUser } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (offset.current === 0) {
-            getCommentsObj();
-        }
+        //if (offset.current === 0) {
+        getCommentsObj();
+        //}
     }, [renderKey]);
 
     useEffect(() => {
         setCommentsObj({ comments: [] });
-        offset.current = 0;
-        getCommentsObj();
+        if (offset.current > 0) {
+            offset.current = 0;
+            getCommentsObj();
+        }
     }, [reference_code]);
+
+    useEffect(() => {
+        getUserName();
+    }, []);
 
     useEffect(() => {
         const scrollElement = mainRef.current;
@@ -69,12 +74,15 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     }, [commentsObj, mainRef]);
 
     const getCommentsObj = async () => {
-        console.log(reference_code);
         const response = await fetchVideosSets(reference_code, offset.current);
         if (response.data.comments.length > 0) {
-            console.log(response.data);
             offset.current += 1;
         }
+    };
+
+    const getUserName = async () => {
+        const response = await getUser();
+        if (isLogged()) setUserName(response.name);
     };
 
     const handleTextareaChange = (e) => {
@@ -87,9 +95,10 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     const handleCancelComment = () => {
         setIsTextareaClicked(false);
-        setMainCommentContent('');
+        setMainCommentContent("");
         if (commentTextareaRef.current) {
-            commentTextareaRef.current.textContent = '';
+            commentTextareaRef.current.innerHTML = "";
+            //textContent
         }
     };
 
@@ -98,9 +107,20 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
             navigate("/login");
             return;
         }
+        const newComment = {
+            content: mainCommentContent,
+            user_name: userName,
+        };
 
-        await sendComment(reference_code, mainCommentContent);
-        e.target.previousElementSibling.innerText = "";
+        // pawel musi zrobic zwracanie komentarza glownego
+        const response = await sendComment(reference_code, mainCommentContent);
+        setCommentsObj((prev) => ({
+            ...prev,
+            comments: [newComment, ...prev.comments],
+        }));
+        if (commentTextareaRef.current) {
+            commentTextareaRef.current.innerHTML = ""; // Clear the textarea
+        }
         setRenderKey((prev) => prev + 1);
     };
 
@@ -117,8 +137,15 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                 ></div>
                 {isTextareaClicked && (
                     <div>
-                        <button onClick={(e) => handleClickComment(e)}>Comment</button>
-                        <button onClick={(e) => handleCancelComment(e)} className={styles.cancelButton}>Cancel</button>
+                        <button onClick={(e) => handleClickComment(e)}>
+                            Comment
+                        </button>
+                        <button
+                            onClick={(e) => handleCancelComment(e)}
+                            className={styles.cancelButton}
+                        >
+                            Cancel
+                        </button>
                     </div>
                 )}
             </div>

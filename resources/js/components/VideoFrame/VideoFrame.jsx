@@ -23,7 +23,7 @@ import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame({ mainRef }) {
     const [likesCount, setLikesCount] = useState(0);
-    const [userFirstName, setUserFirstName] = useState();
+    const [userName, setUserName] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
     const [renderKey, setRenderKey] = useState(0);
     const [thumbObj, setThumbObj] = useState({
@@ -70,7 +70,8 @@ export default function VideoFrame({ mainRef }) {
             userInteraction: null,
             thumbStyle: null,
         });
-        if (isLogged()) getUserFirstNameAndId();
+        // if (isLogged()) getUserName();
+
         setRenderKey((prev) => prev + 1);
 
         if (videoObj) {
@@ -102,12 +103,10 @@ export default function VideoFrame({ mainRef }) {
         return `uploaded ${Math.floor(result / year)} years ago`;
     };
 
-    const getUserFirstNameAndId = () => {
-        setUserFirstName(user.first_name);
-    };
-
     const setUser = async () => {
         user.current = await getUser();
+        if (isLogged()) setUserName(user.current.name);
+
         setAdminFlag(await isAdmin());
     };
 
@@ -179,6 +178,7 @@ export default function VideoFrame({ mainRef }) {
     };
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -186,7 +186,7 @@ export default function VideoFrame({ mainRef }) {
         const videoOwner = videoObj.userName;
         const videoViews = videoObj.video.views;
         const videoDuration = videoObj.video.duration;
-        const videoOwnerFirstName = videoObj.userFirstName;
+        const videoOwnerUserName = videoObj.userName;
         const videoOwnerId = videoObj.userId;
         const uploadedTimeAgo = calculateTime(
             videoObj.video.created_at,
@@ -333,10 +333,10 @@ export default function VideoFrame({ mainRef }) {
                             />{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">
+                                    {console.log(videoOwnerUserName, userName)}
                                     <Link
                                         to={
-                                            videoOwnerFirstName ===
-                                            userFirstName
+                                            videoOwnerUserName === userName
                                                 ? `/account`
                                                 : `/user/${videoOwnerId}`
                                         } // need endpoint video -> ownerId
