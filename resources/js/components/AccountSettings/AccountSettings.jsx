@@ -186,7 +186,7 @@ useEffect(() => {
                                 />}
                                 
                                 <p>
-{console.log("test ", currentBorder)};
+{console.log("test ", currentBorder)}
                                     {userBorders && userBorders.borders && userBorders.borders.map((item) => {
                                         return (
                                             <img

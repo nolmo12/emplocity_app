@@ -168,11 +168,18 @@ class AuthController extends Controller
 
     public function refresh()
     {
+        $currentToken = Auth::getToken();
+        if(!$currentToken)
+        {
+            return response()->json(['status' => 'error', 'message' => 'Token not provided'], 400);
+        }
+        $newToken = Auth::refresh($currentToken);
         return response()->json([
             'status' => 'success',
             'user' => Auth::user(),
             'authorisation' => [
-                'token' => Auth::refresh(),
+                'old_token' => $currentToken,
+                    'token' => $newToken,
                 'type' => 'bearer',
             ]
         ]);

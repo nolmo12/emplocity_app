@@ -41,7 +41,7 @@ class BorderSeeder extends Seeder
         Border::create([
             'rarity' => 2,
             'type' => '/storage/borders/Topaz_ring.png',
-            'price' => 10.0
+            'price' => 15.0
         ]);
         Border::create([
             'rarity' => 2,

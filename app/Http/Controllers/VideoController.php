@@ -8,6 +8,7 @@ use App\Models\Tag;
 use App\Models\User;
 use App\Models\Video;
 use App\Helpers\Utils;
+use App\Models\History;
 use App\Rules\Enumerate;
 use App\Models\VideoView;
 use Illuminate\Http\Request;
@@ -587,8 +588,6 @@ class VideoController extends Controller
 
     public function list(Request $request)
     {
-        $user = $request->user();
-
         $token = csrf_token();
         
         $hash = hash('sha256', $token);
