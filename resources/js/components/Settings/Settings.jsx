@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import authUser from "../authUser";
 import styles from "./settings.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,13 +15,11 @@ import {
     faInfoCircle,
     faGavel,
 } from "@fortawesome/free-solid-svg-icons";
-import useUser from "../useUser";
 
 export default function Settings() {
-    const { logout, isLogged } = authUser();
+    const { logout, isLogged, getUser } = authUser();
     const [historyPath, setHistoryPath] = useState();
     const [likedPath, setLikedPath] = useState();
-    const { getUser } = useUser();
 
     useEffect(() => {
         if (!isLogged()) {

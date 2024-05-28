@@ -2,7 +2,6 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
-import useUser from "../useUser";
 import useBorders from "../useBorders";
 import styles from "./shop.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,8 +12,7 @@ export default function Shop() {
     const [userBorders, setUserBorders] = useState([]);
     const [borders, setBorders] = useState([]);
     const { getBorders } = useBorders();
-    const { http } = authUser();
-    const { getUser } = useUser();
+    const { http, getUser } = authUser();
     const navigate = useNavigate();
 
     const getUserData = async () => {
@@ -41,7 +39,7 @@ export default function Shop() {
             const response = await http.get(
                 `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=48123456789`
             );
-            if (response.data)   window.location.href = response.data.url;
+            if (response.data) window.location.href = response.data.url;
         } catch (error) {
             console.log(error);
         }
@@ -53,31 +51,40 @@ export default function Shop() {
     }, []);
 
     return (
-        <ul className={styles.borderShop} onClick={(e) => handleClickBuy(border.id)}>
+        <ul
+            className={styles.borderShop}
+            onClick={(e) => handleClickBuy(border.id)}
+        >
             <h1>Border Shop</h1>
             {borders.map((border) => {
                 return (
                     <li key={`shop-${border.id}`}>
                         <div className={styles.borderContainer}>
-                                <img
-                                    src={border.type}
-                                    className={styles.border}
-                                    alt="border"
-                                />
-                                <img
-                                    src={userData.avatar}
-                                    className={styles.avatar}
-                                    alt="user avatar"
-                                />
+                            <img
+                                src={border.type}
+                                className={styles.border}
+                                alt="border"
+                            />
+                            <img
+                                src={userData.avatar}
+                                className={styles.avatar}
+                                alt="user avatar"
+                            />
                             <div className={styles.infoContainer}>
                                 <p>Name placeholder</p>
                                 <p>
                                     Price: <span>{border.price}</span>
                                 </p>
                                 <div>
-                                    
-                                    <button onClick={() => handleClickBuy(border.id)}>
-                                        <FontAwesomeIcon icon={faShoppingBasket} className={styles.shopIcon}/>
+                                    <button
+                                        onClick={() =>
+                                            handleClickBuy(border.id)
+                                        }
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faShoppingBasket}
+                                            className={styles.shopIcon}
+                                        />
                                         Buy
                                     </button>
                                 </div>
