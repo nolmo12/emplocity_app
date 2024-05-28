@@ -654,4 +654,23 @@ class VideoController extends Controller
             return response()->json(['error' => 'Video not found'], 404);
         }
     }
+
+    public function downloadVideo(Request $request, string $reference_code)
+    {
+        try {
+            $video = Video::where('reference_code', $reference_code)->firstOrFail();
+
+            $filePath = public_path('storage/videos/' . basename($video->video));
+
+            if (!File::exists($filePath)) {
+                return response()->json(['error' => 'File not found'], 404);
+            }
+
+            return response()->download($filePath, basename($video->video));
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Video not found'], 404);
+        }
+}
+    
 }
