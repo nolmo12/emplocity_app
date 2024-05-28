@@ -40,6 +40,8 @@ export default function useUserSettings() {
             });
             if (repsonse.status === 200) {
                 return true;
+            } else {
+                return false;
             }
         } catch (error) {
             if (error.response.status === 401) {

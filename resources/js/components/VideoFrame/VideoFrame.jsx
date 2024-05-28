@@ -178,6 +178,7 @@ export default function VideoFrame({ mainRef }) {
     };
 
     if (!isLoading) {
+        console.log("Video object", videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -187,6 +188,7 @@ export default function VideoFrame({ mainRef }) {
         const videoDuration = videoObj.video.duration;
         const videoOwnerUserName = videoObj.userName;
         const videoOwnerId = videoObj.userId;
+        const videoType = videoObj.video.type;
         const uploadedTimeAgo = calculateTime(
             videoObj.video.created_at,
             new Date()
@@ -239,13 +241,19 @@ export default function VideoFrame({ mainRef }) {
                                 </button>
                                 {adminFlag && (
                                     <button
-                                        onClick={(e) => removeVideo(reference_code)}
+                                        onClick={(e) =>
+                                            removeVideo(reference_code)
+                                        }
                                     >
                                         Remove Video
                                     </button>
                                 )}
-                                {adminFlag && videoOwnerFirstName && (
-                                    <button onClick={(e) => removeUser(videoOwnerId)}>
+                                {adminFlag && (
+                                    <button
+                                        onClick={(e) =>
+                                            removeUser(videoOwnerId)
+                                        }
+                                    >
                                         Remove User
                                     </button>
                                 )}

@@ -9,14 +9,11 @@ export default function useAuth() {
     const { baseUrl } = config();
 
     const getToken = () => Cookies.get("token");
-    const getRefreshToken = () => Cookies.get("refresh_token");
 
     const [token, setToken] = useState(getToken());
-    const [refreshToken, setRefreshToken] = useState(getRefreshToken());
 
     useEffect(() => {
         setToken(getToken());
-        setRefreshToken(getRefreshToken());
     }, []);
 
     const http = axios.create({
@@ -42,7 +39,7 @@ export default function useAuth() {
                 {},
                 {
                     headers: {
-                        Authorization: `Bearer ${getRefreshToken()}`,
+                        Authorization: `Bearer ${getToken()}`,
                     },
                     withCredentials: true,
                 }
@@ -59,7 +56,8 @@ export default function useAuth() {
             const originalRequest = error.config;
             if (error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
-                const refreshToken = getRefreshToken();
+                const refreshToken = getToken();
+                console.log("Refresh token", refreshToken);
                 if (refreshToken) {
                     const response = await refreshJWT();
                     console.log("Response", response);
@@ -77,29 +75,21 @@ export default function useAuth() {
     );
 
     const saveToken = (tempToken) => {
-        const expires = new Date(new Date().getTime() + 10000); // 5 minutes
+        const expires = new Date(new Date().getTime() + 1000 * 60 * 8); // 1 hour
         setToken(tempToken);
         Cookies.set("token", tempToken, { expires });
     };
 
-    const saveRefreshToken = (refreshToken) => {
-        setRefreshToken(refreshToken);
-        Cookies.set("refresh_token", refreshToken);
-    };
-
     const logout = () => {
         Cookies.remove("token");
-        Cookies.remove("refresh_token");
         setToken(null);
-        setRefreshToken(null);
-        navigate("/");
+        navigate("/home");
     };
 
-    const isLogged = () => !!token || !!refreshToken;
+    const isLogged = () => !!token;
 
     return {
         setToken: saveToken,
-        setRefreshToken: saveRefreshToken,
         logout,
         getToken,
         http,

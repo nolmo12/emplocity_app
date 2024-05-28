@@ -102,8 +102,8 @@ export default function AccountSettings() {
             userData.password,
             userData.repeatPassword
         );
+        console.log(response);
         if (response.status) {
-            logout();
             navigate("/login");
         } else {
             console.log(response);

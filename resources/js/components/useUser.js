@@ -32,7 +32,7 @@ export default function useUser() {
             await http.delete(`/api/video/delete`, {
                 params: { reference_code: reference_code },
             });
-            navigate("/");
+            navigate("/home");
         } catch (error) {
             console.log(error);
         }
@@ -41,7 +41,7 @@ export default function useUser() {
     const removeUser = async (id) => {
         try {
             await http.delete(`/api/auth/delete`, { params: { user_id: id } });
-            navigate("/");
+            navigate("/home");
             logout();
         } catch (error) {
             console.log(error);

@@ -19,7 +19,7 @@ function Main() {
     return (
         <Routes>
             <Route
-                path="/"
+                path="/home"
                 element={
                     <>
                         <Header />

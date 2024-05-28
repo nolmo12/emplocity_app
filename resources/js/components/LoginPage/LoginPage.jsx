@@ -16,7 +16,7 @@ export default function LoginPage() {
     });
     const [loginValidation, setLoginValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const { http, setToken, setRefreshToken } = authUser();
+    const { http, setToken } = authUser();
 
     const navigate = useNavigate();
 
@@ -50,7 +50,6 @@ export default function LoginPage() {
         })
             .then((res) => {
                 setToken(res.data.authorisation.token);
-                setRefreshToken(res.data.authorisation.refresh_token);
                 navigate("/account");
             })
             .catch((error) => {
@@ -66,7 +65,7 @@ export default function LoginPage() {
                 onSubmit={(e) => handleSubmit(e)}
                 className={styles.loginForm}
             >
-                <Link to="/">
+                <Link to="/home">
                     {iconPath ? (
                         <img src={iconPath} data-testid="icon" alt="Icon"></img>
                     ) : (
