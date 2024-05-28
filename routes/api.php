@@ -51,8 +51,8 @@ Route::prefix('auth')->group(function () {
     ->middleware('guest')
     ->name('password.email');
     Route::get('/user-data', [UserController::class, 'getUserData']);
-    Route::delete('/delete', [UserController::class, 'delete']);
-    Route::post('/update/{id}', [UserController::class, 'update']);
+    Route::delete('/delete', [UserController::class, 'delete'])->middleware('auth:api');
+    Route::post('/update/{id}', [UserController::class, 'update'])->middleware('auth:api');
     Route::get('/read/{id}', [UserController::class, 'read']);
     Route::get('/likedVideos', [UserController::class, 'getLikes'])->middleware('auth:api');
 
@@ -177,6 +177,8 @@ Route::prefix('video')->group(function () {
     Route::patch('/comment/update', [CommentController::class, 'update']);
 
     Route::get('/getUrl/{reference_code}', [VideoController::class, 'getVideoUrl']);
+
+    Route::get('download/{reference_code}', [VideoController::class, 'downloadVideo']);
 });
 
 Route::prefix('tags')->group(function (){
