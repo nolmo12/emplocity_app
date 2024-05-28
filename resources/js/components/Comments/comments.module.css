@@ -2,6 +2,11 @@
     position: relative;
     width: 50%;
     top: 5%;
+    padding-bottom:10em; 
+}
+
+.commentDiv h2 {
+    margin-bottom: 2em;
 }
 
 .commentDiv p {

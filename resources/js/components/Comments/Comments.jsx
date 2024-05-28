@@ -14,6 +14,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const [renderKey, setRenderKey] = useState(0);
     const [userName, setUserName] = useState("");
     const [mainCommentContent, setMainCommentContent] = useState();
+    const [commentCount, setCommentCount] = useState(0);
     const previousScroll = useRef(0);
     const offset = useRef(0);
     const { fetchVideosSets, sendComment, commentsObj, setCommentsObj } =
@@ -77,6 +78,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         const response = await fetchVideosSets(reference_code, offset.current);
         if (response.data.comments.length > 0) {
             offset.current += 1;
+            setCommentCount(response.data.total_comments);
         }
     };
 
@@ -126,6 +128,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     return (
         <div className={styles.commentDiv}>
+            <h2>Comments ({commentCount})</h2> 
             <div className={styles.commentTextareaContainer}>
                 <div
                     ref={commentTextareaRef}

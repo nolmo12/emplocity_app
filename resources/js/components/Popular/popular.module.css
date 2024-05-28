@@ -10,7 +10,12 @@
 
 #Popular a {
     color:white;
-    text-decoration: none;
+    text-decoration: underline 0.15em rgba(255, 255, 255, 0);
+    transition: text-decoration-color 300ms;
+}
+
+#Popular a:hover {
+    text-decoration-color: rgba(255, 255, 255, 1);
 }
 
 #Popular ul {
@@ -27,6 +32,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: transform 300ms ease;
+}
+
+#Popular li:hover {
+    cursor: pointer;
+}
+
+#Popular li:active {
+    transform: scale(0.95);
 }
 
 #Popular h1 {
@@ -34,17 +48,6 @@
     margin-bottom:0.5em;
     font-weight:600;
     text-align:center;
-}
-
-#Popular li:hover {
-    background-color: #101b33;
-    transition: background-color 0.3s ease, transform 0.1s ease;
-    cursor: pointer;
-    border-radius:10px;
-}
-
-#Popular li:active {
-    transform: scale(0.95);
 }
 
 #Popular img {

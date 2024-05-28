@@ -88,10 +88,9 @@ export default function VideoSection({ sectionType }) {
                                 <div id={styles.video}>
                                     <img
                                         src={videoObj.video.thumbnail}
-                                        width={300}
                                         alt="video thumbnail"
                                     />
-                                    <p>{videoObj.title}</p>
+                                    <p className={styles.videoTitle}>{videoObj.title}</p>
                                     <p>
                                         Rating:{" "}
                                         <span
