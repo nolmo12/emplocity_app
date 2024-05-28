@@ -195,7 +195,7 @@ public function update(Request $request, $id)
     if ($request->hasFile('thumbnail')) {
         $fileManager = new FileRequestManager($request, 'thumbnail');
         $path = $fileManager->save('public/avatars');
-        $fileManager->move('storage/videos');
+        $fileManager->move('storage/avatars');
 
         $publicPath = Storage::url($path);
         Storage::delete($path);
