@@ -54,7 +54,8 @@ export default function AccountSettings() {
         if (user && user.id) {
             getCurrentUserBorder();
         }
-    }, [user, renderKey]);
+    }, [renderKey]);
+    // user is not a dependency of this useEffect
 
     const getUserBorders = async () => {
         const response = await getBorders();
@@ -127,6 +128,7 @@ export default function AccountSettings() {
     };
 
     const handleClickChangeAvatar = async (e) => {
+        e.preventDefault();
         const formData = new FormData();
         formData.append("avatar", userData.avatar);
         await changeAvatar(user.id, userData.avatar);
