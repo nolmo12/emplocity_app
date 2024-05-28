@@ -13,6 +13,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
+
 /**
  * AuthController class which controlls everything related to authentication.
  */
@@ -165,25 +166,35 @@ class AuthController extends Controller
         ]);
     }
 
-    public function refresh()
+    public function refresh(Request $request)
     {
-        $currentToken = Auth::getToken();
-        if(!$currentToken)
-        {
-            return response()->json(['status' => 'error', 'message' => 'Token not provided'], 400);
+        try {
+            $refreshToken = $request->header('Authorization');
+    
+            if (!$refreshToken) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Refresh token is required',
+                ], 401);
+            }
+            $token = JWTAuth::setToken($refreshToken)->refresh();
+            
+            $user = JWTAuth::setToken($token)->toUser();
+    
+            return response()->json([
+                'status' => 'success',
+                'user' => $user,
+                'authorisation' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ]
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
         }
-
-        $user = Auth::user();
-
-        $newToken = Auth::refresh($currentToken);
-        return response()->json([
-            'status' => 'success',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $newToken,
-                'type' => 'bearer',
-            ]
-        ]);
     }
 
     /**
