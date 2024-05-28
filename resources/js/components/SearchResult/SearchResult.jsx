@@ -51,7 +51,6 @@ function VideoInfo({ videoObj }) {
 function UserInfo({ userObj }) {
     return (
         <div className={styles.userInfo}>
-            {console.log(userObj)}
             <img src={userObj.avatar} alt="user avatar" />
             <p>{userObj.name}</p>
             <p>{userObj.email}</p>

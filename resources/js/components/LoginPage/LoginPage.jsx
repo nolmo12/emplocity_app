@@ -16,8 +16,7 @@ export default function LoginPage() {
     });
     const [loginValidation, setLoginValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const { baseTime } = config();
-    const { http, setToken, getToken, isLogged } = authUser();
+    const { http, setToken } = authUser();
 
     const navigate = useNavigate();
 
@@ -50,7 +49,7 @@ export default function LoginPage() {
             password: loginData.password,
         })
             .then((res) => {
-                setToken(res.data.authorisation.token, baseTime);
+                setToken(res.data.authorisation.token);
                 navigate("/account");
             })
             .catch((error) => {
@@ -66,7 +65,7 @@ export default function LoginPage() {
                 onSubmit={(e) => handleSubmit(e)}
                 className={styles.loginForm}
             >
-                <Link to="/">
+                <Link to="/home">
                     {iconPath ? (
                         <img src={iconPath} data-testid="icon" alt="Icon"></img>
                     ) : (
@@ -103,7 +102,11 @@ export default function LoginPage() {
                         className={styles.floatingInput}
                     ></input>
                 </div>
-                {loginValidation ? <p className={styles.invalid}>Invalid email or password</p> : ""}
+                {loginValidation ? (
+                    <p className={styles.invalid}>Invalid email or password</p>
+                ) : (
+                    ""
+                )}
                 <Link to="/forgotPassword">
                     <a data-testid="forgotPassword">Forgot password?</a>
                 </Link>

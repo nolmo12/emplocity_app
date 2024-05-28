@@ -24,18 +24,14 @@ export default function AccountSettings() {
         repeatPassword: "",
         avatar: "",
     });
-    const [validationPasswordData, setValidationPasswordData] = useState({
-        previousPasswordValidation: false,
-        passwordValidation: false,
-        repeatPasswordValidation: false,
-    });
+    const [validationPasswordData, setValidationPasswordData] = useState(false);
     const [validationNicknameData, setValidationNicknameData] = useState(false);
     const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
     const navigate = useNavigate();
     const { logout, http } = authUser();
     const { getUser, removeUser, isAdmin } = useUser();
-    const { formValidation } = useValidation();
+    // const { validateForm } = useValidation();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
 
     useEffect(() => {
@@ -52,14 +48,13 @@ export default function AccountSettings() {
 
     useEffect(() => {
         getUserBorders();
-                
     }, []);
-    
-useEffect(() => {
-    if (user && user.id) {
-        getCurrentUserBorder();
-    }
-}, [user, renderKey]);
+
+    useEffect(() => {
+        if (user && user.id) {
+            getCurrentUserBorder();
+        }
+    }, [user, renderKey]);
 
     const getUserBorders = async () => {
         const response = await getBorders();
@@ -71,7 +66,6 @@ useEffect(() => {
         setCurrentBorder(response);
         setRenderKey((prev) => prev + 1);
     };
-
 
     const handleNicknameChange = (e) => {
         e.preventDefault();
@@ -87,9 +81,6 @@ useEffect(() => {
             setUserData({ ...userData, repeatPassword: e.target.value });
         }
     };
-    console.log("settings user borders: ", userBorders);
-
-    console.log("settings current border: ", currentBorder);
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
@@ -110,10 +101,11 @@ useEffect(() => {
             userData.password,
             userData.repeatPassword
         );
-        if (response.status) {
+        if (response) {
             logout();
             navigate("/login");
         } else {
+            console.log(response);
             setValidationPasswordData(response);
         }
     };
@@ -180,26 +172,39 @@ useEffect(() => {
                                 </p>
                                 <p className={styles.label}>User borders: </p>
 
-                               {currentBorder && currentBorder.current_border && <img
-                                    src={currentBorder.current_border.type}
-                                    alt="current border"
-                                />}
-                                
+                                {currentBorder &&
+                                    currentBorder.current_border && (
+                                        <img
+                                            src={
+                                                currentBorder.current_border
+                                                    .type
+                                            }
+                                            alt="current border"
+                                        />
+                                    )}
+
                                 <p>
-{console.log("test ", currentBorder)}
-                                    {userBorders && userBorders.borders && userBorders.borders.map((item) => {
-                                        return (
-                                            <img
-                                                src={item.type}
-                                                alt="border"
-                                                style={{width: "50px", height: "50px"}}
-                                                onClick={() =>
-                                                    handleClickBorder(item.id, setRenderKey)
-                                                }
-                                                key={`userBorder${item.id}`}
-                                            />
-                                        );
-                                    })}
+                                    {userBorders &&
+                                        userBorders.borders &&
+                                        userBorders.borders.map((item) => {
+                                            return (
+                                                <img
+                                                    src={item.type}
+                                                    alt="border"
+                                                    style={{
+                                                        width: "50px",
+                                                        height: "50px",
+                                                    }}
+                                                    onClick={() =>
+                                                        handleClickBorder(
+                                                            item.id,
+                                                            setRenderKey
+                                                        )
+                                                    }
+                                                    key={`userBorder${item.id}`}
+                                                />
+                                            );
+                                        })}
                                 </p>
                                 <p></p>
                             </div>
@@ -236,17 +241,14 @@ useEffect(() => {
                         value={userData.password}
                         placeholder="New password"
                     />
-                    {validationPasswordData.previousPasswordValidation && (
-                        <p>The password field must be a string</p>
-                    )}
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "repeat")}
                         value={userData.repeatPassword}
                         placeholder="Repeat new password"
                     ></input>
-                    {validationPasswordData.previousPasswordValidation && (
-                        <p>The repeat password field must be a string</p>
+                    {validationPasswordData && (
+                        <p>The password field must be a string</p>
                     )}
                     <button onClick={(e) => handleClickChangePassword(e)}>
                         Change password

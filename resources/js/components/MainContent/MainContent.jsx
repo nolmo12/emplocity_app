@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState, useRef } from "react";
 import Popular from "../Popular/Popular";
 import VideoSection from "../VideoSection/VideoSection";
@@ -11,6 +11,8 @@ import Settings from "../Settings/Settings";
 import Shop from "../Shop/Shop";
 import VideoSettings from "../VideoSettings/VideoSettings";
 import UserVideoSection from "../UserVideoSection/UserVideoSection";
+import authUser from "../authUser";
+import config from "../../config";
 import styles from "./mainContent.module.css";
 
 export default function MainContent({ contentType }) {
@@ -99,7 +101,7 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "videoSettings") {
         view = (
-            <main  className={styles.videoSettingsPage}>
+            <main className={styles.videoSettingsPage}>
                 <VideoSettings />
             </main>
         );

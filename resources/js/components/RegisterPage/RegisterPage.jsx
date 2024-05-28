@@ -78,7 +78,7 @@ export default function RegisterPage() {
                     onSubmit={handleSubmit}
                     className={styles.registerForm}
                 >
-                    <Link to="/">
+                    <Link to="/home">
                         {iconPath ? (
                             <img src={iconPath} alt="Icon" />
                         ) : (
@@ -94,10 +94,9 @@ export default function RegisterPage() {
                         <input
                             id={styles.Email}
                             className={
-                                validationInfo && 
-                                validationInfo.emailValidation
-                                ? `${styles.invalid} ${styles.floatingInput}`
-                                : styles.floatingInput
+                                validationInfo && validationInfo.emailValidation
+                                    ? `${styles.invalid} ${styles.floatingInput}`
+                                    : styles.floatingInput
                             }
                             type="text"
                             value={registeredData.email}
@@ -107,7 +106,9 @@ export default function RegisterPage() {
                     </div>
 
                     {validationInfo && validationInfo.emailValidation && (
-                        <p className={styles.invalid}>Invalid or used by other user</p>
+                        <p className={styles.invalid}>
+                            Invalid or used by other user
+                        </p>
                     )}
 
                     <div>
@@ -118,10 +119,10 @@ export default function RegisterPage() {
                         <input
                             id={styles.Password}
                             className={
-                                validationInfo && 
+                                validationInfo &&
                                 validationInfo.passwordValidation
-                                ? `${styles.invalid} ${styles.floatingInput}`
-                                : styles.floatingInput
+                                    ? `${styles.invalid} ${styles.floatingInput}`
+                                    : styles.floatingInput
                             }
                             type="password"
                             placeholder="Password"
@@ -142,10 +143,10 @@ export default function RegisterPage() {
                         <input
                             id={styles.RepeatPassword}
                             className={
-                                validationInfo && 
+                                validationInfo &&
                                 validationInfo.repeatPasswordValidation
-                                ? `${styles.invalid} ${styles.floatingInput}`
-                                : styles.floatingInput
+                                    ? `${styles.invalid} ${styles.floatingInput}`
+                                    : styles.floatingInput
                             }
                             type="password"
                             placeholder="Repeat password"
@@ -156,7 +157,10 @@ export default function RegisterPage() {
 
                     {validationInfo &&
                         validationInfo.repeatPasswordValidation && (
-                            <p data-testid="notSameAsPassword" className={styles.invalid}>
+                            <p
+                                data-testid="notSameAsPassword"
+                                className={styles.invalid}
+                            >
                                 Not same as password
                             </p>
                         )}

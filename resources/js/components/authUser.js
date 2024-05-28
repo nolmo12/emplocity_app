@@ -1,81 +1,91 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import config from "../config";
 
-export default function authUser() {
+export default function useAuth() {
     const navigate = useNavigate();
     const { baseUrl } = config();
 
-    const getToken = () => {
-        const token = Cookies.get("token");
-        return token;
-    };
+    const getToken = () => Cookies.get("token");
 
-    // const [token, setToken] = useState(getToken());
+    const [token, setToken] = useState(getToken());
+
+    useEffect(() => {
+        setToken(getToken());
+    }, []);
 
     const http = axios.create({
         baseURL: baseUrl,
-        // headers: {
-        //     Authorization: `Bearer ${getToken()}`,
-        // },
     });
 
-    http.interceptors.request.use((config) => {
-        const token = getToken();
-        config.headers.Authorization = `Bearer ${token}`;
-        return config;
-    });
+    http.interceptors.request.use(
+        async (config) => {
+            if (token) {
+                config.headers.Authorization = `Bearer ${getToken()}`;
+            }
+            config.withCredentials = true;
+            return config;
+        },
+        (error) => Promise.reject(error)
+    );
 
-    const getCSRFToken = () => {
-        const token = Cookies.get("XSRF-TOKEN");
-        return token;
+    const refreshJWT = async () => {
+        try {
+            const response = await axios.post(
+                `${baseUrl}/api/auth/refresh`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`,
+                    },
+                    withCredentials: true,
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.log("Error during token refresh", error);
+        }
     };
 
-    useEffect(() => {
-        http.interceptors.request.use((config) => {
-            config.headers.Authorization = `Bearer ${getToken()}`;
-            return config;
-        });
-    }, [getToken()]);
+    http.interceptors.response.use(
+        (response) => response,
+        async (error) => {
+            const originalRequest = error.config;
+            if (error.response.status === 401 && !originalRequest._retry) {
+                originalRequest._retry = true;
+                const refreshToken = getToken();
+                console.log("Refresh token", refreshToken);
+                if (refreshToken) {
+                    const response = await refreshJWT();
+                    console.log("Response", response);
+                    if (response) {
+                        const newToken = response.authorisation.token;
+                        console.log("New token", newToken);
+                        saveToken(newToken);
+                        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+                        return axios(originalRequest);
+                    }
+                }
+            }
+            return Promise.reject(error);
+        }
+    );
 
-    const saveToken = (tempToken, time) => {
-        const date = new Date(); // time from api
-        const tempTime = Number(date.getTime() + time);
-        date.setTime(tempTime);
-        Cookies.set("token", tempToken, {
-            expires: date,
-        });
+    const saveToken = (tempToken) => {
+        const expires = new Date(new Date().getTime() + 1000 * 60 * 90); // 1 hour
+        setToken(tempToken);
+        Cookies.set("token", tempToken, { expires });
     };
 
     const logout = () => {
         Cookies.remove("token");
-        navigate("/");
+        setToken(null);
+        navigate("/home");
     };
 
-    // const getJWTToken = async () => {
-    //     const tempToken = getToken();
-    //     if (!tempToken) {
-    //         try {
-    //             const response = await http.post("/api/auth/refresh");
-    //             console.log(response.data);
-    //             saveToken(response.data.authorisation.token, baseTime);
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
-    //     return tempToken;
-    // };
-
-    const isLogged = () => {
-        const tempToken = getToken();
-        if (tempToken) {
-            return true;
-        } else {
-            return false;
-        }
-    };
+    const isLogged = () => !!token;
 
     return {
         setToken: saveToken,

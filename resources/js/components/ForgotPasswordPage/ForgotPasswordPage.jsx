@@ -70,7 +70,7 @@ export default function ForgotPasswordPage() {
                     onSubmit={(e) => handleSendEmail(e)}
                     className={styles.formForgotPass}
                 >
-                    <Link to="/">
+                    <Link to="/home">
                         {iconPath ? (
                             <img
                                 src={iconPath}

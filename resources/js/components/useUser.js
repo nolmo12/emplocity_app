@@ -2,14 +2,9 @@ import authUser from "./authUser";
 import useComments from "./useComments";
 import { useNavigate } from "react-router-dom";
 export default function useUser() {
-    const { http, getToken, isLogged, logout } = authUser();
+    const { http, isLogged, logout } = authUser();
     const { deleteComment } = useComments();
     const navigate = useNavigate();
-
-    http.interceptors.request.use((config) => {
-        config.headers.Authorization = `Bearer ${getToken()}`;
-        return config;
-    });
 
     const getUser = async () => {
         if (isLogged()) {
@@ -37,7 +32,7 @@ export default function useUser() {
             await http.delete(`/api/video/delete`, {
                 params: { reference_code: reference_code },
             });
-            navigate("/");
+            navigate("/home");
         } catch (error) {
             console.log(error);
         }
@@ -46,7 +41,7 @@ export default function useUser() {
     const removeUser = async (id) => {
         try {
             await http.delete(`/api/auth/delete`, { params: { user_id: id } });
-            navigate("/");
+            navigate("/home");
             logout();
         } catch (error) {
             console.log(error);

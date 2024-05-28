@@ -207,7 +207,7 @@ export default function Header() {
                 {tempLogoPath ? (
                     <>
                         {!imageLoaded.tempLogo && <ClipLoader color="#000" />}
-                        <Link to="/">
+                        <Link to="/home">
                             <img
                                 src={tempLogoPath}
                                 alt="Logo"

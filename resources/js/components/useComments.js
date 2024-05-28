@@ -24,18 +24,20 @@ export default function useComments() {
     };
 
     const sendComment = async (reference_code, content) => {
-        await http.post(`/api/video/comment`, {
+        const response = await http.post(`/api/video/comment`, {
             reference_code: reference_code,
             content: content,
         });
+        return response;
     };
 
     const sendReplyComment = async (reference_code, content, parentId) => {
-        await http.post(`/api/video/comment`, {
+        const response = await http.post(`/api/video/comment`, {
             reference_code: reference_code,
             content: content,
             parent: parentId,
         });
+        return response;
     };
 
     const deleteComment = async (id) => {

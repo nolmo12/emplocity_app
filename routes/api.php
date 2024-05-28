@@ -177,6 +177,8 @@ Route::prefix('video')->group(function () {
     Route::patch('/comment/update', [CommentController::class, 'update']);
 
     Route::get('/getUrl/{reference_code}', [VideoController::class, 'getVideoUrl']);
+
+    Route::get('download/{reference_code}', [VideoController::class, 'downloadVideo']);
 });
 
 Route::prefix('tags')->group(function (){

@@ -127,7 +127,7 @@ export default function UploadPage() {
                         onSubmit={(e) => handleSubmit(e)}
                         className={styles.uploadForm}
                     >
-                        <Link to="/">
+                        <Link to="/home">
                             <FontAwesomeIcon
                                 icon={faTimes}
                                 className={styles.uploadFormCloseIcon}
