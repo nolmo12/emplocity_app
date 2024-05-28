@@ -73,6 +73,14 @@ export default function Comment({
         }));
     };
 
+    const handleClickRemoveComment = async () => {
+        await removeComment(setRenderKey, comment.id);
+        setCommentsObj((prev) => ({
+            ...prev,
+            comments: prev.comments.filter((c) => c.id !== comment.id),
+        }));
+    };
+
     const handleTextareaChange = (e) => {
         setReplyCommentContent(e.target.innerText);
     };
@@ -92,13 +100,14 @@ export default function Comment({
             replyCommentContent,
             id
         );
+
         const newReply = response.data.comment;
         setCommentsObj((prev) => {
             const updatedComments = prev.comments.map((c) => {
                 if (c.id === id) {
                     return {
                         ...c,
-                        children: [...c.children, newReply],
+                        children: [...(c.children ? c.children : []), newReply],
                         children_count: c.children_count + 1,
                     };
                 }
@@ -119,7 +128,6 @@ export default function Comment({
     const handleClickEdit = () => {
         setIsEditable(!isEditable);
         if (!isEditable) {
-            console.log(comment.content);
             setReplyCommentContent(comment.content);
         }
     };
@@ -132,7 +140,7 @@ export default function Comment({
     };
 
     const handleMouseEnter = () => {
-        setHovered(true);
+        if (comment.id) setHovered(true);
     };
 
     const handleMouseLeave = () => {
@@ -164,7 +172,7 @@ export default function Comment({
                     }`}
                 >
                     {isLogged() && (
-                        <Link to={`/report/comment/${comment.user_id}`}>
+                        <Link to={`/report/comment/${comment.id}`}>
                             <button>Report comment</button>
                         </Link>
                     )}
@@ -180,11 +188,7 @@ export default function Comment({
                         <button onClick={handleClickDelete}>delete</button>
                     )}
                     {adminFlag && (
-                        <button
-                            onClick={() =>
-                                removeComment(setRenderKey, comment.id)
-                            }
-                        >
+                        <button onClick={() => handleClickRemoveComment()}>
                             Remove comment
                         </button>
                     )}

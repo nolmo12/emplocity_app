@@ -84,7 +84,6 @@ export default function AccountSettings() {
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
-        console.log(response);
         if (response.passwordValidation) {
             setValidationNicknameData(response);
         } else {
@@ -102,8 +101,8 @@ export default function AccountSettings() {
             userData.password,
             userData.repeatPassword
         );
-        console.log(response);
-        if (response.status) {
+        if (response) {
+            logout();
             navigate("/login");
         } else {
             console.log(response);
@@ -162,7 +161,6 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    {console.log(user.avatar)}
                                     {user.avatar && (
                                         <img
                                             src={user.avatar}

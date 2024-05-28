@@ -2,7 +2,7 @@ import authUser from "./authUser";
 import useComments from "./useComments";
 import { useNavigate } from "react-router-dom";
 export default function useUser() {
-    const { http, getToken, isLogged, logout } = authUser();
+    const { http, isLogged, logout } = authUser();
     const { deleteComment } = useComments();
     const navigate = useNavigate();
 

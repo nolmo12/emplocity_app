@@ -36,6 +36,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
             getCommentsObj();
         }
     }, [reference_code]);
+    // add renderKey to the dependencies array
 
     useEffect(() => {
         getUserName();
@@ -128,7 +129,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     return (
         <div className={styles.commentDiv}>
-            <h2>Comments ({commentCount})</h2> 
+            <h2>Comments ({commentCount})</h2>
             <div className={styles.commentTextareaContainer}>
                 <div
                     ref={commentTextareaRef}

@@ -19,7 +19,17 @@ function Main() {
     return (
         <Routes>
             <Route
-                path="/home"
+                path={"/"}
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="guest" />
+                        <Footer />
+                    </>
+                }
+            ></Route>
+            <Route
+                path={"/home"}
                 element={
                     <>
                         <Header />

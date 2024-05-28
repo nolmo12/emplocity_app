@@ -22,16 +22,15 @@ export default function useAuth() {
 
     http.interceptors.request.use(
         async (config) => {
-            const token = getToken();
             if (token) {
-                config.headers.Authorization = `Bearer ${token}`;
+                config.headers.Authorization = `Bearer ${getToken()}`;
             }
             config.withCredentials = true;
             return config;
         },
         (error) => Promise.reject(error)
     );
-    // nie wiem skonczone na withCredentials nie przepuszcza lini 40 blad 401
+
     const refreshJWT = async () => {
         try {
             const response = await axios.post(
@@ -75,7 +74,7 @@ export default function useAuth() {
     );
 
     const saveToken = (tempToken) => {
-        const expires = new Date(new Date().getTime() + 1000 * 60 * 8); // 1 hour
+        const expires = new Date(new Date().getTime() + 1000 * 60 * 90); // 1 hour
         setToken(tempToken);
         Cookies.set("token", tempToken, { expires });
     };

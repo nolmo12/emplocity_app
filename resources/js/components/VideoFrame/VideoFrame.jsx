@@ -178,7 +178,6 @@ export default function VideoFrame({ mainRef }) {
     };
 
     if (!isLoading) {
-        console.log("Video object", videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -356,7 +355,6 @@ export default function VideoFrame({ mainRef }) {
                             />{" "}
                             {videoOwner ? (
                                 <p data-testid="video-owner">
-                                    {console.log(videoOwnerUserName, userName)}
                                     <Link
                                         to={
                                             videoOwnerUserName === userName
