@@ -2,14 +2,11 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import authUser from "../authUser";
-import useUser from "../useUser";
 import styles from "./popular.module.css";
-import config from "../../config";
 export default function Popular() {
     const [popularData, setPopularData] = useState([]);
     const [userId, setUserId] = useState();
-    const { isLogged } = authUser();
-    const { getUser } = useUser();
+    const { isLogged, getUser } = authUser();
     const fetchPopularUser = async () => {
         try {
             const response = await axios.get("/api/users/listing");

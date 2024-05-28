@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
 import authUser from "../authUser";
 import fetchImgFromStorage from "../fetchImgFromStorage";
-import useUser from "../useUser";
 import styles from "./header.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -32,9 +31,7 @@ export default function Header() {
     const [renderKey, setRenderKey] = useState(0);
     const [tempLogoPath, setTempLogoPath] = useState("");
     const [avatarPath, setAvatarPath] = useState("");
-    const { logout, isLogged } = authUser();
-    const { getUser } = useUser();
-
+    const { logout, isLogged, getUser } = authUser();
     const getUserData = async () => {
         // wait for token update
         await new Promise((resolve) => setTimeout(resolve, 100));
@@ -49,9 +46,9 @@ export default function Header() {
         const fetchData = async () => {
             if (isLogged()) {
                 await getUserData();
-            } else {
-                userAvatar.current = "ico.png";
-            }
+            } //else {
+            //     userAvatar.current = "ico.png";
+            // }
             const { fetchImage, fetchAvatar } = await fetchImgFromStorage();
             if (userAvatar.current) {
                 setPath(`/history/${userId.current}`);

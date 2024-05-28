@@ -2,20 +2,9 @@ import authUser from "./authUser";
 import useComments from "./useComments";
 import { useNavigate } from "react-router-dom";
 export default function useUser() {
-    const { http, isLogged, logout } = authUser();
+    const { http, isLogged, logout, getUser } = authUser();
     const { deleteComment } = useComments();
     const navigate = useNavigate();
-
-    const getUser = async () => {
-        if (isLogged()) {
-            try {
-                const response = await http.get("/api/user");
-                return response.data;
-            } catch (error) {
-                console.log(error);
-            }
-        }
-    };
 
     const isAdmin = async () => {
         if (isLogged()) {
@@ -57,5 +46,5 @@ export default function useUser() {
         }
     };
 
-    return { getUser, isAdmin, removeVideo, removeUser, removeComment };
+    return { isAdmin, removeVideo, removeUser, removeComment };
 }

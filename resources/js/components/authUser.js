@@ -31,6 +31,17 @@ export default function useAuth() {
         (error) => Promise.reject(error)
     );
 
+    const getUser = async () => {
+        if (isLogged()) {
+            try {
+                const response = await http.get("/api/user");
+                return response.data;
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
     const refreshJWT = async () => {
         try {
             const response = await axios.post(
@@ -91,6 +102,7 @@ export default function useAuth() {
         setToken: saveToken,
         logout,
         getToken,
+        getUser,
         http,
         isLogged,
     };

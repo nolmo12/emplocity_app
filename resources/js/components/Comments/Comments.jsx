@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import useComments from "../useComments";
 import authUser from "../authUser";
-import useUser from "../useUser";
 import Comment from "../Comment/Comment";
 import styles from "./comments.module.css";
 import _ from "lodash";
@@ -19,8 +18,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const offset = useRef(0);
     const { fetchVideosSets, sendComment, commentsObj, setCommentsObj } =
         useComments();
-    const { isLogged } = authUser();
-    const { getUser } = useUser();
+    const { isLogged, getUser } = authUser();
     const navigate = useNavigate();
 
     useEffect(() => {

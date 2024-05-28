@@ -15,8 +15,8 @@ export default function Comment({
     adminFlag,
     setCommentsObj,
 }) {
-    const { getUser, removeComment } = useUser();
-    const { isLogged } = authUser();
+    const { removeComment } = useUser();
+    const { isLogged, getUser } = authUser();
     const navigate = useNavigate();
     const {
         deleteComment,

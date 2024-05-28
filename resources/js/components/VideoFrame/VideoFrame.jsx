@@ -39,9 +39,8 @@ export default function VideoFrame({ mainRef }) {
     const link = useRef();
     const user = useRef("");
     const playStartTime = useRef(0);
-    const { isLogged } = authUser();
-    const { getUser, isAdmin, removeVideo, removeUser, removeComment } =
-        useUser();
+    const { isLogged, getUser } = authUser();
+    const { isAdmin, removeVideo, removeUser, removeComment } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
