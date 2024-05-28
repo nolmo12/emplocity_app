@@ -36,6 +36,7 @@ export default function SearchBar() {
                 onChange={(e) => handleChange(e)}
                 onKeyDown={(e) => handleKeyDown(e)}
                 id={styles.searchBar}
+                placeholder="Search"
             ></input>
             <FontAwesomeIcon
                 icon={faSearch}

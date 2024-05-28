@@ -12,6 +12,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const commentTextareaRef = useRef(null);
     const [renderKey, setRenderKey] = useState(0);
     const [mainCommentContent, setMainCommentContent] = useState();
+    const [commentCount, setCommentCount] = useState(0);
     const previousScroll = useRef(0);
     const offset = useRef(0);
     const {
@@ -74,6 +75,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         if (response.data.comments.length > 0) {
             console.log(response.data);
             offset.current += 1;
+            setCommentCount(response.data.total_comments);
         }
     };
 
@@ -106,6 +108,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     return (
         <div className={styles.commentDiv}>
+            <h2>Comments ({commentCount})</h2> 
             <div className={styles.commentTextareaContainer}>
                 <div
                     ref={commentTextareaRef}

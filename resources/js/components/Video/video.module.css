@@ -4,12 +4,24 @@
     align-items: center;
     font-size: 0.7em; 
     margin: 1em;
-    background-color: #f4f4f4;
+    background-color: #0c1529;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     width: 15%; 
     height: 15%; 
-    color: black;
     text-align: left;
     border-radius:6px;
+    transition: background-color 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.videoSection:hover {
+    background-color: #0e182c;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    transform: scale(1.05);
+}
+
+.videoSection:active {
+    transform: scale(0.95);
 }
 
 #video {
@@ -21,10 +33,12 @@
     width:100%;
     position:relative;
     top:-10%;
+    padding-top:0.5em;
+    color:white;
 }
 
 .thumbnailContainer {
-    background-color: #fff;
+    background-color: grey;
     position: relative;
 }
 
@@ -58,30 +72,21 @@
     color: #000;
 }
 
-.videoSection:hover {
-    background-color: #e5e5e5;
-    cursor: pointer;
-    transition: background-color 0.5s ease, transform 0.3s ease;
-}
-
-.videoSection:active {
-    transform: scale(0.95);
-}
-
 .videoInfo {
     font-weight: 400;
     position:relative;
     top:-10%;
-    color:black;
+    padding-left: 1em;
+    color:white;
 }
 
-#title {
+#title p {
     font-weight: 700;
 }
 
 #views, #likes {
     float: right;
-    right:2%;
+    padding-right: 1em;
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait){

@@ -235,6 +235,21 @@ export default function VideoFrame({ mainRef }) {
                                         </Link>
                                     </div>
                                 )}
+                                <button onClick={() => handleClickDownload()}>
+                                    Download video
+                                </button>
+                                {adminFlag && (
+                                    <button
+                                        onClick={(e) => removeVideo(reference_code)}
+                                    >
+                                        Remove Video
+                                    </button>
+                                )}
+                                {adminFlag && videoOwnerFirstName && (
+                                    <button onClick={(e) => removeUser(videoOwnerId)}>
+                                        Remove User
+                                    </button>
+                                )}
                             </div>
                         </div>
                         <Popup
@@ -326,6 +341,7 @@ export default function VideoFrame({ mainRef }) {
                             </p>
                         </div>
                         {/*views views views views views views views */}
+                        <p>{uploadedTimeAgo}</p>
                         <p className={styles.videoFrameOwner}>
                             <FontAwesomeIcon
                                 icon={faUser}
@@ -414,22 +430,6 @@ export default function VideoFrame({ mainRef }) {
                                 })}
                             </p>
                         </p>
-                        <p>{uploadedTimeAgo}</p>
-                        <button onClick={() => handleClickDownload()}>
-                            Download video
-                        </button>
-                        {adminFlag && (
-                            <button
-                                onClick={(e) => removeVideo(reference_code)}
-                            >
-                                Remove Video
-                            </button>
-                        )}
-                        {adminFlag && videoOwnerFirstName && (
-                            <button onClick={(e) => removeUser(videoOwnerId)}>
-                                Remove User
-                            </button>
-                        )}
                     </div>
                     <Comments
                         reference_code={reference_code}
