@@ -67,7 +67,7 @@ export default function Header() {
         };
 
         fetchData();
-    }, [renderKey]); // isLogged
+    }, [renderKey, showMenu]); // isLogged
 
     const handleLogout = () => {
         logout();
