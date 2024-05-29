@@ -38,9 +38,9 @@ export default function Header() {
         await new Promise((resolve) => setTimeout(resolve, 100));
         const user = await getUser();
         userAvatar.current = user.avatar;
-        console.log(user)
-        console.log(user.current_border.type)
-        setUserBorder(user.current_border.type);
+        console.log(user);
+
+        if (user.current_border) setUserBorder(user.current_border.type);
         const avatarFileName = userAvatar.current.split("/").pop();
         userAvatar.current = avatarFileName;
         userId.current = user.id;
@@ -50,10 +50,9 @@ export default function Header() {
         const fetchData = async () => {
             if (isLogged()) {
                 await getUserData();
-            }else {
-                 console.log("test")
-                 userAvatar.current = "ico.png";
-                 setUserBorder(null);
+            } else {
+                userAvatar.current = "ico.png";
+                setUserBorder(null);
             }
             const { fetchImage, fetchAvatar } = await fetchImgFromStorage();
             if (userAvatar.current) {
@@ -246,7 +245,7 @@ export default function Header() {
                             }
                             onClick={toggleMenu}
                         ></img>
-                        {userBorder  && <img src={userBorder}></img>}
+                        {userBorder && <img src={userBorder}></img>}
                     </>
                 ) : (
                     <ClipLoader color="#000" />

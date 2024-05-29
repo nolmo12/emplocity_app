@@ -153,8 +153,15 @@ export default function Comment({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <img src="avatar" alt="avatar" />
-
+            <img
+                src={comment.user_avatar}
+                style={{ width: "50px", height: "50px" }}
+                alt="avatar"
+            />
+            <img
+                src={comment.current_border && comment.current_border.type}
+                style={{ width: "50px", height: "50px" }}
+            ></img>
             <p>{comment.user_name}</p>
             <p className={styles.dateComm}></p>
             <div>
