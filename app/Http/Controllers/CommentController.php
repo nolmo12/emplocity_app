@@ -72,6 +72,9 @@ class CommentController extends Controller
             $comment['user_name'] = $user->name;
             $comment['user_first_name'] = $user->first_name;
             $comment['user_avatar'] = $user->avatar;
+            $currentBorder = $user->currentBorder();
+            unset($currentBorder['pivot']);
+            $comment['current_border'] = $currentBorder;
             $comment['children_count'] = $comment->countChildren();
             $comment['children'] = $comment->getChildren($children_offset);
         }

@@ -26,6 +26,7 @@ export default function Header() {
         tempLogo: false,
     });
     const userAvatar = useRef("");
+    const [userBorder, setUserBorder] = useState("");
     const userId = useRef("");
     const [path, setPath] = useState(null);
     const [renderKey, setRenderKey] = useState(0);
@@ -37,6 +38,9 @@ export default function Header() {
         await new Promise((resolve) => setTimeout(resolve, 100));
         const user = await getUser();
         userAvatar.current = user.avatar;
+        console.log(user)
+        console.log(user.current_border.type)
+        setUserBorder(user.current_border.type);
         const avatarFileName = userAvatar.current.split("/").pop();
         userAvatar.current = avatarFileName;
         userId.current = user.id;
@@ -47,7 +51,9 @@ export default function Header() {
             if (isLogged()) {
                 await getUserData();
             }else {
+                 console.log("test")
                  userAvatar.current = "ico.png";
+                 setUserBorder(null);
             }
             const { fetchImage, fetchAvatar } = await fetchImgFromStorage();
             if (userAvatar.current) {
@@ -225,6 +231,7 @@ export default function Header() {
                 <SearchBar />
                 {avatarPath ? (
                     <>
+                        {console.log(avatarPath)}
                         {!imageLoaded.avatar && <ClipLoader color="#000" />}
                         <img
                             src={avatarPath}
@@ -239,6 +246,7 @@ export default function Header() {
                             }
                             onClick={toggleMenu}
                         ></img>
+                        {userBorder  && <img src={userBorder}></img>}
                     </>
                 ) : (
                     <ClipLoader color="#000" />

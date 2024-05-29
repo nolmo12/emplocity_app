@@ -298,6 +298,9 @@ public function update(Request $request, $id)
             $user = User::find($key);
             if ($user) 
             {
+                $currentBorder = $user->currentBorder();
+                unset($currentBorder['pivot']);
+                $user['current_border'] = $currentBorder;
                 $topUsersDetails->push($user);
             }
         }

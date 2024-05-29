@@ -45,6 +45,9 @@ class Comment extends Model
             $child['user_name'] = $user->name;
             $child['user_first_name'] = $user->first_name;
             $child['user_avatar'] = $user->avatar;
+            $currentBorder = $user->currentBorder();
+            unset($currentBorder['pivot']);
+            $comment['current_border'] = $currentBorder;
             $child['children'] = $child->getChildren($offset);
        }
 

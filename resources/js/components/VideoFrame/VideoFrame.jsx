@@ -78,7 +78,7 @@ export default function VideoFrame({ mainRef }) {
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
         }
-        // fetchLikeInfo();
+        fetchLikeInfo();
     }, [reference_code, videoObj]);
 
     const calculateTime = (created, current) => {
