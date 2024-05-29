@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUser from "../useUser";
@@ -29,8 +29,9 @@ export default function AccountSettings() {
     const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
     const navigate = useNavigate();
-    const { logout, http } = authUser();
-    const { getUser, removeUser, isAdmin } = useUser();
+    const { logout, http, getUser } = authUser();
+    const { removeUser } = useUser();
+    const inputRef = useRef(null);
     // const { validateForm } = useValidation();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
 
@@ -44,7 +45,7 @@ export default function AccountSettings() {
             }
         };
         getUserId();
-    }, [renderKey]);
+    }, []);
 
     useEffect(() => {
         getUserBorders();
@@ -54,7 +55,8 @@ export default function AccountSettings() {
         if (user && user.id) {
             getCurrentUserBorder();
         }
-    }, [user, renderKey]);
+    }, [user]);
+    // user is not a dependency of this useEffect
 
     const getUserBorders = async () => {
         const response = await getBorders();
@@ -89,7 +91,8 @@ export default function AccountSettings() {
         } else {
             setValidationNicknameData(false);
             setUserData({ ...userData, nickname: "" });
-            setRenderKey((prev) => prev + 1);
+            const updatedUser = await getUser();
+            setUser(updatedUser);
         }
     };
 
@@ -127,9 +130,18 @@ export default function AccountSettings() {
     };
 
     const handleClickChangeAvatar = async (e) => {
+        e.preventDefault();
         const formData = new FormData();
         formData.append("avatar", userData.avatar);
         await changeAvatar(user.id, userData.avatar);
+        setUser((prevUser) => ({
+            ...prevUser,
+            avatar: URL.createObjectURL(userData.avatar),
+        }));
+        setUserData({ ...userData, avatar: "" });
+        if (inputRef.current) {
+            inputRef.current.value = "";
+        }
     };
 
     return (
@@ -170,7 +182,7 @@ export default function AccountSettings() {
                                         />
                                     )}
                                 </p>
-                                <p className={styles.label}>User borders: </p>
+                                {userBorders.borders.length > 0 && <p className={styles.label}>User borders: </p>}
 
                                 {currentBorder &&
                                     currentBorder.current_border && (
@@ -256,6 +268,7 @@ export default function AccountSettings() {
                     <div className={styles.avatarSettings}>
                         <input
                             type="file"
+                            ref={inputRef}
                             onChange={(e) => handleChangeAvatar(e)}
                             id="avatar-input"
                             className={styles.avatarInput}

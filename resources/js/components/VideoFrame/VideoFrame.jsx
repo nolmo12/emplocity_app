@@ -39,16 +39,15 @@ export default function VideoFrame({ mainRef }) {
     const link = useRef();
     const user = useRef("");
     const playStartTime = useRef(0);
-    const { isLogged } = authUser();
-    const { getUser, isAdmin, removeVideo, removeUser, removeComment } =
-        useUser();
+    const { isLogged, getUser } = authUser();
+    const { isAdmin, removeVideo, removeUser, removeComment } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
     const { startTimer, pauseTimer, timeRemaining, updateRemainingTime } =
         useViews();
     const { reference_code, time } = useParams();
-    const { videoObj, isLoading, getVideoLink } = useFetchVideo({
+    const { videoObj, isLoading, getVideoLink, downloadVideo } = useFetchVideo({
         reference_code,
     });
     const MAX_DESCRIPTION_LENGTH = 50;
@@ -145,7 +144,8 @@ export default function VideoFrame({ mainRef }) {
     };
 
     const handleClickDownload = async () => {
-        // api call to download video
+        console.log("Downloading video...");
+        await downloadVideo();
     };
 
     const fetchLikeInfo = async () => {

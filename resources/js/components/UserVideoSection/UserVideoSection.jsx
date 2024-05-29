@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import authUser from "../authUser";
 import { Link } from "react-router-dom";
 import styles from "./userVideoSection.module.css";
-import useUser from "../useUser";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
@@ -13,8 +12,7 @@ export default function UserVideoSection() {
     const [videosObj, setVideosObj] = useState([]);
     const [renderKey, setRenderKey] = useState(0);
     const [imageLoaded, setImageLoaded] = useState(false);
-    const { http } = authUser();
-    const { getUser } = useUser();
+    const { http, getUser } = authUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -105,11 +103,17 @@ export default function UserVideoSection() {
                                             <FontAwesomeIcon
                                                 icon={faEllipsisV}
                                                 className={styles.userVideoIcon}
-                                                onClick={() => toggleMenu(menuId)}
+                                                onClick={() =>
+                                                    toggleMenu(menuId)
+                                                }
                                             />
                                             <div
-                                                className={`${styles.buttonsContainer} ${
-                                                    visibleMenu === menuId ? styles.menuVisible : ""
+                                                className={`${
+                                                    styles.buttonsContainer
+                                                } ${
+                                                    visibleMenu === menuId
+                                                        ? styles.menuVisible
+                                                        : ""
                                                 }`}
                                             >
                                                 <button
@@ -123,7 +127,6 @@ export default function UserVideoSection() {
                                                 </button>
                                             </div>
                                         </div>
-
                                     </td>
                                 </tr>
                             );
