@@ -26,6 +26,7 @@ export default function Header() {
         tempLogo: false,
     });
     const userAvatar = useRef("");
+    const userBorder = useRef("");
     const userId = useRef("");
     const [path, setPath] = useState(null);
     const [renderKey, setRenderKey] = useState(0);
@@ -37,6 +38,7 @@ export default function Header() {
         await new Promise((resolve) => setTimeout(resolve, 100));
         const user = await getUser();
         userAvatar.current = user.avatar;
+        userBorder.current = user.current-border.type;
         const avatarFileName = userAvatar.current.split("/").pop();
         userAvatar.current = avatarFileName;
         userId.current = user.id;
@@ -239,6 +241,7 @@ export default function Header() {
                             }
                             onClick={toggleMenu}
                         ></img>
+                        {userBorder.current && <img src={userBorder.current}></img>}
                     </>
                 ) : (
                     <ClipLoader color="#000" />
