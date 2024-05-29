@@ -1,16 +1,14 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUser from "../useUser";
 import useUserSettings from "../useUserSettings";
-import useValidation from "../useValidation";
 import styles from "./accountSettings.module.css";
+import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 import useBorders from "../useBorders";
-import { render } from "@testing-library/react";
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [userBorders, setUserBorders] = useState([]);
@@ -28,11 +26,10 @@ export default function AccountSettings() {
     const [validationNicknameData, setValidationNicknameData] = useState(false);
     const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
-    const navigate = useNavigate();
-    const { logout, http, getUser } = authUser();
+    const { logout, getUser } = authUser();
     const { removeUser } = useUser();
     const inputRef = useRef(null);
-    // const { validateForm } = useValidation();
+    const navigate = useNavigate();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
 
     useEffect(() => {
@@ -86,14 +83,15 @@ export default function AccountSettings() {
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
-        if (response.passwordValidation) {
+        if (response) {
             setValidationNicknameData(response);
+            const updatedUser = await getUser();
+            setUser((prevUser) => ({ ...prevUser, name: updatedUser.name }));
         } else {
             setValidationNicknameData(false);
-            setUserData({ ...userData, nickname: "" });
-            const updatedUser = await getUser();
-            setUser(updatedUser);
         }
+        setUserData({ ...userData, nickname: "" });
+        setValidationPasswordData(false);
     };
 
     const handleClickChangePassword = async (e) => {
@@ -105,12 +103,19 @@ export default function AccountSettings() {
             userData.repeatPassword
         );
         if (response) {
-            logout();
             navigate("/login");
-        } else {
-            console.log(response);
+            logout();
             setValidationPasswordData(response);
+        } else {
+            setValidationPasswordData(false);
+            setUserData({
+                ...userData,
+                previousPassword: "",
+                password: "",
+                repeatPassword: "",
+            });
         }
+        setValidationNicknameData(false);
     };
 
     const handleClickRemoveAccount = async (e) => {
@@ -182,7 +187,13 @@ export default function AccountSettings() {
                                         />
                                     )}
                                 </p>
-                                {userBorders && userBorders.borders && userBorders.borders.length > 0 && <p className={styles.label}>User borders: </p>}
+                                {userBorders &&
+                                    userBorders.borders &&
+                                    userBorders.borders.length > 0 && (
+                                        <p className={styles.label}>
+                                            User borders:{" "}
+                                        </p>
+                                    )}
 
                                 {currentBorder &&
                                     currentBorder.current_border && (
@@ -191,7 +202,10 @@ export default function AccountSettings() {
                                                 currentBorder.current_border
                                                     .type
                                             }
-                                            style={{width: "50px", height: "50px"}}
+                                            style={{
+                                                width: "50px",
+                                                height: "50px",
+                                            }}
                                             alt="current border"
                                         />
                                     )}
@@ -236,7 +250,7 @@ export default function AccountSettings() {
                     <button onClick={(e) => handleClickChangeNickname(e)}>
                         Change nickname
                     </button>
-                    {validationNicknameData.nicknameValidation && (
+                    {validationNicknameData.nameValidation && (
                         <p>The Nickname field must be a string</p>
                     )}
                     <input
@@ -245,9 +259,7 @@ export default function AccountSettings() {
                         value={userData.previousPassword}
                         placeholder="Previous password"
                     ></input>
-                    {validationPasswordData.previousPasswordValidation && (
-                        <p>The current password field must be a string</p>
-                    )}
+
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "password")}
@@ -260,9 +272,13 @@ export default function AccountSettings() {
                         value={userData.repeatPassword}
                         placeholder="Repeat new password"
                     ></input>
-                    {validationPasswordData && (
-                        <p>The password field must be a string</p>
+                    {validationPasswordData.passwordValidation && (
+                        <p>
+                            Password is incorrect or repeat password is not the
+                            same as new password
+                        </p>
                     )}
+
                     <button onClick={(e) => handleClickChangePassword(e)}>
                         Change password
                     </button>

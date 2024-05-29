@@ -34,6 +34,7 @@ export default function Popular() {
             <ul data-testid="guestVideoList">
                 {popularData.map((user) => {
                     const awatarPath = user.avatar;
+                    const borderPath = user.current_border.type;
                     return (
                         <Link
                             to={
@@ -45,6 +46,7 @@ export default function Popular() {
                         >
                             <li key={user.id}>
                                 <img src={awatarPath} alt="avatar" />
+                                {borderPath && <img src={borderPath} />}
                                 <p>{user.name}</p>
                             </li>
                         </Link>

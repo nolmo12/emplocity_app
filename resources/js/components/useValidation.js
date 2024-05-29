@@ -2,11 +2,6 @@ import React from "react";
 import { useState } from "react";
 
 export default function useValidation() {
-    const [passwordValidation, setPasswordValidation] = useState({
-        previousPasswordValidation: false,
-        passwordValidation: false,
-        repeatPasswordValidation: false,
-    });
     const [nicknameValidation, setNicknameValidation] = useState({
         nicknameValidation: false,
     });
@@ -58,26 +53,18 @@ export default function useValidation() {
             return validationInfo;
         }
         if (type === "accountSettings" && data) {
+            const validationInfo = {
+                nameValidation: false,
+                passwordValidation: false,
+            };
             if (data.length === 1) {
                 if (data[0].includes("The name field must be a string.")) {
-                    setNicknameValidation({
-                        nicknameValidation: true,
-                    });
+                    validationInfo.nameValidation = true;
                 }
             } else {
-                data.forEach((errorObj) => {
-                    Object.entries(errorObj).forEach(([key, value]) => {
-                        if (key == 462) {
-                            passwordValidation.passwordValidation = true;
-                            setPasswordValidation((prev) => ({
-                                ...prev,
-                                passwordValidation: true,
-                            }));
-                        }
-                    });
-                });
+                validationInfo.passwordValidation = true;
             }
-            return { passwordValidation, nicknameValidation };
+            return validationInfo;
         }
     };
 

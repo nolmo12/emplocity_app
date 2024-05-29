@@ -37,7 +37,6 @@ export default function ResetPasswordPage() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        getCsrfToken();
         http.post("/api/reset-password", {
             email: data.email,
             token: data.token, //fsdfsdfsdfsdfsd
