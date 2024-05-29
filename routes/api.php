@@ -37,7 +37,7 @@ use App\Http\Controllers\Auth\VerificationController;
 Route::middleware('auth')->get('/user', function (Request $request) {
     $user = $request->user();
     $currentBorder = $user->currentBorder();
-    $user['current-border'] = $currentBorder;
+    $user['current_border'] = $currentBorder;
 
     return $user;
 });
