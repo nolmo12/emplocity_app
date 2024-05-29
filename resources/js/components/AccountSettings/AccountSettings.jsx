@@ -182,7 +182,7 @@ export default function AccountSettings() {
                                         />
                                     )}
                                 </p>
-                                <p className={styles.label}>User borders: </p>
+                                {userBorders.borders.length > 0 && <p className={styles.label}>User borders: </p>}
 
                                 {currentBorder &&
                                     currentBorder.current_border && (

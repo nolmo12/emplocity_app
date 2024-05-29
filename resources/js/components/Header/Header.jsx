@@ -46,9 +46,9 @@ export default function Header() {
         const fetchData = async () => {
             if (isLogged()) {
                 await getUserData();
-            } //else {
-            //     userAvatar.current = "ico.png";
-            // }
+            }else {
+                 userAvatar.current = "ico.png";
+            }
             const { fetchImage, fetchAvatar } = await fetchImgFromStorage();
             if (userAvatar.current) {
                 setPath(`/history/${userId.current}`);
