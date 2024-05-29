@@ -35,7 +35,9 @@ use App\Http\Controllers\Auth\VerificationController;
 */
 
 Route::middleware('auth')->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user();
+    $currentBorder = $user->currentBorder();
+    return response()->json(['user' => $user, 'border' => $currentBorder]);
 });
 
 Route::get('users', [UserController::class, 'getUsersData']);
