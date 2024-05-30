@@ -173,7 +173,6 @@ function Main() {
                 path="/account-settings"
                 element={
                     <>
-                        <Header />
                         <AccountSettings />
                         <Footer />
                     </>

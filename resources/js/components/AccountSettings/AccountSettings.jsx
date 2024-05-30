@@ -2,12 +2,13 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import authUser from "../authUser";
 import useUser from "../useUser";
+import { Link } from "react-router-dom";
 import useUserSettings from "../useUserSettings";
 import styles from "./accountSettings.module.css";
 import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import useBorders from "../useBorders";
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
@@ -152,35 +153,42 @@ export default function AccountSettings() {
     };
 
     return (
-        <main>
-            <div className={styles.settingsDiv}>
-                {user ? (
-                    <div className={styles.userInfoForm}>
-                        <>
-                            <h3>User Info</h3>
-                            <div>
-                                <p>
-                                    <span className={styles.label}>
-                                        First name:{" "}
-                                    </span>
-                                    <span>{user.first_name}</span>
-                                </p>
-                                <p>
-                                    <span className={styles.label}>
-                                        Nickname:{" "}
-                                    </span>
-                                    <span>{user.name}</span>
-                                </p>
-                                <p>
-                                    <span className={styles.label}>
-                                        Created at:{" "}
-                                    </span>
-                                    <span>
-                                        {user.created_at.substring(0, 10)}
-                                    </span>
-                                </p>
-                                <p>
-                                    {user.avatar ? (
+        <main className={styles.accountSettingsPage}>
+                <div className={styles.divFormContainer}>
+                    <Link to="/account">
+                        <FontAwesomeIcon
+                            icon={faTimes}
+                            className={styles.uploadFormCloseIcon}
+                        />
+                    </Link>
+                    {user ? (
+                        <div className={styles.userInfoForm}>
+                            <>
+                                <h3>User Info</h3>
+                                <div>
+                                    <p>
+                                        <span className={styles.label}>
+                                            First name:{" "}
+                                        </span>
+                                        <span>{user.first_name}</span>
+                                    </p>
+                                    <p>
+                                        <span className={styles.label}>
+                                            Nickname:{" "}
+                                        </span>
+                                        <span>{user.name}</span>
+                                    </p>
+                                    <p>
+                                        <span className={styles.label}>
+                                            Created at:{" "}
+                                        </span>
+                                        <span>
+                                            {user.created_at.substring(0, 10)}
+                                        </span>
+                                    </p>
+                                    <div className={styles.avatarBorderContainer}>
+                                        <p>
+                                            {user.avatar ? (
                                         <>
                                             {!imageLoaded.avatar && (
                                                 <ClipLoader color="#000" />
@@ -200,7 +208,8 @@ export default function AccountSettings() {
                                     ) : (
                                         <ClipLoader color="#000" />
                                     )}
-                                </p>
+                                        </p>
+              
                                 {userBorders &&
                                     userBorders.borders &&
                                     userBorders.borders.length > 0 && (
@@ -220,124 +229,134 @@ export default function AccountSettings() {
                                     />
                                 )}
 
-                                <p>
-                                    {userBorders &&
-                                        userBorders.borders &&
-                                        userBorders.borders.map((item) => {
-                                            return (
-                                                <img
-                                                    src={item.type}
-                                                    alt="border"
-                                                    style={{
-                                                        width: "50px",
-                                                        height: "50px",
-                                                    }}
-                                                    onClick={() =>
-                                                        handleClickBorder(
-                                                            item.id,
-                                                            setCurrentBorder
-                                                        )
-                                                    }
-                                                    key={`userBorder${item.id}`}
-                                                />
-                                            );
-                                        })}
-                                </p>
-                                <p></p>
-                            </div>
-                        </>
-                    </div>
-                ) : (
-                    <ClipLoader />
-                )}
+                                {userBorders && userBorders.borders && userBorders.borders.length > 0 && <p className={styles.label}>User borders: </p>}
+
+
+                                    <p>
+                                        {userBorders &&
+                                            userBorders.borders &&
+                                            userBorders.borders.map((item) => {
+                                                return (
+                                                    <img
+                                                        src={item.type}
+                                                        alt="border"
+                                                        onClick={() =>
+                                                            handleClickBorder(
+                                                                item.id,
+                                                                setRenderKey
+                                                            )
+                                                        }
+                                                        key={`userBorder${item.id}`}
+                                                        className={styles.ownedBorders}
+                                                    />
+                                                );
+                                            })}
+                                    </p>
+
+                                                   
+
                 <form>
-                    <input
-                        type="text"
-                        onChange={(e) => handleNicknameChange(e)}
-                        value={userData.nickname}
-                        placeholder="New nickname"
-                    />
-                    <button onClick={(e) => handleClickChangeNickname(e)}>
-                        Change nickname
-                    </button>
-                    {validationNicknameData.nameValidation && (
-                        <p>The Nickname field must be a string</p>
-                    )}
-                    <input
-                        type="password"
-                        onChange={(e) => handlePasswordChange(e, "previous")}
-                        value={userData.previousPassword}
-                        placeholder="Previous password"
-                    ></input>
-
-                    <input
-                        type="password"
-                        onChange={(e) => handlePasswordChange(e, "password")}
-                        value={userData.password}
-                        placeholder="New password"
-                    />
-                    <input
-                        type="password"
-                        onChange={(e) => handlePasswordChange(e, "repeat")}
-                        value={userData.repeatPassword}
-                        placeholder="Repeat new password"
-                    ></input>
-                    {validationPasswordData.passwordValidation && (
-                        <p>
-                            Password is incorrect or repeat password is not the
-                            same as new password
-                        </p>
-                    )}
-
-                    <button onClick={(e) => handleClickChangePassword(e)}>
-                        Change password
-                    </button>
-                    <div className={styles.avatarSettings}>
                         <input
-                            type="file"
-                            ref={inputRef}
-                            onChange={(e) => handleChangeAvatar(e)}
-                            id="avatar-input"
-                            className={styles.avatarInput}
+                            type="text"
+                            onChange={(e) => handleNicknameChange(e)}
+                            value={userData.nickname}
+                            placeholder="New nickname"
+                            className={styles.floatingInput}
                         />
-                        {userData.avatar && (
-                            <div>
-                                <p>Selected Avatar:</p>
-                                <img
-                                    src={URL.createObjectURL(userData.avatar)}
-                                    alt="Selected Avatar"
-                                    className={styles.selectedAvatar}
-                                />
-                                <button
-                                    onClick={handleClickClearAvatar}
-                                    className={styles.clearAvatarButton}
-                                >
-                                    Clear Avatar
-                                </button>
-                            </div>
+                        <button 
+                            className={styles.changeNickname}
+                            onClick={(e) => handleClickChangeNickname(e)}
+                        >
+                            Change nickname
+                        </button>
+                        {validationNicknameData.nicknameValidation && (
+                            <p>The Nickname field must be a string</p>
                         )}
-                    </div>
-                    <button
-                        onClick={(e) => handleClickChangeAvatar(e)}
-                        className={styles.avatarButton}
-                    >
-                        Change avatar
-                    </button>
-                    <button onClick={(e) => handleClickRemoveAccount(e)}>
-                        Remove Account
-                    </button>
-                    {removeFlag && (
-                        <>
-                            <p>Are you sure?</p>
-                            <button onClick={() => removeUser(user.id)}>
-                                Yes
-                            </button>
-                            <button onClick={() => setRemoveFlag(!removeFlag)}>
-                                No
-                            </button>
-                        </>
-                    )}
-                </form>
+                        <input
+                            type="password"
+                            onChange={(e) => handlePasswordChange(e, "previous")}
+                            value={userData.previousPassword}
+                            placeholder="Previous password"
+                            className={styles.floatingInput}
+                        ></input>
+                        {validationPasswordData.previousPasswordValidation && (
+                            <p>The current password field must be a string</p>
+                        )}
+                        <input
+                            type="password"
+                            onChange={(e) => handlePasswordChange(e, "password")}
+                            value={userData.password}
+                            placeholder="New password"
+                            className={styles.floatingInput}
+                        />
+                        <input
+                            type="password"
+                            onChange={(e) => handlePasswordChange(e, "repeat")}
+                            value={userData.repeatPassword}
+                            placeholder="Repeat new password"
+                            className={styles.floatingInput}
+                        ></input>
+                        {validationPasswordData && (
+                            <p>The password field must be a string</p>
+                        )}
+                        <button 
+                            className={styles.changePassword}
+                            onClick={(e) => handleClickChangePassword(e)}
+                        >
+                            Change password
+                        </button>
+                        <div className={styles.avatarSettings}>
+                            <div className={styles.avatarInputContainer}>
+                                <input
+                                    type="file"
+                                    ref={inputRef}
+                                    onChange={(e) => handleChangeAvatar(e)}
+                                    id="avatar-input"
+                                    className={styles.avatarInput}
+                                />
+                            </div>
+                            {userData.avatar && (
+                                <div>
+                                    <p>Selected Avatar:</p>
+                                    <img
+                                        src={URL.createObjectURL(userData.avatar)}
+                                        alt="Selected Avatar"
+                                        className={styles.selectedAvatar}
+                                    />
+                                    <button
+                                        onClick={handleClickClearAvatar}
+                                        className={styles.clearAvatarButton}
+                                    >
+                                        Clear Avatar
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                        <button
+                            onClick={(e) => handleClickChangeAvatar(e)}
+                            className={styles.avatarButton}
+                        >
+                            Change avatar
+                        </button>
+                        <button 
+                            className={styles.removeButton}
+                            onClick={(e) => handleClickRemoveAccount(e)}
+                        >
+                            Remove Account
+                        </button>
+                        {removeFlag && (
+                            <>
+                                <p>Are you sure?</p>
+                                <button onClick={() => removeUser(user.id)}>
+                                    Yes
+                                </button>
+                                <button onClick={() => setRemoveFlag(!removeFlag)}>
+                                    No
+                                </button>
+                            </>
+                        )}
+                    </form>
+                </div>
             </div>
         </main>
     );
