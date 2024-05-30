@@ -1,24 +1,27 @@
 .rules {
-    display: flex;
-    position: absolute;
-    flex-direction: column;
-    width: 73.5%;
-    height: 73%;
-    top:10%;
-    left: 10%;
-    transform: translate(20%, 5%);
+    height:85vh;
 }
 
-.rules h3{
-    font-size:2em;
-    margin-bottom:1em;
+.rules .rulesh2{
+    width:100%;
+    text-align: center;
+    font-size:4rem;
 }
-
+.rules section
+{
+    width: 50%;
+    margin: 0 auto;
+}
 .rules ol {
-    position:relative;
-    left:2%;
+    display: inline-block;
 }
 
 .rules ol>li {
+    position:relative;
     margin-bottom:0.5em;
+}
+
+.rules ul>li {
+    position:relative;
+    margin-left:0.5em;
 }

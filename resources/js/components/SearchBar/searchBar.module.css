@@ -13,13 +13,18 @@
     height: 50%;
     top: 20%;
     left: -10%;
-    border: solid 2px #A0A0A0;
     border-radius: 15px;
     padding-left: 1em;
     padding-right: 3em;
     position: relative;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4); 
-    transform: translate(-20%, 20%);   
+    transform: translate(-20%, 20%);
+    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.6);
+    border: 2px solid #A0A0A0; /* Ustawienie granicy z początkowym kolorem */
+    transition: border-color 0.3s ease-in-out; /* Animacja zmiany koloru granicy */
+}
+
+#searchBar:focus {
+    border-color: black; /* Zmiana koloru granicy po uzyskaniu focusu */
 }
 
 #searchLoop {

@@ -1,25 +1,26 @@
 #videoSection {
-    display: flex;
-    position: absolute;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    width: 100%;
-    height: 65%;
-    color: black;
     background-color: #101b32;
-    top:25%;
-    left: -20%;
     border-top: inset 2px #060c1a; 
     border-bottom: inset 2px #060c1a; 
-    transform: translate(20%, 5%);
     overflow-y: auto;
     padding-top: 2em;
+    padding-left: 2em;
+    height:60vh;
 }
 
+.videoSectionList
+{
+    display:flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: space-around;
+}
+.videoSectionHContainer
+{
+    height:5% !important;
+}
 .videoSectionH {
-    position: absolute;
-    top: 0; 
-    left: 0;
     width: 20%;
     height:5%;
     color: white;
@@ -35,6 +36,8 @@
 }
 
 .similarVideo {
+    display:flex;
+    flex-direction: column;
     height:90%;
 }
 

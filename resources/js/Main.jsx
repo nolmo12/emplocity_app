@@ -59,11 +59,31 @@ function Main() {
                 }
             />
 
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route 
+                path="/register" 
+                element={
+                    <>
+                        <RegisterPage />
+                        <Footer />
+                    </>
+                } />
+            <Route 
+                path="/login" 
+                element={
+                    <>
+                        <LoginPage />
+                        <Footer />
+                    </>
+                } 
+            ></Route>
             <Route
                 path="/forgotPassword"
-                element={<ForgotPasswordPage />}
+                element={
+                    <>
+                        <ForgotPasswordPage />
+                        <Footer />
+                    </>        
+                }
             ></Route>
 
             <Route

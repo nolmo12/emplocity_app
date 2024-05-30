@@ -344,7 +344,6 @@ public function update(Request $request, $id)
             $user->borders()->updateExistingPivot($request->borderId, ['updated_at' => now()], false);
             $border = $user->currentBorder();
             unset($border['pivot']);
-
             return response()->json([
                 'border' => $border,
                 'message' => 'Current border updated successfully'
