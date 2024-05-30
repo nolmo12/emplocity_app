@@ -1,5 +1,5 @@
 import axios from "axios";
-export default async function fetchImgFromStorage() {
+export default function fetchImgFromStorage() {
     const fetchImage = async (path) => {
         try {
             const response = await axios.get(`/api/storage/image/${path}`);

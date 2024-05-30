@@ -12,7 +12,9 @@ import useBorders from "../useBorders";
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [userBorders, setUserBorders] = useState([]);
-    const [imageLoaded, setImageLoaded] = useState();
+    const [imageLoaded, setImageLoaded] = useState({
+        avatar: false,
+    });
     const [renderKey, setRenderKey] = useState(0);
     const [currentBorder, setCurrentBorder] = useState([]);
     const [userData, setUserData] = useState({
@@ -62,7 +64,7 @@ export default function AccountSettings() {
 
     const getCurrentUserBorder = async () => {
         const response = await getCurrentBorder(user.id);
-        setCurrentBorder(response);
+        setCurrentBorder(response.current_border.type);
         setRenderKey((prev) => prev + 1);
     };
 
@@ -178,13 +180,25 @@ export default function AccountSettings() {
                                     </span>
                                 </p>
                                 <p>
-                                    {user.avatar && (
-                                        <img
-                                            src={user.avatar}
-                                            alt="avatar"
-                                            onLoad={() => setImageLoaded(true)}
-                                            className={styles.userAvatar}
-                                        />
+                                    {user.avatar ? (
+                                        <>
+                                            {!imageLoaded.avatar && (
+                                                <ClipLoader color="#000" />
+                                            )}
+                                            <img
+                                                src={user.avatar}
+                                                alt="avatar"
+                                                onLoad={() =>
+                                                    setImageLoaded((prev) => ({
+                                                        ...prev,
+                                                        avatar: true,
+                                                    }))
+                                                }
+                                                className={styles.userAvatar}
+                                            />
+                                        </>
+                                    ) : (
+                                        <ClipLoader color="#000" />
                                     )}
                                 </p>
                                 {userBorders &&
@@ -195,20 +209,16 @@ export default function AccountSettings() {
                                         </p>
                                     )}
 
-                                {currentBorder &&
-                                    currentBorder.current_border && (
-                                        <img
-                                            src={
-                                                currentBorder.current_border
-                                                    .type
-                                            }
-                                            style={{
-                                                width: "50px",
-                                                height: "50px",
-                                            }}
-                                            alt="current border"
-                                        />
-                                    )}
+                                {currentBorder && (
+                                    <img
+                                        src={currentBorder}
+                                        alt="current border"
+                                        style={{
+                                            width: "50px",
+                                            height: "50px",
+                                        }}
+                                    />
+                                )}
 
                                 <p>
                                     {userBorders &&
@@ -225,7 +235,7 @@ export default function AccountSettings() {
                                                     onClick={() =>
                                                         handleClickBorder(
                                                             item.id,
-                                                            setRenderKey
+                                                            setCurrentBorder
                                                         )
                                                     }
                                                     key={`userBorder${item.id}`}

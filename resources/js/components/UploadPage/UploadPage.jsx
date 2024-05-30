@@ -187,7 +187,7 @@ export default function UploadPage() {
                             ></input>
                             <p>
                                 tags must be separated by space Ex. "polishboy
-                                warsaw"
+                                warsaw". TAGS CANNOT BE DELETED LATER
                             </p>
                         </div>
 

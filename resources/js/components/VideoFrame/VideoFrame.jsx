@@ -21,7 +21,7 @@ import {
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 
-export default function VideoFrame({ mainRef }) {
+export default function VideoFrame({ mainRef, setFrameIsLoaded }) {
     const [likesCount, setLikesCount] = useState(0);
     const [userName, setUserName] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
@@ -38,14 +38,14 @@ export default function VideoFrame({ mainRef }) {
     const [watchTime, setWatchTime] = useState(0);
     const link = useRef();
     const user = useRef("");
+    const timeUseFlag = useRef(false);
     const playStartTime = useRef(0);
     const { isLogged, getUser } = authUser();
-    const { isAdmin, removeVideo, removeUser, removeComment } = useUser();
+    const { isAdmin, removeVideo, removeUser } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
-    const { startTimer, pauseTimer, timeRemaining, updateRemainingTime } =
-        useViews();
+    const { startTimer, pauseTimer, timeRef, updateRemainingTime } = useViews();
     const { reference_code, time } = useParams();
     const { videoObj, isLoading, getVideoLink, downloadVideo } = useFetchVideo({
         reference_code,
@@ -77,6 +77,7 @@ export default function VideoFrame({ mainRef }) {
             getLink();
             setLikesCount(videoObj.likesCount);
             setDislikesCount(videoObj.dislikesCount);
+            setFrameIsLoaded(true);
         }
         fetchLikeInfo();
     }, [reference_code, videoObj]);
@@ -119,13 +120,16 @@ export default function VideoFrame({ mainRef }) {
     };
 
     const handlePlay = () => {
-        const videoDuration = videoObj.video.duration * 0.3;
+        const timeToSend = videoObj.video.duration * 0.3;
         playStartTime.current = Date.now();
-        startTimer(
-            videoDuration,
-            reference_code,
-            (timeRemaining.current.currentTime = time ? time.split("=")[1] : 0)
-        );
+        if (time && timeUseFlag.current === false) {
+            const customTime = Number(time.slice(2));
+            timeRef.current.currentTime = customTime;
+            timeUseFlag.current = true;
+            startTimer(timeToSend, customTime);
+        } else {
+            startTimer(timeToSend);
+        }
     };
 
     const handlePause = () => {
@@ -137,7 +141,7 @@ export default function VideoFrame({ mainRef }) {
         pauseTimer();
     };
 
-    const handleTimeUpdate = (e, duration) => {
+    const handleTimeUpdate = (e) => {
         const currentTime = e.target.currentTime;
         const totalDuration = e.target.duration;
         updateRemainingTime(currentTime, totalDuration);
@@ -200,7 +204,7 @@ export default function VideoFrame({ mainRef }) {
                     data-testid="video-player"
                 >
                     <video
-                        ref={timeRemaining}
+                        ref={timeRef}
                         src={videoPath}
                         poster={videoThumbnail}
                         onPlay={handlePlay}

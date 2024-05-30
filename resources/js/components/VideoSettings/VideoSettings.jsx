@@ -71,6 +71,7 @@ export default function VideoSettings() {
 
     const handleChangeTags = (e) => {
         const arr = e.target.value.split(" ");
+        console.log(arr);
         setData((prev) => ({ ...prev, tags: arr }));
         setTagsChanged(true);
     };
@@ -98,6 +99,13 @@ export default function VideoSettings() {
             fileInputRef.current.value = null;
         }
         setThumbnailChanged(false);
+    };
+
+    const sendTag = async (e) => {
+        e.preventDefault();
+        sendData("tags", reference_code, data.tags, e);
+        setData((prev) => ({ ...prev, tags: "" }));
+        e.target.previousElementSibling.value = "";
     };
 
     return (
@@ -169,17 +177,12 @@ export default function VideoSettings() {
                         <input
                             type="text"
                             onChange={(e) => handleChangeTags(e)}
-                            defaultValue={videoObj.tags.map((tag) => {
-                                return `#${tag.name}`;
-                            })}
                         ></input>
                         <button
-                            onClick={(e) =>
-                                sendData("tags", reference_code, data.tags, e)
-                            }
+                            onClick={(e) => sendTag(e)}
                             disabled={!tagsChanged}
                         >
-                            Change tags
+                            Add tag
                         </button>
                     </div>
 
