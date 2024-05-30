@@ -30,29 +30,38 @@ export default function Popular() {
     };
     return (
         <div id={styles.Popular}>
-            <h1>Popular</h1>
-            <ul data-testid="guestVideoList">
-                {popularData.map((user) => {
-                    const awatarPath = user.avatar;
-                    const borderPath = user.current_border.type;
-                    return (
-                        <Link
-                            to={
-                                userId === user.id
-                                    ? `/account`
-                                    : `/user/${user.id}`
-                            }
-                            key={user.id}
-                        >
-                            <li key={user.id}>
-                                <img src={awatarPath} alt="avatar" />
-                                {borderPath && <img src={borderPath} />}
-                                <p>{user.name}</p>
-                            </li>
-                        </Link>
-                    );
-                })}
-            </ul>
+            <div id={styles.PopularContainer}>
+                <div>
+                    <h1>Popular</h1>
+                </div>
+                <div>
+                <ul data-testid="guestVideoList">
+                    {popularData.map((user) => {
+                        const awatarPath = user.avatar;
+                        return (
+                            <Link
+                                to={
+                                    userId === user.id
+                                        ? `/account`
+                                        : `/user/${user.id}`
+                                }
+                                key={user.id}
+                            >
+                                <li key={user.id}>
+                                    <div className={styles.link_holder}>
+                                        <div className={styles.image_holder}>
+                                            <img src={awatarPath} alt="avatar" className={styles.profile_picture}/>
+                                            {user.current_border && <img src={user.current_border.type} className={styles.border}/>}
+                                        </div>
+                                        <p className={styles.text_center}>{user.name}</p>
+                                    </div>
+                                </li>
+                            </Link>
+                        );
+                    })}
+                </ul>
+                </div>
+            </div>
         </div>
     );
 }

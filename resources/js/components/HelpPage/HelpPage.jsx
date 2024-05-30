@@ -37,18 +37,25 @@ export default function HelpPage() {
 
     return (
         <>
-            <section className={styles.helpForm}>
+        <div className={styles.helpFormContainer}>
+            <div className={styles.helpForm}>
+                <div>
+                    <h2>Help form</h2>
+                </div>
                 <form data-testid="problemForm">
                     <div>
-                        <FontAwesomeIcon
-                            icon={faEnvelope}
-                            className={styles.helpFormIcon}
-                        />
-                        <input
-                            type="text"
-                            placeholder="Enter your email"
-                            onChange={(e) => handleChangeEmail(e)}
-                        ></input>
+                        <div className={styles.inputWrapper}>
+                            <FontAwesomeIcon
+                                icon={faEnvelope}
+                                className={styles.helpFormIcon}
+                            />
+                            <input
+                                type="text"
+                                placeholder="Enter your email"
+                                onChange={(e) => handleChangeEmail(e)}
+                            />
+                        </div>
+                        <div className={styles.inputWrapper}>
                         <FontAwesomeIcon
                             icon={faQuestionCircle}
                             className={styles.helpFormIcon}
@@ -58,6 +65,8 @@ export default function HelpPage() {
                             placeholder="Enter problem type"
                             onChange={(e) => handleChangeProblemType(e)}
                         ></input>
+                        </div>
+                        <div className={styles.inputWrapper}>
                         <FontAwesomeIcon
                             icon={faAlignLeft}
                             className={styles.helpFormDescriptionIcon}
@@ -69,18 +78,18 @@ export default function HelpPage() {
                             onChange={(e) => handleChangeContent(e)}
                             rows="5"
                         />
+                        </div>
                     </div>
                     <button onClick={(e) => handleClickSend(e)}>Send</button>
                 </form>
-            </section>
-            <section className={styles.helpInfo}>
                 <h2 className={styles.contact}>Contact</h2>
                 <ul data-testid="ulHelp">
                     Email: <li>pomocsznyca@gmail.com</li>
                     Phone: <li>123-456-789</li>
                     Address: <li>ul. Kozia 1, 00-001 Warszawa</li>
                 </ul>
-            </section>
+            </div>
+            </div>
         </>
     );
 }
