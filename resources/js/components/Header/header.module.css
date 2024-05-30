@@ -27,6 +27,18 @@ header img {
     overflow: hidden;
 }
 
+.logoLoader {
+    position: relative;
+    left: 2em;
+    top: 10%;
+}
+
+.avatarLoader {
+    position: relative;
+    right: 2em;
+    top: 10%;
+}
+
 #menu {
     list-style: none;
     position: absolute;
