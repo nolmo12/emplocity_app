@@ -42,6 +42,14 @@ export default function useUserSettings() {
                 return true;
             }
         } catch (error) {
+            if (error.response.status === 401) {
+                console.log(error.response.data.message);
+                const errorResponse = validateForm(
+                    "accountSettings",
+                    error.response.data.message
+                );
+                return errorResponse;
+            }
             console.log(error);
         }
     };

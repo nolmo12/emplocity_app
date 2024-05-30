@@ -84,6 +84,11 @@ Route::prefix('email')->group(function () {
     })->middleware(['auth', 'throttle:20,1'])->name('verification.send');
 
     Route::post('/help', function (Request $request) {
+        $request->validate([
+            'email' => 'required|email',
+            'content' => 'required',
+            'type' => 'required'
+        ]);
         $email = $request->email;
         $content = $request->content;
         $type = $request->type;

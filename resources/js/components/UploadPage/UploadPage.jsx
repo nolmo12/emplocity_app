@@ -209,6 +209,7 @@ export default function UploadPage() {
                                         tags must be separated by space Ex. "polishboy
                                         warsaw"
                                     </p>
+
                                 </div>
                             </div>
                             <div>
@@ -223,6 +224,26 @@ export default function UploadPage() {
                                     className={styles.descriptionArea}
                                 ></textarea>
                             </div>
+
+                               
+                        </div>
+
+                        <div>
+                            <FontAwesomeIcon
+                                icon={faTags}
+                                className={styles.uploadFormIcon}
+                            />
+                            <input
+                                type="text"
+                                onChange={(e) => handleTags(e)}
+                                placeholder="Tags"
+                            ></input>
+                            <p>
+                                tags must be separated by space Ex. "polishboy
+                                warsaw". TAGS CANNOT BE DELETED LATER
+                            </p>
+                        </div>
+
 
                             <div>
                                 <select

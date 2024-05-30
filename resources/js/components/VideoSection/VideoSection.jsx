@@ -59,7 +59,10 @@ export default function VideoSection({ sectionType }) {
         if (videos) {
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
-                    <h2 className={styles.videoSectionH}>Reccommend</h2>
+                    <div className={styles.videoSectionHContainer}>
+                    <h2 className={styles.videoSectionH}>Recommended</h2>
+                    </div>
+                    <div className={styles.videoSectionList}>
                     {Object.entries(videos).map(([key, video]) => {
                         return (
                             <Video
@@ -69,6 +72,7 @@ export default function VideoSection({ sectionType }) {
                             />
                         );
                     })}
+                    </div>
                 </div>
             );
         }

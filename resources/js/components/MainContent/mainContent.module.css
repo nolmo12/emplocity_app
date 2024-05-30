@@ -8,15 +8,22 @@
 }
 
 main {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 85vh;
+    width:100%;
     color: white;
     background-color: #14213d;
 }
 
+#container
+{
+    width:100%;
+    min-height: 100vh;
+    display:inline-grid;
+}
+
 .videoFrameMain {
+    display:flex !important;
+    flex-direction: row;
+    flex-wrap: wrap;
     overflow-y:auto;
 }
 

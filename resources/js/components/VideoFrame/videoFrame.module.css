@@ -17,13 +17,14 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 .videoFrameDiv {
     position: relative;
     width: 70%;
-    height: 80%;
-    top: -5%;
+    height: 60%;
+    margin-top:2.5%;
+    margin-left: 5%;
 }
 
 .videoScreen {
-    width: 80%;
-    height:100%;
+    width: 70em;
+    height: 40em;
 }
 
 .videoFrameInfo {

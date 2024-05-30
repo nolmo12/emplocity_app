@@ -29,7 +29,8 @@ export default function Popular() {
         }
     };
     return (
-        <div id={styles.Popular}>
+        <div id={styles.PopularContainer}>
+
             <h1>Popular</h1>
             <ul data-testid="guestVideoList">
                 {popularData.map((user) => {
@@ -43,14 +44,20 @@ export default function Popular() {
                             }
                             key={user.id}
                         >
-                            <li key={user.id}>
-                                <img src={awatarPath} alt="avatar" />
-                                <p>{user.name}</p>
-                            </li>
+                           <li key={user.id}>
+                                    <div className={styles.link_holder}>
+                                        <div className={styles.image_holder}>
+                                            <img src={awatarPath} alt="avatar" className={styles.profile_picture}/>
+                                            {user.current_border && <img src={user.current_border.type} className={styles.border}/>}
+                                        </div>
+                                        <p className={styles.text_center}>{user.name}</p>
+                                    </div>
+                                </li>
                         </Link>
                     );
                 })}
             </ul>
+
         </div>
     );
 }

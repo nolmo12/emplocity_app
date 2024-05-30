@@ -51,10 +51,7 @@ export default function Shop() {
     }, []);
 
     return (
-        <ul
-            className={styles.borderShop}
-            onClick={(e) => handleClickBuy(border.id)}
-        >
+        <ul className={styles.borderShop}>
             <h1>Border Shop</h1>
             {borders.map((border) => {
                 return (

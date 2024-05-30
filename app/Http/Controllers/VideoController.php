@@ -375,7 +375,6 @@ class VideoController extends Controller
             'visibility' => [new Enumerate(['Public', 'Unlisted', 'Hidden'])],
             'tags' => 'array',
             'tags.*' => 'string|min:3',
-            'tags_to_remove' => 'array'
         ]);
 
         if($validateVideo->fails())
@@ -409,16 +408,6 @@ class VideoController extends Controller
             Storage::delete($path);
 
             $video->thumbnail = $publicPath;
-            $video->save();
-        }
-
-        if($request->tags_to_remove)
-        {
-            foreach($request->tags_to_remove as $tag)
-            {
-                $tagModel = Tag::where('name', $tag)->first();
-                $video->tags()->detach($tagModel->id);
-            }
             $video->save();
         }
 

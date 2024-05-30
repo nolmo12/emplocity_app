@@ -1,21 +1,21 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import authUser from "../authUser";
 import useUser from "../useUser";
 import { Link } from "react-router-dom";
 import useUserSettings from "../useUserSettings";
-import useValidation from "../useValidation";
 import styles from "./accountSettings.module.css";
+import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import useBorders from "../useBorders";
-import { render } from "@testing-library/react";
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [userBorders, setUserBorders] = useState([]);
-    const [imageLoaded, setImageLoaded] = useState();
+    const [imageLoaded, setImageLoaded] = useState({
+        avatar: false,
+    });
     const [renderKey, setRenderKey] = useState(0);
     const [currentBorder, setCurrentBorder] = useState([]);
     const [userData, setUserData] = useState({
@@ -29,11 +29,10 @@ export default function AccountSettings() {
     const [validationNicknameData, setValidationNicknameData] = useState(false);
     const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
-    const navigate = useNavigate();
-    const { logout, http, getUser } = authUser();
+    const { logout, getUser } = authUser();
     const { removeUser } = useUser();
     const inputRef = useRef(null);
-    // const { validateForm } = useValidation();
+    const navigate = useNavigate();
     const { changeNickname, changePassword, changeAvatar } = useUserSettings();
 
     useEffect(() => {
@@ -66,7 +65,7 @@ export default function AccountSettings() {
 
     const getCurrentUserBorder = async () => {
         const response = await getCurrentBorder(user.id);
-        setCurrentBorder(response);
+        setCurrentBorder(response.current_border.type);
         setRenderKey((prev) => prev + 1);
     };
 
@@ -87,14 +86,15 @@ export default function AccountSettings() {
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
-        if (response.passwordValidation) {
+        if (response) {
             setValidationNicknameData(response);
+            const updatedUser = await getUser();
+            setUser((prevUser) => ({ ...prevUser, name: updatedUser.name }));
         } else {
             setValidationNicknameData(false);
-            setUserData({ ...userData, nickname: "" });
-            const updatedUser = await getUser();
-            setUser(updatedUser);
         }
+        setUserData({ ...userData, nickname: "" });
+        setValidationPasswordData(false);
     };
 
     const handleClickChangePassword = async (e) => {
@@ -106,12 +106,19 @@ export default function AccountSettings() {
             userData.repeatPassword
         );
         if (response) {
-            logout();
             navigate("/login");
-        } else {
-            console.log(response);
+            logout();
             setValidationPasswordData(response);
+        } else {
+            setValidationPasswordData(false);
+            setUserData({
+                ...userData,
+                previousPassword: "",
+                password: "",
+                repeatPassword: "",
+            });
         }
+        setValidationNicknameData(false);
     };
 
     const handleClickRemoveAccount = async (e) => {
@@ -147,7 +154,6 @@ export default function AccountSettings() {
 
     return (
         <main className={styles.accountSettingsPage}>
-            <div className={styles.settingsDiv}>
                 <div className={styles.divFormContainer}>
                     <Link to="/account">
                         <FontAwesomeIcon
@@ -182,30 +188,48 @@ export default function AccountSettings() {
                                     </p>
                                     <div className={styles.avatarBorderContainer}>
                                         <p>
-                                            {user.avatar && (
-                                                <img
-                                                    src={user.avatar}
-                                                    alt="avatar"
-                                                    onLoad={() => setImageLoaded(true)}
-                                                    className={styles.userAvatar}
-                                                />
+                                            {user.avatar ? (
+                                        <>
+                                            {!imageLoaded.avatar && (
+                                                <ClipLoader color="#000" />
                                             )}
+                                            <img
+                                                src={user.avatar}
+                                                alt="avatar"
+                                                onLoad={() =>
+                                                    setImageLoaded((prev) => ({
+                                                        ...prev,
+                                                        avatar: true,
+                                                    }))
+                                                }
+                                                className={styles.userAvatar}
+                                            />
+                                        </>
+                                    ) : (
+                                        <ClipLoader color="#000" />
+                                    )}
                                         </p>
-                                        {currentBorder &&
-                                            currentBorder.current_border && (
-                                                <img
-                                                    src={
-                                                        currentBorder.current_border
-                                                            .type
-                                                    }
-                                                    className={styles.userBorder}
-                                                    alt="current border"
-                                                />
-                                            )
-                                        }
-                                    </div>
+              
+                                {userBorders &&
+                                    userBorders.borders &&
+                                    userBorders.borders.length > 0 && (
+                                        <p className={styles.label}>
+                                            User borders:{" "}
+                                        </p>
+                                    )}
 
-                                    {userBorders && userBorders.borders && userBorders.borders.length > 0 && <p className={styles.label}>User borders: </p>}
+                                {currentBorder && (
+                                    <img
+                                        src={currentBorder}
+                                        alt="current border"
+                                        style={{
+                                            width: "50px",
+                                            height: "50px",
+                                        }}
+                                    />
+                                )}
+
+                                {userBorders && userBorders.borders && userBorders.borders.length > 0 && <p className={styles.label}>User borders: </p>}
 
 
                                     <p>
@@ -228,14 +252,10 @@ export default function AccountSettings() {
                                                 );
                                             })}
                                     </p>
-                                    <p></p>
-                                </div>
-                            </>
-                        </div>
-                    ) : (
-                        <ClipLoader />
-                    )}
-                    <form>
+
+                                                   
+
+                <form>
                         <input
                             type="text"
                             onChange={(e) => handleNicknameChange(e)}

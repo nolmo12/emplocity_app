@@ -1,15 +1,22 @@
 #Popular {
-    position: absolute;
-    top: 10%; 
-    width: 90%; 
+    top: 5%;
+    width: 100%;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+#PopularContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1em;
 }
 
 #Popular p {
-    padding-top:0.5em;
+    padding-top: 0.5em;
 }
 
 #Popular a {
-    color:white;
+    color: white;
     text-decoration: underline 0.15em rgba(255, 255, 255, 0);
     transition: text-decoration-color 300ms;
 }
@@ -24,6 +31,12 @@
     flex-wrap: wrap; 
     gap: 1.5em; 
     list-style: none; 
+    padding: 0;
+    margin: 0;
+}
+
+#Popular .text_center {
+    text-align: center;
 }
 
 #Popular li {
@@ -44,97 +57,94 @@
 }
 
 #Popular h1 {
-    margin-top:0.5em;
-    margin-bottom:0.5em;
-    font-weight:600;
-    text-align:center;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    font-weight: 600;
+    text-align: center;
 }
 
 #Popular img {
-    width:2.5em;
-    height:2.5em;
+    width: 5em;
+    height: 5em;
     border-radius: 50%;
     overflow: hidden;
 }
 
+#Popular .link_holder {
+    padding-bottom: 1em;
+}
 
-@media screen and (max-width: 800px) and (orientation: portrait){
+#Popular .image_holder {
+    width: 6em;
+    height: 6em;
+    position: relative;
+    margin: 0 auto;
+}
+
+#Popular .profile_picture {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#Popular .border {
+    border-radius: 0;
+    width: 5.2em;
+    height: 5.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 2;
+}
+
+@media screen and (max-width: 800px) and (orientation: portrait) {
     #Popular {
-        position: absolute;
+        position: relative;
         top: 8%; 
         width: 95%; 
     }
 
-    #Popular li {
-        width: auto; 
-        list-style-type: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #Popular ul {
-        display: flex;
-        flex-wrap: wrap; 
-        gap: 1.5em; 
-        list-style: none; 
-    }
-
     #Popular img {
-        width:1em;
-        height:1em;
+        width: 4em;
+        height: 4em;
     }
 
     #Popular p {
-        padding-top:0.5em;
-        font-size:0.5em;
+        padding-top: 0.5em;
+        font-size: 0.8em;
     }
 
     #Popular h1 {
-        margin-top:0.5em;
-        margin-bottom:0.5em;
-        font-weight:600;
-        font-size:1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        font-weight: 600;
+        font-size: 1.5em;
     }
 }
 
-@media screen and (max-width: 800px) and (orientation: landscape){
+@media screen and (max-width: 800px) and (orientation: landscape) {
     #Popular {
-        position: absolute;
+        position: relative;
         top: 10%; 
         width: 95%; 
     }
 
-    #Popular li {
-        width: auto; 
-        list-style-type: none;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    #Popular ul {
-        display: flex;
-        flex-wrap: wrap; 
-        gap: 1.5em; 
-        list-style: none; 
-    }
-
     #Popular img {
-        width:1em;
-        height:1em;
+        width: 4em;
+        height: 4em;
     }
 
     #Popular p {
-        padding-top:0.5em;
-        font-size:0.5em;
+        padding-top: 0.5em;
+        font-size: 0.8em;
     }
 
     #Popular h1 {
-        margin-top:0.5em;
-        margin-bottom:0.5em;
-        font-weight:600;
-        font-size:1em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        font-weight: 600;
+        font-size: 1.5em;
     }
 }
-

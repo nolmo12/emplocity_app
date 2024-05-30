@@ -16,69 +16,92 @@ import config from "../../config";
 import styles from "./mainContent.module.css";
 
 export default function MainContent({ contentType }) {
+    const [frameIsLoaded, setFrameIsLoaded] = useState(false);
     const mainRef = useRef();
     let view = undefined;
 
     if (contentType === "guest") {
         view = (
             <main>
-                <Popular />
-                <VideoSection sectionType="reccommend" />
+                <div id={styles.container}>
+                    <Popular />
+                    <VideoSection sectionType="reccommend" />
+                </div>
             </main>
         );
     } else if (contentType === "logged") {
         view = (
             <main>
+                <div id={styles.container}>
                 <Settings />
                 <UserVideoSection />
+                </div>
             </main>
         );
     } else if (contentType === "otherUser") {
         view = (
             <main>
+                <div id={styles.container}>
                 <Popular />
                 <VideoSection sectionType="otherAccount" />
+                </div>
             </main>
         );
     } else if (contentType === "tag") {
         view = (
             <main>
+                <div id={styles.container}>
                 <Popular />
                 <VideoSection sectionType="tag" />
+                </div>
             </main>
         );
     } else if (contentType === "result") {
         view = (
             <main>
+                <div id={styles.container}>
                 <Popular />
                 <SearchResult searchType={"userSearch"} />
+                </div>
             </main>
         );
     } else if (contentType === "userHistory") {
         view = (
             <main>
+                <div id={styles.container}>
                 <Popular />
                 <SearchResult searchType={"userHistory"} />
+                </div>
             </main>
         );
     } else if (contentType === "userLikes") {
         view = (
             <main>
+                <div id={styles.container}>
                 <Popular />
                 <SearchResult searchType={"userLikes"} />
+                </div>
             </main>
         );
     } else if (contentType === "help") {
         view = (
             <main>
+                <div id={styles.container}>
                 <HelpPage />
+                </div>
             </main>
         );
     } else if (contentType === "video") {
         view = (
+
             <main className={styles.videoFrameMain} ref={mainRef}>
-                <VideoFrame mainRef={mainRef} />
-                <VideoSection sectionType="similar" />
+                <VideoFrame
+                    mainRef={mainRef}
+                    setFrameIsLoaded={setFrameIsLoaded}
+                />
+                {console.log("frameIsLoaded: ", frameIsLoaded)}
+                {frameIsLoaded && <VideoSection sectionType="similar" />}
+
             </main>
         );
     } else if (contentType === "shop") {
@@ -90,13 +113,17 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "aboutUs") {
         view = (
             <main>
+                <div id={styles.container}>
                 <AboutUs />
+                </div>
             </main>
         );
     } else if (contentType === "rules") {
         view = (
             <main>
-                <Rules />
+                <div id={styles.container}>
+                    <Rules />
+                </div>
             </main>
         );
     } else if (contentType === "videoSettings") {
