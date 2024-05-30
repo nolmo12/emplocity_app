@@ -1,53 +1,68 @@
 import React from "react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import authUser from "./authUser";
+import { reference } from "@popperjs/core";
 export default function useViews() {
     const [timerFlag, setTimerFlag] = useState(false);
-    const timeRemaining = useRef();
-    const timeoutId = useRef(null);
+    const timeRef = useRef();
+    const sendFlag = useRef(false);
+    const intervald = useRef(null);
+    const currentTime = useRef(0);
+    const timeToSend = useRef();
     const { http } = authUser();
-    const sendViews = async (reference_code) => {
+    const { reference_code } = useParams();
+
+    useEffect(() => {
+        currentTime.current = 0;
+    }, [reference_code]);
+    const sendViews = async () => {
         try {
-            http.post(`/api/video/addView/${reference_code}`);
+            await http.post(`/api/video/addView/${reference_code}`);
         } catch (error) {
             console.error(error);
         }
     };
 
-    const startTimer = (duration, reference_code) => {
+    const startTimer = (duration, startTime = 0) => {
+        timeToSend.current = duration;
+        console.log("start time: ", startTime);
         if (timerFlag === false) {
-            console.log("start timer");
+            console.log("start timer ", duration);
             setTimerFlag(true);
-            timeoutId.current = setTimeout(async () => {
-                console.log("timer expired");
-                await sendViews(reference_code);
-                setTimerFlag(false); //
-            }, duration * 1000);
+            timer(timeToSend.current, reference_code);
         } else {
-            resumeTimer(duration, reference_code);
+            resumeTimer(reference_code);
         }
     };
 
     const pauseTimer = () => {
-        if (timeoutId.current) {
-            clearTimeout(timeoutId.current);
-            timeoutId.current = null;
-            setTimerFlag(false);
+        if (intervald.current) {
+            clearInterval(intervald.current);
+            intervald.current = null;
         }
     };
 
-    const resumeTimer = (remainingDuration, reference_code) => {
-        if (!timerFlag) {
-            setTimerFlag(true);
-            timeoutId.current = setTimeout(async () => {
-                await sendViews(reference_code);
-                setTimerFlag(false);
-            }, remainingDuration * 1000);
-        }
+    const resumeTimer = () => {
+        timer(timeToSend.current);
     };
 
     const updateRemainingTime = (currentTime, totalDuration) => {
-        timeRemaining.current = totalDuration - currentTime;
+        timeRef.current = totalDuration - currentTime;
+    };
+
+    const timer = (duration) => {
+        intervald.current = setInterval(async () => {
+            currentTime.current += 0.1;
+            console.log("current time: ", currentTime.current);
+            if (currentTime.current >= duration && sendFlag.current === false) {
+                console.log("send views");
+                clearInterval(intervald.current);
+                sendFlag.current = true;
+                await sendViews(reference_code);
+                return;
+            }
+        }, 100);
     };
 
     return {
@@ -56,6 +71,6 @@ export default function useViews() {
         pauseTimer,
         resumeTimer,
         updateRemainingTime,
-        timeRemaining,
+        timeRef,
     };
 }

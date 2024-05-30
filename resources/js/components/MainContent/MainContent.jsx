@@ -16,6 +16,7 @@ import config from "../../config";
 import styles from "./mainContent.module.css";
 
 export default function MainContent({ contentType }) {
+    const [frameIsLoaded, setFrameIsLoaded] = useState(false);
     const mainRef = useRef();
     let view = undefined;
 
@@ -77,8 +78,12 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "video") {
         view = (
             <main className={styles.videoFrameMain} ref={mainRef}>
-                <VideoFrame mainRef={mainRef} />
-                <VideoSection sectionType="similar" />
+                <VideoFrame
+                    mainRef={mainRef}
+                    setFrameIsLoaded={setFrameIsLoaded}
+                />
+                {console.log("frameIsLoaded: ", frameIsLoaded)}
+                {frameIsLoaded && <VideoSection sectionType="similar" />}
             </main>
         );
     } else if (contentType === "shop") {

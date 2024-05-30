@@ -21,58 +21,59 @@ import { ClipLoader } from "react-spinners";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
-    const [imageLoaded, setImageLoaded] = useState({
+    const [userAvatar, setUserAvatar] = useState("");
+    const [userBorder, setUserBorder] = useState("");
+    const [isFetched, setIsFetched] = useState({
+        avatar: false,
+        border: false,
+        tempLogo: false,
+    });
+    const [isLoaded, setIsLoaded] = useState({
         avatar: false,
         tempLogo: false,
     });
-    const userAvatar = useRef("");
-    const [userBorder, setUserBorder] = useState("");
     const userId = useRef("");
     const [path, setPath] = useState(null);
     const [renderKey, setRenderKey] = useState(0);
     const [tempLogoPath, setTempLogoPath] = useState("");
-    const [avatarPath, setAvatarPath] = useState("");
     const { logout, isLogged, getUser } = authUser();
-    const getUserData = async () => {
-        // wait for token update
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const user = await getUser();
-        userAvatar.current = user.avatar;
-        console.log(user);
-
-        if (user.current_border) setUserBorder(user.current_border.type);
-        const avatarFileName = userAvatar.current.split("/").pop();
-        userAvatar.current = avatarFileName;
-        userId.current = user.id;
-    };
+    const { fetchImage, fetchAvatar } = fetchImgFromStorage();
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (isLogged()) {
-                await getUserData();
-            } else {
-                userAvatar.current = "ico.png";
-                setUserBorder(null);
-            }
-            const { fetchImage, fetchAvatar } = await fetchImgFromStorage();
-            if (userAvatar.current) {
-                setPath(`/history/${userId.current}`);
-                try {
-                    const [avatarPath, tempLogoPath] = await Promise.all([
-                        fetchAvatar(userAvatar.current),
-                        fetchImage("tempLogo.png"),
-                    ]);
-
-                    setTempLogoPath(tempLogoPath);
-                    setAvatarPath(avatarPath);
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-        };
-
         fetchData();
     }, [renderKey, showMenu]); // isLogged
+
+    const fetchData = async () => {
+        if (isLogged()) {
+            setTimeout(async () => {
+                const user = await getUser();
+                console.log(user);
+                userId.current = user.id;
+                setUserAvatar(user.avatar);
+                setIsFetched((prev) => ({ ...prev, avatar: true }));
+                if (user.current_border) {
+                    setUserBorder(user.current_border.type);
+                    setIsFetched((prev) => ({ ...prev, border: true }));
+                }
+            }, 1000);
+
+            // security timeout useless
+        } else {
+            const avatar = await fetchAvatar("ico.png");
+            setUserAvatar(avatar);
+            setUserBorder(null);
+            setIsFetched((prev) => ({ ...prev, avatar: true }));
+        }
+        const tempLogoPath = await fetchImage("tempLogo.png");
+        if (tempLogoPath) {
+            setTempLogoPath(tempLogoPath);
+            setIsFetched((prev) => ({ ...prev, tempLogo: true }));
+        }
+
+        if (userAvatar) {
+            setPath(`/history/${userId.current}`);
+        }
+    };
 
     const handleLogout = () => {
         logout();
@@ -206,50 +207,42 @@ export default function Header() {
     return (
         <>
             <header>
-                {tempLogoPath ? (
-                    <>
-                        {!imageLoaded.tempLogo && <ClipLoader color="#000" />}
-                        <Link to="/home">
-                            <img
-                                src={tempLogoPath}
-                                alt="Logo"
-                                data-testid="tempLogo"
-                                onLoad={() =>
-                                    setImageLoaded((prev) => ({
-                                        ...prev,
-                                        tempLogo: true,
-                                    }))
-                                }
-                                id={styles.imgLogo}
-                            ></img>
-                        </Link>
-                    </>
-                ) : (
-                    <ClipLoader color="#000" />
-                )}
-                <SearchBar />
-                {avatarPath ? (
-                    <>
-                        {console.log(avatarPath)}
-                        {!imageLoaded.avatar && <ClipLoader color="#000" />}
+                <Link to="/home">
+                    {isFetched.tempLogo ? (
                         <img
-                            src={avatarPath}
-                            alt="Icon"
-                            data-testid="icon"
-                            id={styles.imgIcon}
-                            onLoad={() =>
-                                setImageLoaded((prev) => ({
+                            src={tempLogoPath}
+                            alt="Logo"
+                            data-testid="tempLogo"
+                            onLoad={() => {
+                                setIsLoaded((prev) => ({
                                     ...prev,
-                                    avatar: true,
-                                }))
-                            }
-                            onClick={toggleMenu}
+                                    tempLogo: true,
+                                }));
+                            }}
+                            id={styles.imgLogo}
                         ></img>
-                        {userBorder && <img src={userBorder}></img>}
-                    </>
+                    ) : (
+                        <ClipLoader color="#000" />
+                    )}
+                </Link>
+
+                <SearchBar />
+
+                {isFetched.avatar ? (
+                    <img
+                        src={userAvatar}
+                        alt="Icon"
+                        data-testid="icon"
+                        id={styles.imgIcon}
+                        onLoad={() => {
+                            setIsLoaded((prev) => ({ ...prev, avatar: true }));
+                        }}
+                        onClick={toggleMenu}
+                    ></img>
                 ) : (
                     <ClipLoader color="#000" />
                 )}
+                {userBorder && <img src={userBorder}></img>}
             </header>
             <ul
                 id={styles.menu}

@@ -6,6 +6,7 @@ import useUser from "../useUser";
 import styles from "../Comments/comments.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+import { ClipLoader } from "react-spinners";
 
 export default function Comment({
     comment,
@@ -26,6 +27,8 @@ export default function Comment({
     } = useComments();
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
+    const currentAvatar = useRef(null);
+    const currentBorder = useRef(null);
     const commentTextareaRef = useRef(null);
     const [replyFlag, setReplyFlag] = useState(false);
     const [viewFlag, setViewFlag] = useState(false);
@@ -55,6 +58,11 @@ export default function Comment({
     useEffect(() => {
         const setVisibility = async () => {
             const user = await getUser();
+            currentAvatar.current = user.avatar;
+            if (user.current_border) {
+                currentBorder.current = user.current_border.type;
+            }
+
             if (user && user.id === comment.user_id) {
                 setEditUserFlag(true);
                 setDeleteUserFlag(true);
@@ -153,15 +161,33 @@ export default function Comment({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <img
-                src={comment.user_avatar}
-                style={{ width: "50px", height: "50px" }}
-                alt="avatar"
-            />
-            <img
-                src={comment.current_border && comment.current_border.type}
-                style={{ width: "50px", height: "50px" }}
-            ></img>
+            {!comment.user_avatar && currentAvatar.current ? (
+                <img
+                    src={currentAvatar.current}
+                    style={{ width: "50px", height: "50px" }}
+                    alt="avatar"
+                ></img>
+            ) : (
+                <img
+                    src={comment.user_avatar}
+                    style={{ width: "50px", height: "50px" }}
+                    alt="avatar"
+                />
+            )}
+
+            {!comment.current_border && currentBorder.current ? (
+                <img
+                    src={currentBorder.current}
+                    style={{ width: "50px", height: "50px" }}
+                ></img>
+            ) : (
+                comment.current_border && (
+                    <img
+                        src={comment.current_border.type}
+                        style={{ width: "50px", height: "50px" }}
+                    ></img>
+                )
+            )}
             <p>{comment.user_name}</p>
             <p className={styles.dateComm}></p>
             <div>
