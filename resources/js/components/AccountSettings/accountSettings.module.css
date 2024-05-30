@@ -1,115 +1,216 @@
+.accountSettingsPage {
+    height: 95vh;
+}
+
 .settingsDiv {
-    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.divFormContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     justify-content: center;
     flex-direction: column;
     border: solid 2px black;
-    border-radius: 6px;
+    border-radius: 10px;
     background-color: rgba(229, 229, 229, 0.8);
-    padding: 3%;
-    padding-top: 1%;
-    width: 30%;
-    max-width: 300px;
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+    padding: 2%;
+    width: 25%;
+    z-index: 2;
+    max-height: 85vh;
+    overflow-y: auto;
 }
 
-.userInfoForm h3{
-    font-size: 2em;
-    margin-bottom: 1em;
-    text-align: center;
+.divFormContainer::-webkit-scrollbar {
+    width: 0.2em;
+}
+
+.divFormContainer::-webkit-scrollbar-track {
+    background: rgba(229, 229, 229, 0.8);
+}
+
+.divFormContainer::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.divFormContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.settingsDiv .uploadFormCloseIcon {
+    position: absolute;
+    top: 0.5em;
+    right: 1em;
+    width: 1.5em;
+    height: 1.5em;
     color: black;
-    font-weight: 600;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.settingsDiv .uploadFormCloseIcon:hover {
+    color: #555;
+}
+
+.settingsDiv .uploadFormCloseIcon:active {
+    transform: scale(0.80);
 }
 
 .userInfoForm {
-    position:relative;
-    top:-10%;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.userInfoForm h3 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    color: black;
+    font-weight: 600;
 }
 
 .userInfoForm .label {
     font-weight: 600;
 }
 
-.userInfoForm p{
-    color:black;
-    font-size:1em;
+.userInfoForm p {
+    color: black;
+    font-size: 1em;
     margin-bottom: 1em;
-    margin-left:1em;
 }
 
 .userInfoForm .userAvatar {
-    height:4em;
-    width:4em;
-    position:relative;
-    left:35%;
-    border-radius: 50%;
-    overflow: hidden;
+    width: 5.2em;
+    height: 5.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
 }
 
-.settingsDiv input {
-    width: 90%;
-    height: 2.5em;
+.userInfoForm .avatarBorderContainer {
+    width: 6em;
+    height: 6em;
+    position: relative;
     margin: 0 auto;
-    padding-left: 0.5em;
-    border: solid 2px #a0a0a0;
-    border-radius:5px;
 }
 
-.settingsDiv button {
-    width: 50%;
-    height: 2.5em;
-    border-radius:10px;
+.userInfoForm .userBorder {
+    border-radius: 0;
+    width: 8.6em;
+    height: 7.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 2;
+}
+
+.userInfoForm .ownedBorders {
+    border-radius: 0;
+    width: 4em;
+    height: 3em;
+    cursor: pointer;
+}
+
+.divFormContainer form {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.divFormContainer form input {
+    width: 80%;
+    height: 3em;
     margin-bottom: 1em;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+    color: black;
+    font-size: 1em;
+}
+
+.divFormContainer form button {
+    width: auto;
+    min-width: 12em;
+    height: 2.5em;
+    border-radius: 10px;
+    margin-bottom: 0.5em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: solid 2px #a0a0a0;
-    background-color: rgb(54, 83, 243);
-    color:white;
-    left:10%;
-}
-
-form .selectedAvatar {
-    height:4em;
-    width:4em;
-    margin-bottom:1em;
-    border-radius: 50%;
-    overflow: hidden;
-    position:relative;
-    left:15%;
-}
-
-.settingsDiv .avatarButton {
-    display:block;
-}
-
-.settingsDiv .clearAvatarButton {
-    position: absolute;
-    height:2em;
-    width: 5%;
-    left:51%;
-    bottom:20%;
     background-color: white;
-    color:black;
+    color: black;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
 }
 
-.settingsDiv .clearAvatarButton:hover {
-    background-color:#f0f0f0;
+.divFormContainer form .floatingInput {
+    width: 80%;
+    height: 3em;
+    border: none;
+    border-bottom: 1px solid #fff;
+    outline: none;
+    background: transparent;
+    color: black;
+    font-size: 1em;
+    z-index: 999;
+    padding-left: 0.5em;
 }
 
-.settingsDiv .clearAvatarButton:active {
-    transform: scale(0.95);
+.divFormContainer form .floatingInput::placeholder {
+    transition: all 0.3s ease;
+}
+
+.divFormContainer form .floatingInput:focus::placeholder {
+    color: #999;
+    transform: translateX(-2.5em) translateY(-1em) scale(0.8);
+}
+
+.divFormContainer form .changeNickname,
+.divFormContainer form .changePassword {
+    float: right;
+    margin-bottom:1em;
+    margin-right: 3em;
+}
+
+.divFormContainer form .avatarButton {
+    margin: 0 auto;
+    margin-bottom: 2em;
+}
+
+.divFormContainer form .removeButton {
+    border: solid 2px red;
 }
 
 .settingsDiv button:hover {
-    background-color: rgb(43, 73, 245);
+    background-color: #f0f0f0;
 }
 
 .settingsDiv button:active {
     transform: scale(0.95);
 }
 
+.avatarInputContainer {
+    justify-content: center;
+    align-items: center;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
 .avatarInput[type="file"] {
     border: none;
-    color:black;
-    margin-bottom:1em;
+    color: black;
+    position:relative;
+    left:10%;
 }
 
 .avatarInput[type="file"]::file-selector-button {
@@ -125,7 +226,7 @@ form .selectedAvatar {
 }
 
 .avatarInput[type="file"]:hover::file-selector-button {
-    background-color:#f0f0f0;
+    background-color: #f0f0f0;
 }
 
 .avatarInput[type="file"]:active::file-selector-button {
@@ -133,7 +234,40 @@ form .selectedAvatar {
 }
 
 .avatarSettings p {
-    color:black;
+    color: black;
     text-align: center;
-    margin-bottom:1em;
+    margin-bottom: 1em;
+}
+
+form .selectedAvatar {
+    height: 4em;
+    width: 4em;
+    margin-bottom: 1em;
+    border-radius: 50%;
+    overflow: hidden;
+    display: block;
+    margin: 0 auto;
+}
+
+.settingsDiv .avatarButton {
+    display: block;
+}
+
+.settingsDiv .clearAvatarButton {
+    height: 2.5em;
+    width: auto;
+    min-width: 10em;
+    background-color: white;
+    color: black;
+    display: inline-block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.settingsDiv .clearAvatarButton:hover {
+    background-color: #f0f0f0;
+}
+
+.settingsDiv .clearAvatarButton:active {
+    transform: scale(0.95);
 }
