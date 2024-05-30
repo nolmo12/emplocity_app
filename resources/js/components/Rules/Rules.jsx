@@ -4,7 +4,9 @@ export default function Rules() {
     return (
         <>
             <div className={styles.rules}>
-                <h3>Rules</h3>
+                <div className={styles.rulesh2}>
+                    <h2>Rules</h2>
+                </div>
                 <section>
                     <ol>
                         <li>

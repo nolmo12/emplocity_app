@@ -18,4 +18,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-/resources/js/components/config.js
+/resources/js/config.js
