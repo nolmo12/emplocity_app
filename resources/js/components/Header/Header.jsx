@@ -208,7 +208,7 @@ export default function Header() {
             <header>
                 {tempLogoPath ? (
                     <>
-                        {!imageLoaded.tempLogo && <ClipLoader color="#000" />}
+                        {!imageLoaded.tempLogo && <ClipLoader color="#000" className={styles.logoLoader}/>}
                         <Link to="/home">
                             <img
                                 src={tempLogoPath}
@@ -225,13 +225,13 @@ export default function Header() {
                         </Link>
                     </>
                 ) : (
-                    <ClipLoader color="#000" />
+                    <ClipLoader color="#000" className={styles.logoLoader}/>
                 )}
                 <SearchBar />
                 {avatarPath ? (
                     <>
                         {console.log(avatarPath)}
-                        {!imageLoaded.avatar && <ClipLoader color="#000" />}
+                        {!imageLoaded.avatar && <ClipLoader color="#000"  className={styles.avatarLoader}/>}
                         <img
                             src={avatarPath}
                             alt="Icon"
@@ -248,7 +248,7 @@ export default function Header() {
                         {userBorder && <img src={userBorder}></img>}
                     </>
                 ) : (
-                    <ClipLoader color="#000" />
+                    <ClipLoader color="#000" className={styles.avatarLoader}/>
                 )}
             </header>
             <ul
