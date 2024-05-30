@@ -1,5 +1,4 @@
 #Popular {
-    top: 5%;
     width: 100%;
     padding: 1em;
     box-sizing: border-box;
@@ -64,8 +63,8 @@
 }
 
 #Popular img {
-    width: 5em;
-    height: 5em;
+    width: 4em;
+    height: 4em;
     border-radius: 50%;
     overflow: hidden;
 }
@@ -75,8 +74,8 @@
 }
 
 #Popular .image_holder {
-    width: 6em;
-    height: 6em;
+    width: 5em;
+    height: 5em;
     position: relative;
     margin: 0 auto;
 }
@@ -90,8 +89,8 @@
 
 #Popular .border {
     border-radius: 0;
-    width: 5.2em;
-    height: 5.2em;
+    width: 4.2em;
+    height: 4.2em;
     position: absolute;
     top: 50%;
     left: 50%;
