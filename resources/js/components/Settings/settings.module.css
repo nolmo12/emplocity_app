@@ -1,9 +1,8 @@
 #Settings {
-    position: absolute;
-    top: 10%; 
-    left: 5%; 
-    width: 15%; 
-    transform: translate(-5%, 5%); 
+    width: 15%;
+    margin-right: 2%;
+    margin-top:2%;
+    margin-left:2%;
 }
 
 #Settings h1 {

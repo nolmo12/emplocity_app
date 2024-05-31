@@ -87,8 +87,8 @@
 }
 
 .userInfoForm .userAvatar {
-    width: 5.2em;
-    height: 5.2em;
+    width: 8.1em;
+    height: 7em;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -96,8 +96,8 @@
 }
 
 .userInfoForm .avatarBorderContainer {
-    width: 6em;
-    height: 6em;
+    width: 9em;
+    height: 8em;
     position: relative;
     margin: 0 auto;
 }
@@ -114,10 +114,22 @@
 }
 
 .userInfoForm .ownedBorders {
-    border-radius: 0;
+    border-radius: 6px;
     width: 4em;
     height: 3em;
     cursor: pointer;
+    margin-right:0.5em;
+    padding:0.3em;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+}
+
+.userInfoForm .ownedBorders:hover {
+    background-color: #d6d3d3;
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
+}
+
+.userInfoForm .ownedBorders:active {
+    transform: scale(0.95);
 }
 
 .divFormContainer form {

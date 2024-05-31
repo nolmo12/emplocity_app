@@ -125,89 +125,95 @@ export default function VideoSettings() {
                             className={styles.thumbnailPreview}
                         />
                     </div>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faFilm}
-                            className={styles.videoSettingsFormIcon}
-                        />
-                        <input
-                            type="text"
-                            onChange={(e) => handleChangeTitle(e)}
-                            defaultValue={videoObj.title}
-                        ></input>
-                        <button
-                            onClick={(e) =>
-                                sendData("title", reference_code, data.title, e)
-                            }
-                            disabled={!titleChanged}
-                        >
-                            Change title
-                        </button>
+                    <div className={styles.settingsInfo}>
+                        <div className={styles.inputGroup}>
+                            <FontAwesomeIcon
+                                icon={faFilm}
+                                className={styles.videoSettingsFormIcon}
+                            />
+                            <input
+                                type="text"
+                                onChange={(e) => handleChangeTitle(e)}
+                                defaultValue={videoObj.title}
+                            ></input>
+                            <button
+                                onClick={(e) =>
+                                    sendData("title", reference_code, data.title, e)
+                                }
+                                disabled={!titleChanged}
+                                className={styles.actionButton}
+                            >
+                                Change title
+                            </button>
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <FontAwesomeIcon
+                                icon={faAlignLeft}
+                                className={styles.videoSettingsFormIcon}
+                            />
+                            <textarea
+                                type="text"
+                                onChange={(e) => handleChangeDescription(e)}
+                                defaultValue={videoObj.description}
+                                rows="5"
+                            ></textarea>
+                            <button
+                                onClick={(e) =>
+                                    sendData(
+                                        "description",
+                                        reference_code,
+                                        data.description,
+                                        e
+                                    )
+                                }
+                                disabled={!descriptionChanged}
+                                className={styles.actionButton}
+                            >
+                                Change description
+                            </button>
+                        </div>
+                        <div className={styles.inputGroup}>
+                            <FontAwesomeIcon
+                                icon={faTags}
+                                className={styles.videoSettingsFormIcon}
+                            />
+                            <input
+                                type="text"
+                                onChange={(e) => handleChangeTags(e)}
+                            ></input>
+                            <button
+                                onClick={(e) => sendTag(e)}
+                                disabled={!tagsChanged}
+                                className={styles.actionButton}
+                            >
+                                Add tag
+                            </button>
+                        </div>
                     </div>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faAlignLeft}
-                            className={styles.videoSettingsFormIcon}
-                        />
-                        <textarea
-                            type="text"
-                            onChange={(e) => handleChangeDescription(e)}
-                            defaultValue={videoObj.description}
-                            rows="5"
-                        ></textarea>
+                    <div className={styles.visibilityContainer}>
+                        <select
+                            defaultValue={videoObj.visibility}
+                            onChange={(e) => handleChangeVisibility(e)}
+                        >
+                            <option value="Public">Public</option>
+                            <option value="Unlisted">Unlisted</option>
+                            {isLogged() && <option value="Hidden">Hidden</option>}
+                        </select>
                         <button
                             onClick={(e) =>
                                 sendData(
-                                    "description",
+                                    "visibility",
                                     reference_code,
-                                    data.description,
+                                    data.visibility,
                                     e
                                 )
                             }
-                            disabled={!descriptionChanged}
+                            className={styles.selectButton}
+                            disabled={!visibilityChanged}
                         >
-                            Change description
+                            Change Visibility
                         </button>
                     </div>
-                    <div>
-                        <FontAwesomeIcon
-                            icon={faTags}
-                            className={styles.videoSettingsFormIcon}
-                        />
-                        <input
-                            type="text"
-                            onChange={(e) => handleChangeTags(e)}
-                        ></input>
-                        <button
-                            onClick={(e) => sendTag(e)}
-                            disabled={!tagsChanged}
-                        >
-                            Add tag
-                        </button>
-                    </div>
-
-                    <select
-                        defaultValue={videoObj.visibility}
-                        onChange={(e) => handleChangeVisibility(e)}
-                    >
-                        <option value="Public">Public</option>
-                        <option value="Unlisted">Unlisted</option>
-                        {isLogged() && <option value="Hidden">Hidden</option>}
-                    </select>
-                    <button
-                        onClick={(e) =>
-                            sendData(
-                                "visibility",
-                                reference_code,
-                                data.visibility,
-                                e
-                            )
-                        }
-                        className={styles.selectButton}
-                        disabled={!visibilityChanged}
-                    >
-                        Change Visibility
-                    </button>
                     <input
                         type="file"
                         onChange={(e) => handleChangeThumbnail(e)}
@@ -236,13 +242,14 @@ export default function VideoSettings() {
                             Change Thumbnail
                         </button>
                     </div>
-
-                    <button
-                        onClick={(e) => handleClickRemove(e)}
-                        className={styles.selectButton}
-                    >
-                        Remove video
-                    </button>
+                    <div className={styles.visibilityContainer}>
+                        <button
+                            onClick={(e) => handleClickRemove(e)}
+                            className={styles.removeButton}
+                        >
+                            Remove video
+                        </button>
+                    </div>
                 </form>
             )}
         </div>

@@ -20,6 +20,20 @@ main {
     display:inline-grid;
 }
 
+#containerAccount
+{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+#searchResultPage {
+    width:85%;
+    height:100%;
+    position:relative;
+    left:15%;
+}
+
 .videoFrameMain {
     display:flex !important;
     flex-direction: row;

@@ -1,28 +1,53 @@
 .searchResultsDiv {
     display: flex;
-    position: absolute;
+    position: relative;
     align-items: center;
     flex-direction: column;
-    width: 73.5%;
-    height: 73%;
-    top:10%;
-    left: 10%;
+    width: 80%;
+    height: 95%;
+    margin-top:2%;
     padding-bottom: 1em;
     padding-right: 1em;
-    transform: translate(20%, 5%);
     overflow-y: auto;
 }
 
 .searchResultsDiv ul {
     list-style-type: none;
     position:relative;
-    left:-20%;
-    width:50%;
+    width:100%;
 }
 
 .searchResultsDiv li {
     margin-bottom: 1em; 
     display:flex;
+}
+
+.searchResultsDiv .userInfo {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: underline 0.15em rgba(255, 255, 255, 0);
+    transition: text-decoration-color 300ms;
+}
+
+.searchResultsDiv .userInfo:hover {
+    text-decoration-color: rgba(255, 255, 255, 1);
+}
+
+.searchResultsDiv .userInfo img {
+    height: 5em;
+    width: 5em;
+    margin-right: 1em; 
+}
+
+.searchResultsDiv .userInfo .userInfoText {
+    display: flex;
+    flex-direction: column;
+}
+
+.searchResultsDiv a {
+    text-decoration: none;
+    color:white;
 }
 
 .searchResultsDiv section {
@@ -35,12 +60,13 @@
 }
 
 .searchResultsDiv .thumbnailContainer{
-    width:18em;
+    width:23em;
+    height:14em;
 }
 
 .searchResultsDiv .thumbnailContainer .thumbnail{
     width:100%;
-    height:17vh;
+    height:100%;
     border-radius: 10px;
     transition: border-radius 1s ease, transform 0.3s ease;;
 }
@@ -57,6 +83,15 @@
     color:white;
     padding-left: 1em;
     width:200%;
+}
+
+.searchResultsDiv .videoInfo .videoTitle{
+    font-size:1.2em;
+    font-weight:700;
+}
+
+.searchResultsDiv .videoInfo p{
+    padding-bottom:0.5em;
 }
 
 .searchResultsDiv::-webkit-scrollbar {
@@ -76,10 +111,40 @@
 }
 
 .searchSort {
-    font-size:1em;
-    color:white;
-    background-color:#14213d;
-    border:none;
+    font-size: 1em;
+    color: white;
+    background-color: #14213d;
+    border: none;
+    position: relative;
+    left: 20%;
+    padding: 0.5em 1em;
+    margin-top: 1em;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    outline: none;
+}
+
+.searchSort:hover {
+    background-color: #1f2a4d;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.searchSort:active {
+    background-color: #1f2a4d;
+}
+
+.searchSort option {
+    background-color: #14213d;
+    color: white;
+    padding: 0.5em 1em;
+    font-size: 1em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.searchSort option:hover {
+    background-color: #1f2a4d;
+    color: #fff;
 }
 
 .videoInfo .videoDescription {

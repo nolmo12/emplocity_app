@@ -35,7 +35,7 @@ function VideoInfo({ videoObj }) {
 
     return (
         <div className={styles.videoInfo}>
-            <p>{videoObj.title}</p>
+            <p className={styles.videoTitle}>{videoObj.title}</p>
             <p>{videoObj.userName}</p>
             <p>{videoObj.video.created_at.slice(0, 10)}</p>
             <p>
@@ -52,8 +52,9 @@ function UserInfo({ userObj }) {
     return (
         <div className={styles.userInfo}>
             <img src={userObj.avatar} alt="user avatar" />
-            <p>{userObj.name}</p>
-            <p>{userObj.email}</p>
+            <div className={styles.userInfoText}>
+                <p>{userObj.name}</p>
+            </div>
         </div>
     );
 }

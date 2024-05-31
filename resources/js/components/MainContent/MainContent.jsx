@@ -32,7 +32,7 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "logged") {
         view = (
             <main>
-                <div id={styles.container}>
+                <div id={styles.containerAccount}>
                     <Settings />
                     <UserVideoSection />
                 </div>
@@ -60,16 +60,17 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                    <Popular />
-                    <SearchResult searchType={"userSearch"} />
+                    <div id={styles.searchResultPage}>
+                        <SearchResult searchType={"userSearch"} />
+                    </div>
                 </div>
             </main>
         );
     } else if (contentType === "userHistory") {
         view = (
             <main>
-                <div id={styles.container}>
-                    <Popular />
+                <div id={styles.containerAccount}>
+                    <Settings />
                     <SearchResult searchType={"userHistory"} />
                 </div>
             </main>
@@ -77,8 +78,8 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "userLikes") {
         view = (
             <main>
-                <div id={styles.container}>
-                    <Popular />
+                <div id={styles.containerAccount}>
+                    <Settings />
                     <SearchResult searchType={"userLikes"} />
                 </div>
             </main>
