@@ -1,14 +1,14 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import authUser from "../authUser";
 import useUser from "../useUser";
+import { Link, useNavigate } from "react-router-dom";
 import useUserSettings from "../useUserSettings";
 import styles from "./accountSettings.module.css";
-import { useNavigate } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUpload } from "@fortawesome/free-solid-svg-icons";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import useBorders from "../useBorders";
+
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
     const [userBorders, setUserBorders] = useState([]);
@@ -55,7 +55,6 @@ export default function AccountSettings() {
             getCurrentUserBorder();
         }
     }, [user]);
-    // user is not a dependency of this useEffect
 
     const getUserBorders = async () => {
         const response = await getBorders();
@@ -82,6 +81,7 @@ export default function AccountSettings() {
             setUserData({ ...userData, repeatPassword: e.target.value });
         }
     };
+
     const handleClickChangeNickname = async (e) => {
         e.preventDefault();
         const response = await changeNickname(user.id, userData.nickname);
@@ -152,8 +152,14 @@ export default function AccountSettings() {
     };
 
     return (
-        <main>
-            <div className={styles.settingsDiv}>
+        <main className={styles.accountSettingsPage}>
+            <div className={styles.divFormContainer}>
+                <Link to="/account">
+                    <FontAwesomeIcon
+                        icon={faTimes}
+                        className={styles.uploadFormCloseIcon}
+                    />
+                </Link>
                 {user ? (
                     <div className={styles.userInfoForm}>
                         <>
@@ -179,76 +185,76 @@ export default function AccountSettings() {
                                         {user.created_at.substring(0, 10)}
                                     </span>
                                 </p>
-                                <p>
-                                    {user.avatar ? (
-                                        <>
-                                            {!imageLoaded.avatar && (
-                                                <ClipLoader color="#000" />
-                                            )}
-                                            <img
-                                                src={user.avatar}
-                                                alt="avatar"
-                                                onLoad={() =>
-                                                    setImageLoaded((prev) => ({
-                                                        ...prev,
-                                                        avatar: true,
-                                                    }))
-                                                }
-                                                className={styles.userAvatar}
-                                            />
-                                        </>
-                                    ) : (
-                                        <ClipLoader color="#000" />
-                                    )}
-                                </p>
-                                {userBorders &&
-                                    userBorders.borders &&
-                                    userBorders.borders.length > 0 && (
-                                        <p className={styles.label}>
-                                            User borders:{" "}
-                                        </p>
-                                    )}
-
-                                {currentBorder && (
-                                    <img
-                                        src={currentBorder}
-                                        alt="current border"
-                                        style={{
-                                            width: "50px",
-                                            height: "50px",
-                                        }}
-                                    />
-                                )}
-
-                                <p>
+                                <div className={styles.avatarBorderContainer}>
+                                    <p>
+                                        {user.avatar ? (
+                                            <>
+                                                {!imageLoaded.avatar && (
+                                                    <ClipLoader color="#000" />
+                                                )}
+                                                <img
+                                                    src={user.avatar}
+                                                    alt="avatar"
+                                                    onLoad={() =>
+                                                        setImageLoaded(
+                                                            (prev) => ({
+                                                                ...prev,
+                                                                avatar: true,
+                                                            })
+                                                        )
+                                                    }
+                                                    className={
+                                                        styles.userAvatar
+                                                    }
+                                                />
+                                            </>
+                                        ) : (
+                                            <ClipLoader color="#000" />
+                                        )}
+                                    </p>
                                     {userBorders &&
                                         userBorders.borders &&
-                                        userBorders.borders.map((item) => {
-                                            return (
+                                        userBorders.borders.length > 0 && (
+                                            <p className={styles.label}>
+                                                User borders:{" "}
+                                            </p>
+                                        )}
+                                    {currentBorder && (
+                                        <img
+                                            src={currentBorder}
+                                            alt="current border"
+                                            style={{
+                                                width: "50px",
+                                                height: "50px",
+                                            }}
+                                        />
+                                    )}
+                                    <p>
+                                        {userBorders &&
+                                            userBorders.borders &&
+                                            userBorders.borders.map((item) => (
                                                 <img
                                                     src={item.type}
                                                     alt="border"
-                                                    style={{
-                                                        width: "50px",
-                                                        height: "50px",
-                                                    }}
                                                     onClick={() =>
                                                         handleClickBorder(
                                                             item.id,
-                                                            setCurrentBorder
+                                                            setRenderKey
                                                         )
                                                     }
                                                     key={`userBorder${item.id}`}
+                                                    className={
+                                                        styles.ownedBorders
+                                                    }
                                                 />
-                                            );
-                                        })}
-                                </p>
-                                <p></p>
+                                            ))}
+                                    </p>
+                                </div>
                             </div>
                         </>
                     </div>
                 ) : (
-                    <ClipLoader />
+                    <ClipLoader color="#000" />
                 )}
                 <form>
                     <input
@@ -256,11 +262,15 @@ export default function AccountSettings() {
                         onChange={(e) => handleNicknameChange(e)}
                         value={userData.nickname}
                         placeholder="New nickname"
+                        className={styles.floatingInput}
                     />
-                    <button onClick={(e) => handleClickChangeNickname(e)}>
+                    <button
+                        className={styles.changeNickname}
+                        onClick={(e) => handleClickChangeNickname(e)}
+                    >
                         Change nickname
                     </button>
-                    {validationNicknameData.nameValidation && (
+                    {validationNicknameData.nicknameValidation && (
                         <p>The Nickname field must be a string</p>
                     )}
                     <input
@@ -268,38 +278,44 @@ export default function AccountSettings() {
                         onChange={(e) => handlePasswordChange(e, "previous")}
                         value={userData.previousPassword}
                         placeholder="Previous password"
-                    ></input>
-
+                        className={styles.floatingInput}
+                    />
+                    {validationPasswordData.previousPasswordValidation && (
+                        <p>The current password field must be a string</p>
+                    )}
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "password")}
                         value={userData.password}
                         placeholder="New password"
+                        className={styles.floatingInput}
                     />
                     <input
                         type="password"
                         onChange={(e) => handlePasswordChange(e, "repeat")}
                         value={userData.repeatPassword}
                         placeholder="Repeat new password"
-                    ></input>
-                    {validationPasswordData.passwordValidation && (
-                        <p>
-                            Password is incorrect or repeat password is not the
-                            same as new password
-                        </p>
+                        className={styles.floatingInput}
+                    />
+                    {validationPasswordData && (
+                        <p>The password field must be a string</p>
                     )}
-
-                    <button onClick={(e) => handleClickChangePassword(e)}>
+                    <button
+                        className={styles.changePassword}
+                        onClick={(e) => handleClickChangePassword(e)}
+                    >
                         Change password
                     </button>
                     <div className={styles.avatarSettings}>
-                        <input
-                            type="file"
-                            ref={inputRef}
-                            onChange={(e) => handleChangeAvatar(e)}
-                            id="avatar-input"
-                            className={styles.avatarInput}
-                        />
+                        <div className={styles.avatarInputContainer}>
+                            <input
+                                type="file"
+                                ref={inputRef}
+                                onChange={(e) => handleChangeAvatar(e)}
+                                id="avatar-input"
+                                className={styles.avatarInput}
+                            />
+                        </div>
                         {userData.avatar && (
                             <div>
                                 <p>Selected Avatar:</p>
@@ -323,7 +339,10 @@ export default function AccountSettings() {
                     >
                         Change avatar
                     </button>
-                    <button onClick={(e) => handleClickRemoveAccount(e)}>
+                    <button
+                        className={styles.removeButton}
+                        onClick={(e) => handleClickRemoveAccount(e)}
+                    >
                         Remove Account
                     </button>
                     {removeFlag && (

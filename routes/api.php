@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\VideoController;
@@ -186,7 +187,7 @@ Route::prefix('video')->group(function () {
     Route::delete('/comment/delete', [CommentController::class, 'delete']);
     Route::patch('/comment/update', [CommentController::class, 'update']);
 
-    Route::get('/getUrl/{reference_code}', [VideoController::class, 'getVideoUrl']);
+    Route::put('/getUrl', [UrlController::class, 'createVideoUrl']);
 
     Route::get('download/{reference_code}', [VideoController::class, 'downloadVideo']);
 });

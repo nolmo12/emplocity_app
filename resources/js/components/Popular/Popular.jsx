@@ -29,22 +29,25 @@ export default function Popular() {
         }
     };
     return (
-        <div id={styles.PopularContainer}>
-
-            <h1>Popular</h1>
-            <ul data-testid="guestVideoList">
-                {popularData.map((user) => {
-                    const awatarPath = user.avatar;
-                    return (
-                        <Link
-                            to={
-                                userId === user.id
-                                    ? `/account`
-                                    : `/user/${user.id}`
-                            }
-                            key={user.id}
-                        >
-                           <li key={user.id}>
+        <div id={styles.Popular}>
+            <div id={styles.PopularContainer}>
+                <div>
+                    <h1>Popular</h1>
+                </div>
+                <div>
+                <ul data-testid="guestVideoList">
+                    {popularData.map((user) => {
+                        const awatarPath = user.avatar;
+                        return (
+                            <Link
+                                to={
+                                    userId === user.id
+                                        ? `/account`
+                                        : `/user/${user.id}`
+                                }
+                                key={user.id}
+                            >
+                                <li key={user.id}>
                                     <div className={styles.link_holder}>
                                         <div className={styles.image_holder}>
                                             <img src={awatarPath} alt="avatar" className={styles.profile_picture}/>
@@ -53,11 +56,12 @@ export default function Popular() {
                                         <p className={styles.text_center}>{user.name}</p>
                                     </div>
                                 </li>
-                        </Link>
-                    );
-                })}
-            </ul>
-
+                            </Link>
+                        );
+                    })}
+                </ul>
+                </div>
+            </div>
         </div>
     );
 }

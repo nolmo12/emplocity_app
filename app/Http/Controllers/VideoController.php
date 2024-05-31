@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Sqids\Sqids;
 use Carbon\Carbon;
 use App\Models\Tag;
+use App\Models\Url;
 use App\Models\User;
 use App\Models\Video;
 use App\Helpers\Utils;
@@ -630,17 +631,6 @@ class VideoController extends Controller
             
                 return response()->json('Succesfully added view');
             }
-        }
-    }
-
-    public function getVideoUrl(Request $request, $reference_code)
-    {   
-        try {
-            $video = Video::where('reference_code', $reference_code)->firstOrFail();
-            $videoUrl = asset('video/' . $video->reference_code);
-            return response()->json(['url' => $videoUrl]);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return response()->json(['error' => 'Video not found'], 404);
         }
     }
 

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('video')->nullable();
             $table->integer('views')->default(0);
             $table->string('visibility')->default('public');
+            $table->integer('shares')->default(0);
             $table->foreignIdFor(User::class)->nullable()->constrained();
             $table->timestamps();
         });
