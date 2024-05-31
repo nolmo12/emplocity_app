@@ -64,14 +64,29 @@ export default function useFetchRecommendVideos({ pageNumber }) {
         }
     }, [userId, tag]);
 
-    const fetchNextVideos = async (pageNumber) => {
+    const fetchNextVideos = async (
+        pageNumber,
+        noMoreVideosFlag,
+        setNoMoreVideosFlag
+    ) => {
         try {
-            const response = await http.get(
-                `/api/video/listing?page=${pageNumber}`
-            );
-            response.data.data.map((video) => {
-                setVideos((videos) => [...videos, video]);
-            });
+            if (noMoreVideosFlag) {
+                return;
+            } else {
+                const response = await http.get(
+                    `/api/video/listing?page=${pageNumber}`
+                );
+                console.log(response.data.data.length);
+                if (response.data.data.length === 0) {
+                    console.log("no more videos");
+                    setNoMoreVideosFlag(true);
+                    return;
+                } else {
+                    response.data.data.map((video) => {
+                        setVideos((videos) => [...videos, video]);
+                    });
+                }
+            }
         } catch (error) {
             console.log(error);
         }

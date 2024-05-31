@@ -58,6 +58,7 @@ export default function useFetchVideosSearch() {
         fetchLikedVideos,
         fetchVideosHistory,
         isLoading,
+        setIsLoading,
         sendToHistory,
     };
 }

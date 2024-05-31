@@ -84,6 +84,15 @@ export default function MainContent({ contentType }) {
                 </div>
             </main>
         );
+    } else if (contentType === "userFollows") {
+        view = (
+            <main>
+                <div id={styles.containerAccount}>
+                    <Settings />
+                    <SearchResult searchType={"userFollows"} />
+                </div>
+            </main>
+        );
     } else if (contentType === "help") {
         view = (
             <main>

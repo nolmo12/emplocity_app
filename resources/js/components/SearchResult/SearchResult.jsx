@@ -52,6 +52,9 @@ function UserInfo({ userObj }) {
     return (
         <div className={styles.userInfo}>
             <img src={userObj.avatar} alt="user avatar" />
+            {userObj.current_border && (
+                <img src={userObj.current_border.type} />
+            )}
             <div className={styles.userInfoText}>
                 <p>{userObj.name}</p>
             </div>
@@ -70,7 +73,9 @@ export default function SearchResult({ searchType }) {
         fetchLikedVideos,
         fetchSearchedVideos,
         isLoading,
+        setIsLoading,
     } = useFetchVideosSearch();
+    const { http } = authUser();
 
     const searchedVideos = async (sortType) => {
         const response = await fetchSearchedVideos(query, 0, sortType);
@@ -93,10 +98,13 @@ export default function SearchResult({ searchType }) {
         } else if (searchType === "userLikes") {
             likedVideos();
         } else {
-            if (!sortTypeValue) {
+            if (!sortTypeValue && searchType !== "userFollows") {
                 searchedVideos(sortType);
-            } else {
+            } else if (searchType !== "userFollows") {
                 searchedVideos(sortTypeValue);
+            } else {
+                getUserFollows();
+                setIsLoading(false);
             }
         }
     }, [searchType, query, sortTypeValue]);
@@ -104,6 +112,16 @@ export default function SearchResult({ searchType }) {
     const handleChangeSort = (e) => {
         setSortTypeValue(e.target.value);
         navigate(`/search-result/${query}/${e.target.value}`);
+    };
+
+    const getUserFollows = async () => {
+        try {
+            const response = await http.get(`/api/auth/followed`);
+            console.log(response.data);
+            setVideos(response.data);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     const checkUrl = () => {
@@ -199,6 +217,26 @@ export default function SearchResult({ searchType }) {
                         <VideoInfo videoObj={video} />
                     </li>
                 ))}
+            </ul>
+        );
+    } else if (searchType === "userFollows") {
+        // videos is followed users
+        view = (
+            <ul>
+                <h2></h2>
+                {videos.length === 0 ? (
+                    <h2>No followed users</h2>
+                ) : (
+                    videos.map((user) => {
+                        return (
+                            <li key={user.id}>
+                                <Link to={`/user/${user.id}`}>
+                                    <UserInfo userObj={user} />
+                                </Link>
+                            </li>
+                        );
+                    })
+                )}
             </ul>
         );
     }

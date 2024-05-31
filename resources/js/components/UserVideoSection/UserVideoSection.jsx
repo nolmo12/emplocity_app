@@ -8,6 +8,7 @@ import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 export default function UserVideoSection() {
+    const [user, setUser] = useState([]);
     const [visibleMenu, setVisibleMenu] = useState(null);
     const [videosObj, setVideosObj] = useState([]);
     const [renderKey, setRenderKey] = useState(0);
@@ -16,13 +17,14 @@ export default function UserVideoSection() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetchUserId();
+        fetchUser();
     }, [renderKey]);
 
-    const fetchUserId = async () => {
+    const fetchUser = async () => {
         await new Promise((resolve) => setTimeout(resolve, 50));
         const user = await getUser();
         fetchUserVideos(user.id);
+        setUser(user);
     };
 
     const fetchUserVideos = async (id) => {
@@ -30,19 +32,13 @@ export default function UserVideoSection() {
         setVideosObj(response.data);
     };
 
-    // const handleClickRemove = async (reference_code) => {
-    //     await http.delete(`/api/video/delete`, {
-    //         params: { reference_code: reference_code },
-    //     });
-    //     setRenderKey((prev) => prev + 1);
-    // };
-
     const toggleMenu = (id) => {
         setVisibleMenu(visibleMenu === id ? null : id);
     };
 
     return (
         <div id={styles.UserVideoSection}>
+            <p>My Followers count: {user.followers_count}</p>
             <table data-testid="userVideoTable">
                 <thead>
                     <tr>

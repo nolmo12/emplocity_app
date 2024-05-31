@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import _ from "lodash";
 import Video from "../Video/Video";
@@ -18,6 +18,8 @@ export default function VideoSection({ sectionType }) {
     const { videos, isLoading, fetchNextVideos } = useFetchRecommendVideos({
         pageNumber,
     });
+    const previousScroll = useRef(0);
+    const [noMoreVideosFlag, setNoMoreVideosFlag] = useState(false);
     const { removeUser, isAdmin } = useUser();
     const { calculateLikeRatio } = useLikeCalculation();
     const { tag } = useParams();
@@ -32,20 +34,27 @@ export default function VideoSection({ sectionType }) {
     const handleScroll = _.throttle((event) => {
         if (sectionType === "reccommend") {
             const target = event.target;
+            const currentScroll = target.scrollTop;
             const scrollPercentage =
                 (target.scrollTop /
                     (target.scrollHeight - target.clientHeight)) *
                 100;
-
-            if (scrollPercentage > 85 && !hasScrolledPast85) {
-                const tempNumber = pageNumber + 1;
-                setPageNumber((prev) => prev + 1);
-                fetchNextVideos(tempNumber);
-                // setHasScrolledPast85(true);
-            } else if (scrollPercentage < 85) {
-                setHasScrolledPast85(false);
+            if (previousScroll.current < currentScroll) {
+                if (scrollPercentage > 85 && !hasScrolledPast85) {
+                    const tempNumber = pageNumber + 1;
+                    setPageNumber((prev) => prev + 1);
+                    console.log(noMoreVideosFlag);
+                    fetchNextVideos(
+                        tempNumber,
+                        noMoreVideosFlag,
+                        setNoMoreVideosFlag
+                    );
+                    // setHasScrolledPast85(true);
+                } else if (scrollPercentage < 85) {
+                    setHasScrolledPast85(false);
+                }
             }
-            // potentially rework
+            previousScroll.current = currentScroll;
         }
     }, 1500);
 

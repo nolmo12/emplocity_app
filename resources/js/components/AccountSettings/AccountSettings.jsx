@@ -55,7 +55,6 @@ export default function AccountSettings() {
             getCurrentUserBorder();
         }
     }, [user]);
-
     const getUserBorders = async () => {
         const response = await getBorders();
         setUserBorders(response);
@@ -186,7 +185,9 @@ export default function AccountSettings() {
                                             {user.created_at.substring(0, 10)}
                                         </span>
                                     </p>
-                                    <div className={styles.avatarBorderContainer}>
+                                    <div
+                                        className={styles.avatarBorderContainer}
+                                    >
                                         <p>
                                             {user.avatar ? (
                                                 <>
@@ -213,41 +214,41 @@ export default function AccountSettings() {
                                                 <ClipLoader color="#000" />
                                             )}
                                         </p>
-                                            {currentBorder && (
-                                                <img
-                                                    src={currentBorder}
-                                                    alt="current border"
-                                                    className={styles.userBorder}
-                                                />
-                                            )}
-                                        </div>
+                                        {currentBorder && (
+                                            <img
+                                                src={currentBorder}
+                                                alt="current border"
+                                                className={styles.userBorder}
+                                            />
+                                        )}
+                                    </div>
+                                    {userBorders &&
+                                        userBorders.borders &&
+                                        userBorders.borders.length > 0 && (
+                                            <p className={styles.label}>
+                                                User borders:{" "}
+                                            </p>
+                                        )}
+                                    <p>
                                         {userBorders &&
                                             userBorders.borders &&
-                                            userBorders.borders.length > 0 && (
-                                                <p className={styles.label}>
-                                                    User borders:{" "}
-                                                </p>
-                                            )}
-                                        <p>
-                                            {userBorders &&
-                                                userBorders.borders &&
-                                                userBorders.borders.map((item) => (
-                                                    <img
-                                                        src={item.type}
-                                                        alt="border"
-                                                        onClick={() =>
-                                                            handleClickBorder(
-                                                                item.id,
-                                                                setRenderKey
-                                                            )
-                                                        }
-                                                        key={`userBorder${item.id}`}
-                                                        className={
-                                                            styles.ownedBorders
-                                                        }
-                                                    />
-                                                ))}
-                                        </p>
+                                            userBorders.borders.map((item) => (
+                                                <img
+                                                    src={item.type}
+                                                    alt="border"
+                                                    onClick={() =>
+                                                        handleClickBorder(
+                                                            item.id,
+                                                            setRenderKey
+                                                        )
+                                                    }
+                                                    key={`userBorder${item.id}`}
+                                                    className={
+                                                        styles.ownedBorders
+                                                    }
+                                                />
+                                            ))}
+                                    </p>
                                 </div>
                             </>
                         </div>
@@ -273,7 +274,9 @@ export default function AccountSettings() {
                         )}
                         <input
                             type="password"
-                            onChange={(e) => handlePasswordChange(e, "previous")}
+                            onChange={(e) =>
+                                handlePasswordChange(e, "previous")
+                            }
                             value={userData.previousPassword}
                             placeholder="Previous password"
                             className={styles.floatingInput}
@@ -283,7 +286,9 @@ export default function AccountSettings() {
                         )}
                         <input
                             type="password"
-                            onChange={(e) => handlePasswordChange(e, "password")}
+                            onChange={(e) =>
+                                handlePasswordChange(e, "password")
+                            }
                             value={userData.password}
                             placeholder="New password"
                             className={styles.floatingInput}
@@ -318,7 +323,9 @@ export default function AccountSettings() {
                                 <div>
                                     <p>Selected Avatar:</p>
                                     <img
-                                        src={URL.createObjectURL(userData.avatar)}
+                                        src={URL.createObjectURL(
+                                            userData.avatar
+                                        )}
                                         alt="Selected Avatar"
                                         className={styles.selectedAvatar}
                                     />
@@ -349,7 +356,9 @@ export default function AccountSettings() {
                                 <button onClick={() => removeUser(user.id)}>
                                     Yes
                                 </button>
-                                <button onClick={() => setRemoveFlag(!removeFlag)}>
+                                <button
+                                    onClick={() => setRemoveFlag(!removeFlag)}
+                                >
                                     No
                                 </button>
                             </>

@@ -66,10 +66,10 @@ class UrlController extends Controller
 
             if (preg_match($pattern, $shortUrl))
             {
-                $updatedUrl = preg_replace($pattern, '$1t=' . $time, $shortUrl);
+                $shortUrl = preg_replace($pattern, '$1t=' . $time, $shortUrl);
             } 
 
-            $url->short_url = $updatedUrl;
+            $url->short_url = $shortUrl;
             $url->save();
 
             return url("/v/{$url->short_url}");
@@ -89,7 +89,7 @@ class UrlController extends Controller
             $shortenedUrl = substr($shortenedUrl, 0, $maxLength);
         }
 
-        $shortenedUrl .= 't=' . $time;
+        $shortenedUrl .= '?t=' . $time;
 
         
 
