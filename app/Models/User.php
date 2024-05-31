@@ -159,4 +159,17 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, Searc
         return $this->hasMany(Order::class);
     }
 
+    public function creators(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'creator_follower', 'follower_id', 'creator_id');
+    }
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'creator_follower', 'creator_id', 'follower_id');
+    }
+
+    public function countFollowers()
+    {
+        return $this->followers()->count();
+    }
 }
