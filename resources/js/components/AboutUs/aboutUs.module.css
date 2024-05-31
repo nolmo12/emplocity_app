@@ -1,0 +1,21 @@
+.aboutUs {
+    height:85vh;
+}
+
+.aboutUs .aboutUsh2{
+    width:100%;
+    text-align: center;
+    font-size:4rem;
+    margin-bottom:0.5em;
+}
+.aboutUs section
+{
+    width: 50%;
+    margin: 0 auto;
+}
+
+.aboutUs p {
+    text-align: justify;
+    position:relative;
+    margin-bottom:1em;
+}

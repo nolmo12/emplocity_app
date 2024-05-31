@@ -227,23 +227,25 @@ export default function Header() {
                 </Link>
 
                 <SearchBar />
-
-                {isFetched.avatar ? (
-                    <img
-                        src={userAvatar}
-                        alt="Icon"
-                        data-testid="icon"
-                        id={styles.imgIcon}
-                        onLoad={() => {
-                            setIsLoaded((prev) => ({ ...prev, avatar: true }));
-                        }}
-                        onClick={toggleMenu}
-                    ></img>
-                ) : (
-                    <ClipLoader color="#000" />
-                )}
-                {userBorder && <img src={userBorder}></img>}
+                <div className={styles.avatarBorderContainer} onClick={toggleMenu}>
+                    {isFetched.avatar ? (
+                        <img
+                            src={userAvatar}
+                            alt="Icon"
+                            data-testid="icon"
+                            id={styles.imgIcon}
+                            onLoad={() => {
+                                setIsLoaded((prev) => ({ ...prev, avatar: true }));
+                            }}
+                            onClick={toggleMenu}
+                        ></img>
+                    ) : (
+                        <ClipLoader color="#000" />
+                    )}
+                    {userBorder && <img src={userBorder} className={styles.userBorder}></img>}
+                </div>
             </header>
+            
             <ul
                 id={styles.menu}
                 data-testid="ulMenu"
