@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use Illuminate\Support\Facades\Route;
 use App\Actions\Fortify\CreateNewUser;
+use App\Http\Controllers\UrlController;
 use App\Http\Controllers\UserController;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
@@ -22,7 +23,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 Route::get('/{path?}', function () {
     return view('welcome');
 })
-->where('path', '^(?!account|account-settings|history/[^/]+$|user-likes/[^/]+$|shop|login).*$');
+->where('path', '^(?!account|account-settings|history/[^/]+$|user-likes/[^/]+$|shop|login|v/[^/]+$).*$');
 
 Route::get('/account', function () {
     return view('welcome');
@@ -47,6 +48,8 @@ Route::get('/shop', function () {
 Route::get('/login', function () {
     return view('welcome');
 })->middleware('guest');
+
+Route::get('/v/{shortUrl}', [UrlController::class, 'redirection']);
 
 
 
