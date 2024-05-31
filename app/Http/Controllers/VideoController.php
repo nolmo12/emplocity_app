@@ -18,6 +18,7 @@ use App\Helpers\VideoManager;
 use App\Models\LanguageVideo;
 use App\Helpers\ValidateHelper;
 use App\Models\VideoLikesDislike;
+use App\Jobs\SendEmailToFollowers;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\FileRequestManager;
 use Illuminate\Support\Facades\File;
@@ -36,7 +37,7 @@ class VideoController extends Controller
             'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
             'language' => 'required|exists:languages,id',
             'visibility' => ['required', new Enumerate(['Public', 'Unlisted', 'Hidden'])],
-            'video' => 'required|file|mimetypes:video/mp4,video/avi, video/mov, video/mpeg,video/quicktime,',
+            'video' => 'required|file|mimetypes:video/mp4,video/avi, video/mov, video/mpeg,video/quicktime, video/webm',
             'tags' => 'array',
             'tags.*' => 'string|min:2'
         ]);
@@ -147,6 +148,8 @@ class VideoController extends Controller
         $video->status = 'Ok';
         $video->visibility = $request->visibility;
         $video->save();
+
+        SendEmailToFollowers::dispatch($video)->onQueue('emails');
         
         return $video;
     }

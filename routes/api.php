@@ -38,8 +38,10 @@ use App\Http\Controllers\Auth\VerificationController;
 Route::middleware('auth')->get('/user', function (Request $request) {
     $user = $request->user();
     $currentBorder = $user->currentBorder();
+    $followers = $user->countFollowers();
     unset($currentBorder['pivot']);
     $user['current_border'] = $currentBorder;
+    $user['followers_count'] = $followers;
 
     return $user;
 });
@@ -67,6 +69,13 @@ Route::prefix('auth')->group(function () {
     Route::get('/borders', [BorderController::class, 'getUserBorders'])->middleware('auth:api');
     Route::get('/currentBorder/{id}', [UserController::class, 'showCurrentBorder'])->middleware('auth:api');
     Route::patch('/changeCurrentBorder', [UserController::class, 'changeCurrentBorder'])->middleware('auth:api');
+
+    Route::post('/follow', [UserController::class, 'follow'])->middleware('auth:api');
+    Route::post('/unfollow', [UserController::class, 'unfollow'])->middleware('auth:api');
+
+    Route::get('/followed', [UserController::class, 'getCreators'])->middleware('auth:api');
+
+    Route::get('/isFollowing/{userId}', [UserController::class, 'hasFollowed'])->middleware('auth:api');
 
 });
 

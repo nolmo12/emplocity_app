@@ -352,4 +352,132 @@ public function update(Request $request, $id)
         return response()->json(['message' => 'You dont own that border or there was an error updating']);   
     }
 
+    public function getFollowers(Request $request)
+    {
+        $user = $request->user();
+        $followers = $user->followers;
+        foreach($followers as &$follower)
+        {
+            unset($follower['pivot']);
+            $border = $follower->currentBorder();
+            unset($border['pivot']);
+        }
+        return $followers;
+    }
+
+    public function follow(Request $request)
+    {
+        $validateUser = Validator::make($request->all(), [
+            'creator_id' => 'required|exists:users,id',
+        ]);
+    
+        if ($validateUser->fails()) {
+            $errors = $validateUser->errors();
+    
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'errors' => $errors,
+            ], 401);
+        }
+
+        $user = $request->user();
+
+        $creatorId = $request->creator_id;
+        if ($user->id != $creatorId) 
+        {
+
+                if ($user->creators()->where('creator_id', $creatorId)->exists()) 
+                {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'You are already following this creator.',
+                    ], 400);
+                }
+
+                $user->creators()->attach($creatorId);
+
+                $user->creators()->updateExistingPivot($creatorId, ['updated_at' => now(), 'created_at' => now()], false);
+            
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Successfully followed the creator.',
+                ], 200);
+        }
+        return response()->json([
+            'status' => false,
+            'message' => 'You cannot follow yourself!.',
+        ], 400);
+
+    }
+
+    public function unfollow(Request $request)
+    {
+        $validateUser = Validator::make($request->all(), [
+            'creator_id' => 'required|exists:users,id',
+        ]);
+    
+        if ($validateUser->fails()) {
+            $errors = $validateUser->errors();
+    
+            return response()->json([
+                'status' => false,
+                'message' => 'Validation error',
+                'errors' => $errors,
+            ], 401);
+        }
+
+        $user = $request->user();
+        $creatorId = $request->creator_id;
+    
+        if (!$user->creators()->find($creatorId))
+        {
+            return response()->json([
+                'status' => false,
+                'message' => 'You are not following this creator.',
+            ], 400);
+        }
+
+        $user->creators()->detach($creatorId);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully unfollowed the creator.',
+        ], 200);
+    }
+
+    public function hasFollowed(Request $request, int $userId)
+    {
+        $user = $request->user();
+
+        if ($user->creators()->where('creator_id', $userId)->exists()) 
+        {
+            return response()->json([
+                'status' => true,
+                'message' => 'You are following this creator.',
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => false,
+            'message' => 'You are not following this creator.',
+        ], 400);
+    }
+
+    public function getCreators(Request $request)
+    {
+        $user = $request->user();
+        $creators = $user->creators;
+
+        foreach($creators as &$creator)
+        {
+            unset($creator['pivot']);
+            $border = $creator->currentBorder();
+            unset($border['pivot']);
+            $creator['current_border'] = $border;
+        }
+
+        return $creators;
+    }
+
 }
