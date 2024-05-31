@@ -125,7 +125,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         const timeToSend = videoObj.video.duration * 0.3;
         playStartTime.current = Date.now();
         if (time && timeUseFlag.current === false) {
-            console.log("Time is: ", time);
             const customTime = Number(time.slice(2));
             timeRef.current.currentTime = customTime;
             timeUseFlag.current = true;
@@ -185,6 +184,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     };
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
