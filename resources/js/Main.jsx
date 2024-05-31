@@ -59,22 +59,23 @@ function Main() {
                 }
             />
 
-            <Route 
-                path="/register" 
+            <Route
+                path="/register"
                 element={
                     <>
                         <RegisterPage />
                         <Footer />
                     </>
-                } />
-            <Route 
-                path="/login" 
+                }
+            />
+            <Route
+                path="/login"
                 element={
                     <>
                         <LoginPage />
                         <Footer />
                     </>
-                } 
+                }
             ></Route>
             <Route
                 path="/forgotPassword"
@@ -82,7 +83,7 @@ function Main() {
                     <>
                         <ForgotPasswordPage />
                         <Footer />
-                    </>        
+                    </>
                 }
             ></Route>
 
@@ -140,17 +141,7 @@ function Main() {
                 }
             />
             <Route
-                path="/video/:reference_code"
-                element={
-                    <>
-                        <Header />
-                        <MainContent contentType="video" />
-                        <Footer />
-                    </>
-                }
-            />
-            <Route
-                path="/video/:reference_code/:time"
+                path="/video/:reference_code/:time?"
                 element={
                     <>
                         <Header />

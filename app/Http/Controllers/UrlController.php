@@ -89,7 +89,7 @@ class UrlController extends Controller
             $shortenedUrl = substr($shortenedUrl, 0, $maxLength);
         }
 
-        $shortenedUrl .= '/?t=' . $time;
+        $shortenedUrl .= 't=' . $time;
 
         
 
@@ -114,7 +114,7 @@ class UrlController extends Controller
 
         if($url)
         {
-            $longUrl = $url->original_url . '?t=' . $time;
+            $longUrl = $url->original_url . '/t=' . $time;
             return redirect($longUrl);
         }
         else

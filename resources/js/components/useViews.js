@@ -5,7 +5,7 @@ import authUser from "./authUser";
 import { reference } from "@popperjs/core";
 export default function useViews() {
     const [timerFlag, setTimerFlag] = useState(false);
-    const timeRef = useRef();
+    const timeRemaining = useRef();
     const sendFlag = useRef(false);
     const intervald = useRef(null);
     const currentTime = useRef(0);
@@ -46,7 +46,8 @@ export default function useViews() {
     };
 
     const updateRemainingTime = (currentTime, totalDuration) => {
-        timeRef.current = totalDuration - currentTime;
+        timeRemaining.current = totalDuration - currentTime;
+        console.log(timeRemaining.current);
     };
 
     const timer = (duration) => {
@@ -68,6 +69,7 @@ export default function useViews() {
         pauseTimer,
         resumeTimer,
         updateRemainingTime,
-        timeRef,
+        timeRemaining,
+        currentTime,
     };
 }

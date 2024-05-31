@@ -79,38 +79,45 @@ export default function Video({ videoObj }) {
                             )}
                         </div>
                     </div>
-                    </Link>
-                    <div className={styles.videoStat}>
-                        <div className={styles.videoInfo}>
-                            <p className={styles.videoTitle}>{videoTitle}</p>
+                </Link>
+                <div className={styles.videoStat}>
+                    <div className={styles.videoInfo}>
+                        <p className={styles.videoTitle}>{videoTitle}</p>
+                    </div>
+                    <div className={styles.videoInfo}>
+                        <div className={styles.videoAvatarContainer}>
+                            <img
+                                src={videoAvatar}
+                                className={styles.userAvatar}
+                            ></img>
+                            {videoBorder && (
+                                <img
+                                    src={videoBorder.type}
+                                    className={styles.border}
+                                />
+                            )}
                         </div>
-                        <div className={styles.videoInfo}>
-                            <div className={styles.videoAvatarContainer}>
-                                <img src={videoAvatar} className={styles.userAvatar}></img>
-                                {videoBorder && <img src={videoBorder.type} className={styles.border}/>}
-                            </div>
-                            <div>
+                        <div>
                             {videoOwner ? (
                                 <p data-testid="video-owner">{videoOwner}</p>
-                                
                             ) : (
                                 <p data-testid="video-owner">Guest</p>
                             )}
-                            </div>
-                        </div>
-                        <div className={styles.videoInfo}>
-                            <p data-testid="video-views">{videoViews}</p>
-                        </div>
-                        <div className={styles.videoInfo}>
-                            <p data-testid="video-date">{videoDate}</p>
-                        </div>
-                        <div
-                            className={styles.videoInfo}
-                            style={getLikeRatioStyle(likeRatio)}
-                        >
-                            {likeRatio}
                         </div>
                     </div>
+                    <div className={styles.videoInfo}>
+                        <p data-testid="video-views">{videoViews}</p>
+                    </div>
+                    <div className={styles.videoInfo}>
+                        <p data-testid="video-date">{videoDate}</p>
+                    </div>
+                    <div
+                        className={styles.videoInfo}
+                        style={getLikeRatioStyle(likeRatio)}
+                    >
+                        {likeRatio}
+                    </div>
+                </div>
             </section>
         );
     }
