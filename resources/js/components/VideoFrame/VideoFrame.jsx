@@ -40,12 +40,15 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const link = useRef();
     const user = useRef("");
     const playStartTime = useRef(0);
+    const timeRef = useRef(0);
+    const actualTime = useRef(0);
     const { isLogged, getUser } = authUser();
     const { isAdmin, removeVideo, removeUser } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
-    const { startTimer, pauseTimer, timeRef, updateRemainingTime } = useViews();
+    const { startTimer, pauseTimer, updateRemainingTime, timeRemaining } =
+        useViews();
     const { reference_code, time } = useParams();
     const { videoObj, isLoading, getVideoLink, downloadVideo } = useFetchVideo({
         reference_code,
@@ -111,7 +114,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
 
     const getLink = async (t) => {
         const tempLink = await getVideoLink(t);
-        link.current = tempLink.url;
+        link.current = tempLink;
     };
 
     const copyToClipboard = (text) => {
@@ -122,16 +125,14 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         const timeToSend = videoObj.video.duration * 0.3;
         playStartTime.current = Date.now();
         if (time && timeUseFlag.current === false) {
+            console.log("Time is: ", time);
             const customTime = Number(time.slice(2));
             timeRef.current.currentTime = customTime;
-
             timeUseFlag.current = true;
             startTimer(timeToSend, customTime);
         } else {
             startTimer(timeToSend);
         }
-        console.log(timeRef.current.currentTime);
-        getLink(timeRef.current.currentTime);
     };
 
     const handlePause = () => {
@@ -199,6 +200,8 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
             new Date()
         );
         const tags = videoObj.tags;
+        actualTime.current = videoDuration - timeRemaining.current;
+        getLink(actualTime.current);
         return (
             <>
                 <div

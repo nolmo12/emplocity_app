@@ -149,7 +149,9 @@ export default function SearchResult({ searchType }) {
                 value.forEach((video) => {
                     otherResults.push(
                         <li key={`video-${video.video.id}`}>
-                            <Link to={`/video/${video.video.reference_code}`}>
+                            <Link
+                                to={`/video/${video.video.reference_code}/time=0`}
+                            >
                                 <VideoThumbnail videoObj={video} />
                             </Link>
                             <VideoInfo videoObj={video} />
@@ -172,7 +174,9 @@ export default function SearchResult({ searchType }) {
                 <h2>History</h2>
                 {videos.map((video) => (
                     <li key={video.video.id}>
-                        <Link to={`/video/${video.video.reference_code}`}>
+                        <Link
+                            to={`/video/${video.video.reference_code}/time=0`}
+                        >
                             <VideoThumbnail videoObj={video} />
                         </Link>
 

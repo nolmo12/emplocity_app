@@ -60,18 +60,18 @@ export default function VideoSection({ sectionType }) {
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
                     <div className={styles.videoSectionHContainer}>
-                    <h2 className={styles.videoSectionH}>Recommended</h2>
+                        <h2 className={styles.videoSectionH}>Recommended</h2>
                     </div>
                     <div className={styles.videoSectionList}>
-                    {Object.entries(videos).map(([key, video]) => {
-                        return (
-                            <Video
-                                data-testid={`video-${testKey}`}
-                                key={`recommend-${video.video.id}`}
-                                videoObj={video}
-                            />
-                        );
-                    })}
+                        {Object.entries(videos).map(([key, video]) => {
+                            return (
+                                <Video
+                                    data-testid={`video-${testKey}`}
+                                    key={`recommend-${video.video.id}`}
+                                    videoObj={video}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             );
@@ -94,7 +94,9 @@ export default function VideoSection({ sectionType }) {
                                         src={videoObj.video.thumbnail}
                                         alt="video thumbnail"
                                     />
-                                    <p className={styles.videoTitle}>{videoObj.title}</p>
+                                    <p className={styles.videoTitle}>
+                                        {videoObj.title}
+                                    </p>
                                     <p>
                                         Rating:{" "}
                                         <span
