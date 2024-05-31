@@ -131,6 +131,16 @@ function Main() {
                 }
             ></Route>
             <Route
+                path={"/follows/:userId"}
+                element={
+                    <>
+                        <Header />
+                        <MainContent contentType="userFollows" />
+                        <Footer />
+                    </>
+                }
+            />
+            <Route
                 path="/help"
                 element={
                     <>

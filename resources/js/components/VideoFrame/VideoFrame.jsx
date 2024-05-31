@@ -23,7 +23,7 @@ import "reactjs-popup/dist/index.css";
 
 export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const [likesCount, setLikesCount] = useState(0);
-    const [userName, setUserName] = useState();
+    const [userId, setUserId] = useState();
     const [dislikesCount, setDislikesCount] = useState(0);
     const [renderKey, setRenderKey] = useState(0);
     const [thumbObj, setThumbObj] = useState({
@@ -37,6 +37,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const [adminFlag, setAdminFlag] = useState(false);
     const [watchTime, setWatchTime] = useState(0);
+    const [isFollowed, setIsFollowed] = useState();
     const link = useRef();
     const user = useRef("");
     const playStartTime = useRef(0);
@@ -50,7 +51,15 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const { startTimer, pauseTimer, updateRemainingTime, timeRemaining } =
         useViews();
     const { reference_code, time } = useParams();
-    const { videoObj, isLoading, getVideoLink, downloadVideo } = useFetchVideo({
+    const {
+        videoObj,
+        isLoading,
+        getVideoLink,
+        downloadVideo,
+        followUser,
+        unfollowUser,
+        checkFollow,
+    } = useFetchVideo({
         reference_code,
     });
     const MAX_DESCRIPTION_LENGTH = 50;
@@ -66,6 +75,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
 
     useEffect(() => {
         sendToHistory(reference_code);
+
         setThumbObj({
             like: false,
             dislike: false,
@@ -82,6 +92,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
             setFrameISLoaded(true);
         }
         fetchLikeInfo();
+        checkIsFollowed();
     }, [reference_code, videoObj]);
 
     const calculateTime = (created, current) => {
@@ -107,7 +118,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
 
     const setUser = async () => {
         user.current = await getUser();
-        if (isLogged()) setUserName(user.current.name);
+        if (isLogged()) setUserId(user.current.id);
 
         setAdminFlag(await isAdmin());
     };
@@ -154,6 +165,21 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         await downloadVideo();
     };
 
+    const handleClickFollowButton = async () => {
+        if (isFollowed) {
+            await unfollowUser(videoObj.userId);
+            setIsFollowed(!isFollowed);
+        } else {
+            await followUser(videoObj.userId);
+            setIsFollowed(!isFollowed);
+        }
+    };
+
+    const checkIsFollowed = async () => {
+        const response = await checkFollow(videoObj.userId);
+        setIsFollowed(response);
+    };
+
     const fetchLikeInfo = async () => {
         if (!isLogged()) {
             console.log("User is not logged in. Cannot fetch likes.");
@@ -184,7 +210,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     };
 
     if (!isLoading) {
-        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -192,7 +217,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         const videoOwner = videoObj.userName;
         const videoViews = videoObj.video.views;
         const videoDuration = videoObj.video.duration;
-        const videoOwnerUserName = videoObj.userName;
         const videoOwnerId = videoObj.userId;
         const videoType = videoObj.video.type;
         const uploadedTimeAgo = calculateTime(
@@ -366,7 +390,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                 <p data-testid="video-owner">
                                     <Link
                                         to={
-                                            videoOwnerUserName === userName
+                                            videoOwnerId === userId
                                                 ? `/account`
                                                 : `/user/${videoOwnerId}`
                                         } // need endpoint video -> ownerId
@@ -444,7 +468,13 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                 })}
                             </p>
                         </p>
+                        {videoOwnerId !== userId && userId && videoOwnerId && (
+                            <button onClick={handleClickFollowButton}>
+                                {isFollowed ? "Unfollow" : "Follow"}
+                            </button>
+                        )}
                     </div>
+
                     <Comments
                         reference_code={reference_code}
                         mainRef={mainRef}

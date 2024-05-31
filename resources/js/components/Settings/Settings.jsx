@@ -20,6 +20,7 @@ export default function Settings() {
     const { logout, isLogged, getUser } = authUser();
     const [historyPath, setHistoryPath] = useState();
     const [likedPath, setLikedPath] = useState();
+    const [followsPath, setFollowsPath] = useState();
 
     useEffect(() => {
         if (!isLogged()) {
@@ -31,6 +32,7 @@ export default function Settings() {
                 const user = await getUser();
                 setHistoryPath(`/history/${user.id}`);
                 setLikedPath(`/user-likes/${user.id}`);
+                setFollowsPath(`/follows/${user.id}`);
             };
             getUserData();
         }
@@ -74,6 +76,15 @@ export default function Settings() {
                     />
                     <Link to={likedPath} className={styles.link}>
                         Liked videos
+                    </Link>
+                </li>
+                <li>
+                    <FontAwesomeIcon
+                        icon={faThumbsUp}
+                        className={styles.settingsIcon}
+                    />
+                    <Link to={followsPath} className={styles.link}>
+                        My follows
                     </Link>
                 </li>
                 <li>

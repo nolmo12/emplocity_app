@@ -28,14 +28,28 @@ export default function useFetchVideo({ reference_code }) {
 
     const getVideoLink = async (t) => {
         try {
-            console.log(t);
-
             const response = await http.put(
                 `/api/video/getUrl?reference_code=${reference_code}&time=${
                     Math.floor(t) || 0
                 }&original_url=video/${reference_code}`
             );
-            console.log(response.data);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const followUser = async (id) => {
+        await http.post(`/api/auth/follow?creator_id=${id}`);
+    };
+
+    const unfollowUser = async (id) => {
+        await http.post(`/api/auth/unfollow?creator_id=${id}`);
+    };
+
+    const checkFollow = async (id) => {
+        try {
+            const response = await http.get(`/api/auth/isFollowing/${id}`);
             return response.data;
         } catch (error) {
             console.log(error);
@@ -43,7 +57,6 @@ export default function useFetchVideo({ reference_code }) {
     };
 
     const downloadVideo = async () => {
-        console.log(reference_code);
         try {
             const response = await http.get(
                 `/api/video/download/${reference_code}`
@@ -54,5 +67,13 @@ export default function useFetchVideo({ reference_code }) {
             console.log(error);
         }
     };
-    return { videoObj, isLoading, getVideoLink, downloadVideo };
+    return {
+        videoObj,
+        isLoading,
+        followUser,
+        unfollowUser,
+        checkFollow,
+        getVideoLink,
+        downloadVideo,
+    };
 }
