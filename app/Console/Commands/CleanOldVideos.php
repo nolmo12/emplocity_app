@@ -30,31 +30,32 @@ class CleanOldVideos extends Command
     {
         $daysToRemoveAfter = Carbon::now()->subDays(7);
 
-        $video = Video::whereNull('user_id')->where('created_at', '<', $daysToRemoveAfter);
+        $videos = Video::whereNull('user_id')->where('created_at', '<', $daysToRemoveAfter)->get();
+        foreach($videos as $video)
+        {
+            $video->tags()->detach();
 
-        $video->tags()->detach();
-
-        $video->histories()->delete();
-
-        $video->languages()->detach();
-
-        $video->likesDislikes()->delete();
-
-        $video->comments()->delete();
-
-        $video->views()->delete();
-
-        $videoPath = public_path($video->video);
-        $thumbnailPath = public_path($video->thumbnail);
-
-        $video->delete();
-
-        if(File::exists($videoPath))
-            File::delete($videoPath);
-
-        if(File::exists($thumbnailPath))
-            File::delete($thumbnailPath);
-
+            $video->histories()->delete();
+    
+            $video->languages()->detach();
+    
+            $video->likesDislikes()->delete();
+    
+            $video->comments()->delete();
+    
+            $video->views()->delete();
+    
+            $videoPath = public_path($video->video);
+            $thumbnailPath = public_path($video->thumbnail);
+    
+            $video->delete();
+    
+            if(File::exists($videoPath))
+                File::delete($videoPath);
+    
+            if(File::exists($thumbnailPath))
+                File::delete($thumbnailPath);
+        }
         $this->info('Old data cleaned successfully!');
     }
 }
