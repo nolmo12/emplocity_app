@@ -26,11 +26,9 @@ export default function useViews() {
 
     const startTimer = (duration, startTime = 0) => {
         timeToSend.current = duration;
-        console.log("start time: ", startTime);
         if (timerFlag === false) {
-            console.log("start timer ", duration);
             setTimerFlag(true);
-            timer(timeToSend.current, reference_code);
+            timer(timeToSend.current);
         } else {
             resumeTimer(reference_code);
         }
@@ -44,7 +42,7 @@ export default function useViews() {
     };
 
     const resumeTimer = () => {
-        timer(timeToSend.current);
+        timer(timeToSend.current, currentTime.current);
     };
 
     const updateRemainingTime = (currentTime, totalDuration) => {
@@ -54,7 +52,6 @@ export default function useViews() {
     const timer = (duration) => {
         intervald.current = setInterval(async () => {
             currentTime.current += 0.1;
-            console.log("current time: ", currentTime.current);
             if (currentTime.current >= duration && sendFlag.current === false) {
                 console.log("send views");
                 clearInterval(intervald.current);

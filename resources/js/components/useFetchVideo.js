@@ -26,11 +26,15 @@ export default function useFetchVideo({ reference_code }) {
         fetchVideo();
     }, [reference_code]);
 
-    const getVideoLink = async () => {
+    const getVideoLink = async (t) => {
         try {
-            const response = await http.get(
-                `/api/video/getUrl/${reference_code}`
-            );
+            console.log(t);
+            const response = await http.put(`/api/video/getUrl`, {
+                reference_code: reference_code,
+                time: t,
+                orginal_url: `video/${reference_code}`,
+            });
+            console.log(response.data);
             return response.data;
         } catch (error) {
             console.log(error);
