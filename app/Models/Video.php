@@ -98,6 +98,7 @@ class Video extends Model implements SearchInterface
         $user = User::find($this->user_id);
 
         $user = User::find($this->user_id);
+        $userFollowersCount = $user ? $user->countFollowers() : null;
         $userId = $user ? $user->id : null;
         $userName = $user ? $user->name : null;
         $userFirstName = $user ? $user->first_name : null;

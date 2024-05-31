@@ -453,15 +453,13 @@ public function update(Request $request, $id)
         if ($user->creators()->where('creator_id', $userId)->exists()) 
         {
             return response()->json([
-                'status' => true,
-                'message' => 'You are following this creator.',
+                'is_following' => true,
             ], 200);
         }
 
         return response()->json([
-            'status' => false,
-            'message' => 'You are not following this creator.',
-        ], 400);
+            'is_following' => false,
+        ], 200);
     }
 
     public function getCreators(Request $request)
