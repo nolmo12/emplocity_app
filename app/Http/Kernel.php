@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Console\Commands\ClearUrl;
 use App\Console\Commands\CleanOldIps;
 use App\Console\Commands\CleanOldVideos;
 use Illuminate\Console\Scheduling\Schedule;
@@ -72,12 +73,14 @@ class Kernel extends HttpKernel
 
     protected $commands = [
         CleanOldVideos::class,
-        CleanOldIps::class
+        CleanOldIps::class,
+        ClearUrl::class
     ];
 
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('app:clean-old-videos')->daily();
         $schedule->command('app:clean-old-ips')->daily();
+        $schedule->command('app:clear-url')->daily();
     }
 }
