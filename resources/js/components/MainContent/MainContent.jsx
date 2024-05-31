@@ -16,6 +16,7 @@ import config from "../../config";
 import styles from "./mainContent.module.css";
 
 export default function MainContent({ contentType }) {
+    const [frameIsLoaded, setFrameIsLoaded] = useState(false);
     const mainRef = useRef();
     let view = undefined;
 
@@ -32,8 +33,8 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <Settings />
-                <UserVideoSection />
+                    <Settings />
+                    <UserVideoSection />
                 </div>
             </main>
         );
@@ -41,8 +42,8 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <Popular />
-                <VideoSection sectionType="otherAccount" />
+                    <Popular />
+                    <VideoSection sectionType="otherAccount" />
                 </div>
             </main>
         );
@@ -50,8 +51,8 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <Popular />
-                <VideoSection sectionType="tag" />
+                    <Popular />
+                    <VideoSection sectionType="tag" />
                 </div>
             </main>
         );
@@ -59,8 +60,8 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <Popular />
-                <SearchResult searchType={"userSearch"} />
+                    <Popular />
+                    <SearchResult searchType={"userSearch"} />
                 </div>
             </main>
         );
@@ -68,8 +69,8 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <Popular />
-                <SearchResult searchType={"userHistory"} />
+                    <Popular />
+                    <SearchResult searchType={"userHistory"} />
                 </div>
             </main>
         );
@@ -77,8 +78,8 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <Popular />
-                <SearchResult searchType={"userLikes"} />
+                    <Popular />
+                    <SearchResult searchType={"userLikes"} />
                 </div>
             </main>
         );
@@ -86,7 +87,7 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <HelpPage />
+                    <HelpPage />
                 </div>
             </main>
         );
@@ -94,8 +95,11 @@ export default function MainContent({ contentType }) {
         view = (
             <main ref={mainRef}>
                 <div id={styles.container} className={styles.videoFrameMain}>
-                    <VideoFrame mainRef={mainRef} />
-                    <VideoSection sectionType="similar" />
+                    <VideoFrame
+                        mainRef={mainRef}
+                        setFrameISLoaded={setFrameIsLoaded}
+                    />
+                    {frameIsLoaded && <VideoSection sectionType="similar" />}
                 </div>
             </main>
         );
@@ -109,7 +113,7 @@ export default function MainContent({ contentType }) {
         view = (
             <main>
                 <div id={styles.container}>
-                <AboutUs />
+                    <AboutUs />
                 </div>
             </main>
         );
