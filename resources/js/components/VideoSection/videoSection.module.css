@@ -5,7 +5,7 @@
     overflow-y: auto;
     padding-top: 2em;
     padding-left: 2em;
-    height:80vh;
+    height:55vh;
 }
 
 .videoSectionList
@@ -16,10 +16,12 @@
     align-content: flex-start;
     justify-content: space-around;
 }
+
 .videoSectionHContainer
 {
     height:5% !important;
 }
+
 .videoSectionH {
     width: 20%;
     height:5%;

@@ -18,7 +18,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     position: relative;
     width: 70%;
     height: 60%;
-    margin-top:2.5%;
+    margin-top: 2.5%;
     margin-left: 5%;
 }
 
@@ -33,8 +33,8 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     font-size: 0.5em;
 }
 
-.videoFrameInfo a{
-    color:white;
+.videoFrameInfo a {
+    color: white;
 }
 
 .videoFrameInfoTitle {
@@ -43,7 +43,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 
 .videoFrameInfoDesc {
     height: 10vh;
-    width:60%;
+    width: 60%;
     word-wrap: break-word;
 }
 
@@ -51,7 +51,7 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: pre-wrap;
-    font-size:0.8rem;
+    font-size: 0.8rem;
 }
 
 .videoFrameInfoDesc .collapsed {
@@ -61,20 +61,20 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 .videoFrameInfoDesc button {
     display: block;
     margin-top: 5px;
-    border:none;
+    border: none;
     background-color: #14213d;
-    color:white;
-    font-size:0.8rem;
+    color: white;
+    font-size: 0.8rem;
     cursor: pointer;
-    margin-bottom:1em;
+    margin-bottom: 1em;
 }
 
 .videoFrameInfoTitle p {
-    font-size:1.2rem;
+    font-size: 1.2rem;
 }
 
-.videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar, .videoFrameInfoViews{
-    font-size:0.9rem;
+.videoFrameOwner p, .videoFrameOwner .videoFrameOwnerAvatar, .videoFrameInfoViews {
+    font-size: 0.9rem;
 }
 
 .videoFrameOwner {
@@ -87,30 +87,65 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 }
 
 .videoLDContainer {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1em;
+    position:relative;
+    top:1em;
 }
 
 .videoLDContainer p {
+    margin: 0;
+    font-size: 1.8em; 
+}
+
+.videoFrameButtons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    float:right;
+    gap: 1em; 
+    width: 40%; 
+    margin-top: 0;
+    padding-top: 0; 
+}
+
+.videoFrameButtons .followButton {
+    width: 50%;
+    max-width: 10em;
+    height: 2.5em;
+    border-radius: 20px;
+    margin-top: 1em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    text-align: center;
+    border: solid 2px #a0a0a0;
+    background-color: white;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
     position: relative;
-    float: right;
-    font-size: 2em;
-    margin-top: 3%;
-    display: block;
-    right: -3.5%;
-    width: 2%;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    font-weight:600;
+}
+
+.videoFrameButtons .followButton:hover {
+    background-color: #f0f0f0;
+}
+
+.videoFrameButtons .followButton:active {
+    transform: scale(0.95);
 }
 
 .videoFrameIcon {
-    position: relative;
-    float: right;
     height: 3em;
     width: 3em;
-    margin-left: 1em;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-.videoFrameIcon:active{
+.videoFrameIcon:active {
     transform: scale(0.80);
 }
 
@@ -126,15 +161,15 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     text-align: center;
 }
 
-.sharePopup p{
-    margin-top:1em;
-    margin-bottom:1em;
+.sharePopup p {
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
-.sharePopup button{
+.sharePopup button {
     width: 15%;
     height: 1.5em;
-    font-size:0.8em;
+    font-size: 0.8em;
     margin: 0 auto;
     border-radius: 10px;
     margin-bottom: 1em;
@@ -144,16 +179,16 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     background-color: white;
 }
 
-.sharePopup button:hover{
+.sharePopup button:hover {
     background-color: #f0f0f0;
 }
 
-.sharePopup button:active{
+.sharePopup button:active {
     transform: scale(0.95);
 }
 
 .reportMenu {
-    position:relative;
+    position: relative;
 }
 
 .reportMenu .buttonsContainer {
@@ -173,9 +208,9 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     visibility: visible; 
 }
 
-.buttonsContainer button{
-    display:block;
-    text-align:center;
+.buttonsContainer button {
+    display: block;
+    text-align: center;
     width: 7em;
     height: 2em;
     transition: background-color 0.3s ease, transform 0.1s ease;
@@ -185,11 +220,11 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     text-align: center;
 }
 
-.buttonsContainer button:hover{
+.buttonsContainer button:hover {
     background-color: #f0f0f0;
 }
 
-.buttonsContainer button:active{
+.buttonsContainer button:active {
     transform: scale(0.95);
 }
 
@@ -219,24 +254,23 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     }
 
     .videoFrameInfoTitle p {
-        font-size:0.8rem;
+        font-size: 0.8rem;
     }
 
     .videoLDContainer p {
-        left:7%;
-        top:1.5em;
+        left: 7%;
+        top: 1.5em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
-
     .videoLDContainer p {
-        left:5%;
-        top:0.5em;
+        left: 5%;
+        top: 0.5em;
     }
 
     .videoFrameInfo {
-        width:90%;
+        width: 90%;
     }
 
     .videoScreen {

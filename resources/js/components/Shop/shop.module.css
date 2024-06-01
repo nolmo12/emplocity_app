@@ -57,21 +57,28 @@
     height: auto;
 }
 
-.border {
-    width: 15em;
-    height: 12em;
-    z-index: 2;
+.borderAvatarContainer {
+    width: 10em;
+    height: 10em;
     position: relative;
 }
 
-.avatar {
-    position: absolute;
-    top: 50%;
-    transform: translate(35%, -50%);
+.borderAvatarContainer .border {
+    border-radius: 0;
     width: 9.2em;
-    height: 9.7em;
-    border-radius: 50%;
-    z-index: 1;
+    height: 9.2em;
+    position: absolute;
+    z-index: 2;
+    left:0;
+}
+
+.borderAvatarContainer .avatar {
+    position: absolute;
+    border-radius:50%;
+    width: 8.3em;
+    height: 8.6em;
+    left:5%;
+    top:5%;
 }
 
 .infoContainer {
