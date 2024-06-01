@@ -67,7 +67,7 @@ export default function SearchResult({ searchType }) {
     const [videos, setVideos] = useState([]);
     const [sortTypeValue, setSortTypeValue] = useState();
     const [searchedObj, setSearchedObj] = useState({});
-    const offset = useRef(1);
+    const offset = useRef(0);
     const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const previousScroll = useRef(0);
     const { query, sortType } = useParams();
@@ -83,26 +83,45 @@ export default function SearchResult({ searchType }) {
     const { http } = authUser();
 
     const searchedVideos = async (sortType) => {
+        offset.current += 1;
         const response = await fetchSearchedVideos(
             query,
             offset.current,
-            sortType
+            sortType || sortTypeValue
         );
-        console.log(offset.current);
         if (offset.current < 2) {
-            console.log(response);
             setSearchedObj(response);
         } else {
-            console.log(searchedObj);
-
             // page is always 1
             if (response.videos.length === 0) return;
             setSearchedObj((prev) => {
                 return {
                     ...prev,
+                    page: response.page,
                     videos: [...prev.videos, ...response.videos],
                 };
             });
+        }
+    };
+
+    const searchedVideosSort = async (sortType) => {
+        for (let i = 1; i < offset.current; i++) {
+            const response = await fetchSearchedVideos(
+                query,
+                i,
+                sortType || sortTypeValue
+            );
+            if (i === 1) {
+                setSearchedObj(response);
+            } else {
+                setSearchedObj((prev) => {
+                    return {
+                        ...prev,
+                        page: response.page,
+                        videos: [...prev.videos, ...response.videos],
+                    };
+                });
+            }
         }
     };
 
@@ -123,9 +142,9 @@ export default function SearchResult({ searchType }) {
             likedVideos();
         } else {
             if (!sortTypeValue && searchType !== "userFollows") {
-                searchedVideos(sortType);
+                searchedVideos(sortType || sortTypeValue);
             } else if (searchType !== "userFollows") {
-                searchedVideos(sortTypeValue);
+                searchedVideos(sortType || sortTypeValue);
             } else {
                 getUserFollows();
                 setIsLoading(false);
@@ -136,12 +155,12 @@ export default function SearchResult({ searchType }) {
     const handleChangeSort = (e) => {
         setSortTypeValue(e.target.value);
         navigate(`/search-result/${query}/${e.target.value}`);
+        searchedVideosSort(e.target.value);
     };
 
     const getUserFollows = async () => {
         try {
             const response = await http.get(`/api/auth/followed`);
-            console.log(response.data);
             setVideos(response.data);
         } catch (error) {
             console.log(error);
@@ -170,9 +189,7 @@ export default function SearchResult({ searchType }) {
                 100;
             if (previousScroll.current < currentScroll) {
                 if (scrollPercentage > 85 && !hasScrolledPast85) {
-                    offset.current += 1;
-                    console.log(offset.current);
-                    searchedVideos(sortType);
+                    searchedVideos(sortType || sortTypeValue);
                     setHasScrolledPast85(true);
                 } else if (scrollPercentage < 85) {
                     setHasScrolledPast85(false);
@@ -213,7 +230,11 @@ export default function SearchResult({ searchType }) {
             } else if (key === "videos") {
                 value.forEach((video) => {
                     otherResults.push(
-                        <li key={`video-${video.video.id}`}>
+                        <li
+                            key={`video-${video.video.id}-${
+                                sortTypeValue + video.video.title || "default"
+                            }`}
+                        >
                             <Link to={`/video/${video.video.reference_code}`}>
                                 <VideoThumbnail videoObj={video} />
                             </Link>
@@ -296,10 +317,10 @@ export default function SearchResult({ searchType }) {
                     value={checkUrl()}
                     className={styles.searchSort}
                 >
-                    <option value="upload_date_desc">desc</option>
-                    <option value="upload_date_asc">asc</option>
-                    <option value="views">views</option>
-                    <option value="popularity">popularity</option>
+                    <option value="upload_date_desc">From newest</option>
+                    <option value="upload_date_asc">From oldest</option>
+                    <option value="views">By most viewed</option>
+                    <option value="popularity">By popularity</option>
                 </select>
             )}
             {view}
