@@ -149,7 +149,9 @@ class VideoController extends Controller
         $video->visibility = $request->visibility;
         $video->save();
 
-        SendEmailToFollowers::dispatch($video)->onQueue('emails');
+        if($request->user()){
+            SendEmailToFollowers::dispatch($video)->onQueue('emails');
+        }
         
         return $video;
     }
@@ -490,6 +492,7 @@ class VideoController extends Controller
                         ->orWhere('name', 'like', '%' . $escapedWord . '%');
                 })
                 ->offset(12 * $offset)
+                ->limit(12)
                 ->get();
         
             $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {

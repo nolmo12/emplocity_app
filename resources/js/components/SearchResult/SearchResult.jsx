@@ -1,9 +1,10 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import useLikeCalculation from "../useLikeCalculation";
 import useFetchVideosSearch from "../useFetchVideosSearch";
 import authUser from "../authUser";
+import _ from "lodash";
 import styles from "./searchResult.module.css";
 import { Link } from "react-router-dom";
 import { getLikeRatioStyle } from "../Video/Video";
@@ -66,7 +67,11 @@ export default function SearchResult({ searchType }) {
     const [videos, setVideos] = useState([]);
     const [sortTypeValue, setSortTypeValue] = useState();
     const [searchedObj, setSearchedObj] = useState({});
+    const [offset, setOffset] = useState(0);
+    const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
+    const previousScroll = useRef(0);
     const { query, sortType } = useParams();
+
     const navigate = useNavigate();
     const {
         fetchVideosHistory,
@@ -78,7 +83,11 @@ export default function SearchResult({ searchType }) {
     const { http } = authUser();
 
     const searchedVideos = async (sortType) => {
-        const response = await fetchSearchedVideos(query, 0, sortType);
+        const response = await fetchSearchedVideos(
+            query,
+            offset.current,
+            sortType
+        );
         setSearchedObj(response);
     };
 
@@ -136,6 +145,27 @@ export default function SearchResult({ searchType }) {
         }
     };
 
+    const handleScroll = _.throttle((event) => {
+        if (searchType === "userSearch") {
+            const target = event.target;
+            const currentScroll = target.scrollTop;
+            const scrollPercentage =
+                (target.scrollTop /
+                    (target.scrollHeight - target.clientHeight)) *
+                100;
+            if (previousScroll.current < currentScroll) {
+                if (scrollPercentage > 85 && !hasScrolledPast85) {
+                    console.log(scrollPercentage);
+
+                    // setHasScrolledPast85(true);
+                } else if (scrollPercentage < 85) {
+                    setHasScrolledPast85(false);
+                }
+            }
+            previousScroll.current = currentScroll;
+        }
+    }, 1500);
+
     if (isLoading) {
         return <h1>Loading...</h1>;
     }
@@ -168,9 +198,7 @@ export default function SearchResult({ searchType }) {
                 value.forEach((video) => {
                     otherResults.push(
                         <li key={`video-${video.video.id}`}>
-                            <Link
-                                to={`/video/${video.video.reference_code}/time=0`}
-                            >
+                            <Link to={`/video/${video.video.reference_code}`}>
                                 <VideoThumbnail videoObj={video} />
                             </Link>
                             <VideoInfo videoObj={video} />
@@ -242,7 +270,10 @@ export default function SearchResult({ searchType }) {
     }
 
     return (
-        <div className={styles.searchResultsDiv}>
+        <div
+            className={styles.searchResultsDiv}
+            onScroll={(e) => handleScroll(e)}
+        >
             {searchType === "userSearch" && (
                 <select
                     onChange={(e) => handleChangeSort(e)}
