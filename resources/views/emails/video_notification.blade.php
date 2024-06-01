@@ -6,9 +6,9 @@
     </head>
     <body class="antialiased">
         <div id="root">
-            Video Title: {{ $video->languages()->first()->pivot->title }}
+            <h1>Video Title: {{ $video->languages()->first()->pivot->title }}</h1>
             <br>
-            Video: {{ url('watch/'.$video->reference_code) }}
+            <h2>Video: <a href = '{{ url('video/'.$video->reference_code) }}'>Click here to watch</a></h2>
             <br>
             Description: {{ $video->languages()->first()->pivot->description }}
         </div>

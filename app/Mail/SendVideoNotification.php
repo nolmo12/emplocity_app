@@ -30,7 +30,7 @@ class SendVideoNotification extends Mailable
     {
         $language = $this->video->languages()->first();
         return new Envelope(
-            subject: 'New Video: '. $language->pivot->title,
+            subject: 'New Video from ' . $this->video->user->name . ' titled: ' .$language->pivot->title,
         );
     }
 
