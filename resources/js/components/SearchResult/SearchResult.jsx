@@ -67,7 +67,7 @@ export default function SearchResult({ searchType }) {
     const [videos, setVideos] = useState([]);
     const [sortTypeValue, setSortTypeValue] = useState();
     const [searchedObj, setSearchedObj] = useState({});
-    const [offset, setOffset] = useState(0);
+    const offset = useRef(1);
     const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const previousScroll = useRef(0);
     const { query, sortType } = useParams();
@@ -88,7 +88,22 @@ export default function SearchResult({ searchType }) {
             offset.current,
             sortType
         );
-        setSearchedObj(response);
+        console.log(offset.current);
+        if (offset.current < 2) {
+            console.log(response);
+            setSearchedObj(response);
+        } else {
+            console.log(searchedObj);
+
+            // page is always 1
+            if (response.videos.length === 0) return;
+            setSearchedObj((prev) => {
+                return {
+                    ...prev,
+                    videos: [...prev.videos, ...response.videos],
+                };
+            });
+        }
     };
 
     const likedVideos = async () => {
@@ -155,9 +170,10 @@ export default function SearchResult({ searchType }) {
                 100;
             if (previousScroll.current < currentScroll) {
                 if (scrollPercentage > 85 && !hasScrolledPast85) {
-                    console.log(scrollPercentage);
-
-                    // setHasScrolledPast85(true);
+                    offset.current += 1;
+                    console.log(offset.current);
+                    searchedVideos(sortType);
+                    setHasScrolledPast85(true);
                 } else if (scrollPercentage < 85) {
                     setHasScrolledPast85(false);
                 }

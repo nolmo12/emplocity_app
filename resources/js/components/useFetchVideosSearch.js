@@ -29,7 +29,7 @@ export default function useFetchVideosSearch() {
     const fetchSearchedVideos = async (query, offest, sortingType) => {
         try {
             const response = await http.get(
-                `/api/video/search/?query=${query}&offest=${offest}&sorting=${sortingType}`
+                `/api/video/search/?query=${query}&page=${offest}&sorting=${sortingType}&is_typing_in_search_input=0`
             );
             setIsLoading(false);
             return response.data;

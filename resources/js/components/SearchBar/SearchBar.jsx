@@ -1,62 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import authUser from "../authUser";
 import styles from "./searchBar.module.css";
-
-const tempData = [
-    "The Legend of Zelda",
-    "Super Mario Bros.",
-    "aaaa",
-    "aaaaaaaa",
-    "aaaaa",
-    "Minecraft",
-    "Fortnite",
-    "Call of Duty",
-    "World of Warcraft",
-    "Overwatch",
-    "Grand Theft Auto V",
-    "The Witcher 3",
-    "Red Dead Redemption 2",
-    "Halo",
-    "Pokemon",
-    "League of Legends",
-    "Dota 2",
-    "Counter-Strike",
-    "Apex Legends",
-    "Valorant",
-    "Among Us",
-    "Animal Crossing",
-    "Dark Souls",
-    "Cyberpunk 2077",
-    "Assassin's Creed",
-    "Tetris",
-    "The Sims",
-    "Battlefield",
-    "FIFA",
-    "Madden NFL",
-    "NBA 2K",
-    "Street Fighter",
-    "Mortal Kombat",
-    "Fallout",
-    "The Elder Scrolls",
-    "Far Cry",
-    "BioShock",
-    "StarCraft",
-    "Diablo",
-    "Hearthstone",
-    "Rainbow Six Siege",
-    "PUBG",
-    "Horizon Zero Dawn",
-];
 
 export default function SearchBar() {
     const [data, setData] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    ``;
+    const suggestionsRef = useRef();
     const navigate = useNavigate();
+    const { http } = authUser();
 
-    function handleChange(e) {
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                suggestionsRef.current &&
+                !suggestionsRef.current.contains(event.target)
+            ) {
+                setSuggestions([]);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        console.log("click");
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
+    const fetchSuggestions = async (item) => {
+        const response = await http.get(
+            `/api/video/search?query=${item}&page=1&per_page=6&is_typing_in_search_input=1`
+        );
+
+        return response.data;
+    };
+
+    const handleChange = async (e) => {
         setData(e.target.value);
-    }
+        if (e.target.value) {
+            setSuggestions(await fetchSuggestions(e.target.value));
+        } else {
+            setSuggestions([]);
+        }
+    };
 
     function handleKeyDown(e) {
         if (e.key === "Enter") {
@@ -70,6 +58,7 @@ export default function SearchBar() {
 
     const search = (item = data) => {
         setData("");
+        setSuggestions([]);
         navigate(`/search-result/${item}/popularity`);
     };
 
@@ -90,14 +79,9 @@ export default function SearchBar() {
                     className={styles.searchLoop}
                 />
             </div>
-            <ul className={styles.ulItem}>
-                {tempData
-                    .filter((item) => {
-                        const searchItem = data.toLowerCase();
-                        const tempItem = item.toLowerCase();
-                        return searchItem && tempItem.startsWith(searchItem);
-                    })
-                    .map((item, index) => (
+            {suggestions && suggestions.length > 0 && (
+                <ul className={styles.ulItem} ref={suggestionsRef}>
+                    {suggestions.map((item, index) => (
                         <li
                             key={index}
                             className={styles.searchItem}
@@ -109,7 +93,8 @@ export default function SearchBar() {
                             {item}
                         </li>
                     ))}
-            </ul>
+                </ul>
+            )}
         </div>
     );
 }
