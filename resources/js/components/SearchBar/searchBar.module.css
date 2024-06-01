@@ -1,14 +1,13 @@
 .searchBarLoop {
     display: flex;
     width: 100%;
+    margin-top: 1em;
     position: relative;
 }
 
 .searchBar {
-    width: calc(
-        100% - 40px
-    ); /* Szerokość inputu z odejmowanym miejscem na ikonę */
-    height: 40px; /* Stała wysokość */
+    width: calc(100% - 40px);
+    height: 40px;
     border-radius: 15px;
     padding-left: 1em;
     padding-right: 3em;
@@ -17,8 +16,8 @@
     transition: border-color 0.3s ease-in-out;
 }
 
-#searchContainer {
-    width: 66%;
+.searchContainer {
+    width: 40%;
 }
 
 .searchItem {
@@ -26,7 +25,6 @@
     color: red;
     padding: 0.5em;
     list-style: none;
-    border: 1px solid white;
 }
 
 .ulItem {
