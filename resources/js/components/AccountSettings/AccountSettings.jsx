@@ -25,6 +25,9 @@ export default function AccountSettings() {
         avatar: "",
     });
     const [validationPasswordData, setValidationPasswordData] = useState(false);
+    const [nicknameChanged, setNicknameChanged] = useState(false);
+    const [passwordChanged, setPasswordChanged] = useState(false);
+    const [avatarChanged, setAvatarChanged] = useState(false);
     const [validationNicknameData, setValidationNicknameData] = useState(false);
     const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
@@ -61,23 +64,53 @@ export default function AccountSettings() {
     };
 
     const getCurrentUserBorder = async () => {
-        const response = await getCurrentBorder(user.id);
-        setCurrentBorder(response.current_border.type);
-        setRenderKey((prev) => prev + 1);
+        try {
+            const response = await getCurrentBorder(user.id);
+            if (response.current_border && response.current_border.type) {
+                setCurrentBorder(response.current_border.type);
+            } else {
+                setCurrentBorder(null); 
+            }
+            setRenderKey((prev) => prev + 1);
+        } catch (error) {
+            console.error(error);
+            setCurrentBorder(null); 
+        }
     };
 
     const handleNicknameChange = (e) => {
         e.preventDefault();
-        setUserData({ ...userData, nickname: e.target.value });
+        const nickname = e.target.value;
+        setUserData({ ...userData, nickname });
+        
+        if (nickname) {
+            setNicknameChanged(true);
+        } else {
+            setNicknameChanged(false);
+        }
     };
 
     const handlePasswordChange = (e, type) => {
+        const newUserData = { ...userData };
+
         if (type === "password") {
-            setUserData({ ...userData, password: e.target.value });
+            newUserData.password = e.target.value;
         } else if (type === "previous") {
-            setUserData({ ...userData, previousPassword: e.target.value });
+            newUserData.previousPassword = e.target.value;
         } else {
-            setUserData({ ...userData, repeatPassword: e.target.value });
+            newUserData.repeatPassword = e.target.value;
+        }
+    
+        setUserData(newUserData);
+    
+        if (
+            newUserData.password &&
+            newUserData.previousPassword &&
+            newUserData.repeatPassword
+        ) {
+            setPasswordChanged(true);
+        } else {
+            setPasswordChanged(false); // Reset if not all fields are filled
         }
     };
 
@@ -128,11 +161,13 @@ export default function AccountSettings() {
         e.preventDefault();
         document.getElementById("avatar-input").value = "";
         setUserData({ ...userData, avatar: "" });
+        setAvatarChanged(false); 
     };
 
     const handleChangeAvatar = async (e) => {
         e.preventDefault();
         setUserData({ ...userData, avatar: e.target.files[0] });
+        setAvatarChanged(true);
     };
 
     const handleClickChangeAvatar = async (e) => {
@@ -266,6 +301,7 @@ export default function AccountSettings() {
                         <button
                             className={styles.changeNickname}
                             onClick={(e) => handleClickChangeNickname(e)}
+                            disabled={!nicknameChanged}
                         >
                             Change nickname
                         </button>
@@ -306,11 +342,13 @@ export default function AccountSettings() {
                         <button
                             className={styles.changePassword}
                             onClick={(e) => handleClickChangePassword(e)}
+                            disabled={!passwordChanged}
                         >
                             Change password
                         </button>
                         <div className={styles.avatarSettings}>
                             <div className={styles.avatarInputContainer}>
+                                <label for="avatar-input" className={styles.customFileUpload}>Change avatar</label>
                                 <input
                                     type="file"
                                     ref={inputRef}
@@ -341,8 +379,9 @@ export default function AccountSettings() {
                         <button
                             onClick={(e) => handleClickChangeAvatar(e)}
                             className={styles.avatarButton}
+                            disabled={!avatarChanged}
                         >
-                            Change avatar
+                            Save avatar
                         </button>
                         <button
                             className={styles.removeButton}
