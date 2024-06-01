@@ -464,14 +464,17 @@ class VideoController extends Controller
         'query' => 'string|max:255|min:0',
         'sorting' => ['nullable', 'string', new Enumerate(['upload_date_desc', 'upload_date_asc', 'views', 'popularity'])],
         'page' => 'integer|min:1',
-        'per_page' => 'integer|min:1|max:100'
+        'per_page' => 'integer|min:1|max:100',
+        'is_typing_in_search_input' => 'nullable|boolean'
     ]);
 
-    $perPage = $request->input('per_page', 12); // Default to 12 items per page
+    $perPage = $request->input('per_page', 12);
     $page = $request->input('page', 1);
 
     $searchQuery = $request->query('query');
     $searchQueryArray = array_map('strtolower', explode(' ', $searchQuery));
+
+    $isTypingInSearchInput = $request->input('is_typing_in_search_input', false);
 
     $videoCollection = collect();
     $userCollection = collect();
@@ -562,14 +565,32 @@ class VideoController extends Controller
         $users[] = $user;
     }
 
-    $result = [
-        'videos' => $videos,
-        'users' => $users,
-        'page' => $page,
-        'per_page' => $perPage
-    ];
+    if(!$isTypingInSearchInput)
+    {
+        $result = [
+            'videos' => $videos,
+            'users' => $users,
+            'page' => $page,
+            'per_page' => $perPage
+        ];
+    
+        return response()->json($result);
+    }
 
-    return response()->json($result);
+    $videoTitles = [];
+    $userNames = [];
+
+    foreach($videos as $video)
+    {
+        $videoTitles[] = $video['title'];
+    }
+    foreach($users as $user)
+    {
+        $userNames[] = $user['name'];
+    }
+
+    return array_merge($videoTitles, $userNames);
+
 }
 
 
