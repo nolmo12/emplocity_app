@@ -13,7 +13,7 @@
 
 .divFormContainer {
     position: fixed;
-    top: 50%;
+    top: 47%;
     left: 50%;
     transform: translate(-50%, -50%);
     justify-content: center;
@@ -93,6 +93,7 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    border-radius: 50%;
 }
 
 .userInfoForm .avatarBorderContainer {
@@ -203,33 +204,40 @@
     border: solid 2px red;
 }
 
-.settingsDiv button:hover {
+.settingsDiv button:hover:not(:disabled) {
     background-color: #f0f0f0;
 }
 
-.settingsDiv button:active {
+.settingsDiv button:active:not(:disabled) {
     transform: scale(0.95);
 }
 
+.settingsDiv button:disabled {
+    background-color: #ccc;
+    box-shadow: none;
+    color: black;
+    cursor: default;
+}
+
 .avatarInputContainer {
+    display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 2em;
     margin-bottom: 1em;
+    width: 100%; 
 }
 
-.avatarInput[type="file"] {
-    border: none;
-    color: black;
-    position:relative;
-    left:10%;
+.avatarInput {
+    display: none;
 }
 
-.avatarInput[type="file"]::file-selector-button {
-    content: "Select file";
+.customFileUpload {
     display: inline-block;
     background-color: white;
     color: black;
+    margin-top:1em;
+    margin-bottom:1em;
     padding: 8px 20px;
     border-radius: 6px;
     cursor: pointer;
@@ -237,11 +245,11 @@
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-.avatarInput[type="file"]:hover::file-selector-button {
+.customFileUpload:hover {
     background-color: #f0f0f0;
 }
 
-.avatarInput[type="file"]:active::file-selector-button {
+.customFileUpload:active {
     transform: scale(0.95);
 }
 

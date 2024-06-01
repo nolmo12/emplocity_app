@@ -459,129 +459,140 @@ class VideoController extends Controller
 
 
     public function search(Request $request)
+{
+    $request->validate([
+        'query' => 'string|max:255|min:0',
+        'sorting' => ['nullable', 'string', new Enumerate(['upload_date_desc', 'upload_date_asc', 'views', 'popularity'])],
+        'page' => 'integer|min:1',
+        'per_page' => 'integer|min:1|max:100',
+        'is_typing_in_search_input' => 'nullable|boolean'
+    ]);
+
+    $perPage = $request->input('per_page', 12);
+    $page = $request->input('page', 1);
+
+    $searchQuery = $request->query('query');
+    $searchQueryArray = array_map('strtolower', explode(' ', $searchQuery));
+
+    $isTypingInSearchInput = $request->input('is_typing_in_search_input', false);
+
+    $videoCollection = collect();
+    $userCollection = collect();
+
+    foreach($searchQueryArray as $word)
     {
-        $request->validate([
-            'query' => 'string|max:255|min:0',
-            'offset' => 'nullable|integer|min:0',
-            'sorting' => ['nullable','string', new Enumerate(['upload_date_desc', 'upload_date_asc', 'views', 'popularity'])]
-        ]);
-
-        $offset = $request->input('offset', 0);
-
-        $searchQuery = $request->query('query');
-
-        $searchQueryArray = explode(' ', $searchQuery);
-
-        $searchQueryArray = array_map('strtolower', $searchQueryArray);
-
-        $videoCollection = collect();
-
-        $userCollection = collect();
+        $wordLength = strlen($word);
+        $maxDistance = intval($wordLength * 0.4);
+        $escapedWord = str_replace(['%', '_'], ['\\%', '\\_'], $word);
         
-        foreach($searchQueryArray as $word)
-        {
-            $wordLength = strlen($word);
-            $maxDistance = intval($wordLength * 0.4);
-
-            $escapedWord = str_replace('%', '\\%', $word);
-            $escapedWord = str_replace('_', '\\_', $escapedWord);
-            
-            $videos = Video::where('visibility', 'Public')
-                ->whereHas('tags', function ($query) use ($word, $escapedWord, $maxDistance) {
-                    $query->whereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
-                        ->orWhere('name', 'like', '%' . $escapedWord . '%');
-                })
-                ->offset(12 * $offset)
-                ->limit(12)
-                ->get();
-        
-            $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {
-                $query->orWhereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
-                ->orWhere('name', 'like', '%' . $escapedWord . '%')
-                ->orWhere('first_name', 'like', '%' . $escapedWord . '%');
+        $videos = Video::where('visibility', 'Public')
+            ->whereHas('tags', function ($query) use ($word, $escapedWord, $maxDistance) {
+                $query->whereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
+                    ->orWhere('name', 'like', '%' . $escapedWord . '%');
             })
             ->get();
-
-            $videoCollection = $videoCollection->concat($videos);
-            $userCollection = $userCollection->concat($users);
-        }
         
-        $videoScores = [];
-        $userScores = [];
+        $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {
+            $query->orWhereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
+                  ->orWhere('name', 'like', '%' . $escapedWord . '%')
+                  ->orWhere('first_name', 'like', '%' . $escapedWord . '%');
+        })
+        ->get();
 
-        foreach ($videoCollection as $video) {
-            $videoScores[$video->reference_code] = [
-                'video_name' => $video->languages()->first()->pivot->title,
-                'upload_date' => $video->created_at->timestamp,
-                'score' => $video->calculateSearchScore($searchQueryArray),
-                'views' => $video->views
-            ];
-        }
+        $videoCollection = $videoCollection->concat($videos);
+        $userCollection = $userCollection->concat($users);
+    }
 
-        foreach ($userCollection as $user)
-        {
-            $userScores[$user->id] = [
-                'score' => $user->calculateSearchScore($searchQueryArray)
-            ];
-        }
+    $videoScores = [];
+    $userScores = [];
 
-        $order = $request->sorting;
-        switch($order)
-        {
-            case 'popularity':
-                uasort($videoScores, function($a, $b) {
-                    return $b['score'] <=> $a['score'];
-                });
-                break;
-            case 'upload_date_desc':
-                uasort($videoScores, function($a, $b) {
-                    return $b['upload_date'] <=> $a['upload_date'];
-                });
-                break;
-            case 'upload_date_asc':
-                uasort($videoScores, function($a, $b) {
-                    return $b['upload_date'] <= $a['upload_date'];
-                });
-                break;
-            case 'views':
-                    uasort($videoScores, function($a, $b) {
-                        return $b['views'] >= $a['views'];
-                    });
-                    break;
-            default:
-            uasort($videoScores, function($a, $b) {
-                return $b['score'] <=> $a['score'];
-            });                                                                                                                                                                                                            
-        }
+    foreach ($videoCollection as $video)
+     {
+        $videoScores[$video->reference_code] = [
+            'video_name' => $video->languages()->first()->pivot->title,
+            'upload_date' => $video->created_at->timestamp,
+            'score' => $video->calculateSearchScore($searchQueryArray),
+            'views' => $video->views
+        ];
+    }
 
-        uasort($userScores, function ($a, $b) {
-            return $b['score'] <=> $a['score'];
-        });
+    foreach ($userCollection as $user) 
+    {
+        $userScores[$user->id] = [
+            'score' => $user->calculateSearchScore($searchQueryArray)
+        ];
+    }
 
-        $videos = [];
-        $users = [];
+    $order = $request->sorting;
+    switch($order) {
+        case 'popularity':
+            uasort($videoScores, fn($a, $b) => $b['score'] <=> $a['score']);
+            break;
+        case 'upload_date_desc':
+            uasort($videoScores, fn($a, $b) => $b['upload_date'] <=> $a['upload_date']);
+            break;
+        case 'upload_date_asc':
+            uasort($videoScores, fn($a, $b) => $a['upload_date'] <=> $b['upload_date']);
+            break;
+        case 'views':
+            uasort($videoScores, fn($a, $b) => $b['views'] <=> $a['views']);
+            break;
+        default:
+            uasort($videoScores, fn($a, $b) => $b['score'] <=> $a['score']);
+    }
 
-        foreach($videoScores as $referenceCode => $value)
-        {
-            $video = Video::where('reference_code', $referenceCode)->first();
-            $stats = $video->stats();
-            unset($stats['tags']);
-            $videos[] = $stats;
-        }
+    uasort($userScores, fn($a, $b) => $b['score'] <=> $a['score']);
 
-        foreach($userScores as $id => $value)
-        {
-            $user = User::find($id);
-            $users[] = $user;
-        }
+    
+    $videoScores = array_slice($videoScores, ($page - 1) * $perPage, $perPage, true);
+    
+    $userScores = array_slice($userScores, ($page - 1) * $perPage, $perPage, true);
 
+    $videos = [];
+    $users = [];
+
+    foreach($videoScores as $referenceCode => $value)
+     {
+        $video = Video::where('reference_code', $referenceCode)->first();
+        $stats = $video->stats();
+        unset($stats['tags']);
+        $videos[] = $stats;
+    }
+
+    foreach($userScores as $id => $value) 
+    {
+        $user = User::find($id);
+        $users[] = $user;
+    }
+
+    if(!$isTypingInSearchInput)
+    {
         $result = [
             'videos' => $videos,
-            'users' => $users
+            'users' => $users,
+            'page' => $page,
+            'per_page' => $perPage
         ];
-        
-        return $result;
+    
+        return response()->json($result);
     }
+
+    $videoTitles = [];
+    $userNames = [];
+
+    foreach($videos as $video)
+    {
+        $videoTitles[] = $video['title'];
+    }
+    foreach($users as $user)
+    {
+        $userNames[] = $user['name'];
+    }
+
+    return array_merge($videoTitles, $userNames);
+
+}
+
 
     public function list(Request $request)
     {
@@ -656,6 +667,6 @@ class VideoController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'Video not found'], 404);
         }
-}
+    }
     
 }

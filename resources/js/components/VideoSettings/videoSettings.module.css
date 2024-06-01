@@ -9,7 +9,7 @@
 
 .videoSettingsForm {
     position: fixed;
-    top: 50%;
+    top: 47%;
     left: 50%;
     transform: translate(-50%, -50%);
     justify-content: center;
@@ -23,7 +23,7 @@
     padding-top: 2%;
     width: 25%;
     z-index: 2;
-    max-height: 90vh;
+    max-height: 85vh;
     overflow-y: auto;
 }
 
@@ -68,7 +68,7 @@
 .videoSettingsForm .inputGroup {
     display: flex;
     flex-direction: column;
-    position: relative; /* Add this to position the icon relative to this container */
+    position: relative;
     margin-bottom: 1em;
     width: 100%;
 }
@@ -161,7 +161,7 @@
     color: black;
     position: absolute;
     left: 0.5em;
-    transform: translateY(100%); /* Center the icon vertically */
+    transform: translateY(100%);
 }
 
 .videoSettingsForm .visibilityContainer {

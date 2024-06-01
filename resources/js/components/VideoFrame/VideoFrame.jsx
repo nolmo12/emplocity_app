@@ -243,236 +243,238 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                         className={styles.videoScreen}
                     ></video>
                     <div className={styles.videoFrameInfo}>
-                        <div className={styles.reportMenu}>
-                            <FontAwesomeIcon
-                                icon={faEllipsisV}
-                                className={styles.videoFrameIcon}
-                                onClick={toggleButtons}
-                            />
-                            <div
-                                className={`${styles.buttonsContainer} ${
-                                    showButtons ? styles.menuVisible : ""
-                                }`}
+                        <div className={styles.videoFrameButtons}>
+                            {videoOwnerId !== userId && userId && videoOwnerId && (
+                                <button onClick={handleClickFollowButton} className={styles.followButton}>
+                                    {isFollowed ? "Unfollow" : "Follow"}
+                                </button>
+                            )}
+                            <div className={styles.videoLDContainer}>
+                                <FontAwesomeIcon
+                                    onClick={() =>
+                                        likeCountFunction(
+                                            0,
+                                            thumbObj,
+                                            setThumbObj,
+                                            reference_code,
+                                            likesCount,
+                                            dislikesCount,
+                                            setLikesCount,
+                                            setDislikesCount
+                                        )
+                                    } // 0 for dislike
+                                    icon={faThumbsDown}
+                                    data-testid="dislike-button"
+                                    className={`${styles.videoFrameIcon} ${
+                                        thumbObj.thumbStyle === "dislike" &&
+                                        styles.dislike
+                                    }`}
+                                />
+                                <p>{dislikesCount}</p>
+                            </div>
+
+                            <div className={styles.videoLDContainer}>
+                                <FontAwesomeIcon
+                                    onClick={() =>
+                                        likeCountFunction(
+                                            1,
+                                            thumbObj,
+                                            setThumbObj,
+                                            reference_code,
+                                            likesCount,
+                                            dislikesCount,
+                                            setLikesCount,
+                                            setDislikesCount
+                                        )
+                                    } // 1 for like
+                                    icon={faThumbsUp}
+                                    data-testid="like-button"
+                                    className={`${styles.videoFrameIcon} ${
+                                        thumbObj.thumbStyle === "like" &&
+                                        styles.like
+                                    }`}
+                                />
+                                <p>{likesCount}</p>
+                            </div>
+                            <Popup
+                                trigger={
+                                    <FontAwesomeIcon
+                                        icon={faShare}
+                                        className={styles.videoFrameIcon}
+                                    />
+                                }
+                                position="center"
+                                modal
+                                className={styles.customPopup}
                             >
-                                {isLogged() && (
-                                    <div>
-                                        <Link
-                                            to={`/report/video/${reference_code}`}
+                                {(close) => (
+                                    <div className={styles.sharePopup}>
+                                        <p>{link.current}</p>
+                                        <button
+                                            onClick={() => {
+                                                copyToClipboard(link.current);
+                                            }}
                                         >
-                                            <button>Report video</button>
-                                        </Link>
-                                        <Link
-                                            to={`/report/user/${videoOwnerId}`}
+                                            Copy
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                close();
+                                            }}
                                         >
-                                            <button>Report user</button>
-                                        </Link>
+                                            Ok
+                                        </button>
                                     </div>
                                 )}
-                                <button onClick={() => handleClickDownload()}>
-                                    Download video
-                                </button>
-                                {adminFlag && (
-                                    <button
-                                        onClick={(e) =>
-                                            removeVideo(reference_code)
-                                        }
-                                    >
-                                        Remove Video
+                            </Popup>
+                            <div className={styles.reportMenu}>
+                                <FontAwesomeIcon
+                                    icon={faEllipsisV}
+                                    className={styles.videoFrameIcon}
+                                    onClick={toggleButtons}
+                                />
+                                <div
+                                    className={`${styles.buttonsContainer} ${
+                                        showButtons ? styles.menuVisible : ""
+                                    }`}
+                                >
+                                    {isLogged() && (
+                                        <div>
+                                            <Link
+                                                to={`/report/video/${reference_code}`}
+                                            >
+                                                <button>Report video</button>
+                                            </Link>
+                                            <Link
+                                                to={`/report/user/${videoOwnerId}`}
+                                            >
+                                                <button>Report user</button>
+                                            </Link>
+                                        </div>
+                                    )}
+                                    <button onClick={() => handleClickDownload()}>
+                                        Download video
                                     </button>
-                                )}
-                                {adminFlag && (
-                                    <button
-                                        onClick={(e) =>
-                                            removeUser(videoOwnerId)
-                                        }
-                                    >
-                                        Remove User
-                                    </button>
-                                )}
+                                    {adminFlag && (
+                                        <button
+                                            onClick={(e) =>
+                                                removeVideo(reference_code)
+                                            }
+                                        >
+                                            Remove Video
+                                        </button>
+                                    )}
+                                    {adminFlag && (
+                                        <button
+                                            onClick={(e) =>
+                                                removeUser(videoOwnerId)
+                                            }
+                                        >
+                                            Remove User
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                        <Popup
-                            trigger={
+                        <div>
+                            <p className={styles.videoFrameInfoTitle}>
+                                <p data-testid="video-title">{videoTitle}</p>
+                            </p>
+                            <div className={styles.videoFrameInfoViews}>
+                                <p>
+                                    {videoViews} {"views"}
+                                </p>
+                            </div>
+                            {/*views views views views views views views */}
+                            <p>{uploadedTimeAgo}</p>
+                            <p className={styles.videoFrameOwner}>
                                 <FontAwesomeIcon
-                                    icon={faShare}
-                                    className={styles.videoFrameIcon}
-                                />
-                            }
-                            position="center"
-                            modal
-                            className={styles.customPopup}
-                        >
-                            {(close) => (
-                                <div className={styles.sharePopup}>
-                                    <p>{link.current}</p>
-                                    <button
-                                        onClick={() => {
-                                            copyToClipboard(link.current);
-                                        }}
-                                    >
-                                        Copy
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            close();
-                                        }}
-                                    >
-                                        Ok
-                                    </button>
-                                </div>
-                            )}
-                        </Popup>
-
-                        <div className={styles.videoLDContainer}>
-                            <FontAwesomeIcon
-                                onClick={() =>
-                                    likeCountFunction(
-                                        0,
-                                        thumbObj,
-                                        setThumbObj,
-                                        reference_code,
-                                        likesCount,
-                                        dislikesCount,
-                                        setLikesCount,
-                                        setDislikesCount
-                                    )
-                                } // 0 for dislike
-                                icon={faThumbsDown}
-                                data-testid="dislike-button"
-                                className={`${styles.videoFrameIcon} ${
-                                    thumbObj.thumbStyle === "dislike" &&
-                                    styles.dislike
-                                }`}
-                            />
-                            <p>{dislikesCount}</p>
-                        </div>
-
-                        <div className={styles.videoLDContainer}>
-                            <FontAwesomeIcon
-                                onClick={() =>
-                                    likeCountFunction(
-                                        1,
-                                        thumbObj,
-                                        setThumbObj,
-                                        reference_code,
-                                        likesCount,
-                                        dislikesCount,
-                                        setLikesCount,
-                                        setDislikesCount
-                                    )
-                                } // 1 for like
-                                icon={faThumbsUp}
-                                data-testid="like-button"
-                                className={`${styles.videoFrameIcon} ${
-                                    thumbObj.thumbStyle === "like" &&
-                                    styles.like
-                                }`}
-                            />
-                            <p>{likesCount}</p>
-                        </div>
-
-                        <p className={styles.videoFrameInfoTitle}>
-                            <p data-testid="video-title">{videoTitle}</p>
-                        </p>
-                        <div className={styles.videoFrameInfoViews}>
-                            <p>
-                                {videoViews} {"views"}
-                            </p>
-                        </div>
-                        {/*views views views views views views views */}
-                        <p>{uploadedTimeAgo}</p>
-                        <p className={styles.videoFrameOwner}>
-                            <FontAwesomeIcon
-                                icon={faUser}
-                                className={styles.videoFrameOwnerAvatar}
-                            />{" "}
-                            {videoOwner ? (
-                                <p data-testid="video-owner">
-                                    <Link
-                                        to={
-                                            videoOwnerId === userId
-                                                ? `/account`
-                                                : `/user/${videoOwnerId}`
-                                        } // need endpoint video -> ownerId
-                                    >
-                                        {videoOwner}
-                                    </Link>
-                                </p>
-                            ) : (
-                                <p data-testid="video-owner">Guest</p>
-                            )}
-                        </p>
-
-                        <p className={styles.videoFrameInfoDesc}>
-                            {videoDescription ? (
-                                <>
-                                    <p
-                                        data-testid="video-description"
-                                        className={
-                                            !isDescriptionExpanded
-                                                ? styles.collapsed
-                                                : ""
-                                        }
-                                    >
-                                        {isDescriptionExpanded
-                                            ? videoDescription
-                                            : videoDescription.length >
-                                              MAX_DESCRIPTION_LENGTH
-                                            ? `${videoDescription.slice(
-                                                  0,
-                                                  MAX_DESCRIPTION_LENGTH
-                                              )}...`
-                                            : videoDescription}
-                                    </p>
-                                    {videoDescription.length >
-                                        MAX_DESCRIPTION_LENGTH &&
-                                        (!isDescriptionExpanded ? (
-                                            <button
-                                                onClick={() =>
-                                                    setIsDescriptionExpanded(
-                                                        true
-                                                    )
-                                                }
-                                            >
-                                                Show more...
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={() =>
-                                                    setIsDescriptionExpanded(
-                                                        false
-                                                    )
-                                                }
-                                            >
-                                                Show less...
-                                            </button>
-                                        ))}
-                                </>
-                            ) : (
-                                <p data-testid="video-description">
-                                    No description
-                                </p>
-                            )}
-                            <p>
-                                {tags.map((tag, index) => {
-                                    return (
+                                    icon={faUser}
+                                    className={styles.videoFrameOwnerAvatar}
+                                />{" "}
+                                {videoOwner ? (
+                                    <p data-testid="video-owner">
                                         <Link
-                                            to={`/tag/${tag.name}`}
-                                            key={index}
+                                            to={
+                                                videoOwnerId === userId
+                                                    ? `/account`
+                                                    : `/user/${videoOwnerId}`
+                                            } // need endpoint video -> ownerId
                                         >
-                                            <span
-                                                key={index}
-                                            >{` #${tag.name}`}</span>{" "}
+                                            {videoOwner}
                                         </Link>
-                                    );
-                                })}
+                                    </p>
+                                ) : (
+                                    <p data-testid="video-owner">Guest</p>
+                                )}
                             </p>
-                        </p>
-                        {videoOwnerId !== userId && userId && videoOwnerId && (
-                            <button onClick={handleClickFollowButton}>
-                                {isFollowed ? "Unfollow" : "Follow"}
-                            </button>
-                        )}
+
+                            <p className={styles.videoFrameInfoDesc}>
+                                {videoDescription ? (
+                                    <>
+                                        <p
+                                            data-testid="video-description"
+                                            className={
+                                                !isDescriptionExpanded
+                                                    ? styles.collapsed
+                                                    : ""
+                                            }
+                                        >
+                                            {isDescriptionExpanded
+                                                ? videoDescription
+                                                : videoDescription.length >
+                                                MAX_DESCRIPTION_LENGTH
+                                                ? `${videoDescription.slice(
+                                                    0,
+                                                    MAX_DESCRIPTION_LENGTH
+                                                )}...`
+                                                : videoDescription}
+                                        </p>
+                                        {videoDescription.length >
+                                            MAX_DESCRIPTION_LENGTH &&
+                                            (!isDescriptionExpanded ? (
+                                                <button
+                                                    onClick={() =>
+                                                        setIsDescriptionExpanded(
+                                                            true
+                                                        )
+                                                    }
+                                                >
+                                                    Show more...
+                                                </button>
+                                            ) : (
+                                                <button
+                                                    onClick={() =>
+                                                        setIsDescriptionExpanded(
+                                                            false
+                                                        )
+                                                    }
+                                                >
+                                                    Show less...
+                                                </button>
+                                            ))}
+                                    </>
+                                ) : (
+                                    <p data-testid="video-description">
+                                        No description
+                                    </p>
+                                )}
+                                <p>
+                                    {tags.map((tag, index) => {
+                                        return (
+                                            <Link
+                                                to={`/tag/${tag.name}`}
+                                                key={index}
+                                            >
+                                                <span
+                                                    key={index}
+                                                >{` #${tag.name}`}</span>{" "}
+                                            </Link>
+                                        );
+                                    })}
+                                </p>
+                            </p>
+                        </div>
                     </div>
 
                     <Comments

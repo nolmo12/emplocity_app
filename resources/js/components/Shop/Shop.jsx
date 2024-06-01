@@ -57,16 +57,18 @@ export default function Shop() {
                 return (
                     <li key={`shop-${border.id}`}>
                         <div className={styles.borderContainer}>
-                            <img
-                                src={border.type}
-                                className={styles.border}
-                                alt="border"
-                            />
-                            <img
-                                src={userData.avatar}
-                                className={styles.avatar}
-                                alt="user avatar"
-                            />
+                            <div className={styles.borderAvatarContainer}>
+                                <img
+                                    src={border.type}
+                                    className={styles.border}
+                                    alt="border"
+                                />
+                                <img
+                                    src={userData.avatar}
+                                    className={styles.avatar}
+                                    alt="user avatar"
+                                />
+                            </div>
                             <div className={styles.infoContainer}>
                                 <p>Name placeholder</p>
                                 <p>

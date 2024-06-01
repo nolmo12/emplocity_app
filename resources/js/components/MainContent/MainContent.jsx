@@ -23,7 +23,7 @@ export default function MainContent({ contentType }) {
     if (contentType === "guest") {
         view = (
             <main>
-                <div id={styles.container}>
+                <div id={styles.containerMainPage}>
                     <Popular />
                     <VideoSection sectionType="reccommend" />
                 </div>
