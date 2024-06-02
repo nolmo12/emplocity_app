@@ -43,6 +43,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const playStartTime = useRef(0);
     const timeRef = useRef(0);
     const actualTime = useRef(0);
+    const videoOwnerBorder = useRef("");
     const { isLogged, getUser } = authUser();
     const { isAdmin, removeVideo, removeUser } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
@@ -218,13 +219,17 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         const videoViews = videoObj.video.views;
         const videoDuration = videoObj.video.duration;
         const videoOwnerId = videoObj.userId;
-        const videoType = videoObj.video.type;
+        const videoOwnerAvatar = videoObj.userAvatar;
+        const videoOwnerFollowersCount = videoObj.followersCount;
         const uploadedTimeAgo = calculateTime(
             videoObj.video.created_at,
             new Date()
         );
         const tags = videoObj.tags;
         actualTime.current = videoDuration - timeRemaining.current;
+        console.log(videoObj);
+        if (videoObj.userBorder && videoObj.userBorder.type)
+            videoOwnerBorder.current = videoObj.userBorder.type;
         getLink(actualTime.current);
         return (
             <>
@@ -391,13 +396,20 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                     {videoViews} {"views"}
                                 </p>
                             </div>
-                            {/*views views views views views views views */}
+                            {videoOwnerFollowersCount !==
+                                (undefined || null) && (
+                                <p>Followers {videoOwnerFollowersCount}</p>
+                            )}
                             <p>{uploadedTimeAgo}</p>
                             <p className={styles.videoFrameOwner}>
-                                <FontAwesomeIcon
-                                    icon={faUser}
-                                    className={styles.videoFrameOwnerAvatar}
-                                />{" "}
+                                <img src={videoOwnerAvatar} alt="avatar" />
+                                {console.log(videoOwnerBorder.current)}
+                                {videoOwnerBorder.current && (
+                                    <img
+                                        src={videoOwnerBorder.current}
+                                        alt="border"
+                                    />
+                                )}
                                 {videoOwner ? (
                                     <p data-testid="video-owner">
                                         <Link
