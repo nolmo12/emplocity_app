@@ -48,6 +48,7 @@ export default function useUserSettings() {
                     "accountSettings",
                     error.response.data.message
                 );
+                console.log(errorResponse);
                 return errorResponse;
             }
             console.log(error);
