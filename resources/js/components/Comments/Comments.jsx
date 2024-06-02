@@ -15,6 +15,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     const [mainCommentContent, setMainCommentContent] = useState();
     const previousScroll = useRef(0);
     const offset = useRef(0);
+    const commentId = useRef(null);
     const { fetchVideosSets, sendComment, commentsObj, setCommentsObj } =
         useComments();
     const { isLogged, getUser } = authUser();
@@ -22,6 +23,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     useEffect(() => {
         if (offset.current === 0) {
+            console.log("offset.current", offset.current);
             getCommentsObj();
         }
     }, [renderKey]);
@@ -49,7 +51,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                 (target.scrollTop /
                     (target.scrollHeight - target.clientHeight)) *
                 100;
-
+            console.log(1);
             if (previousScroll.current < currentScroll) {
                 if (
                     scrollPercentage > 85 &&
@@ -76,13 +78,15 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         const response = await fetchVideosSets(reference_code, offset.current);
         if (response.data.comments.length > 0) {
             offset.current += 1;
-            // setCommentCount(response.data.comments.length);
+            console.log("response.data.comments", response.data.comments);
         }
     };
 
     const getUserName = async () => {
         const response = await getUser();
-        if (isLogged()) setUserName(response.name);
+        if (isLogged()) {
+            setUserName(response.name);
+        }
     };
 
     const handleTextareaChange = (e) => {
@@ -110,20 +114,22 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         const newComment = {
             content: mainCommentContent,
             user_name: userName,
+            id: commentId.current,
         };
 
         // pawel musi zrobic zwracanie komentarza glownego
         const response = await sendComment(reference_code, mainCommentContent);
+        console.log("response", response);
         setCommentsObj((prev) => ({
             ...prev,
-            comments: [newComment, ...prev.comments],
+            comments: [response.data.comment, ...prev.comments],
         }));
         if (commentTextareaRef.current) {
             commentTextareaRef.current.innerHTML = ""; // Clear the textarea
         }
         setRenderKey((prev) => prev + 1);
     };
-
+    console.log(commentsObj);
     return (
         <div className={styles.commentDiv}>
             <div>

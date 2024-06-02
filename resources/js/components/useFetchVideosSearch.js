@@ -31,6 +31,8 @@ export default function useFetchVideosSearch() {
             const response = await http.get(
                 `/api/video/search/?query=${query}&page=${offest}&sorting=${sortingType}&is_typing_in_search_input=0`
             );
+            console.log(query, offest, sortingType);
+            console.log(response.data);
             setIsLoading(false);
             return response.data;
         } catch (error) {
