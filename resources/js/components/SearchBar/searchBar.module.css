@@ -34,8 +34,17 @@
     width: 100%;
     position: relative;
     z-index: 100;
+    top:-10%;
     background: white;
     border: 1px solid #ccc;
+}
+
+.ulItem li {
+    transition: background-color 0.3s ease;
+}
+
+.ulItem li:hover {
+    background-color: #f0f0f0;
 }
 
 .searchBar:focus {
