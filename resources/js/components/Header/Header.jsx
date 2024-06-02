@@ -47,7 +47,6 @@ export default function Header() {
         if (isLogged()) {
             setTimeout(async () => {
                 const user = await getUser();
-                console.log(user);
                 userId.current = user.id;
                 setUserAvatar(user.avatar);
                 setIsFetched((prev) => ({ ...prev, avatar: true }));
@@ -227,7 +226,10 @@ export default function Header() {
                 </Link>
 
                 <SearchBar />
-                <div className={styles.avatarBorderContainer} onClick={toggleMenu}>
+                <div
+                    className={styles.avatarBorderContainer}
+                    onClick={toggleMenu}
+                >
                     {isFetched.avatar ? (
                         <img
                             src={userAvatar}
@@ -235,17 +237,25 @@ export default function Header() {
                             data-testid="icon"
                             id={styles.imgIcon}
                             onLoad={() => {
-                                setIsLoaded((prev) => ({ ...prev, avatar: true }));
+                                setIsLoaded((prev) => ({
+                                    ...prev,
+                                    avatar: true,
+                                }));
                             }}
                             onClick={toggleMenu}
                         ></img>
                     ) : (
                         <ClipLoader color="#000" />
                     )}
-                    {userBorder && <img src={userBorder} className={styles.userBorder}></img>}
+                    {userBorder && (
+                        <img
+                            src={userBorder}
+                            className={styles.userBorder}
+                        ></img>
+                    )}
                 </div>
             </header>
-            
+
             <ul
                 id={styles.menu}
                 data-testid="ulMenu"

@@ -104,6 +104,7 @@ class Video extends Model implements SearchInterface
         $userFirstName = $user ? $user->first_name : null;
         $userAvatar = $user ? $user->avatar : '/storage/avatars/ico.png';
         $userBorder = $user ? $user->currentBorder(): null;
+        $followersCount = $user ? $user->countFollowers() : null;
 
         $commentCount = $this->comments()->count();
         
@@ -117,6 +118,7 @@ class Video extends Model implements SearchInterface
             'userFirstName' => $userFirstName,
             'userAvatar' => $userAvatar,
             'userBorder' => $userBorder,
+            'followersCount' => $followersCount, 
             'tags' => $tags,
             'likesCount' => $likesCount,
             'dislikesCount' => $dislikesCount,

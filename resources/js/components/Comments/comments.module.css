@@ -2,7 +2,7 @@
     max-width: 80%;
     position: relative;
     top: 5%;
-    padding-bottom:10em; 
+    padding-bottom: 10em;
 }
 
 .commentDiv h2 {
@@ -15,12 +15,12 @@
 
 .commentDiv .dateComm {
     font-size: 0.8em;
-    color:grey;
-    margin-bottom:0.5em;
+    color: grey;
+    margin-bottom: 0.5em;
 }
 
 .commentContainer {
-    padding:2.5%;
+    padding: 2.5%;
     position: relative;
     width: 100%;
 }
@@ -33,7 +33,7 @@
 }
 
 .image_holder {
-    left:-1em;
+    left: -1em;
     width: 4em;
     height: 4em;
     position: relative;
@@ -58,14 +58,14 @@
 }
 
 .commentContainer .commentTextareaContainer {
-    margin-top:5em;
-    margin-left:5em;
-    width:90%;
+    margin-top: 5em;
+    margin-left: 5em;
+    width: 90%;
 }
 
 .commentTextareaContainer {
     position: relative;
-    padding-top:1em;
+    padding-top: 1em;
     width: 100%;
 }
 
@@ -74,30 +74,29 @@
     color: white;
     resize: none;
     outline: none;
-    border: none; 
-    transition: border-bottom 0.3s ease-in-out; 
+    border: none;
+    transition: border-bottom 0.3s ease-in-out;
     overflow-wrap: break-word;
 }
 
-.commentTextareaContainer button
-{
-    color:white;
-    border:none !important;
+.commentTextareaContainer button {
+    color: white;
+    border: none !important;
     background-color: transparent !important;
-    padding:none !important;
+    padding: none !important;
 }
 
 .commentTextarea:focus {
     outline: none;
 }
 
-.commentTextarea[contentEditable=true]:empty:not(:focus):before {
+.commentTextarea[contentEditable="true"]:empty:not(:focus):before {
     content: attr(data-text);
-    color:#999;
+    color: #999;
 }
 
 .commentTextareaContainer::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -120,49 +119,47 @@
     cursor: pointer;
     border: solid 2px white;
     background-color: white;
-    border-radius:15px;
+    border-radius: 15px;
 }
 
 .commentDiv .cancelButton {
-    background-color:transparent;
-    border:none;
-    color:red;
+    background-color: transparent;
+    border: none;
+    color: red;
     font-weight: 700;
     font-size: 16px;
 }
-.commentDiv .acceptButton
-{
+.commentDiv .acceptButton {
     font-size: 16px;
-    color:#00de13;
+    color: #00de13;
     font-weight: 700;
 }
 
 .commentDiv .replyButton {
-    border:none;
-    color:black;
+    border: none;
+    color: black;
     font-weight: 700;
-    margin-top:2em;
-    transition: background-color 0.3s ease-in-out, color 0.3s linear, text-decoration 0.3 linear; 
+    margin-top: 2em;
+    transition: background-color 0.3s ease-in-out, color 0.3s linear,
+        text-decoration 0.3 linear;
 }
-.replyButtonsContainer
-{
-    display:flex;
+.replyButtonsContainer {
+    display: flex;
     gap: 1em;
 }
 
-.replyButtonsContainer button
-{
-    width:10%;
+.replyButtonsContainer button {
+    width: 10%;
 }
 
 .commentDiv .replyButton:hover {
     background-color: transparent !important;
-    color:white;
+    color: white;
     text-decoration: underline;
 }
 
 .commentDiv .cancelButton:hover {
-    background-color:transparent;
+    background-color: transparent;
 }
 
 .commentDiv button:hover {
@@ -176,18 +173,18 @@
 .replyContainer {
     margin-left: 5em;
     margin-top: 3em;
-    padding-top:2em;
+    padding-top: 2em;
 }
 
 .replyContainer .commentTextarea {
-    font-size:0.8em;
+    font-size: 0.8em;
     width: 100%;
     color: white;
     resize: none;
     outline: none;
-    border: none; 
-    transition: border-bottom 0.3s ease-in-out; 
-    overflow-wrap: break-word; 
+    border: none;
+    transition: border-bottom 0.3s ease-in-out;
+    overflow-wrap: break-word;
 }
 
 .isClick {
@@ -196,11 +193,11 @@
 
 .commMenu {
     position: absolute;
-    top: 3em; 
-    right: 0; 
-    font-size:1.5em;
-    cursor:pointer;
-    width:2em;
+    top: 1em;
+    right: 0;
+    font-size: 1.5em;
+    cursor: pointer;
+    width: 2em;
 }
 
 .buttonsContainer {
@@ -224,8 +221,8 @@
 }
 
 .buttonsContainer button {
-    display:block;
-    text-align:center;
+    display: block;
+    text-align: center;
     width: 7em;
     height: auto;
     min-height: 2em;
@@ -234,7 +231,7 @@
     border: none;
     background-color: white;
     text-align: center;
-    margin:0;
+    margin: 0;
     border-radius: 0;
 }
 
@@ -247,33 +244,32 @@
 }
 
 .buttonsContainer button:active {
-    transform: scale(0.90);
+    transform: scale(0.9);
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
-
     .commentDiv button {
-        width:30%;
+        width: 30%;
     }
 
     .commentContainer .replyButton {
-        width:30%;
-        font-size:0.7em;
-        margin-right:1em;
+        width: 30%;
+        font-size: 0.7em;
+        margin-right: 1em;
     }
 
     .commentDiv {
-        font-size:0.7em;
+        font-size: 0.7em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
     .commentDiv button {
-        width:30%;
+        width: 30%;
     }
 
     .commentContainer .replyButton {
-        width:20%;
-        margin-right:1em;
+        width: 20%;
+        margin-right: 1em;
     }
 }
