@@ -40,8 +40,8 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "otherUser") {
         view = (
-            <main>
-                <div id={styles.container}>
+            <main className={styles.guestPage}>
+                <div id={styles.containerMainPage}>
                     <Popular />
                     <VideoSection sectionType="otherAccount" />
                 </div>
@@ -49,8 +49,8 @@ export default function MainContent({ contentType }) {
         );
     } else if (contentType === "tag") {
         view = (
-            <main>
-                <div id={styles.container}>
+            <main className={styles.guestPage}>
+                <div id={styles.containerMainPage}>
                     <Popular />
                     <VideoSection sectionType="tag" />
                 </div>

@@ -229,7 +229,7 @@ class Video extends Model implements SearchInterface
         $commonTags = array_intersect($tags, $searchQueryArray);
         $commonTagsCount = count($commonTags);
 
-        $tagSimilarityScore = 3 * ($commonTagsCount / count($tags));
+        $tagSimilarityScore = 3 * ($commonTagsCount / max(1, count($tags)));
 
         $likesCount = $this->getLikesDislikesCount(true);
         $dislikesCount = $this->getLikesDislikesCount(false);

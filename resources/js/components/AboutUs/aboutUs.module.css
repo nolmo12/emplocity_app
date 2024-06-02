@@ -19,3 +19,12 @@
     position:relative;
     margin-bottom:1em;
 }
+
+.aboutUs ul {
+    margin-bottom:1em;
+}
+
+.aboutUs li {
+    list-style-type: none;
+    margin-bottom:0.5em;
+}
