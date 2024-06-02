@@ -41,7 +41,10 @@ export default function useComments() {
     };
 
     const deleteComment = async (id) => {
-        await http.delete(`/api/video/comment/delete?comment=${id}`);
+        const response = await http.delete(
+            `/api/video/comment/delete?comment=${id}`
+        );
+        return response;
     };
 
     const editComment = async (id, content) => {

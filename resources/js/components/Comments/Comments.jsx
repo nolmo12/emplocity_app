@@ -23,7 +23,6 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     useEffect(() => {
         if (offset.current === 0) {
-            console.log("offset.current", offset.current);
             getCommentsObj();
         }
     }, [renderKey]);
@@ -42,16 +41,13 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
     }, []);
 
     useEffect(() => {
-        const scrollElement = mainRef.current;
-
-        const handleScroll = _.throttle((event) => {
-            const target = event.target;
-            const currentScroll = target.scrollTop;
+        const handleScroll = _.throttle(() => {
+            const currentScroll = window.scrollY;
+            const scrollHeight = document.documentElement.scrollHeight;
+            const clientHeight = window.innerHeight;
             const scrollPercentage =
-                (target.scrollTop /
-                    (target.scrollHeight - target.clientHeight)) *
-                100;
-            console.log(1);
+                (currentScroll / (scrollHeight - clientHeight)) * 100;
+
             if (previousScroll.current < currentScroll) {
                 if (
                     scrollPercentage > 85 &&
@@ -63,14 +59,10 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
             previousScroll.current = currentScroll;
         }, 1000);
 
-        if (scrollElement) {
-            scrollElement.addEventListener("scroll", handleScroll);
-        }
+        window.addEventListener("scroll", handleScroll);
 
         return () => {
-            if (scrollElement) {
-                scrollElement.removeEventListener("scroll", handleScroll);
-            }
+            window.removeEventListener("scroll", handleScroll);
         };
     }, [commentsObj, mainRef]);
 
@@ -78,7 +70,6 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         const response = await fetchVideosSets(reference_code, offset.current);
         if (response.data.comments.length > 0) {
             offset.current += 1;
-            console.log("response.data.comments", response.data.comments);
         }
     };
 
@@ -119,7 +110,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
         // pawel musi zrobic zwracanie komentarza glownego
         const response = await sendComment(reference_code, mainCommentContent);
-        console.log("response", response);
+
         setCommentsObj((prev) => ({
             ...prev,
             comments: [response.data.comment, ...prev.comments],
@@ -129,13 +120,13 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         }
         setRenderKey((prev) => prev + 1);
     };
-    console.log(commentsObj);
+
     return (
         <div className={styles.commentDiv}>
             <div>
-            <h2>Comments</h2>
+                <h2>Comments</h2>
             </div>
-            
+
             <div className={styles.commentTextareaContainer}>
                 <div
                     ref={commentTextareaRef}
@@ -148,8 +139,9 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                 {isTextareaClicked && (
                     <div>
                         <button
-                        className = {styles.acceptButton}
-                         onClick={(e) => handleClickComment(e)}>
+                            className={styles.acceptButton}
+                            onClick={(e) => handleClickComment(e)}
+                        >
                             Comment
                         </button>
                         <button
@@ -161,29 +153,23 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                     </div>
                 )}
             </div>
-            <div>
+
             {commentsObj &&
                 commentsObj.comments &&
                 Object.entries(commentsObj).map(([key, commentObj]) => {
                     return commentObj.map((comment, index) => {
                         return (
-                            <div
-                                className={styles.commentContainer}
-                                key={index}
-                            >
-                                <Comment
-                                    comment={comment}
-                                    setRenderKey={setRenderKey}
-                                    reference_code={reference_code}
-                                    isReply={false}
-                                    adminFlag={adminFlag}
-                                    setCommentsObj={setCommentsObj}
-                                />
-                            </div>
+                            <Comment
+                                comment={comment}
+                                setRenderKey={setRenderKey}
+                                reference_code={reference_code}
+                                isReply={false}
+                                adminFlag={adminFlag}
+                                setCommentsObj={setCommentsObj}
+                            />
                         );
                     });
                 })}
-            </div>
         </div>
     );
 }

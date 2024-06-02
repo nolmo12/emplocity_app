@@ -6,25 +6,20 @@ import useUser from "../useUser";
 import styles from "../Comments/comments.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
-import { ClipLoader } from "react-spinners";
 
 export default function Comment({
     comment,
     setRenderKey,
     reference_code,
-    isReply,
+    isReply = false,
     adminFlag,
     setCommentsObj,
+    parentId,
 }) {
     const { removeComment } = useUser();
     const { isLogged, getUser } = authUser();
     const navigate = useNavigate();
-    const {
-        deleteComment,
-        sendReplyComment,
-        fetchChildrenComments,
-        editComment,
-    } = useComments();
+    const { deleteComment, sendReplyComment, editComment } = useComments();
     const [isDropdownVisible, setIsDropdownVisible] = useState(false);
     const dropdownRef = useRef(null);
     const currentAvatar = useRef(null);
@@ -49,7 +44,7 @@ export default function Comment({
 
     const handleCancelComment = () => {
         setIsTextareaClicked(false);
-        setMainCommentContent("");
+        setReplyCommentContent("");
         if (commentTextareaRef.current) {
             commentTextareaRef.current.textContent = "";
         }
@@ -72,14 +67,38 @@ export default function Comment({
     }, [comment.user_id]);
 
     const handleClickDelete = async () => {
-        await deleteComment(comment.id);
-        console.log(comment.id);
-        setRenderKey((prev) => prev + 1);
+        const response = await deleteComment(comment.id);
+        const deletedCommentId = response.data.Comment.id;
 
-        setCommentsObj((prev) => ({
-            ...prev,
-            comments: prev.comments.filter((c) => c.id !== comment.id),
-        }));
+        if (parentId) {
+            setCommentsObj((prev) => ({
+                ...prev,
+                comments: prev.comments.map((comment) => {
+                    if (comment.id === parentId) {
+                        return {
+                            ...comment,
+                            children: comment.children.filter(
+                                (child) => child.id !== deletedCommentId
+                            ),
+                            children_count: comment.children_count - 1,
+                        };
+                    }
+                    return comment;
+                }),
+            }));
+        } else {
+            setCommentsObj((prev) => ({
+                ...prev,
+                comments: prev.comments.filter((c) => c.id !== comment.id),
+            }));
+        }
+
+        // Ensure viewFlag is set to false if no children are left
+        if (comment.children_count <= 1) {
+            setViewFlag(false);
+        }
+
+        setRenderKey((prev) => prev + 1);
     };
 
     const handleClickRemoveComment = async () => {
@@ -103,7 +122,6 @@ export default function Comment({
             navigate("/login");
             return;
         }
-        console.log("id", id);
         setReplyCommentContent("");
         const response = await sendReplyComment(
             reference_code,
@@ -114,26 +132,26 @@ export default function Comment({
         const newReply = response.data.comment;
         setCommentsObj((prev) => {
             const updatedComments = prev.comments.map((c) => {
-                console.log(c.id, id);
                 if (c.id === id) {
-                    console.log(c);
                     return {
                         ...c,
                         children: [...(c.children ? c.children : []), newReply],
-                        children_count: c.children_count + 1 || 1, // potentially error
+                        children_count: c.children_count + 1 || 1,
                     };
                 }
                 return c;
             });
+
             return { ...prev, comments: updatedComments };
         });
 
         setReplyFlag(!replyFlag);
+        setViewFlag(false);
         setRenderKey((prev) => prev + 1);
     };
 
     const handleClickView = () => {
-        setViewFlag(!viewFlag);
+        setViewFlag(true);
         setRenderKey((prev) => prev + 1);
     };
 
@@ -161,35 +179,37 @@ export default function Comment({
 
     return (
         <div
-            className={isReply ? styles.replyContainer : ""}
+            className={
+                isReply ? styles.replyContainer : styles.commentContainer
+            }
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className = {styles.image_holder}>
+            <div className={styles.image_holder}>
                 {!comment.user_avatar && currentAvatar.current ? (
                     <img
                         src={currentAvatar.current}
                         alt="avatar"
-                        className = {styles.profile_picture}
+                        className={styles.profile_picture}
                     ></img>
                 ) : (
                     <img
                         src={comment.user_avatar}
                         alt="avatar"
-                        className = {styles.profile_picture}
+                        className={styles.profile_picture}
                     />
                 )}
 
                 {!comment.current_border && currentBorder.current ? (
                     <img
                         src={currentBorder.current}
-                        className = {styles.border}
+                        className={styles.border}
                     ></img>
                 ) : (
                     comment.current_border && (
                         <img
                             src={comment.current_border.type}
-                            className = {styles.border}
+                            className={styles.border}
                         ></img>
                     )
                 )}
@@ -201,9 +221,10 @@ export default function Comment({
                     <FontAwesomeIcon
                         icon={faEllipsisV}
                         onClick={handleToggleDropdown}
-                        className={styles.commMenu}
+                        className={styles.replyMenu}
                     />
                 )}
+
                 <div
                     ref={dropdownRef}
                     className={`${styles.buttonsContainer} ${
@@ -227,7 +248,7 @@ export default function Comment({
                         <button onClick={handleClickDelete}>delete</button>
                     )}
                     {adminFlag && (
-                        <button onClick={() => handleClickRemoveComment()}>
+                        <button onClick={handleClickRemoveComment}>
                             Remove comment
                         </button>
                     )}
@@ -243,28 +264,29 @@ export default function Comment({
                 {comment.content}
             </div>
             <div className={styles.replyButtonsContainer}>
-            {!isReply && (
-                <button
-                    onClick={handleClickReply}
-                    className={`${styles.replyButton} ${
-                        replyFlag ? styles.isClick : ""
-                    }`}
-                >
-                    Reply
-                </button>
-            )}
-            {comment.children_count > 0 && (
-                <button
-                    onClick={handleClickView}
-                    className={`${styles.replyButton} ${
-                        viewFlag ? styles.isClick : ""
-                    }`}
-                >
-                    View replies {comment.children_count}
-                </button>
-            )}
+                {!isReply && (
+                    <button
+                        onClick={handleClickReply}
+                        className={`${styles.replyButton} ${
+                            replyFlag ? styles.isClick : ""
+                        }`}
+                    >
+                        Reply
+                    </button>
+                )}
+                {comment.children_count > 0 && (
+                    <button
+                        onClick={handleClickView}
+                        className={`${styles.replyButton} ${
+                            viewFlag ? styles.isClick : ""
+                        }`}
+                    >
+                        View replies {comment.children_count}
+                    </button>
+                )}
             </div>
             {viewFlag &&
+                comment.children &&
                 comment.children.map((child) => (
                     <Comment
                         key={child.id}
@@ -272,7 +294,8 @@ export default function Comment({
                         setRenderKey={setRenderKey}
                         reference_code={reference_code}
                         isReply={true}
-                        setCommentsObj={setCommentsObj} // pass down the state setter
+                        setCommentsObj={setCommentsObj}
+                        parentId={comment.id}
                     />
                 ))}
             {replyFlag && (
@@ -283,20 +306,21 @@ export default function Comment({
                             className={styles.commentTextarea}
                             contentEditable="true"
                             onInput={handleTextareaChange}
+                            data-text="Add reply..."
                             onClick={handleTextareaClick}
-                            data-text="Write comment..."
                         ></div>
                         {isTextareaClicked && (
-                            <div>
+                            <div className={styles.replyButtonsContainer}>
                                 <button
                                     onClick={(e) =>
                                         handleClickReplyComment(e, comment.id)
                                     }
+                                    className={styles.acceptButton}
                                 >
-                                    Comment
+                                    Reply
                                 </button>
                                 <button
-                                    onClick={(e) => handleCancelComment(e)}
+                                    onClick={handleCancelComment}
                                     className={styles.cancelButton}
                                 >
                                     Cancel

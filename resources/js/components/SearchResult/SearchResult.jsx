@@ -90,7 +90,6 @@ export default function SearchResult({ searchType }) {
             offset.current,
             sortType
         );
-        console.log(offset.current);
         if (offset.current < 2) {
             setSearchedObj(response);
         } else {
@@ -184,7 +183,6 @@ export default function SearchResult({ searchType }) {
             if (previousScroll.current < currentScroll) {
                 if (scrollPercentage > 85 && !hasScrolledPast85) {
                     offset.current += 1;
-                    console.log(offset.current);
                     searchedVideos(sortType);
                     setHasScrolledPast85(true);
                 } else if (scrollPercentage < 85) {
