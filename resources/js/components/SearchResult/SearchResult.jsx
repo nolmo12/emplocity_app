@@ -52,10 +52,12 @@ function VideoInfo({ videoObj }) {
 function UserInfo({ userObj }) {
     return (
         <div className={styles.userInfo}>
-            <img src={userObj.avatar} alt="user avatar" />
-            {userObj.current_border && (
-                <img src={userObj.current_border.type} />
-            )}
+            <div className={styles.avatarBorderContainer}>
+                <img src={userObj.avatar} alt="user avatar" className={styles.avatar}/>
+                {userObj.border && (
+                    <img src={userObj.border.type} className={styles.border}/>
+                )}
+            </div>
             <div className={styles.userInfoText}>
                 <p>{userObj.name}</p>
             </div>
@@ -305,21 +307,21 @@ export default function SearchResult({ searchType }) {
             className={styles.searchResultsDiv}
             onScroll={(e) => handleScroll(e)}
         >
-            <div className={styles.orderResultsContainer}>
-                <p>Order results:</p>
                 {searchType === "userSearch" && (
-                    <select
-                        onChange={(e) => handleChangeSort(e)}
-                        value={checkUrl()}
-                        className={styles.searchSort}
-                    >
-                        <option value="upload_date_desc">From newest</option>
-                        <option value="upload_date_asc">From oldest</option>
-                        <option value="views">By most viewed</option>
-                        <option value="popularity">By popularity</option>
-                    </select>
+                    <div className={styles.orderResultsContainer}>
+                        <p>Order results:</p>
+                        <select
+                            onChange={(e) => handleChangeSort(e)}
+                            value={checkUrl()}
+                            className={styles.searchSort}
+                        >
+                            <option value="upload_date_desc">From newest</option>
+                            <option value="upload_date_asc">From oldest</option>
+                            <option value="views">By most viewed</option>
+                            <option value="popularity">By popularity</option>
+                        </select>
+                    </div>
                 )}
-            </div>
             {view}
         </div>
     );

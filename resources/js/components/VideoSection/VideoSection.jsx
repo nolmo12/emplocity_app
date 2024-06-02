@@ -138,10 +138,13 @@ export default function VideoSection({ sectionType }) {
                             Remove user
                         </button>
                     )}
-                    <div id={styles.videoSection} onScroll={handleScroll}>
+                <div id={styles.videoSection} onScroll={handleScroll}>
+                    <div className={styles.videoSectionHContainer}>
                         <h2 className={styles.videoSectionH}>
                             {username.current}
                         </h2>
+                    </div>
+                    <div className={styles.videoSectionList}>
                         {Object.entries(videos).map(([key, video]) => {
                             return (
                                 <Video
@@ -152,6 +155,7 @@ export default function VideoSection({ sectionType }) {
                             );
                         })}
                     </div>
+                </div>
                 </>
             );
         }
@@ -160,18 +164,22 @@ export default function VideoSection({ sectionType }) {
             const videosCount = Object.keys(videos).length;
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
-                    <h2 className={styles.videoSectionH}>
-                        #{tag} videos {videosCount}
-                    </h2>
-                    {Object.entries(videos).map(([key, video]) => {
-                        return (
-                            <Video
-                                data-testid={`video-${testKey}`}
-                                key={`tag-${video.video.id}`}
-                                videoObj={video}
-                            />
-                        );
-                    })}
+                    <div className={styles.videoSectionHContainer}>
+                        <h2 className={styles.videoSectionH}>
+                            #{tag} videos {videosCount}
+                        </h2>
+                    </div>
+                    <div className={styles.videoSectionList}>
+                        {Object.entries(videos).map(([key, video]) => {
+                            return (
+                                <Video
+                                    data-testid={`video-${testKey}`}
+                                    key={`tag-${video.video.id}`}
+                                    videoObj={video}
+                                />
+                            );
+                        })}
+                    </div>
                 </div>
             );
         }
