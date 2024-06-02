@@ -1,6 +1,6 @@
 .commentDiv {
+    max-width: 80%;
     position: relative;
-    width: 50%;
     top: 5%;
     padding-bottom:10em; 
 }
@@ -20,10 +20,41 @@
 }
 
 .commentContainer {
+    padding:2.5%;
     position: relative;
-    padding-top:2em;
-    padding-bottom:2em;
     width: 100%;
+}
+
+.image_holder img {
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.image_holder {
+    left:-1em;
+    width: 4em;
+    height: 4em;
+    position: relative;
+}
+
+.profile_picture {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+.border {
+    border-radius: 0;
+    width: 3.2em;
+    height: 3.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 2;
 }
 
 .commentContainer .commentTextareaContainer {
@@ -35,9 +66,7 @@
 .commentTextareaContainer {
     position: relative;
     padding-top:1em;
-    padding-bottom:1em;
     width: 100%;
-    border-bottom: solid 1px grey;
 }
 
 .commentTextarea {
@@ -47,7 +76,15 @@
     outline: none;
     border: none; 
     transition: border-bottom 0.3s ease-in-out; 
-    overflow-wrap: break-word; 
+    overflow-wrap: break-word;
+}
+
+.commentTextareaContainer button
+{
+    color:white;
+    border:none !important;
+    background-color: transparent !important;
+    padding:none !important;
 }
 
 .commentTextarea:focus {
@@ -79,37 +116,49 @@
     width: 15%;
     height: 2.5em;
     font-size: 0.8em;
-    margin-top:1.5em;
-    margin-bottom: 1em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: solid 2px white;
     background-color: white;
-    float: right;
     border-radius:15px;
 }
 
 .commentDiv .cancelButton {
     background-color:transparent;
     border:none;
-    color:white;
+    color:red;
+    font-weight: 700;
+    font-size: 16px;
+}
+.commentDiv .acceptButton
+{
+    font-size: 16px;
+    color:#00de13;
     font-weight: 700;
 }
 
 .commentDiv .replyButton {
-    background-color:transparent;
     border:none;
-    color:white;
+    color:black;
     font-weight: 700;
-    margin-top:2.5em;
-    float:left;
+    margin-top:2em;
+    transition: background-color 0.3s ease-in-out, color 0.3s linear, text-decoration 0.3 linear; 
+}
+.replyButtonsContainer
+{
+    display:flex;
+    gap: 1em;
+}
+
+.replyButtonsContainer button
+{
     width:10%;
-    margin-right:1em;
-    margin-left:-1em;
 }
 
 .commentDiv .replyButton:hover {
     background-color: transparent !important;
+    color:white;
+    text-decoration: underline;
 }
 
 .commentDiv .cancelButton:hover {
@@ -122,10 +171,6 @@
 
 .commentDiv button:active {
     transform: scale(0.95);
-}
-
-.commentContainer {
-    margin-top: 2em;
 }
 
 .replyContainer {
@@ -151,9 +196,9 @@
 
 .commMenu {
     position: absolute;
-    top: 2em; 
+    top: 3em; 
     right: 0; 
-    font-size:1em;
+    font-size:1.5em;
     cursor:pointer;
     width:2em;
 }
@@ -163,7 +208,7 @@
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     right: -1.5em;
-    top: 3em;
+    top: 5em;
     z-index: 999;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     transform-origin: top;
@@ -189,7 +234,6 @@
     border: none;
     background-color: white;
     text-align: center;
-    float:none;
     margin:0;
     border-radius: 0;
 }

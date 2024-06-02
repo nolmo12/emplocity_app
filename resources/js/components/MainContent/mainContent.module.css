@@ -12,6 +12,10 @@ main {
     color: white;
     background-color: #14213d;
 }
+.guestPage
+{
+    height:85vh;
+}
 
 #containerMainPage {
     width:100%;

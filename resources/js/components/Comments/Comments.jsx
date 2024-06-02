@@ -126,7 +126,10 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
 
     return (
         <div className={styles.commentDiv}>
+            <div>
             <h2>Comments</h2>
+            </div>
+            
             <div className={styles.commentTextareaContainer}>
                 <div
                     ref={commentTextareaRef}
@@ -138,7 +141,9 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                 ></div>
                 {isTextareaClicked && (
                     <div>
-                        <button onClick={(e) => handleClickComment(e)}>
+                        <button
+                        className = {styles.acceptButton}
+                         onClick={(e) => handleClickComment(e)}>
                             Comment
                         </button>
                         <button
@@ -150,6 +155,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                     </div>
                 )}
             </div>
+            <div>
             {commentsObj &&
                 commentsObj.comments &&
                 Object.entries(commentsObj).map(([key, commentObj]) => {
@@ -171,6 +177,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
                         );
                     });
                 })}
+            </div>
         </div>
     );
 }

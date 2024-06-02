@@ -161,35 +161,37 @@ export default function Comment({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            {!comment.user_avatar && currentAvatar.current ? (
-                <img
-                    src={currentAvatar.current}
-                    style={{ width: "50px", height: "50px" }}
-                    alt="avatar"
-                ></img>
-            ) : (
-                <img
-                    src={comment.user_avatar}
-                    style={{ width: "50px", height: "50px" }}
-                    alt="avatar"
-                />
-            )}
-
-            {!comment.current_border && currentBorder.current ? (
-                <img
-                    src={currentBorder.current}
-                    style={{ width: "50px", height: "50px" }}
-                ></img>
-            ) : (
-                comment.current_border && (
+            <div className = {styles.image_holder}>
+                {!comment.user_avatar && currentAvatar.current ? (
                     <img
-                        src={comment.current_border.type}
-                        style={{ width: "50px", height: "50px" }}
+                        src={currentAvatar.current}
+                        alt="avatar"
+                        className = {styles.profile_picture}
                     ></img>
-                )
-            )}
+                ) : (
+                    <img
+                        src={comment.user_avatar}
+                        alt="avatar"
+                        className = {styles.profile_picture}
+                    />
+                )}
+
+                {!comment.current_border && currentBorder.current ? (
+                    <img
+                        src={currentBorder.current}
+                        className = {styles.border}
+                    ></img>
+                ) : (
+                    comment.current_border && (
+                        <img
+                            src={comment.current_border.type}
+                            className = {styles.border}
+                        ></img>
+                    )
+                )}
+            </div>
             <p>{comment.user_name}</p>
-            <p className={styles.dateComm}></p>
+            <p className={styles.dateComm}>{comment.created_at}</p>
             <div>
                 {hovered && (
                     <FontAwesomeIcon
@@ -236,6 +238,7 @@ export default function Comment({
             >
                 {comment.content}
             </div>
+            <div className={styles.replyButtonsContainer}>
             {!isReply && (
                 <button
                     onClick={handleClickReply}
@@ -253,9 +256,10 @@ export default function Comment({
                         viewFlag ? styles.isClick : ""
                     }`}
                 >
-                    View {comment.children_count}
+                    View replies {comment.children_count}
                 </button>
             )}
+            </div>
             {viewFlag &&
                 comment.children.map((child) => (
                     <Comment

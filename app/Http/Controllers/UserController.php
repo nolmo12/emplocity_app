@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use DateTime;
+use Exception;
 use App\Models\User;
+
 use App\Models\Video;
 
 use App\Models\Border;
-
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateHelper;
@@ -448,18 +449,35 @@ public function update(Request $request, $id)
 
     public function hasFollowed(Request $request, int $userId)
     {
-        $user = $request->user();
-
-        if ($user->creators()->where('creator_id', $userId)->exists()) 
-        {
+        try {
+            $user = $request->user();
+        
+            if($user)
+            {
+                if ($user->creators()->where('creator_id', $userId)->exists()) 
+                {
+                    return response()->json([
+                        'is_following' => true,
+                    ], 200);
+                }
+    
+                return response()->json([
+                    'is_following' => false,
+                ], 200);
+    
+            }
+    
             return response()->json([
-                'is_following' => true,
+                'is_following' => false,
             ], 200);
         }
+        catch (Exception $e)
+        {
+            return response()->json([
+                'status' => false,
+            ], 400);
+        }
 
-        return response()->json([
-            'is_following' => false,
-        ], 200);
     }
 
     public function getCreators(Request $request)

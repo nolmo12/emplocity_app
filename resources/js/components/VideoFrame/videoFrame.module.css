@@ -23,13 +23,13 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 }
 
 .videoScreen {
-    width: 70em;
+    width: 100%;
     height: 40em;
 }
 
 .videoFrameInfo {
     position: relative;
-    width: 84%;
+    width: 100%;
     font-size: 0.5em;
 }
 
