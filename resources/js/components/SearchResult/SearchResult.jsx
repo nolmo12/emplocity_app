@@ -67,7 +67,7 @@ export default function SearchResult({ searchType }) {
     const [videos, setVideos] = useState([]);
     const [sortTypeValue, setSortTypeValue] = useState();
     const [searchedObj, setSearchedObj] = useState({});
-    const offset = useRef(0);
+    const offset = useRef(1);
     const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const previousScroll = useRef(0);
     const { query, sortType } = useParams();
@@ -83,12 +83,12 @@ export default function SearchResult({ searchType }) {
     const { http } = authUser();
 
     const searchedVideos = async (sortType) => {
-        offset.current += 1;
         const response = await fetchSearchedVideos(
             query,
             offset.current,
-            sortType || sortTypeValue
+            sortType
         );
+        console.log(offset.current);
         if (offset.current < 2) {
             setSearchedObj(response);
         } else {
@@ -97,31 +97,9 @@ export default function SearchResult({ searchType }) {
             setSearchedObj((prev) => {
                 return {
                     ...prev,
-                    page: response.page,
                     videos: [...prev.videos, ...response.videos],
                 };
             });
-        }
-    };
-
-    const searchedVideosSort = async (sortType) => {
-        for (let i = 1; i < offset.current; i++) {
-            const response = await fetchSearchedVideos(
-                query,
-                i,
-                sortType || sortTypeValue
-            );
-            if (i === 1) {
-                setSearchedObj(response);
-            } else {
-                setSearchedObj((prev) => {
-                    return {
-                        ...prev,
-                        page: response.page,
-                        videos: [...prev.videos, ...response.videos],
-                    };
-                });
-            }
         }
     };
 
@@ -136,15 +114,16 @@ export default function SearchResult({ searchType }) {
     };
 
     useEffect(() => {
+        offset.current = 1;
         if (searchType === "userHistory") {
             videosHistory();
         } else if (searchType === "userLikes") {
             likedVideos();
         } else {
             if (!sortTypeValue && searchType !== "userFollows") {
-                searchedVideos(sortType || sortTypeValue);
+                searchedVideos(sortType);
             } else if (searchType !== "userFollows") {
-                searchedVideos(sortType || sortTypeValue);
+                searchedVideos(sortType);
             } else {
                 getUserFollows();
                 setIsLoading(false);
@@ -155,7 +134,20 @@ export default function SearchResult({ searchType }) {
     const handleChangeSort = (e) => {
         setSortTypeValue(e.target.value);
         navigate(`/search-result/${query}/${e.target.value}`);
-        searchedVideosSort(e.target.value);
+        sortVideos(e.target.value);
+    };
+
+    const sortVideos = async (sortType) => {
+        for (let i = 1; i < videos.length; i++) {
+            setSearchedObj({});
+            const response = await fetchSearchedVideos(query, i, sortType);
+            setSearchedObj((prev) => {
+                return {
+                    ...prev,
+                    videos: [...prev.videos, ...response.videos],
+                };
+            });
+        }
     };
 
     const getUserFollows = async () => {
@@ -189,7 +181,9 @@ export default function SearchResult({ searchType }) {
                 100;
             if (previousScroll.current < currentScroll) {
                 if (scrollPercentage > 85 && !hasScrolledPast85) {
-                    searchedVideos(sortType || sortTypeValue);
+                    offset.current += 1;
+                    console.log(offset.current);
+                    searchedVideos(sortType);
                     setHasScrolledPast85(true);
                 } else if (scrollPercentage < 85) {
                     setHasScrolledPast85(false);

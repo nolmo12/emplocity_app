@@ -73,6 +73,7 @@ export default function Comment({
 
     const handleClickDelete = async () => {
         await deleteComment(comment.id);
+        console.log(comment.id);
         setRenderKey((prev) => prev + 1);
 
         setCommentsObj((prev) => ({
@@ -102,6 +103,7 @@ export default function Comment({
             navigate("/login");
             return;
         }
+        console.log("id", id);
         setReplyCommentContent("");
         const response = await sendReplyComment(
             reference_code,
@@ -112,11 +114,13 @@ export default function Comment({
         const newReply = response.data.comment;
         setCommentsObj((prev) => {
             const updatedComments = prev.comments.map((c) => {
+                console.log(c.id, id);
                 if (c.id === id) {
+                    console.log(c);
                     return {
                         ...c,
                         children: [...(c.children ? c.children : []), newReply],
-                        children_count: c.children_count + 1,
+                        children_count: c.children_count + 1 || 1, // potentially error
                     };
                 }
                 return c;
