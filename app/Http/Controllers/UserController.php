@@ -147,7 +147,7 @@ public function update(Request $request, $id)
     try{
         // Validate the request data
     $validateUser = Validator::make($request->all(), [
-        'name' => 'string|max:255',
+        'name' => 'string|max:255|regex:/^[a-zA-Z0-9\s]+$/u',
         'currentPassword' => 'string',
         'password' => 'string|required_with:current_password',
         'repeatPassword' => 'string|required_with:password',
