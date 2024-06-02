@@ -34,16 +34,35 @@
     text-decoration-color: rgba(255, 255, 255, 1);
 }
 
-.searchResultsDiv .userInfo img {
+.searchResultsDiv .userInfo .avatarBorderContainer {
+    width: 5em;
+    height: 5em;
+    position: relative;
+    margin: 0 auto;
+}
+
+.searchResultsDiv .userInfo .avatar {
     height: 5em;
     width: 5em;
     margin-right: 1em; 
     border-radius:50%;
 }
 
+.border {
+    border-radius: 0;
+    width: 6.2em;
+    height: 6.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 2;
+}
+
 .searchResultsDiv .userInfo .userInfoText {
     display: flex;
     flex-direction: column;
+    padding-left:1em;
 }
 
 .searchResultsDiv a {
@@ -159,3 +178,4 @@
 .videoInfo .videoDescription {
     font-size:0.7em;
 }
+

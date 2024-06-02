@@ -208,7 +208,7 @@
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     right: -1.5em;
-    top: 5em;
+    top: 6em;
     z-index: 999;
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
     transform-origin: top;
@@ -224,18 +224,18 @@
 }
 
 .buttonsContainer button {
-    display:block;
-    text-align:center;
-    width: 7em;
+    display: block;
+    text-align: center;
+    width: 8em;
     height: auto;
-    min-height: 2em;
+    padding: 0.8em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: none;
     background-color: white;
-    text-align: center;
-    margin:0;
-    border-radius: 0;
+    text-align: left;
+    border-bottom: 1px solid lightgrey;
+    border-radius:0;
 }
 
 .buttonsContainer a {

@@ -9,17 +9,40 @@ export default function AboutUs() {
                 </div>
                 
                 <section>
-                    <p>Welcome to Sznyc Tube, where creativity knows no limits and every click sparks inspiration.</p>
+                    <p>Welcome to our website, a project crafted by a team of four dedicated computer science students from 
+                        the University of Warmia and Mazury. This platform was developed as part of our group project course 
+                        in collaboration with a renowned company. </p>
 
-                    <p>At Sznyc Tube, we're not just a video-sharing platform; we're a vibrant community of creators, viewers, and innovators. Our journey began with a simple idea: to provide a space where individuals from all walks of life can unleash their imagination, share their stories, and connect with like-minded souls worldwide.</p>
+                    <p>Our team</p>
 
-                    <p>What sets Sznyc Tube apart is our unwavering commitment to fostering a culture of diversity, inclusion, and empowerment. Whether you're a budding filmmaker, a talented musician, a passionate educator, or an enthusiastic vlogger, Sznyc Tube is your stage to shine.</p>
+                    <ul>
+                        <li>Paweł Bąk - Team Manager & Backend Developer </li>
+                        <li>Piotr Marcińczuk - Frontend Developer  </li>
+                        <li>Andrzej Pliszka - Backend Developer </li>
+                        <li>Bartek Przycki - Frontend Developer  </li>
+                    </ul>
 
-                    <p>Our platform is built on the belief that every voice deserves to be heard, every story deserves to be told, and every talent deserves to be celebrated. From heartwarming documentaries to hilarious skits, from insightful tutorials to mesmerizing music covers, the content on Sznyc Tube reflects the kaleidoscope of human experiences and passions.</p>
+                    <p>Our Mission</p>
 
-                    <p>But Sznyc Tube isn't just about content; it's about connection. It's about the joy of discovering something new, the thrill of sharing your passions, and the satisfaction of knowing that your voice matters. It's about building bridges across cultures, transcending boundaries, and forging meaningful relationships that span continents.</p>
+                    <p>Our website is designed to provide a seamless video-sharing experience, inspired by platforms like 
+                        Dailymotion and YouTube. We aimed to create a user-friendly and efficient platform where users can 
+                        upload, share, and watch videos effortlessly. </p>
 
-                    <p>Join us on this exhilarating journey of creativity, exploration, and inspiration. Whether you're here to create, to discover, or simply to be entertained, Sznyc Tube welcomes you with open arms. Together, let's redefine what it means to share and connect in the digital age.</p>
+                    <p>Our Vision</p>
+
+                    <p>Our vision is to continuously improve and expand our platform, incorporating the latest technologies and 
+                        user feedback to deliver an exceptional experience. We are passionate about fostering a community 
+                        where creativity and expression thrive through video content. </p>
+
+                    <p>Future Prospects</p>
+
+                    <p>As we continue our journey, we are committed to enhancing the functionality and features of our 
+                        platform. Our goal is to not only meet but exceed the expectations of our users, making our website a 
+                        go-to destination for video sharing and viewing. </p>
+
+                    <p>Thank you for visiting our website. We hope you enjoy the content and features we have created. Your 
+                        feedback is invaluable to us as we strive to make our platform even better.</p>
+
                 </section>
             </div>
         </>
