@@ -76,7 +76,7 @@ export default function Comments({ reference_code, mainRef, adminFlag }) {
         const response = await fetchVideosSets(reference_code, offset.current);
         if (response.data.comments.length > 0) {
             offset.current += 1;
-            setCommentCount(response.data.comments.length);
+            // setCommentCount(response.data.comments.length);
         }
     };
 

@@ -69,12 +69,12 @@ export default function AccountSettings() {
             if (response.current_border && response.current_border.type) {
                 setCurrentBorder(response.current_border.type);
             } else {
-                setCurrentBorder(null); 
+                setCurrentBorder(null);
             }
             setRenderKey((prev) => prev + 1);
         } catch (error) {
             console.error(error);
-            setCurrentBorder(null); 
+            setCurrentBorder(null);
         }
     };
 
@@ -82,7 +82,7 @@ export default function AccountSettings() {
         e.preventDefault();
         const nickname = e.target.value;
         setUserData({ ...userData, nickname });
-        
+
         if (nickname) {
             setNicknameChanged(true);
         } else {
@@ -100,9 +100,9 @@ export default function AccountSettings() {
         } else {
             newUserData.repeatPassword = e.target.value;
         }
-    
+
         setUserData(newUserData);
-    
+
         if (
             newUserData.password &&
             newUserData.previousPassword &&
@@ -161,7 +161,7 @@ export default function AccountSettings() {
         e.preventDefault();
         document.getElementById("avatar-input").value = "";
         setUserData({ ...userData, avatar: "" });
-        setAvatarChanged(false); 
+        setAvatarChanged(false);
     };
 
     const handleChangeAvatar = async (e) => {
@@ -348,7 +348,12 @@ export default function AccountSettings() {
                         </button>
                         <div className={styles.avatarSettings}>
                             <div className={styles.avatarInputContainer}>
-                                <label for="avatar-input" className={styles.customFileUpload}>Change avatar</label>
+                                <label
+                                    for="avatar-input"
+                                    className={styles.customFileUpload}
+                                >
+                                    Change avatar
+                                </label>
                                 <input
                                     type="file"
                                     ref={inputRef}
