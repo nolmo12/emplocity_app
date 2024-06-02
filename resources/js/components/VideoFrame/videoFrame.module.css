@@ -230,6 +230,42 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     transform: scale(0.95);
 }
 
+.avatarNicknameContainer {
+    margin-top:0.5em;
+    margin-bottom:0.5em;
+    display: flex;
+    align-items: center;
+}
+
+.avatarNicknameContainer .avatarBorderContainer {
+    width: 5em;
+    height: 5em;
+    position: relative;
+}
+
+.avatarNicknameContainer .avatar {
+    height: 5em;
+    width: 5em;
+    margin-right: 1em; 
+    border-radius:50%;
+}
+
+.avatarNicknameContainer .border {
+    border-radius: 0;
+    width: 6.2em;
+    height: 6.2em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 2;
+}
+
+.avatarNicknameContainer p {
+    padding-left:0.5em;
+}
+
+
 @media screen and (max-width: 800px) and (orientation: portrait) {
     .videoFrameDiv {
         position: relative;
