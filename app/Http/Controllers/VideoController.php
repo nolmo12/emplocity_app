@@ -562,6 +562,9 @@ class VideoController extends Controller
     foreach($userScores as $id => $value) 
     {
         $user = User::find($id);
+        $border = $user->currentBorder();
+        unset($border['pivot']);
+        $user['border'] =  $border;
         $users[] = $user;
     }
 
