@@ -101,14 +101,6 @@ export default function Comment({
         setRenderKey((prev) => prev + 1);
     };
 
-    const handleClickRemoveComment = async () => {
-        await removeComment(setRenderKey, comment.id);
-        setCommentsObj((prev) => ({
-            ...prev,
-            comments: prev.comments.filter((c) => c.id !== comment.id),
-        }));
-    };
-
     const handleTextareaChange = (e) => {
         setReplyCommentContent(e.target.innerText);
     };
@@ -151,7 +143,7 @@ export default function Comment({
     };
 
     const handleClickView = () => {
-        setViewFlag(true);
+        setViewFlag(!viewFlag);
         setRenderKey((prev) => prev + 1);
     };
 
@@ -247,8 +239,9 @@ export default function Comment({
                     {deleteUserFlag && (
                         <button onClick={handleClickDelete}>delete</button>
                     )}
+                    {console.log(adminFlag)}
                     {adminFlag && (
-                        <button onClick={handleClickRemoveComment}>
+                        <button onClick={handleClickDelete}>
                             Remove comment
                         </button>
                     )}
@@ -294,6 +287,7 @@ export default function Comment({
                         setRenderKey={setRenderKey}
                         reference_code={reference_code}
                         isReply={true}
+                        adminFlag={adminFlag}
                         setCommentsObj={setCommentsObj}
                         parentId={comment.id}
                     />
