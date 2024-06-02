@@ -138,7 +138,6 @@ export default function AccountSettings() {
         );
 
         if (!response.passwordValidation && !response.nameValidation) {
-            console.log(response);
             navigate("/home");
             logout();
             setValidationPasswordData(response);

@@ -24,7 +24,6 @@ export default function Shop() {
     const fetchBorders = async () => {
         try {
             const response = await http.get("/api/shop/show");
-            console.log(response.data);
             const responseData = response.data.toSorted(
                 (a, b) => b.rarity - a.rarity
             );

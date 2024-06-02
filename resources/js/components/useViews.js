@@ -47,14 +47,12 @@ export default function useViews() {
 
     const updateRemainingTime = (currentTime, totalDuration) => {
         timeRemaining.current = totalDuration - currentTime;
-        console.log(timeRemaining.current);
     };
 
     const timer = (duration) => {
         intervald.current = setInterval(async () => {
             currentTime.current += 0.1;
             if (currentTime.current >= duration && sendFlag.current === false) {
-                console.log("send views");
                 clearInterval(intervald.current);
                 sendFlag.current = true;
                 await sendViews(reference_code);

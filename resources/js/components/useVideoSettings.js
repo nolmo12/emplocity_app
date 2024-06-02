@@ -15,7 +15,6 @@ export default function useVideoSettings() {
                     reference_code: reference_code,
                 });
             } else if (type === "tags") {
-                console.log("fsdfsdfsd");
                 await http.post(`/api/video/update`, {
                     tags: data,
                     reference_code: reference_code,
@@ -26,7 +25,6 @@ export default function useVideoSettings() {
                     reference_code: reference_code,
                 });
             } else if (type === "thumbnail") {
-                console.log(data);
                 const formData = new FormData();
                 formData.append("thumbnail", data.get("thumbnail"));
                 formData.append("reference_code", reference_code);

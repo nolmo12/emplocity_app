@@ -15,7 +15,6 @@ export default function useUserSettings() {
             }
         } catch (error) {
             if (error.response.status === 401) {
-                console.log(error);
                 const tempResponse = validateForm(
                     "accountSettings",
                     error.response.data.errors
@@ -43,15 +42,13 @@ export default function useUserSettings() {
             }
         } catch (error) {
             if (error.response.status === 401) {
-                console.log(error.response.data.message);
                 const errorResponse = validateForm(
                     "accountSettings",
                     error.response.data.message
                 );
-                console.log(errorResponse);
+
                 return errorResponse;
             }
-            console.log(error);
         }
     };
 

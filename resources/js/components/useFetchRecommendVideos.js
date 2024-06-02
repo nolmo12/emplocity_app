@@ -76,9 +76,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
                 const response = await http.get(
                     `/api/video/listing?page=${pageNumber}`
                 );
-                console.log(response.data.data.length);
                 if (response.data.data.length === 0) {
-                    console.log("no more videos");
                     setNoMoreVideosFlag(true);
                     return;
                 } else {

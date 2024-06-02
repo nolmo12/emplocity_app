@@ -71,7 +71,6 @@ export default function VideoSettings() {
 
     const handleChangeTags = (e) => {
         const arr = e.target.value.split(" ");
-        console.log(arr);
         setData((prev) => ({ ...prev, tags: arr }));
         setTagsChanged(true);
     };
@@ -138,7 +137,12 @@ export default function VideoSettings() {
                             ></input>
                             <button
                                 onClick={(e) =>
-                                    sendData("title", reference_code, data.title, e)
+                                    sendData(
+                                        "title",
+                                        reference_code,
+                                        data.title,
+                                        e
+                                    )
                                 }
                                 disabled={!titleChanged}
                                 className={styles.actionButton}
@@ -197,7 +201,9 @@ export default function VideoSettings() {
                         >
                             <option value="Public">Public</option>
                             <option value="Unlisted">Unlisted</option>
-                            {isLogged() && <option value="Hidden">Hidden</option>}
+                            {isLogged() && (
+                                <option value="Hidden">Hidden</option>
+                            )}
                         </select>
                         <button
                             onClick={(e) =>

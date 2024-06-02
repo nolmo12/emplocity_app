@@ -70,7 +70,6 @@ export default function useAuth() {
                 console.log("Refresh token", refreshToken);
                 if (refreshToken) {
                     const response = await refreshJWT();
-                    console.log("Response", response);
                     if (response) {
                         const newToken = response.authorisation.token;
                         console.log("New token", newToken);

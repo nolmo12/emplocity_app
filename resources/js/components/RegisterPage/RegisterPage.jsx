@@ -61,7 +61,7 @@ export default function RegisterPage() {
             });
             setEmailVerification(true);
         } catch (error) {
-            console.log(error);
+            // console.log(error);
             const errors = error.response.data.errors;
             const validationResult = validateForm("register", errors);
             setValidationInfo(validationResult);

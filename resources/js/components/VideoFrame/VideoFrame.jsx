@@ -162,7 +162,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     };
 
     const handleClickDownload = async () => {
-        console.log("Downloading video...");
         await downloadVideo();
     };
 
@@ -183,7 +182,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
 
     const fetchLikeInfo = async () => {
         if (!isLogged()) {
-            console.log("User is not logged in. Cannot fetch likes.");
             return;
         }
         try {
@@ -211,7 +209,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     };
 
     if (!isLoading) {
-        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -408,7 +405,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                         alt="avatar"
                                         className={styles.avatar}
                                     />
-                                    {console.log(videoOwnerBorder.current)}
                                     {videoOwnerBorder.current && (
                                         <img
                                             src={videoOwnerBorder.current}

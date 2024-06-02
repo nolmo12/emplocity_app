@@ -64,7 +64,6 @@ export default function UploadPage() {
             formData.append("language", data.language);
             formData.append("video", data.video);
             data.tags.forEach((tag, index) => {
-                console.log(tag);
                 formData.append(`tags[${index}]`, tag);
             });
             formData.append("visibility", data.visibility);

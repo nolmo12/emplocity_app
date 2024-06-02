@@ -239,7 +239,6 @@ export default function Comment({
                     {deleteUserFlag && (
                         <button onClick={handleClickDelete}>delete</button>
                     )}
-                    {console.log(adminFlag)}
                     {adminFlag && (
                         <button onClick={handleClickDelete}>
                             Remove comment

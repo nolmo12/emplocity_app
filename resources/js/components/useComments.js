@@ -9,16 +9,26 @@ export default function useComments() {
     const [commentsObj, setCommentsObj] = useState({ comments: [] });
 
     const fetchVideosSets = async (reference_code, offsetInt) => {
+        // commentsSets
         const response = await http.get(
             `/api/video/comments?reference_code=${reference_code}&offset=${offsetInt}`
         );
         if (offsetInt === 0) {
             setCommentsObj(response.data);
         } else if (offsetInt > 0) {
-            setCommentsObj((prev) => ({
-                ...prev,
-                comments: [...prev.comments, ...response.data.comments],
-            }));
+            setCommentsObj((prev) => {
+                const newComments = response.data.comments.filter(
+                    (newComment) =>
+                        !commentsObj.comments.some(
+                            (prevComment) => prevComment.id === newComment.id
+                        )
+                );
+
+                return {
+                    ...prev,
+                    comments: [...prev.comments, ...newComments],
+                };
+            });
         }
         return response;
     };

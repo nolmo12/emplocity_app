@@ -23,7 +23,6 @@ export default function SearchBar() {
             }
         };
         document.addEventListener("mousedown", handleClickOutside);
-        console.log("click");
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
