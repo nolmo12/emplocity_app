@@ -487,11 +487,17 @@ class VideoController extends Controller
         $escapedWord = str_replace(['%', '_'], ['\\%', '\\_'], $word);
         
         $videos = Video::where('visibility', 'Public')
-            ->whereHas('tags', function ($query) use ($word, $escapedWord, $maxDistance) {
+        ->where(function ($query) use ($word, $escapedWord, $maxDistance) {
+            $query->whereHas('tags', function ($query) use ($word, $escapedWord, $maxDistance) {
                 $query->whereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
                     ->orWhere('name', 'like', '%' . $escapedWord . '%');
             })
-            ->get();
+            ->orWhereHas('languages', function ($query) use ($word, $escapedWord, $maxDistance) {
+                $query->whereRaw("levenshtein(title, ?) <= ?", [$word, $maxDistance])
+                    ->orWhere('title', 'like', '%' . $escapedWord . '%');
+            });
+        })
+        ->get();
         
         $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {
             $query->orWhereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
