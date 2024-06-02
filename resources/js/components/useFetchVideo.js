@@ -7,15 +7,25 @@ import config from "../config";
 export default function useFetchVideo({ reference_code }) {
     const [videoObj, setVideoObj] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const { http } = authUser();
+    const { http, isLogged } = authUser();
     const { baseUrl } = config();
 
     useEffect(() => {
         const fetchVideo = async () => {
             try {
-                const response = await axios.get(
-                    `${baseUrl}/api/video/watch/${reference_code}`
-                );
+                let response;
+                if (isLogged()) {
+                    console.log("logged");
+                    response = await http.get(
+                        `/api/video/watch/${reference_code}`
+                    );
+                } else {
+                    console.log("not logged");
+                    response = await axios.get(
+                        `/api/video/watch/${reference_code}`
+                    );
+                }
+                console.log(response.data);
                 setVideoObj(response.data);
                 setIsLoading(false);
             } catch (error) {

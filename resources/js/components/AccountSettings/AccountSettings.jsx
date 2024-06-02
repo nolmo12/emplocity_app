@@ -8,6 +8,7 @@ import { ClipLoader } from "react-spinners";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import useBorders from "../useBorders";
+import { render } from "@testing-library/react";
 
 export default function AccountSettings() {
     const [user, setUser] = useState(null);
@@ -15,7 +16,6 @@ export default function AccountSettings() {
     const [imageLoaded, setImageLoaded] = useState({
         avatar: false,
     });
-    const [renderKey, setRenderKey] = useState(0);
     const [currentBorder, setCurrentBorder] = useState([]);
     const [userData, setUserData] = useState({
         nickname: "",
@@ -58,6 +58,7 @@ export default function AccountSettings() {
             getCurrentUserBorder();
         }
     }, [user]);
+
     const getUserBorders = async () => {
         const response = await getBorders();
         setUserBorders(response);
@@ -71,7 +72,6 @@ export default function AccountSettings() {
             } else {
                 setCurrentBorder(null);
             }
-            setRenderKey((prev) => prev + 1);
         } catch (error) {
             console.error(error);
             setCurrentBorder(null);
@@ -136,12 +136,16 @@ export default function AccountSettings() {
             userData.password,
             userData.repeatPassword
         );
-        if (response) {
-            navigate("/login");
+
+        if (!response.passwordValidation && !response.nameValidation) {
+            console.log(response);
+            navigate("/home");
             logout();
             setValidationPasswordData(response);
-        } else {
-            setValidationPasswordData(false);
+        }
+        if (response.passwordValidation) {
+            setValidationPasswordData(response);
+            setValidationNicknameData(false);
             setUserData({
                 ...userData,
                 previousPassword: "",
@@ -149,7 +153,14 @@ export default function AccountSettings() {
                 repeatPassword: "",
             });
         }
-        setValidationNicknameData(false);
+        if (response.nameValidation) {
+            setValidationNicknameData(response);
+            setValidationPasswordData(false);
+            setUserData({
+                ...userData,
+                nickname: "",
+            });
+        }
     };
 
     const handleClickRemoveAccount = async (e) => {
@@ -274,7 +285,7 @@ export default function AccountSettings() {
                                                     onClick={() =>
                                                         handleClickBorder(
                                                             item.id,
-                                                            setRenderKey
+                                                            setCurrentBorder
                                                         )
                                                     }
                                                     key={`userBorder${item.id}`}
@@ -318,7 +329,10 @@ export default function AccountSettings() {
                             className={styles.floatingInput}
                         />
                         {validationPasswordData.previousPasswordValidation && (
-                            <p>The current password field must be a string</p>
+                            <p>
+                                Current password is incorrect or new password
+                                field doesnt match the repeat password field
+                            </p>
                         )}
                         <input
                             type="password"
@@ -337,7 +351,10 @@ export default function AccountSettings() {
                             className={styles.floatingInput}
                         />
                         {validationPasswordData && (
-                            <p>The password field must be a string</p>
+                            <p>
+                                Current password is incorrect or new password
+                                field doesnt match the repeat password field
+                            </p>
                         )}
                         <button
                             className={styles.changePassword}

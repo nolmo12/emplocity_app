@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./uploadPage.module.css";
 import authUser from "../authUser";
 import useValidation from "../useValidation";
@@ -29,7 +29,6 @@ export default function UploadPage() {
         visibility: "Public",
     });
     const [validationInfo, setValidationInfo] = useState(null);
-    const navigate = useNavigate();
     const { http, isLogged } = authUser();
     const { validateForm } = useValidation();
 

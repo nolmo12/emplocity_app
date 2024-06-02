@@ -211,6 +211,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     };
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -227,10 +228,9 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         );
         const tags = videoObj.tags;
         actualTime.current = videoDuration - timeRemaining.current;
-        console.log(videoObj);
         if (videoObj.userBorder && videoObj.userBorder.type)
             videoOwnerBorder.current = videoObj.userBorder.type;
-        getLink(actualTime.current);
+        getLink(videoDuration != actualTime.current ? actualTime.current : 0);
         return (
             <>
                 <div
@@ -403,7 +403,11 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                             <p>{uploadedTimeAgo}</p>
                             <div className={styles.avatarNicknameContainer}>
                                 <div className={styles.avatarBorderContainer}>
-                                    <img src={videoOwnerAvatar} alt="avatar" className={styles.avatar}/>
+                                    <img
+                                        src={videoOwnerAvatar}
+                                        alt="avatar"
+                                        className={styles.avatar}
+                                    />
                                     {console.log(videoOwnerBorder.current)}
                                     {videoOwnerBorder.current && (
                                         <img
@@ -414,22 +418,22 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                     )}
                                 </div>
                                 <p className={styles.videoFrameOwner}>
-                                {videoOwner ? (
-                                    <p data-testid="video-owner">
-                                        <Link
-                                            to={
-                                                videoOwnerId === userId
-                                                    ? `/account`
-                                                    : `/user/${videoOwnerId}`
-                                            } // need endpoint video -> ownerId
-                                        >
-                                            {videoOwner}
-                                        </Link>
-                                    </p>
-                                ) : (
-                                    <p data-testid="video-owner">Guest</p>
-                                )}
-                            </p>
+                                    {videoOwner ? (
+                                        <p data-testid="video-owner">
+                                            <Link
+                                                to={
+                                                    videoOwnerId === userId
+                                                        ? `/account`
+                                                        : `/user/${videoOwnerId}`
+                                                } // need endpoint video -> ownerId
+                                            >
+                                                {videoOwner}
+                                            </Link>
+                                        </p>
+                                    ) : (
+                                        <p data-testid="video-owner">Guest</p>
+                                    )}
+                                </p>
                             </div>
 
                             <p className={styles.videoFrameInfoDesc}>
