@@ -86,7 +86,8 @@ class VideoController extends Controller
 
         $maxTime = $videoManager->getDuration('seconds');
 
-        $video->duration = $maxTime;
+        if(is_a($maxTime, 'double'))
+            $video->duration = $maxTime;
 
         if(!$request->hasFile('thumbnail'))
         {

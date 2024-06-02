@@ -26,7 +26,7 @@ class VideoTest extends TestCase
             'thumbnail' => UploadedFile::fake()->image('thumbnail.jpg'),
             'language' => 1,
             'visibility' => 'Hidden',
-            'video' => UploadedFile::fake()->create('video.mp4', 100),
+            'video' => UploadedFile::fake()->create('video.mp4', 100, 'video/mp4'),
             'tags' => ['tag1', 'tag2', 'tag3'],
          ]);
 
