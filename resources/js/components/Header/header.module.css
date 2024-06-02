@@ -16,6 +16,8 @@ header img {
     position: relative;
     left: 2em;
     top: 10%;
+    width: 6rem;
+    height: 4rem;
 }
 
 .avatarBorderContainer {
@@ -66,7 +68,7 @@ header img {
 #menu {
     list-style: none;
     position: absolute;
-    right: 1.5em;
+    right: 0.5em;
     top: 4em;
     transform: translateY(-50%);
     z-index: 999;
@@ -84,82 +86,38 @@ header img {
 }
 
 #menu li {
-    margin-bottom: -1.7em;
+    margin: 0;
+    padding: 0; 
 }
 
 #menu button {
-    position: relative;
-    width: 6em;
-    height: 2em;
+    display: block;
+    width: 8em;
+    height: auto;
+    padding: 0.8em;
     transition: background-color 0.3s ease, transform 0.1s ease;
     cursor: pointer;
     border: none;
     background-color: white;
     text-align: left;
+    border-bottom: 1px solid lightgrey;
 }
 
 #menu .imgMenu {
-    width:1em;
-    height:1em;
-    margin-right:0.3em;
-    margin-left:0.1em;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.3em;
+    margin-left: 0.1em;
 }
 
-#register, #logout {
-    top: 1em;
-}
-
-#login {
-    top: 3em;
-}
-
-#upload {
-    top: 3em;
-}
-
-#account {
-    top: 5em;
-}
-
-#history {
-    top: 7em;
-}
-
-#help {
-    top:9em;
-}
-
-#aboutUs {
-    top:11em;
-}
-
-#rules {
-    top:13em;
-}
-
-#login:hover,
-#register:hover,
-#upload:hover,
-#account:hover,
-#history:hover,
-#help:hover, 
-#logout:hover,
-#aboutUs:hover,
-#rules:hover {
+#menu button:hover {
     background-color: #f0f0f0;
 }
 
-#login:active,
-#register:active,
-#upload:active,
-#account:active,
-#history:active,
-#help:active, 
-#logout:active,
-#aboutUs:active,
-#rules:active {
+#menu button:active {
     transform: scale(0.95);
 }
+
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
     header {

@@ -258,30 +258,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                 <FontAwesomeIcon
                                     onClick={() =>
                                         likeCountFunction(
-                                            0,
-                                            thumbObj,
-                                            setThumbObj,
-                                            reference_code,
-                                            likesCount,
-                                            dislikesCount,
-                                            setLikesCount,
-                                            setDislikesCount
-                                        )
-                                    } // 0 for dislike
-                                    icon={faThumbsDown}
-                                    data-testid="dislike-button"
-                                    className={`${styles.videoFrameIcon} ${
-                                        thumbObj.thumbStyle === "dislike" &&
-                                        styles.dislike
-                                    }`}
-                                />
-                                <p>{dislikesCount}</p>
-                            </div>
-
-                            <div className={styles.videoLDContainer}>
-                                <FontAwesomeIcon
-                                    onClick={() =>
-                                        likeCountFunction(
                                             1,
                                             thumbObj,
                                             setThumbObj,
@@ -300,6 +276,29 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                     }`}
                                 />
                                 <p>{likesCount}</p>
+                            </div>
+                            <div className={styles.videoLDContainer}>
+                                <FontAwesomeIcon
+                                    onClick={() =>
+                                        likeCountFunction(
+                                            0,
+                                            thumbObj,
+                                            setThumbObj,
+                                            reference_code,
+                                            likesCount,
+                                            dislikesCount,
+                                            setLikesCount,
+                                            setDislikesCount
+                                        )
+                                    } // 0 for dislike
+                                    icon={faThumbsDown}
+                                    data-testid="dislike-button"
+                                    className={`${styles.videoFrameIcon} ${
+                                        thumbObj.thumbStyle === "dislike" &&
+                                        styles.dislike
+                                    }`}
+                                />
+                                <p>{dislikesCount}</p>
                             </div>
                             <Popup
                                 trigger={

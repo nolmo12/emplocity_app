@@ -224,6 +224,7 @@ function Main() {
                 element={
                     <>
                         <ReportPage />
+                        <Footer />
                     </>
                 }
             />
