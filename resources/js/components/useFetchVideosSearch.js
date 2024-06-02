@@ -5,7 +5,7 @@ export default function useFetchVideosSearch() {
     const [videosHistory, setVideosHistory] = useState([]);
     const [likedVideos, setLikedVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { http, isLogged } = authUser();
+    const { http, isLogged, getUser } = authUser();
 
     const fetchVideosHistory = async () => {
         try {
@@ -47,6 +47,7 @@ export default function useFetchVideosSearch() {
     const sendToHistory = async (reference_code) => {
         if (!isLogged()) return;
         try {
+            console.log(await getUser());
             await http.post(`/api/history/${reference_code}`);
         } catch (error) {
             console.log(error);

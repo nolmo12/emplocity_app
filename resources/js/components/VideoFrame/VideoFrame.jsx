@@ -244,11 +244,16 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                     ></video>
                     <div className={styles.videoFrameInfo}>
                         <div className={styles.videoFrameButtons}>
-                            {videoOwnerId !== userId && userId && videoOwnerId && (
-                                <button onClick={handleClickFollowButton} className={styles.followButton}>
-                                    {isFollowed ? "Unfollow" : "Follow"}
-                                </button>
-                            )}
+                            {videoOwnerId !== userId &&
+                                userId &&
+                                videoOwnerId && (
+                                    <button
+                                        onClick={handleClickFollowButton}
+                                        className={styles.followButton}
+                                    >
+                                        {isFollowed ? "Unfollow" : "Follow"}
+                                    </button>
+                                )}
                             <div className={styles.videoLDContainer}>
                                 <FontAwesomeIcon
                                     onClick={() =>
@@ -352,7 +357,9 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                             </Link>
                                         </div>
                                     )}
-                                    <button onClick={() => handleClickDownload()}>
+                                    <button
+                                        onClick={() => handleClickDownload()}
+                                    >
                                         Download video
                                     </button>
                                     {adminFlag && (
@@ -423,11 +430,11 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                             {isDescriptionExpanded
                                                 ? videoDescription
                                                 : videoDescription.length >
-                                                MAX_DESCRIPTION_LENGTH
+                                                  MAX_DESCRIPTION_LENGTH
                                                 ? `${videoDescription.slice(
-                                                    0,
-                                                    MAX_DESCRIPTION_LENGTH
-                                                )}...`
+                                                      0,
+                                                      MAX_DESCRIPTION_LENGTH
+                                                  )}...`
                                                 : videoDescription}
                                         </p>
                                         {videoDescription.length >

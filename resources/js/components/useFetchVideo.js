@@ -13,8 +13,8 @@ export default function useFetchVideo({ reference_code }) {
     useEffect(() => {
         const fetchVideo = async () => {
             try {
-                const response = await http.get(
-                    `/api/video/watch/${reference_code}`
+                const response = await axios.get(
+                    `${baseUrl}/api/video/watch/${reference_code}`
                 );
                 setVideoObj(response.data);
                 setIsLoading(false);
@@ -48,11 +48,13 @@ export default function useFetchVideo({ reference_code }) {
     };
 
     const checkFollow = async (id) => {
-        try {
-            const response = await http.get(`/api/auth/isFollowing/${id}`);
-            return response.data;
-        } catch (error) {
-            console.log(error);
+        if (id) {
+            try {
+                const response = await http.get(`/api/auth/isFollowing/${id}`);
+                return response.data;
+            } catch (error) {
+                console.log(error);
+            }
         }
     };
 
