@@ -401,15 +401,19 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                 <p>Followers {videoOwnerFollowersCount}</p>
                             )}
                             <p>{uploadedTimeAgo}</p>
-                            <p className={styles.videoFrameOwner}>
-                                <img src={videoOwnerAvatar} alt="avatar" />
-                                {console.log(videoOwnerBorder.current)}
-                                {videoOwnerBorder.current && (
-                                    <img
-                                        src={videoOwnerBorder.current}
-                                        alt="border"
-                                    />
-                                )}
+                            <div className={styles.avatarNicknameContainer}>
+                                <div className={styles.avatarBorderContainer}>
+                                    <img src={videoOwnerAvatar} alt="avatar" className={styles.avatar}/>
+                                    {console.log(videoOwnerBorder.current)}
+                                    {videoOwnerBorder.current && (
+                                        <img
+                                            src={videoOwnerBorder.current}
+                                            alt="border"
+                                            className={styles.border}
+                                        />
+                                    )}
+                                </div>
+                                <p className={styles.videoFrameOwner}>
                                 {videoOwner ? (
                                     <p data-testid="video-owner">
                                         <Link
@@ -426,6 +430,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                     <p data-testid="video-owner">Guest</p>
                                 )}
                             </p>
+                            </div>
 
                             <p className={styles.videoFrameInfoDesc}>
                                 {videoDescription ? (

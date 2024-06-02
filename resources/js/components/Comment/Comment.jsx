@@ -213,7 +213,7 @@ export default function Comment({
                     <FontAwesomeIcon
                         icon={faEllipsisV}
                         onClick={handleToggleDropdown}
-                        className={styles.replyMenu}
+                        className={styles.commMenu}
                     />
                 )}
 
