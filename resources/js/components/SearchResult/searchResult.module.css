@@ -111,31 +111,39 @@
     background: #555;
 }
 
-.searchSort {
+.orderResultsContainer {
+    display: flex;
+    align-items: center;
+}
+
+.orderResultsContainer p {
+    margin-right: 1em; 
+    font-size: 1em;
+}
+
+.orderResultsContainer .searchSort {
     font-size: 1em;
     color: white;
     background-color: #14213d;
     border: none;
-    position: relative;
-    left: 20%;
     padding: 0.5em 1em;
-    margin-top: 1em;
+    margin-top: 0; 
     border-radius: 5px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
     outline: none;
 }
 
-.searchSort:hover {
+.orderResultsContainer .searchSort:hover {
     background-color: #1f2a4d;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.searchSort:active {
+.orderResultsContainer .searchSort:active {
     background-color: #1f2a4d;
 }
 
-.searchSort option {
+.orderResultsContainer .searchSort option {
     background-color: #14213d;
     color: white;
     padding: 0.5em 1em;
@@ -143,7 +151,7 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.searchSort option:hover {
+.orderResultsContainer .searchSort option:hover {
     background-color: #1f2a4d;
     color: #fff;
 }
