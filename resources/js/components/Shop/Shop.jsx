@@ -69,7 +69,7 @@ export default function Shop() {
                                 />
                             </div>
                             <div className={styles.infoContainer}>
-                                <p>Name placeholder</p>
+                                <p>{border.name}</p>
                                 <p>
                                     Price: <span>{border.price}</span>
                                 </p>
