@@ -114,9 +114,6 @@ class AuthController extends Controller
             }
 
             $token = Auth::attempt($request->only(['email', 'password']));
-            $user = Auth::user();
-            
-            $refreshToken = JWTAuth::fromUser($user, ['exp' => now()->addDays(30)->timestamp]);
 
             if(!$token)
             {
@@ -125,6 +122,8 @@ class AuthController extends Controller
                     'message' => 'Email & Password does not match with our record.',
                 ], 401);
             }
+
+            $user = Auth::user();
             
             if (!Auth::user()->email_verified_at)
             {
@@ -134,8 +133,8 @@ class AuthController extends Controller
                 ], 401);
             }
 
-            $user = Auth::user();
-            
+            $refreshToken = JWTAuth::fromUser($user, ['exp' => now()->addDays(30)->timestamp]);
+                        
             return response()
             ->json([
                 'status' => 'success',

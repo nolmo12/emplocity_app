@@ -8,7 +8,10 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\ResetPassword;
 
 class AuthTest extends TestCase
 {
@@ -145,29 +148,35 @@ class AuthTest extends TestCase
         $logoutResponse->assertStatus(200);
     }
 
-    public function testUserVerified()
+    public function testForgotPassword(): void
     {
-        $email = fake()->unique()->email();
-        $name = fake()->name();
+        Notification::fake();
+    $email = fake()->unique()->email();
+    $name = fake()->name();
 
-            $user = User::create([
-                'name' => $name,
-                'first_name' => $name,
-                'email' => $email,
-                'password' => Hash::make('password123'),
-            ]);
+    $user = User::create([
+        'name' => $name,
+        'first_name' => $name,
+        'email' => $email,
+        'password' => Hash::make('password123'),
+    ]);
 
-        $verificationUrl = URL::temporarySignedRoute(
-            'verification.verify',
-            now()->addMinutes(60),
-            ['id' => $user->id, 'hash' => sha1($user->email)],
-            
-        );
-        $this->head($verificationUrl);
+    $user->email_verified_at = now();
+    $user->save();
 
-        $user->refresh();
+    $response = $this->post('/api/auth/forgot-password', [
+        'email' => $email,
+     ]);
 
-        $this->assertTrue($user->hasVerifiedEmail());
+    $response->assertStatus(302);
+
+    $response = $this->followRedirects($response);
+
+    $response->assertStatus(200);
+    $response->assertSessionHas('status', trans(Password::RESET_LINK_SENT));
+
+    Notification::assertSentTo(
+        [$user], ResetPassword::class
+    );
     }
-    
 }
