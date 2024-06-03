@@ -10,6 +10,7 @@ import { faShoppingBasket } from "@fortawesome/free-solid-svg-icons";
 export default function Shop() {
     const [userData, setUserData] = useState({});
     const [userBorders, setUserBorders] = useState([]);
+    const [userOwnedBorders, setUserOwnedBorders] = useState([]);
     const [borders, setBorders] = useState([]);
     const { getBorders } = useBorders();
     const { http, getUser } = authUser();
@@ -33,6 +34,15 @@ export default function Shop() {
         }
     };
 
+    const fetchUserBorders = async () => {
+        try {
+            const response = await getBorders();
+            setUserOwnedBorders(response);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleClickBuy = async (borderId) => {
         try {
             const response = await http.get(
@@ -45,6 +55,7 @@ export default function Shop() {
     };
 
     useEffect(() => {
+        fetchUserBorders();
         getUserData();
         fetchBorders();
     }, []);
@@ -52,45 +63,53 @@ export default function Shop() {
     return (
         <ul className={styles.borderShop}>
             <h1>Border Shop</h1>
-            {borders.map((border) => {
-                return (
-                    <li key={`shop-${border.id}`}>
-                        <div className={styles.borderContainer}>
-                            <div className={styles.borderAvatarContainer}>
-                                <img
-                                    src={border.type}
-                                    className={styles.border}
-                                    alt="border"
-                                />
-                                <img
-                                    src={userData.avatar}
-                                    className={styles.avatar}
-                                    alt="user avatar"
-                                />
-                            </div>
-                            <div className={styles.infoContainer}>
-                                <p>{border.name}</p>
-                                <p>
-                                    Price: <span>{border.price}</span>
-                                </p>
-                                <div>
-                                    <button
-                                        onClick={() =>
-                                            handleClickBuy(border.id)
-                                        }
-                                    >
-                                        <FontAwesomeIcon
-                                            icon={faShoppingBasket}
-                                            className={styles.shopIcon}
-                                        />
-                                        Buy
-                                    </button>
+            {console.log(userOwnedBorders)}
+            {borders
+                .filter(
+                    (border) =>
+                        !userOwnedBorders.borders.some(
+                            (userBorder) => userBorder.id === border.id
+                        )
+                )
+                .map((border) => {
+                    return (
+                        <li key={`shop-${border.id}`}>
+                            <div className={styles.borderContainer}>
+                                <div className={styles.borderAvatarContainer}>
+                                    <img
+                                        src={border.type}
+                                        className={styles.border}
+                                        alt="border"
+                                    />
+                                    <img
+                                        src={userData.avatar}
+                                        className={styles.avatar}
+                                        alt="user avatar"
+                                    />
+                                </div>
+                                <div className={styles.infoContainer}>
+                                    <p>{border.name}</p>
+                                    <p>
+                                        Price: <span>{border.price}</span>
+                                    </p>
+                                    <div>
+                                        <button
+                                            onClick={() =>
+                                                handleClickBuy(border.id)
+                                            }
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faShoppingBasket}
+                                                className={styles.shopIcon}
+                                            />
+                                            Buy
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </li>
-                );
-            })}
+                        </li>
+                    );
+                })}
         </ul>
     );
 }
