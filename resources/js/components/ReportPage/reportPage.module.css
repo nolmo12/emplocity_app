@@ -71,9 +71,7 @@
 }
 
 .inputContainer {
-    position: relative;
-    width: 80%;
-    margin: 0 auto 1em;
+    width:100%;
 }
 
 .reportFormDescriptionIcon {
@@ -121,9 +119,9 @@
 }
 
 .floatingInput {
-    width: 100%; /* Make textarea fill the container */
-    height: 4em; /* Increase height for better usability */
-    margin-top: 0.5em; /* Adjust as needed */
+    width: 100%;
+    height: 4em; 
+    margin-top: 0.5em; 
     padding-left: 2.5em;
     padding-top: 1em;
     border: none;
@@ -164,5 +162,5 @@
 }
 
 .reportForm button:active {
-    transform: translate(50%) scale(0.95); 
+    transform: scale(0.95); 
 }
