@@ -250,7 +250,6 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                     ></video>
                     <div className={styles.videoFrameInfo}>
                         <div className={styles.videoFrameButtons}>
-                            {console.log(isFollowed)}
                             {videoOwnerId !== userId &&
                                 userId &&
                                 videoOwnerId && (
