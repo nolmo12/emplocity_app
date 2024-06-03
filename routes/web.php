@@ -23,7 +23,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 Route::get('/{path?}', function () {
     return view('welcome');
 })
-->where('path', '^(?!account|account-settings|history/[^/]+$|user-likes/[^/]+$|shop|login|v/[^/]+$).*$');
+->where('path', '^(?!account|account-settings|history/[^/]+$|user-likes/[^/]+$|shop|login|v/[^/]+$|follows/[^/]+$|video-settings/[^/]+$).*$');
 
 Route::get('/account', function () {
     return view('welcome');
@@ -51,6 +51,14 @@ Route::get('/login', function () {
 
 Route::get('/v/{shortUrl}', [UrlController::class, 'redirection']);
 
+Route::get('/follows/{id}', function () {
+    return view('welcome');
+})->middleware('auth:api');
+
+
+Route::get('/video-settings/{reference_code}', function () {
+    return view('welcome');
+})->middleware('auth:api');
 
 
 
