@@ -53,9 +53,13 @@ function UserInfo({ userObj }) {
     return (
         <div className={styles.userInfo}>
             <div className={styles.avatarBorderContainer}>
-                <img src={userObj.avatar} alt="user avatar" className={styles.avatar}/>
+                <img
+                    src={userObj.avatar}
+                    alt="user avatar"
+                    className={styles.avatar}
+                />
                 {userObj.border && (
-                    <img src={userObj.border.type} className={styles.border}/>
+                    <img src={userObj.border.type} className={styles.border} />
                 )}
             </div>
             <div className={styles.userInfoText}>
@@ -284,7 +288,7 @@ export default function SearchResult({ searchType }) {
             <ul>
                 <h2></h2>
                 {videos.length === 0 ? (
-                    <h2>No followed users</h2>
+                    <h2>User doesn't follow anybody</h2>
                 ) : (
                     videos.map((user) => {
                         return (
@@ -305,21 +309,21 @@ export default function SearchResult({ searchType }) {
             className={styles.searchResultsDiv}
             onScroll={(e) => handleScroll(e)}
         >
-                {searchType === "userSearch" && (
-                    <div className={styles.orderResultsContainer}>
-                        <p>Order results:</p>
-                        <select
-                            onChange={(e) => handleChangeSort(e)}
-                            value={checkUrl()}
-                            className={styles.searchSort}
-                        >
-                            <option value="upload_date_desc">From newest</option>
-                            <option value="upload_date_asc">From oldest</option>
-                            <option value="views">By most viewed</option>
-                            <option value="popularity">By popularity</option>
-                        </select>
-                    </div>
-                )}
+            {searchType === "userSearch" && (
+                <div className={styles.orderResultsContainer}>
+                    <p>Order results:</p>
+                    <select
+                        onChange={(e) => handleChangeSort(e)}
+                        value={checkUrl()}
+                        className={styles.searchSort}
+                    >
+                        <option value="upload_date_desc">From newest</option>
+                        <option value="upload_date_asc">From oldest</option>
+                        <option value="views">By most viewed</option>
+                        <option value="popularity">By popularity</option>
+                    </select>
+                </div>
+            )}
             {view}
         </div>
     );
