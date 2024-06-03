@@ -151,7 +151,7 @@ public function update(Request $request, $id)
         'currentPassword' => 'string',
         'password' => 'string|required_with:current_password',
         'repeatPassword' => 'string|required_with:password',
-        'thumbnail' => 'file|mimetypes:image/jpeg,image/png',
+        'thumbnail' => 'file|mimetypes:image/jpeg,image/png,image/gif',
     ]);
 
     if ($validateUser->fails()) {
