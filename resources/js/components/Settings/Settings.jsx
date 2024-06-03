@@ -14,6 +14,7 @@ import {
     faSignOutAlt,
     faInfoCircle,
     faGavel,
+    faUserFriends,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Settings() {
@@ -80,7 +81,7 @@ export default function Settings() {
                 </li>
                 <li>
                     <FontAwesomeIcon
-                        icon={faThumbsUp}
+                        icon={faUserFriends}
                         className={styles.settingsIcon}
                     />
                     <Link to={followsPath} className={styles.link}>

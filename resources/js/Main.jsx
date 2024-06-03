@@ -89,7 +89,12 @@ function Main() {
 
             <Route
                 path="/reset-password"
-                element={<ResetPasswordPage />}
+                element={
+                    <>
+                        <ResetPasswordPage />
+                        <Footer />
+                    </>
+            }
             ></Route>
             <Route
                 path="/upload"

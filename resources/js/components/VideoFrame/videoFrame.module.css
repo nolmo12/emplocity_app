@@ -265,6 +265,10 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     padding-left:0.5em;
 }
 
+.videoFrameInfoDesc a {
+    text-decoration: none;
+}
+
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
     .videoFrameDiv {
