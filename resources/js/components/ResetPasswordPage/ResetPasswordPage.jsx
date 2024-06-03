@@ -52,10 +52,10 @@ export default function ResetPasswordPage() {
             });
     };
     return (
-        <main>
+        <main className={styles.resetPage}>
             {isReset ? (
                 <Message
-                    message="Password was change"
+                    message="Password was changed"
                     className={styles.Message}
                 />
             ) : (
@@ -72,6 +72,7 @@ export default function ResetPasswordPage() {
                             placeholder="Password"
                             value={data.password}
                             onChange={(e) => handleInputPassword(e)}
+                            className={styles.floatingInput}
                         ></input>
                     </div>
                     <div>
@@ -85,6 +86,7 @@ export default function ResetPasswordPage() {
                             placeholder="Repeat password"
                             value={data.repeatPassword}
                             onChange={(e) => handleInputRepeatPassword(e)}
+                            className={styles.floatingInput}
                         ></input>
                     </div>
                     {passwordValidation ? (

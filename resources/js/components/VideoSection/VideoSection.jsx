@@ -165,7 +165,7 @@ export default function VideoSection({ sectionType }) {
                 <div id={styles.videoSection} onScroll={handleScroll}>
                     <div className={styles.videoSectionHContainer}>
                         <h2 className={styles.videoSectionH}>
-                            #{tag} videos {videosCount}
+                            Videos with tag #{tag} ({videosCount})
                         </h2>
                     </div>
                     <div className={styles.videoSectionList}>

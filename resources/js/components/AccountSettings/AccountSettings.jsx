@@ -316,7 +316,7 @@ export default function AccountSettings() {
                             Change nickname
                         </button>
                         {validationNicknameData.nicknameValidation && (
-                            <p>The Nickname field must be a string</p>
+                            <p className={styles.validationText}>The Nickname field must be a string</p>
                         )}
                         <input
                             type="password"
@@ -328,7 +328,7 @@ export default function AccountSettings() {
                             className={styles.floatingInput}
                         />
                         {validationPasswordData.previousPasswordValidation && (
-                            <p>
+                            <p className={styles.validationText}>
                                 Current password is incorrect or new password
                                 field doesnt match the repeat password field
                             </p>
@@ -350,7 +350,7 @@ export default function AccountSettings() {
                             className={styles.floatingInput}
                         />
                         {validationPasswordData && (
-                            <p>
+                            <p className={styles.validationText}>
                                 Current password is incorrect or new password
                                 field doesnt match the repeat password field
                             </p>
