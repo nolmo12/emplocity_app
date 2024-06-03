@@ -14,6 +14,7 @@ class CommentsTest extends TestCase
     /**
      * A basic feature test example.
      */
+    // use RefreshDatabase;
     public function testCommentPost(): void
     {    
         $user = User::first();
@@ -60,4 +61,46 @@ class CommentsTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function testCommentShow(): void
+    {
+        $user = User::first();
+        $video = Video::first();
+        $this->actingAs($user, 'api');
+
+        $postResponse = $this->post('/api/video/comment', [
+            'reference_code' => $video->reference_code,
+            'content' =>'Mega fajny opis',
+        ]);
+
+        $postResponse->assertStatus(200);
+
+        error_log($video->reference_code);
+        $getResponse = $this->getJson('/api/video/comments?reference_code=' . $video->reference_code . '&offset=1');
+
+        // Assert the comments are retrieved correctly
+        $getResponse->assertStatus(200)
+                     ->assertJsonStructure([
+                         'comments' => [
+                             '*' => [
+                                 'id',
+                                 'content',
+                                 'user_name',
+                                 'user_first_name',
+                                 'user_avatar',
+                                 'current_border',
+                                 'children_count',
+                                 'children'
+                             ]
+                         ]
+                     ]);
+ 
+        
+        $comments = $getResponse->json('comments');
+        $this->assertEquals('Mega fajny opis', $comments[0]['content']);
+        $this->assertEquals($user->name, $comments[0]['user_name']);
+        $this->assertEquals($user->first_name, $comments[0]['user_first_name']);
+    }
+
+
 }
