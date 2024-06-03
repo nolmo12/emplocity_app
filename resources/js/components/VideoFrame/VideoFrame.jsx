@@ -177,7 +177,11 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
 
     const checkIsFollowed = async () => {
         const response = await checkFollow(videoObj.userId);
-        setIsFollowed(response);
+        if (response.is_following && response.is_following === true) {
+            setIsFollowed(true);
+        } else {
+            setIsFollowed(false);
+        }
     };
 
     const fetchLikeInfo = async () => {
@@ -246,6 +250,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                     ></video>
                     <div className={styles.videoFrameInfo}>
                         <div className={styles.videoFrameButtons}>
+                            {console.log(isFollowed)}
                             {videoOwnerId !== userId &&
                                 userId &&
                                 videoOwnerId && (
