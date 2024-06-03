@@ -3,22 +3,28 @@
 }
 
 .rules .rulesh2{
-    width:100%;
+    width:90%;
     text-align: center;
     font-size:4rem;
+    border-bottom: solid 1px grey;
+    margin: 0 auto;
 }
 .rules section
 {
     width: 50%;
     margin: 0 auto;
+    text-align: justify;
 }
 .rules ol {
     display: inline-block;
+
 }
 
 .rules ol>li {
     position:relative;
     margin-bottom:0.5em;
+    margin-top:0.5em;
+    font-weight:700;
 }
 
 .rules ul>li {

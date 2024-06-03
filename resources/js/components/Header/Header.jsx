@@ -21,6 +21,7 @@ import { ClipLoader } from "react-spinners";
 
 export default function Header() {
     const [showMenu, setShowMenu] = useState(false);
+    const menuRef = useRef(null);
     const [userAvatar, setUserAvatar] = useState("");
     const [userBorder, setUserBorder] = useState("");
     const [isFetched, setIsFetched] = useState({
@@ -78,6 +79,26 @@ export default function Header() {
         logout();
         setRenderKey((prev) => prev + 1);
     };
+
+    useEffect(() => {
+        const fetchDataAndUpdate = async () => {
+            fetchData();
+        };
+    
+        fetchDataAndUpdate();
+    
+        const handleClickOutside = (event) => {
+            if (showMenu && menuRef.current && !menuRef.current.contains(event.target) && !event.target.closest(`.${styles.avatarBorderContainer}`)) {
+                setShowMenu(false);
+            }
+        };
+    
+        document.addEventListener("mousedown", handleClickOutside);
+    
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [renderKey, showMenu]);
 
     const toggleMenu = () => {
         setShowMenu(!showMenu);
@@ -147,19 +168,19 @@ export default function Header() {
         </li>
     );
 
-    const historyElement = (
-        <li onClick={toggleMenu}>
-            <Link to={isLogged() ? path : "/login"}>
-                <button id={styles.history}>
-                    <FontAwesomeIcon
-                        icon={faHistory}
-                        className={styles.imgMenu}
-                    />
-                    History
-                </button>
-            </Link>
-        </li>
-    );
+const historyElement = (
+    <li onClick={toggleMenu}>
+        <Link to={isLogged() ? path : "/login"}>
+            <button id={styles.history}>
+                <FontAwesomeIcon
+                    icon={faHistory}
+                    className={styles.imgMenu}
+                />
+                History
+            </button>
+        </Link>
+    </li>
+);
 
     const helpElement = (
         <li onClick={toggleMenu}>
@@ -257,6 +278,7 @@ export default function Header() {
             </header>
 
             <ul
+                ref={menuRef}
                 id={styles.menu}
                 data-testid="ulMenu"
                 className={showMenu ? styles.menuVisible : ""}

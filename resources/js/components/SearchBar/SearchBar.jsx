@@ -90,6 +90,10 @@ export default function SearchBar() {
                                 search(item);
                             }}
                         >
+                            <FontAwesomeIcon
+                                icon={faSearch}
+                                className={styles.searchLoopSuggestion}
+                            />
                             {item}
                         </li>
                     ))}

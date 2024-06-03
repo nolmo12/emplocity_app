@@ -55,29 +55,31 @@ export default function ReportPage({ id }) {
                     {type === "user" && <p>User ID: {reference_code}</p>}
                     {type === "comment" && <p>Comment ID: {reference_code}</p>}
                     <form onSubmit={(e) => handleSubmit(e)}>
-                        <div className={styles.inputContainer}>
-                            <FontAwesomeIcon
-                                icon={faEnvelope}
-                                className={styles.reportFormIcon}
-                            />
-                            <input
-                                onChange={(e) => handleChangeEmail(e)}
-                                type="text"
-                                placeholder="Email"
-                                className={styles.floatingInput}
-                            />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <FontAwesomeIcon
-                                icon={faAlignLeft}
-                                className={styles.reportFormDescriptionIcon}
-                            />
-                            <textarea
-                                ref={textareaRef}
-                                onChange={(e) => handleChangeTextarea(e)}
-                                placeholder="Describe your problem"
-                                className={styles.floatingInput}
-                            />
+                        <div>
+                            <div className={styles.inputContainer}>
+                                <FontAwesomeIcon
+                                    icon={faEnvelope}
+                                    className={styles.reportFormIcon}
+                                />
+                                <input
+                                    onChange={(e) => handleChangeEmail(e)}
+                                    type="text"
+                                    placeholder="Email"
+                                    className={styles.floatingInput}
+                                />
+                            </div>
+                            <div className={styles.inputContainer}>
+                                <FontAwesomeIcon
+                                    icon={faAlignLeft}
+                                    className={styles.reportFormDescriptionIcon}
+                                />
+                                <textarea
+                                    ref={textareaRef}
+                                    onChange={(e) => handleChangeTextarea(e)}
+                                    placeholder="Describe your problem"
+                                    className={styles.floatingInput}
+                                />
+                            </div>
                         </div>
 
                         <button>Send</button>

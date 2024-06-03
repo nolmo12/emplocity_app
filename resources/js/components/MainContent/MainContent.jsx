@@ -59,7 +59,7 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "result") {
         view = (
             <main>
-                <div id={styles.container}>
+                <div id={styles.containerSearchResult}>
                     <div id={styles.searchResultPage}>
                         <SearchResult searchType={"userSearch"} />
                     </div>
@@ -96,7 +96,7 @@ export default function MainContent({ contentType }) {
     } else if (contentType === "help") {
         view = (
             <main>
-                <div id={styles.container}>
+                <div id={styles.containerHelpPage}>
                     <HelpPage />
                 </div>
             </main>

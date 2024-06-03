@@ -144,7 +144,6 @@ function Main() {
                 path="/help"
                 element={
                     <>
-                        <Header />
                         <MainContent contentType="help" />
                         <Footer />
                     </>
