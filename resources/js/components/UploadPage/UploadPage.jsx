@@ -74,11 +74,7 @@ export default function UploadPage() {
                 formData.append("description", data.description);
             }
 
-            try {
-                await http.post("/api/video/upload", formData);
-            } catch (error) {
-                console.log(error);
-            }
+            await http.post("/api/video/upload", formData);
 
             setVideoSent(true);
         } catch (error) {

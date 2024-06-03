@@ -48,7 +48,7 @@ function Main() {
                     </>
                 }
             />
-            <Route
+            {/* <Route
                 path="/account/:id"
                 element={
                     <>
@@ -57,7 +57,7 @@ function Main() {
                         <Footer />
                     </>
                 }
-            />
+            /> */}
 
             <Route
                 path="/register"
@@ -131,7 +131,7 @@ function Main() {
                 }
             ></Route>
             <Route
-                path={"/follows/:userId"}
+                path={"/follows/:userId"} // block
                 element={
                     <>
                         <Header />
@@ -229,7 +229,7 @@ function Main() {
                 }
             />
             <Route
-                path="/video-settings/:reference_code"
+                path="/video-settings/:reference_code" // block
                 element={
                     <>
                         <MainContent contentType="videoSettings" />

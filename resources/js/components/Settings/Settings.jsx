@@ -43,38 +43,38 @@ export default function Settings() {
             <h1>Settings</h1>
             <ul data-testid="settingsList">
                 <li>
-                    <FontAwesomeIcon
-                        icon={faUser}
-                        className={styles.settingsIcon}
-                    />
                     <Link to="/account-settings" className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            className={styles.settingsIcon}
+                        />
                         Account settings
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faUpload}
-                        className={styles.settingsIcon}
-                    />
                     <Link to="/upload" className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faUpload}
+                            className={styles.settingsIcon}
+                        />
                         Upload
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faHistory}
-                        className={styles.settingsIcon}
-                    />
                     <Link to={historyPath} className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faHistory}
+                            className={styles.settingsIcon}
+                        />
                         History
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faThumbsUp}
-                        className={styles.settingsIcon}
-                    />
                     <Link to={likedPath} className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faThumbsUp}
+                            className={styles.settingsIcon}
+                        />
                         Liked videos
                     </Link>
                 </li>
@@ -88,38 +88,38 @@ export default function Settings() {
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faStore}
-                        className={styles.settingsIcon}
-                    />
                     <Link to="/shop" className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faStore}
+                            className={styles.settingsIcon}
+                        />
                         Shop
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faQuestionCircle}
-                        className={styles.settingsIcon}
-                    />
                     <Link to="/help" className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faQuestionCircle}
+                            className={styles.settingsIcon}
+                        />
                         Help
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faInfoCircle}
-                        className={styles.settingsIcon}
-                    />
                     <Link to="/about-us" className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faInfoCircle}
+                            className={styles.settingsIcon}
+                        />
                         About us
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faGavel}
-                        className={styles.settingsIcon}
-                    />
                     <Link to="/rules" className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faGavel}
+                            className={styles.settingsIcon}
+                        />
                         Rules
                     </Link>
                 </li>

@@ -11,7 +11,7 @@ export default function useVideoSettings() {
                 });
             } else if (type === "description") {
                 await http.post(`/api/video/update`, {
-                    description: data,
+                    ...(data && { description: data }),
                     reference_code: reference_code,
                 });
             } else if (type === "tags") {

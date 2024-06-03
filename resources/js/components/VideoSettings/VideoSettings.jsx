@@ -22,6 +22,7 @@ export default function VideoSettings() {
     });
     const [videoObj, setVideoObj] = useState({});
     const [loaded, setIsLoaded] = useState(false);
+    const [titleValidation, setTitleValidation] = useState(false);
     const [fileSelected, setFileSelected] = useState(false);
     const [titleChanged, setTitleChanged] = useState(false);
     const [descriptionChanged, setDescriptionChanged] = useState(false);
@@ -55,7 +56,10 @@ export default function VideoSettings() {
     };
 
     const handleChangeTitle = (e) => {
+        if (!e.target.value) setTitleValidation(true);
+        if (e.target.value) setTitleValidation(false);
         setData({ ...data, title: e.target.value });
+
         setTitleChanged(true);
     };
 
@@ -149,6 +153,7 @@ export default function VideoSettings() {
                             >
                                 Change title
                             </button>
+                            {titleValidation && <p>Title must exist</p>}
                         </div>
                         <div className={styles.inputGroup}>
                             <FontAwesomeIcon

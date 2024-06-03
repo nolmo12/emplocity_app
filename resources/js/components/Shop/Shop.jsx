@@ -38,7 +38,7 @@ export default function Shop() {
             const response = await http.get(
                 `/web/payment/create/border?itemId=${borderId}&firstname=${userData.firstname}&lastname=Maro&email=kon@wp.pl&phone=48123456789`
             );
-            if (response.data) window.location.href = response.data.url;
+            if (response.data) window.open(response.data.url);
         } catch (error) {
             console.log(error);
         }
