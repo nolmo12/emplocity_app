@@ -29,9 +29,13 @@ export default function useUser() {
 
     const removeUser = async (id) => {
         try {
-            await http.delete(`/api/auth/delete`, { params: { user_id: id } });
-            navigate("/home");
-            logout();
+            const response = await http.delete(`/api/auth/delete`, {
+                params: { user_id: id },
+            });
+
+            if (response.data) {
+                logout(true);
+            }
         } catch (error) {
             console.log(error);
         }

@@ -64,7 +64,6 @@ export default function UploadPage() {
             formData.append("language", data.language);
             formData.append("video", data.video);
             data.tags.forEach((tag, index) => {
-                console.log(tag);
                 formData.append(`tags[${index}]`, tag);
             });
             formData.append("visibility", data.visibility);
@@ -75,11 +74,7 @@ export default function UploadPage() {
                 formData.append("description", data.description);
             }
 
-            try {
-                await http.post("/api/video/upload", formData);
-            } catch (error) {
-                console.log(error);
-            }
+            await http.post("/api/video/upload", formData);
 
             setVideoSent(true);
         } catch (error) {

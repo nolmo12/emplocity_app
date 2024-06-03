@@ -15,17 +15,14 @@ export default function useFetchVideo({ reference_code }) {
             try {
                 let response;
                 if (isLogged()) {
-                    console.log("logged");
                     response = await http.get(
                         `/api/video/watch/${reference_code}`
                     );
                 } else {
-                    console.log("not logged");
                     response = await axios.get(
                         `/api/video/watch/${reference_code}`
                     );
                 }
-                console.log(response.data);
                 setVideoObj(response.data);
                 setIsLoading(false);
             } catch (error) {

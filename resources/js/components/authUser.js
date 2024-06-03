@@ -56,7 +56,7 @@ export default function useAuth() {
             );
             return response.data;
         } catch (error) {
-            console.log("Error during token refresh", error);
+            console.log(error);
         }
     };
 
@@ -67,13 +67,12 @@ export default function useAuth() {
             if (error.response.status === 401 && !originalRequest._retry) {
                 originalRequest._retry = true;
                 const refreshToken = getToken();
-                console.log("Refresh token", refreshToken);
+
                 if (refreshToken) {
                     const response = await refreshJWT();
-                    console.log("Response", response);
                     if (response) {
                         const newToken = response.authorisation.token;
-                        console.log("New token", newToken);
+
                         saveToken(newToken);
                         originalRequest.headers.Authorization = `Bearer ${newToken}`;
                         return axios(originalRequest);
@@ -90,10 +89,11 @@ export default function useAuth() {
         Cookies.set("token", tempToken, { expires });
     };
 
-    const logout = () => {
+    const logout = (flag = false) => {
         Cookies.remove("token");
         setToken(null);
-        navigate("/home");
+        if (flag) navigate("/login");
+        if (!flag) navigate("/home");
     };
 
     const isLogged = () => !!token;

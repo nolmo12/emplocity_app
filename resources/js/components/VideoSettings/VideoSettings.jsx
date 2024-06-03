@@ -22,6 +22,7 @@ export default function VideoSettings() {
     });
     const [videoObj, setVideoObj] = useState({});
     const [loaded, setIsLoaded] = useState(false);
+    const [titleValidation, setTitleValidation] = useState(false);
     const [fileSelected, setFileSelected] = useState(false);
     const [titleChanged, setTitleChanged] = useState(false);
     const [descriptionChanged, setDescriptionChanged] = useState(false);
@@ -55,7 +56,10 @@ export default function VideoSettings() {
     };
 
     const handleChangeTitle = (e) => {
+        if (!e.target.value) setTitleValidation(true);
+        if (e.target.value) setTitleValidation(false);
         setData({ ...data, title: e.target.value });
+
         setTitleChanged(true);
     };
 
@@ -71,7 +75,6 @@ export default function VideoSettings() {
 
     const handleChangeTags = (e) => {
         const arr = e.target.value.split(" ");
-        console.log(arr);
         setData((prev) => ({ ...prev, tags: arr }));
         setTagsChanged(true);
     };
@@ -138,13 +141,19 @@ export default function VideoSettings() {
                             ></input>
                             <button
                                 onClick={(e) =>
-                                    sendData("title", reference_code, data.title, e)
+                                    sendData(
+                                        "title",
+                                        reference_code,
+                                        data.title,
+                                        e
+                                    )
                                 }
                                 disabled={!titleChanged}
                                 className={styles.actionButton}
                             >
                                 Change title
                             </button>
+                            {titleValidation && <p>Title must exist</p>}
                         </div>
                         <div className={styles.inputGroup}>
                             <FontAwesomeIcon
@@ -197,7 +206,9 @@ export default function VideoSettings() {
                         >
                             <option value="Public">Public</option>
                             <option value="Unlisted">Unlisted</option>
-                            {isLogged() && <option value="Hidden">Hidden</option>}
+                            {isLogged() && (
+                                <option value="Hidden">Hidden</option>
+                            )}
                         </select>
                         <button
                             onClick={(e) =>

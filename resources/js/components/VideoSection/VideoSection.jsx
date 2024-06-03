@@ -43,13 +43,12 @@ export default function VideoSection({ sectionType }) {
                 if (scrollPercentage > 85 && !hasScrolledPast85) {
                     const tempNumber = pageNumber + 1;
                     setPageNumber((prev) => prev + 1);
-                    console.log(noMoreVideosFlag);
                     fetchNextVideos(
                         tempNumber,
                         noMoreVideosFlag,
                         setNoMoreVideosFlag
                     );
-                    // setHasScrolledPast85(true);
+                    setHasScrolledPast85(true);
                 } else if (scrollPercentage < 85) {
                     setHasScrolledPast85(false);
                 }
@@ -138,24 +137,24 @@ export default function VideoSection({ sectionType }) {
                             Remove user
                         </button>
                     )}
-                <div id={styles.videoSection} onScroll={handleScroll}>
-                    <div className={styles.videoSectionHContainer}>
-                        <h2 className={styles.videoSectionH}>
-                            {username.current}
-                        </h2>
+                    <div id={styles.videoSection} onScroll={handleScroll}>
+                        <div className={styles.videoSectionHContainer}>
+                            <h2 className={styles.videoSectionH}>
+                                {username.current}
+                            </h2>
+                        </div>
+                        <div className={styles.videoSectionList}>
+                            {Object.entries(videos).map(([key, video]) => {
+                                return (
+                                    <Video
+                                        data-testid={`video-${testKey}`}
+                                        key={`otherUser-${video.video.id}`}
+                                        videoObj={video}
+                                    />
+                                );
+                            })}
+                        </div>
                     </div>
-                    <div className={styles.videoSectionList}>
-                        {Object.entries(videos).map(([key, video]) => {
-                            return (
-                                <Video
-                                    data-testid={`video-${testKey}`}
-                                    key={`otherUser-${video.video.id}`}
-                                    videoObj={video}
-                                />
-                            );
-                        })}
-                    </div>
-                </div>
                 </>
             );
         }
