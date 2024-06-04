@@ -90,6 +90,7 @@ export default function useAuth() {
     };
 
     const logout = (flag = false) => {
+        console.log("logout");
         Cookies.remove("token");
         setToken(null);
         if (flag) navigate("/login");

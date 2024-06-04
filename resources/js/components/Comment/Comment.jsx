@@ -156,7 +156,8 @@ export default function Comment({
 
     const handleBlur = async () => {
         if (isEditable) {
-            await editComment(comment.id, replyCommentContent);
+            if (replyCommentContent)
+                await editComment(comment.id, replyCommentContent);
             setIsEditable(false);
         }
     };
