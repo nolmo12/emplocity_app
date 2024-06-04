@@ -210,7 +210,7 @@ export default function SearchResult({ searchType }) {
                     if (user.name === query) {
                         matchedUser.push(
                             <li key={`user-${user.id}`}>
-                                <Link to={`/account/${user.id}`}>
+                                <Link to={`/user/${user.id}`}>
                                     <UserInfo userObj={user} />
                                 </Link>
                             </li>
@@ -218,7 +218,7 @@ export default function SearchResult({ searchType }) {
                     } else {
                         otherResults.push(
                             <li key={`user-${user.id}`}>
-                                <Link to={`/account/${user.id}`}>
+                                <Link to={`/user/${user.id}`}>
                                     <UserInfo userObj={user} />
                                 </Link>
                             </li>
@@ -256,9 +256,7 @@ export default function SearchResult({ searchType }) {
                 <h2>History</h2>
                 {videos.map((video) => (
                     <li key={video.video.id}>
-                        <Link
-                            to={`/video/${video.video.reference_code}/time=0`}
-                        >
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>
 
