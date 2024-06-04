@@ -60,18 +60,23 @@ export default function Shop() {
         fetchBorders();
     }, []);
 
+    let displayBorders = borders;
+    console.log(userOwnedBorders);
+    if (userOwnedBorders && userOwnedBorders.borders) {
+        displayBorders = borders.filter(
+            (border) =>
+                !userOwnedBorders.borders.some(
+                    (userBorder) => userBorder.id === border.id
+                )
+        );
+    }
+
     return (
         <ul className={styles.borderShop}>
             <h1>Border Shop</h1>
             {console.log(userOwnedBorders)}
-            {borders
-                .filter(
-                    (border) =>
-                        !userOwnedBorders.borders.some(
-                            (userBorder) => userBorder.id === border.id
-                        )
-                )
-                .map((border) => {
+            {displayBorders &&
+                displayBorders.map((border) => {
                     return (
                         <li key={`shop-${border.id}`}>
                             <div className={styles.borderContainer}>
