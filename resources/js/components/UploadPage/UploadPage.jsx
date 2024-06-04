@@ -152,6 +152,7 @@ export default function UploadPage() {
                                 className={styles.uploadIcon}
                             />
                         </div>
+                        <p>Drag your video file into the red box</p>
                         {droppedFileName && (
                             <p>Uploaded file: {droppedFileName}</p>
                         )}
