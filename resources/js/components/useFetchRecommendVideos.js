@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import authUser from "./authUser";
 export default function useFetchRecommendVideos({ pageNumber }) {
     const [videos, setVideos] = useState([]);
+    const [tagCount, setTagCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const { tag } = useParams();
     const { userId } = useParams();
@@ -45,11 +46,13 @@ export default function useFetchRecommendVideos({ pageNumber }) {
             try {
                 setVideos([]);
                 const response = await axios.get(`/api/tags/${tag}`);
+                const tagResponse = await axios.get(`/api/tags/count/${tag}`);
                 const tempVideos = [];
                 response.data.map((video) => {
                     tempVideos.push(video);
                 });
                 setVideos(tempVideos);
+                if (tagResponse.data) setTagCount(tagResponse.data.video_count);
                 setIsLoading(false);
             } catch (error) {
                 console.log(error);
@@ -91,5 +94,5 @@ export default function useFetchRecommendVideos({ pageNumber }) {
         setIsLoading(false);
     };
 
-    return { videos, isLoading, fetchNextVideos };
+    return { videos, tagCount, isLoading, fetchNextVideos };
 }
