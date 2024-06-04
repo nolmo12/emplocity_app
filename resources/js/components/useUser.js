@@ -27,13 +27,13 @@ export default function useUser() {
         }
     };
 
-    const removeUser = async (id) => {
+    const removeUser = async (id, adminFlag = false) => {
         try {
             const response = await http.delete(`/api/auth/delete`, {
                 params: { user_id: id },
             });
 
-            if (response.data) {
+            if (response.data && !adminFlag) {
                 logout(true);
             }
         } catch (error) {
