@@ -40,6 +40,12 @@ class TagController extends Controller
             $videosCollection->push($stats);
         }
 
+        $videosCollection['video_count'] = Video::whereHas('tags', function($query) use ($tag){
+            $query->where('name', $tag);
+        })
+        ->where('visibility', 'Public')
+        ->count();
+
         return $videosCollection;
     }
 }
