@@ -178,7 +178,8 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
 
     const checkIsFollowed = async () => {
         const response = await checkFollow(videoObj.userId);
-        if (response.is_following && response.is_following === true) {
+
+        if (response && response.is_following === true) {
             setIsFollowed(true);
         } else {
             setIsFollowed(false);
@@ -358,11 +359,13 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                             >
                                                 <button>Report video</button>
                                             </Link>
-                                            <Link
-                                                to={`/report/user/${videoOwnerId}`}
-                                            >
-                                                <button>Report user</button>
-                                            </Link>
+                                            {videoOwnerId && (
+                                                <Link
+                                                    to={`/report/user/${videoOwnerId}`}
+                                                >
+                                                    <button>Report user</button>
+                                                </Link>
+                                            )}
                                         </div>
                                     )}
                                     {videoVisibility === "Public" && (
@@ -386,7 +389,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                     {adminFlag && videoOwnerId && (
                                         <button
                                             onClick={(e) =>
-                                                removeUser(videoOwnerId)
+                                                removeUser(videoOwnerId, true)
                                             }
                                         >
                                             Remove User

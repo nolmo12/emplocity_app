@@ -256,9 +256,7 @@ export default function SearchResult({ searchType }) {
                 <h2>History</h2>
                 {videos.map((video) => (
                     <li key={video.video.id}>
-                        <Link
-                            to={`/video/${video.video.reference_code}/time=0`}
-                        >
+                        <Link to={`/video/${video.video.reference_code}`}>
                             <VideoThumbnail videoObj={video} />
                         </Link>
 
