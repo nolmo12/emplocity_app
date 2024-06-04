@@ -210,7 +210,7 @@ export default function SearchResult({ searchType }) {
                     if (user.name === query) {
                         matchedUser.push(
                             <li key={`user-${user.id}`}>
-                                <Link to={`/account/${user.id}`}>
+                                <Link to={`/user/${user.id}`}>
                                     <UserInfo userObj={user} />
                                 </Link>
                             </li>
@@ -218,7 +218,7 @@ export default function SearchResult({ searchType }) {
                     } else {
                         otherResults.push(
                             <li key={`user-${user.id}`}>
-                                <Link to={`/account/${user.id}`}>
+                                <Link to={`/user/${user.id}`}>
                                     <UserInfo userObj={user} />
                                 </Link>
                             </li>
