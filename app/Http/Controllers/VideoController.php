@@ -68,7 +68,7 @@ class VideoController extends Controller
         if($request->hasFile('video'))
         {
             $file = $request->file('video');
-            $videoName = hash('sha256', $file->getClientOriginalName()) .'.'. $file->extension();
+            $videoName = hash('sha256', $file->getClientOriginalName()) . date("Y-m-d h:i:sa") .'.'. $file->extension();
             $path = $file->storeAs('public/videos', $videoName);
 
             $file->move(public_path('storage/videos'), $videoName);
