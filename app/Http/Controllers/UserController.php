@@ -117,13 +117,9 @@ class UserController extends Controller
 
             if(File::exists($videoPath))
                 File::delete($videoPath);
-            else
-                return response()->json(['error' => 'Video path not found'], 404);
 
             if(File::exists($thumbnailPath))
                 File::delete($thumbnailPath);
-            else
-                return response()->json(['error' => 'Thumbnail path not found'], 404);
         }
 
         $user->comments()->delete();

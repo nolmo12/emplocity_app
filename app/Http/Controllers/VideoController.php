@@ -296,14 +296,10 @@ class VideoController extends Controller
 
         if(File::exists($videoPath))
             File::delete($videoPath);
-        else
-            return response()->json(['error' => 'Video path not found'], 404);
 
         // to fix if the thumbnail is not added to the video throws errors
         if(File::exists($thumbnailPath))
             File::delete($thumbnailPath);
-        else
-            return response()->json(['error' => 'Thumbnail path not found'], 404);
 
         return response()->json([
             'success'=> 'Succesfully deleted video',
