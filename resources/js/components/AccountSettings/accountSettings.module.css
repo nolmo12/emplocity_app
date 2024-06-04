@@ -204,6 +204,12 @@
     border: solid 2px red;
 }
 
+.divFormContainer form .validationText {
+    font-size:0.7em;
+    color:red;
+    margin-bottom:0.5em;
+}
+
 .settingsDiv button:hover:not(:disabled) {
     background-color: #f0f0f0;
 }
