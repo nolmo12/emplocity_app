@@ -485,22 +485,23 @@ class VideoController extends Controller
         $videos = Video::where('visibility', 'Public')
         ->where(function ($query) use ($word, $escapedWord, $maxDistance) {
             $query->whereHas('tags', function ($query) use ($word, $escapedWord, $maxDistance) {
-                $query->whereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
-                    ->orWhere('name', 'like', '%' . $escapedWord . '%');
+                $query->whereRaw("levenshtein(LOWER(name), LOWER(?)) <= ?", [strtolower($word), $maxDistance])
+                    ->orWhereRaw('LOWER(name) like ?', ['%' . strtolower($escapedWord) . '%']);
             })
             ->orWhereHas('languages', function ($query) use ($word, $escapedWord, $maxDistance) {
-                $query->whereRaw("levenshtein(title, ?) <= ?", [$word, $maxDistance])
-                    ->orWhere('title', 'like', '%' . $escapedWord . '%');
+                $query->whereRaw("levenshtein(LOWER(title), LOWER(?)) <= ?", [strtolower($word), $maxDistance])
+                    ->orWhereRaw('LOWER(title) like ?', ['%' . strtolower($escapedWord) . '%']);
             });
         })
         ->get();
-        
-        $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {
-            $query->orWhereRaw("levenshtein(name, ?) <= ?", [$word, $maxDistance])
-                  ->orWhere('name', 'like', '%' . $escapedWord . '%')
-                  ->orWhere('first_name', 'like', '%' . $escapedWord . '%');
-        })
-        ->get();
+    
+    $users = User::where(function ($query) use ($word, $escapedWord, $maxDistance) {
+        $query->orWhereRaw("levenshtein(LOWER(name), LOWER(?)) <= ?", [strtolower($word), $maxDistance])
+              ->orWhereRaw('LOWER(name) like ?', ['%' . strtolower($escapedWord) . '%'])
+              ->orWhereRaw('LOWER(first_name) like ?', ['%' . strtolower($escapedWord) . '%']);
+    })
+    ->get();
+    
 
         $videoCollection = $videoCollection->concat($videos);
         $userCollection = $userCollection->concat($users);
