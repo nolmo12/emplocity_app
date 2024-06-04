@@ -20,6 +20,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import userEvent from "@testing-library/user-event";
 
 export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const [likesCount, setLikesCount] = useState(0);
@@ -213,6 +214,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     };
 
     if (!isLoading) {
+        console.log(videoObj);
         const videoTitle = videoObj.title;
         const videoPath = videoObj.video.video;
         const videoDescription = videoObj.description;
@@ -223,6 +225,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
         const videoOwnerId = videoObj.userId;
         const videoOwnerAvatar = videoObj.userAvatar;
         const videoOwnerFollowersCount = videoObj.followersCount;
+        const videoVisibility = videoObj.video.visibility;
         const uploadedTimeAgo = calculateTime(
             videoObj.video.created_at,
             new Date()
@@ -362,11 +365,15 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                             </Link>
                                         </div>
                                     )}
-                                    <button
-                                        onClick={() => handleClickDownload()}
-                                    >
-                                        Download video
-                                    </button>
+                                    {videoVisibility === "Public" && (
+                                        <button
+                                            onClick={() =>
+                                                handleClickDownload()
+                                            }
+                                        >
+                                            Download video
+                                        </button>
+                                    )}
                                     {adminFlag && (
                                         <button
                                             onClick={(e) =>
@@ -376,7 +383,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                                             Remove Video
                                         </button>
                                     )}
-                                    {adminFlag && (
+                                    {adminFlag && videoOwnerId && (
                                         <button
                                             onClick={(e) =>
                                                 removeUser(videoOwnerId)
