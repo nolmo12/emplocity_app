@@ -243,26 +243,20 @@
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
     .videoSettingsForm {
-        width: 100%;
-        padding: 6%;
-    }
-
-    .videoSettingsForm .videoSettingsFormCloseIcon {
-        left: 95%;
-    }
-}
-
-@media only screen and (max-width: 800px) and (orientation: landscape) {
-    .videoSettingsForm {
-        width: 100%;
-        overflow-y: auto;
+        width: 70%;
     }
 
     .videoSettingsForm .videoSettingsFormCloseIcon {
         left: 100%;
     }
+}
 
-    .videoSettingsForm button {
-        width: auto;
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .videoSettingsForm {
+        width: 70%;
+    }
+
+    .videoSettingsForm .videoSettingsFormCloseIcon {
+        left: 100%;
     }
 }
