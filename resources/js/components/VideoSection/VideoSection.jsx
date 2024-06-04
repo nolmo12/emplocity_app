@@ -15,9 +15,10 @@ export default function VideoSection({ sectionType }) {
     const [pageNumber, setPageNumber] = useState(1);
     const username = useRef("");
     const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
-    const { videos, isLoading, fetchNextVideos } = useFetchRecommendVideos({
-        pageNumber,
-    });
+    const { videos, isLoading, fetchNextVideos, tagCount } =
+        useFetchRecommendVideos({
+            pageNumber,
+        });
     const previousScroll = useRef(0);
     const [noMoreVideosFlag, setNoMoreVideosFlag] = useState(false);
     const { removeUser, isAdmin } = useUser();
@@ -160,12 +161,11 @@ export default function VideoSection({ sectionType }) {
         }
     } else if (sectionType === "tag") {
         if (videos) {
-            const videosCount = Object.keys(videos).length;
             view = (
                 <div id={styles.videoSection} onScroll={handleScroll}>
                     <div className={styles.videoSectionHContainer}>
                         <h2 className={styles.videoSectionH}>
-                            Videos with tag #{tag} ({videosCount})
+                            Videos with tag #{tag} {tagCount}
                         </h2>
                     </div>
                     <div className={styles.videoSectionList}>
