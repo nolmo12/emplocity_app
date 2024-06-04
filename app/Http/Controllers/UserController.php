@@ -131,7 +131,6 @@ class UserController extends Controller
         $user->likesDislikes()->delete();
 
         $user->delete();
-        Auth::logout();
 
         return response()->json(['success' => 'Successfully deleted user'], 200);
     }
