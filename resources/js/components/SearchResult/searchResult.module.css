@@ -9,6 +9,7 @@
     padding-bottom: 1em;
     padding-right: 1em;
     overflow-y: auto;
+    padding-left:1em;
 }
 
 .searchResultsDiv ul {

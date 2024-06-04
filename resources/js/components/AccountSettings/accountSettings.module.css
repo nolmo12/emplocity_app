@@ -30,7 +30,7 @@
 }
 
 .divFormContainer::-webkit-scrollbar {
-    width: 0.2em;
+    width: 0.8em; 
 }
 
 .divFormContainer::-webkit-scrollbar-track {
@@ -296,4 +296,24 @@ form .selectedAvatar {
 
 .settingsDiv .clearAvatarButton:active {
     transform: scale(0.95);
+}
+
+@media only screen and (max-width: 800px) and (orientation: portrait) {
+    .divFormContainer {
+        width: 70%;
+    }
+
+    .divFormContainer .uploadFormCloseIcon {
+        left: 100%;
+    }
+}
+
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .divFormContainer {
+        width: 70%;
+    }
+
+    .divFormContainer .uploadFormCloseIcon {
+        left: 100%;
+    }
 }
