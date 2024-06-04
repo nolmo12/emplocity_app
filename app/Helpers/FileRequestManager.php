@@ -21,7 +21,7 @@ class FileRequestManager
             'sha256',
             $this->request
             ->file($this->fileName)
-            ->getClientOriginalName()) . date("Y-m-d h:i:sa") .'.'. 
+            ->getClientOriginalName() . date("Y-m-d h:i:sa")) . '.'. 
             $this->request
             ->file($this->fileName)
             ->extension();
