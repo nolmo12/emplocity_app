@@ -204,6 +204,7 @@ Route::prefix('video')->group(function () {
 Route::prefix('tags')->group(function (){
     Route::get('/all', [TagController::class, 'all']);
     Route::get('/{tag}', [TagController::class, 'getVideoByTag']);
+    Route::get('/count/{tag}', [TagController::class, 'countVideos']);
 });
 
 Route::prefix('history')->group(function () {
