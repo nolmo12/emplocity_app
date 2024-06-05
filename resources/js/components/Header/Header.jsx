@@ -55,7 +55,7 @@ export default function Header() {
                     setUserBorder(user.current_border.type);
                     setIsFetched((prev) => ({ ...prev, border: true }));
                 }
-            }, 1000);
+            }, 500);
 
             // security timeout useless
         } else {
@@ -84,17 +84,22 @@ export default function Header() {
         const fetchDataAndUpdate = async () => {
             fetchData();
         };
-    
+
         fetchDataAndUpdate();
-    
+
         const handleClickOutside = (event) => {
-            if (showMenu && menuRef.current && !menuRef.current.contains(event.target) && !event.target.closest(`.${styles.avatarBorderContainer}`)) {
+            if (
+                showMenu &&
+                menuRef.current &&
+                !menuRef.current.contains(event.target) &&
+                !event.target.closest(`.${styles.avatarBorderContainer}`)
+            ) {
                 setShowMenu(false);
             }
         };
-    
+
         document.addEventListener("mousedown", handleClickOutside);
-    
+
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
@@ -168,19 +173,19 @@ export default function Header() {
         </li>
     );
 
-const historyElement = (
-    <li onClick={toggleMenu}>
-        <Link to={isLogged() ? path : "/login"}>
-            <button id={styles.history}>
-                <FontAwesomeIcon
-                    icon={faHistory}
-                    className={styles.imgMenu}
-                />
-                History
-            </button>
-        </Link>
-    </li>
-);
+    const historyElement = (
+        <li onClick={toggleMenu}>
+            <Link to={isLogged() ? path : "/login"}>
+                <button id={styles.history}>
+                    <FontAwesomeIcon
+                        icon={faHistory}
+                        className={styles.imgMenu}
+                    />
+                    History
+                </button>
+            </Link>
+        </li>
+    );
 
     const helpElement = (
         <li onClick={toggleMenu}>

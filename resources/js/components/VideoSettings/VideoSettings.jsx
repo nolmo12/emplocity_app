@@ -52,6 +52,12 @@ export default function VideoSettings() {
     const getVideo = async () => {
         const response = await http.get(`/api/video/watch/${reference_code}`);
         setVideoObj(response.data);
+        if (response.data.video.visibility) {
+            setData((prev) => ({
+                ...prev,
+                visibility: response.data.video.visibility,
+            }));
+        }
         setIsLoaded(true);
     };
 
@@ -63,7 +69,7 @@ export default function VideoSettings() {
         setTitleChanged(true);
     };
 
-    const handleChangeDescription = async (e) => {
+    const handleChangeDescription = (e) => {
         setData({ ...data, description: e.target.value });
         setDescriptionChanged(true);
     };
@@ -106,7 +112,7 @@ export default function VideoSettings() {
 
     const sendTag = async (e) => {
         e.preventDefault();
-        sendData(
+        await sendData(
             "tags",
             reference_code,
             data.tags,
@@ -210,7 +216,9 @@ export default function VideoSettings() {
                     </div>
                     <div className={styles.visibilityContainer}>
                         <select
-                            defaultValue={videoObj.visibility}
+                            defaultValue={
+                                data.visibility || videoObj.visibility
+                            }
                             onChange={(e) => handleChangeVisibility(e)}
                         >
                             <option value="Public">Public</option>
