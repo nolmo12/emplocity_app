@@ -55,7 +55,7 @@ export default function Header() {
                     setUserBorder(user.current_border.type);
                     setIsFetched((prev) => ({ ...prev, border: true }));
                 }
-            }, 500);
+            }, 1000);
 
             // security timeout useless
         } else {
