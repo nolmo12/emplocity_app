@@ -2,7 +2,7 @@ import axios from "axios";
 import authUser from "./authUser";
 import useValidation from "./useValidation";
 export default function useUserSettings() {
-    const { http } = authUser();
+    const { http, setError } = authUser();
     const { validateForm } = useValidation();
 
     const changeNickname = async (id, newUsername) => {
@@ -21,7 +21,7 @@ export default function useUserSettings() {
                 );
                 return tempResponse;
             }
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -58,7 +58,7 @@ export default function useUserSettings() {
         try {
             await http.post(`/api/auth/update/${id}`, formData);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 

@@ -27,7 +27,7 @@ export default function ForgotPasswordPage() {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);
             } catch (error) {
-                console.error(error);
+                setError(error);
             }
         };
         fetchData();
@@ -54,7 +54,7 @@ export default function ForgotPasswordPage() {
             setPasswordSent(true);
         } catch (error) {
             setEmailValidation(true);
-            console.log(error);
+            setError(error);
         }
     };
 

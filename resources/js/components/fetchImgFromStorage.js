@@ -1,11 +1,13 @@
 import axios from "axios";
+import authUser from "./authUser";
 export default function fetchImgFromStorage() {
+    const { setError } = authUser();
     const fetchImage = async (path) => {
         try {
             const response = await axios.get(`/api/storage/image/${path}`);
             return response.data[0];
         } catch (error) {
-            console.error(error);
+            setError(error);
             return null;
         }
     };
@@ -15,7 +17,7 @@ export default function fetchImgFromStorage() {
             const response = await axios.get(`/api/storage/avatars/${path}`);
             return response.data[0];
         } catch (error) {
-            console.error(error);
+            setError(error);
             return null;
         }
     };

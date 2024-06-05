@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import authUser from "./authUser";
-import { reference } from "@popperjs/core";
+import axios from "axios";
 export default function useViews() {
     const [timerFlag, setTimerFlag] = useState(false);
     const timeRemaining = useRef(0);
@@ -10,7 +10,7 @@ export default function useViews() {
     const intervald = useRef(null);
     const currentTime = useRef(0);
     const timeToSend = useRef();
-    const { http } = authUser();
+    const { setError } = authUser();
     const { reference_code } = useParams();
 
     useEffect(() => {
@@ -18,9 +18,9 @@ export default function useViews() {
     }, [reference_code]);
     const sendViews = async () => {
         try {
-            await http.post(`/api/video/addView/${reference_code}`);
+            await axios.post(`/api/video/addView/${reference_code}`);
         } catch (error) {
-            console.error(error);
+            setError(error);
         }
     };
 

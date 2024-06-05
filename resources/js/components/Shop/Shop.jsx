@@ -13,7 +13,7 @@ export default function Shop() {
     const [userOwnedBorders, setUserOwnedBorders] = useState([]);
     const [borders, setBorders] = useState([]);
     const { getBorders } = useBorders();
-    const { http, getUser } = authUser();
+    const { http, getUser, setError } = authUser();
     const navigate = useNavigate();
 
     const getUserData = async () => {
@@ -30,7 +30,7 @@ export default function Shop() {
             );
             setBorders(responseData);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -39,7 +39,7 @@ export default function Shop() {
             const response = await getBorders();
             setUserOwnedBorders(response);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -50,7 +50,7 @@ export default function Shop() {
             );
             if (response.data) window.open(response.data.url);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -61,7 +61,6 @@ export default function Shop() {
     }, []);
 
     let displayBorders = borders;
-    console.log(userOwnedBorders);
     if (userOwnedBorders && userOwnedBorders.borders) {
         displayBorders = borders.filter(
             (border) =>
@@ -74,7 +73,6 @@ export default function Shop() {
     return (
         <ul className={styles.borderShop}>
             <h1>Border Shop</h1>
-            {console.log(userOwnedBorders)}
             {displayBorders &&
                 displayBorders.map((border) => {
                     return (

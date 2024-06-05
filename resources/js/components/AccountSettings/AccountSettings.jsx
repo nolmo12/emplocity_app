@@ -31,7 +31,7 @@ export default function AccountSettings() {
     const [validationNicknameData, setValidationNicknameData] = useState(false);
     const { getBorders, getCurrentBorder, handleClickBorder } = useBorders();
     const [removeFlag, setRemoveFlag] = useState(false);
-    const { logout, getUser } = authUser();
+    const { logout, getUser, setError, error } = authUser();
     const { removeUser } = useUser();
     const inputRef = useRef(null);
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ export default function AccountSettings() {
                 const response = await getUser();
                 setUser(response);
             } catch (error) {
-                console.log(error);
+                setError(error);
             }
         };
         getUserId();
@@ -73,7 +73,7 @@ export default function AccountSettings() {
                 setCurrentBorder(null);
             }
         } catch (error) {
-            console.error(error);
+            setError(error);
             setCurrentBorder(null);
         }
     };
@@ -316,7 +316,9 @@ export default function AccountSettings() {
                             Change nickname
                         </button>
                         {validationNicknameData.nicknameValidation && (
-                            <p className={styles.validationText}>The Nickname field must be a string</p>
+                            <p className={styles.validationText}>
+                                The Nickname field must be a string
+                            </p>
                         )}
                         <input
                             type="password"

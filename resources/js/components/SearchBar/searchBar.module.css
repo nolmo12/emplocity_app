@@ -84,36 +84,18 @@
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
-    #searchBarLoop {
-        top: 1%;
-        left: 40%;
+    .searchItem {
+        font-size:0.8em;
     }
 
-    #searchBar {
-        width: 80%;
-        height: 25%;
-        left: -5%;
-    }
-
-    #searchLoop {
-        left: 70%;
-        top: 37%;
-        width: 0.7em;
-        height: 0.7em;
-    }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
-    #searchBar {
-        top: 5%;
-        left: -25%;
-        width: 140%;
-        height: 50%;
+    .searchBar {
+        height:30px;
     }
 
-    #searchLoop {
-        left: 90%;
-        top: 40%;
-        height: 0.6em;
+    .searchItem {
+        font-size:0.8em;
     }
 }

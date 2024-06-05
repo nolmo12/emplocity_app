@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import authUser from "./authUser";
 export default function useLike() {
-    const { http } = authUser();
+    const { http, setError } = authUser();
     const fetchLikes = async (reference_code) => {
         try {
             const response = await http.get(
@@ -11,7 +11,7 @@ export default function useLike() {
 
             return response.data;
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
     const sendLikes = async (reference_code, likeType) => {
@@ -20,7 +20,7 @@ export default function useLike() {
                 like_dislike: likeType,
             });
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
     return { fetchLikes, sendLikes };

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import styles from "./uploadPage.module.css";
 import authUser from "../authUser";
+import config from "../../config";
 import useValidation from "../useValidation";
 import Message from "../Message/Message";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +17,7 @@ import {
 export default function UploadPage() {
     const uploadAreaRef = useRef(null);
     const textareaRef = useRef(null);
+    const linkToVideo = useRef(null);
     const [droppedFileName, setDroppedFileName] = useState("");
     const [draggingOver, setDraggingOver] = useState(false);
     const [videoSent, setVideoSent] = useState(false);
@@ -29,7 +31,8 @@ export default function UploadPage() {
         visibility: "Public",
     });
     const [validationInfo, setValidationInfo] = useState(null);
-    const { http, isLogged } = authUser();
+    const { http, isLogged, setError } = authUser();
+    const { baseUrl } = config();
     const { validateForm } = useValidation();
 
     const handleDrop = (e) => {
@@ -74,7 +77,9 @@ export default function UploadPage() {
                 formData.append("description", data.description);
             }
 
-            await http.post("/api/video/upload", formData);
+            const response = await http.post("/api/video/upload", formData);
+            if (!isLogged())
+                linkToVideo.current = `${baseUrl}/video/${response.data.reference_code}`;
 
             setVideoSent(true);
         } catch (error) {
@@ -83,7 +88,7 @@ export default function UploadPage() {
                 const validationResult = validateForm("upload", errors);
                 setValidationInfo(validationResult);
             } else {
-                console.error("Error occurred, but no error data was received");
+                setError(error);
             }
         }
     };
@@ -125,7 +130,18 @@ export default function UploadPage() {
         <main className={styles.videoUploadPage}>
             <div className={styles.overlay}>
                 {videoSent ? (
-                    <Message message={"Video has been sent"} />
+                    <Message
+                        message={
+                            linkToVideo.current ? (
+                                <>
+                                    Video has been sent{" "}
+                                    <p>{linkToVideo.current}</p>
+                                </>
+                            ) : (
+                                "Video has been sent"
+                            )
+                        }
+                    />
                 ) : (
                     <form
                         data-testid="upload-area"
