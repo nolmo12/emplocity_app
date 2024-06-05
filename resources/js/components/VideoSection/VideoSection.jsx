@@ -9,6 +9,8 @@ import useLikeCalculation from "../useLikeCalculation";
 import useUser from "../useUser";
 import { getLikeRatioStyle } from "../Video/Video";
 import styles from "./videoSection.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserMinus } from "@fortawesome/free-solid-svg-icons";
 
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
@@ -152,9 +154,10 @@ export default function VideoSection({ sectionType }) {
                 <>
                     {adminFlag === true && (
                         <button
-                            style={{ zIndex: 999 }}
                             onClick={() => removeUserAndNavigate(userId, true)}
+                            className={styles.adminButton}
                         >
+                            <FontAwesomeIcon icon={faUserMinus} className={styles.removeUserIcon}/>
                             Remove user
                         </button>
                     )}

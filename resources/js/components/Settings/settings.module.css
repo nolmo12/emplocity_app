@@ -46,8 +46,6 @@
     #Settings {
         position: relative;
         width: 35%;
-        height: 15%;
-        top: -40%;
         left: 5%;
         font-size: 0.7em;
     }
@@ -61,9 +59,7 @@
 @media screen and (max-width: 800px) and (orientation: landscape) {
     #Settings {
         position: relative;
-        width: 30%;
-        height: 10%;
-        top: -40%;
+        width:30%;
         font-size: 0.8em;
     }
 
