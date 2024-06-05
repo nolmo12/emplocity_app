@@ -48,7 +48,9 @@ export default function LoginPage() {
         })
             .then((res) => {
                 setToken(res.data.authorisation.token);
-                navigate("/account");
+                setTimeout(() => {
+                    navigate("/account");
+                }, 500);
             })
             .catch((error) => {
                 if (error.response.status === 401) setError(error);
