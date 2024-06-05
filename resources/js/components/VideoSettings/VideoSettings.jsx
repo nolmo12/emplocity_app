@@ -106,7 +106,14 @@ export default function VideoSettings() {
 
     const sendTag = async (e) => {
         e.preventDefault();
-        sendData("tags", reference_code, data.tags, e);
+        sendData(
+            "tags",
+            reference_code,
+            data.tags,
+            setData,
+            setTitleChanged,
+            e
+        );
         setData((prev) => ({ ...prev, tags: "" }));
         e.target.previousElementSibling.value = "";
     };
@@ -218,6 +225,8 @@ export default function VideoSettings() {
                                     "visibility",
                                     reference_code,
                                     data.visibility,
+                                    setData,
+                                    setTitleChanged,
                                     e
                                 )
                             }
@@ -246,6 +255,8 @@ export default function VideoSettings() {
                                     "thumbnail",
                                     reference_code,
                                     data.thumbnail,
+                                    setData,
+                                    setTitleChanged,
                                     e
                                 )
                             }
