@@ -1,7 +1,14 @@
 import authUser from "./authUser";
 export default function useVideoSettings() {
     const { http, setError } = authUser();
-    const sendData = async (type, reference_code, data, setData, e) => {
+    const sendData = async (
+        type,
+        reference_code,
+        data,
+        setData,
+        setChanged,
+        e
+    ) => {
         e.preventDefault();
         try {
             if (type === "title") {
@@ -11,6 +18,7 @@ export default function useVideoSettings() {
                 });
                 setData((prev) => ({ ...prev, title: "" }));
                 e.target.previousElementSibling.value = "";
+                setChanged((prev) => !prev);
             } else if (type === "description") {
                 await http.post(`/api/video/update`, {
                     ...(data && { description: data }),
@@ -18,6 +26,7 @@ export default function useVideoSettings() {
                 });
                 setData((prev) => ({ ...prev, description: "" }));
                 e.target.previousElementSibling.value = "";
+                setChanged((prev) => !prev);
             } else if (type === "tags") {
                 await http.post(`/api/video/update`, {
                     tags: data,

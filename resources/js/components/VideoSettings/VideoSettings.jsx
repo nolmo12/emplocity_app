@@ -145,6 +145,7 @@ export default function VideoSettings() {
                                         reference_code,
                                         data.title,
                                         setData,
+                                        setTitleChanged,
                                         e
                                     )
                                 }
@@ -172,6 +173,7 @@ export default function VideoSettings() {
                                         reference_code,
                                         data.description,
                                         setData,
+                                        setDescriptionChanged,
                                         e
                                     )
                                 }
