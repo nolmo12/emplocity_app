@@ -34,7 +34,7 @@ export default function useUser() {
             });
 
             if (response.status === 200 && !adminFlag) {
-                logout(true);
+                logout(false);
             }
         } catch (error) {
             setError(error);
