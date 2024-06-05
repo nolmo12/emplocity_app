@@ -106,19 +106,57 @@
     background: #555;
 }
 
+.adminButton {
+    width: 10em;
+    height: 2.5em;
+    font-size: 0.8em;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    cursor: pointer;
+    border: solid 2px white;
+    background-color: white;
+    border-radius: 15px;
+    border:none;
+}
+
+.adminButton:hover {
+    background-color: transparent !important;
+    color: white;
+    text-decoration: underline;
+}
+
+.adminButton:active {
+    transform: scale(0.95);
+}
+
+.removeUserIcon
+{
+    padding-right:0.5em;
+}
+
 
 @media screen and (max-width: 800px) and (orientation: portrait){
-    #videoSection {
-        width: 100%;
-        height:95%;
-        overflow-y:auto;
+    h2 {
+        font-size:1.3em;
     }
 
-    #videoSection> *:not(h2) {
-        flex: 0 0 calc(40%);
-        margin-right: 1em;
-        margin-bottom:1em;
-        height: 15%; 
+    #video img{
+        height:7vh;
+        width:10vh;
+    }
+
+    .similarVideo {
+        height:25vh;
+        width:100%;
+        overflow-y:auto;
+        top:3em;
+        position:relative;
+    }
+    
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape){
+    #videoSection {
+        height:40vh;
     }
 
     h2 {
@@ -126,37 +164,13 @@
     }
 
     .similarVideo {
-        width:100%;
-        position:relative;
-        display: inline-block;
-        bottom:-15%;
-        right:10%;
-        height:90%;
-        max-height: 60%;
-        font-size:0.7em;
+        height:90vh;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
-    #video img{
-        height:7vh;
-        width:10vh;
+    .similarVideo #video {
+        width:100%
     }
     
-}
-
-@media screen and (max-width: 800px) and (orientation: landscape){
-    #videoSection {
-        width: 100%;
-        height:65%;
-        margin-top:3%;
-    }
-
-    h2 {
-        font-size:1em;
-    }
-
-    #videoSection> *:not(h2) {
-        flex: 0 0 calc(20%);
-        margin-right: 1em;
-        height: 40%; 
-    }
 }

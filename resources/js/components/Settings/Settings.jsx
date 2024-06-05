@@ -80,11 +80,11 @@ export default function Settings() {
                     </Link>
                 </li>
                 <li>
-                    <FontAwesomeIcon
-                        icon={faUserFriends}
-                        className={styles.settingsIcon}
-                    />
                     <Link to={followsPath} className={styles.link}>
+                        <FontAwesomeIcon
+                            icon={faUserFriends}
+                            className={styles.settingsIcon}
+                        />
                         My follows
                     </Link>
                 </li>

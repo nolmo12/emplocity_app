@@ -193,73 +193,12 @@
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     .helpForm{
-        position:relative;
         width:90%;
-        top:-20%;
-    }
-
-    .helpFormIcon {
-        left: 1.5em;
-        top:0;
-    }
-
-    .helpFormDescriptionIcon {
-        top:-5em;
-        left: 1.5em;
-    }
-
-    .helpInfo {
-        position:relative;
-        top:-20%;
-    }
-
-    .helpForm form {
-        top:10%;
-    }
-
-    .helpForm input, .helpForm .descriptionArea {
-        width:70%;
-    }
-
-    .helpInfo ul {
-        font-size:0.6em;
-    }
-
-    .helpInfo h2 {
-        top:10%;
-    }
-    
-    .helpInfo ul {
-        top:10%;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     .helpForm{
-        position:relative;
-        width:85%;
-        top:0;
-        height:70%;
-    }
-
-    .helpForm form {
-        top:1%;
-    }
-
-    .helpInfo {
-        position:relative;
-        top:0;
-        height:70%;
-    }
-
-    .helpInfo h2 {
-        top:5%;
-        left:5%;
-        font-size:1.5em;
-    }
-    
-    .helpInfo ul {
-        top:5%;
-        left:5%;
+        width:70%;
     }
 }

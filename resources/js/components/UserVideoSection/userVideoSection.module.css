@@ -144,16 +144,8 @@
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     #UserVideoSection {
-        width:70%;
-        left:-3%;
         display:block;
         font-size:0.8em;
-    }
-
-    #UserVideoSection section {
-        width: 60%;
-        height:15em;
-        transform: translateX(15%);
     }
 
     #UserVideoSection table {
@@ -170,21 +162,10 @@
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     #UserVideoSection {
-        width: 80%;
-        height: 90%;
-        left: -1%;
-        top: -5%;
-        margin-top: 5%;
         padding-bottom: 0;
         align-items: flex-start;
         font-size:0.5em;
         overflow-x: hidden;
-    }
-
-    #UserVideoSection section {
-        width: 60%;
-        height:15em;
-        transform: translateX(15%);
     }
 
     #UserVideoSection td {

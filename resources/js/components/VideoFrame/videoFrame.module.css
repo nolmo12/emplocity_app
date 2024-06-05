@@ -269,42 +269,55 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
     text-decoration: none;
 }
 
-
 @media screen and (max-width: 800px) and (orientation: portrait) {
     .videoFrameDiv {
-        position: relative;
-        width: 85%;
-        height: 20%;
-        top: -35%;
-        left: 10%;
+        width: 90%;
+        height: auto;
+        max-height: 100vh;
+        overflow-y: auto;
+        margin-top: 2.5%;
+        margin-left: 5%;
+        box-sizing: border-box;
+        padding-bottom: 2.5%;
+        position:relative;
+        top:3em;
     }
-
+    
     .videoScreen {
         width: 100%;
-        height: 100%;
-        top: -10%;
+        height: 15em;
     }
 
-    .videoFrameInfo {
-        position: relative;
-        width: 100%;
-        font-size: 0.4em;
+    .reportMenu .buttonsContainer {
+        right:1em;
     }
 
-    .videoFrameDiv p {
-        font-size: 0.5rem;
-    }
-
-    .videoFrameInfoTitle p {
-        font-size: 0.8rem;
-    }
-
-    .videoLDContainer p {
-        left: 7%;
-        top: 1.5em;
+    .buttonsContainer button{
+        font-size:1em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
+    .videoFrameDiv {
+        width: 75%;
+        height: 90vh;
+        overflow-y: auto;
+        margin-left: 2%;
+        box-sizing: border-box;
+        padding-bottom: 2.5%;
+        position:relative;
+    }
 
+    .videoScreen {
+        width: 100%;
+        height: 22em;
+    }
+
+    .reportMenu .buttonsContainer {
+        right:1em;
+    }
+
+    .buttonsContainer button{
+        font-size:1em;
+    }
 }
