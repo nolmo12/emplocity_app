@@ -121,34 +121,22 @@ header img {
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
     header {
-        height:7vh;
+        height:10vh;
     }
 
     #menu {
-        top:3%;
-    }
-
-    #menu button {
-        position: relative;
-        width: 6em;
-        height: 2em;
-        transition: background-color 0.3s ease, transform 0.1s ease;
-        border: none;
-        background-color: white;
+        top:8%;
     }
 
     #imgLogo {
         position: relative;
         left: 1em;
         top: 10%;
-        width: 2em;
-        height: 2em;
+        width: 3em;
+        height: 3em;
     }
 
     #imgIcon {
-        position: relative;
-        right: 1em;
-        top: 10%;
         width: 2em;
         height: 2em;
     }
@@ -156,32 +144,23 @@ header img {
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
-    #menu {
-        top:5%;
-    }
-
-    #menu button {
-        position: relative;
-        width: 6em;
-        height: 2em;
-        transition: background-color 0.3s ease, transform 0.1s ease;
-        border: none;
-        background-color: white;
+    header {
+        height:15vh;
     }
 
     #imgLogo {
         position: relative;
         left: 1em;
         top: 10%;
-        width: 1.5em;
-        height: 1.5em;
+        width: 3em;
+        height: 3em;
     }
 
-    #imgIcon {
+    .avatarBorderContainer #imgIcon {
         position: relative;
-        right: 1em;
-        top: 10%;
-        width: 1.5em;
-        height: 1.5em;
+        left: 1em;
+        top: 15%;
+        width: 3em;
+        height: 3em;
     }
 }

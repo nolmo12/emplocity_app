@@ -9,6 +9,7 @@
     padding-bottom: 1em;
     padding-right: 1em;
     overflow-y: auto;
+    padding-left:1em;
 }
 
 .searchResultsDiv ul {
@@ -179,3 +180,40 @@
     font-size:0.7em;
 }
 
+@media screen and (max-width: 800px) and (orientation: portrait) {
+    .searchResultsDiv .thumbnailContainer {
+        width:15em;
+        height:8em;
+    }
+
+    .orderResultsContainer {
+        font-size:0.8em;
+    }
+
+    .orderResultsContainer option {
+        font-size:0.8em;
+    }
+
+    .searchResultsDiv .videoInfo {
+        font-size:0.6em;
+    }
+
+    .searchResultsDiv .userInfo .userInfoText {
+        font-size:0.8em;
+    }
+}
+
+@media screen and (max-width: 800px) and (orientation: landscape) {
+    .searchResultsDiv .thumbnailContainer {
+        width:15em;
+        height:8em;
+    }
+
+    .searchResultsDiv .videoInfo {
+        font-size:0.6em;
+    }
+
+    .searchResultsDiv .userInfo .userInfoText {
+        font-size:0.8em;
+    }
+}

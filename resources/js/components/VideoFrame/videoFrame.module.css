@@ -306,18 +306,5 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
-    .videoLDContainer p {
-        left: 5%;
-        top: 0.5em;
-    }
 
-    .videoFrameInfo {
-        width: 90%;
-    }
-
-    .videoScreen {
-        width: 90%;
-        height: 90%;
-        top: -15%;
-    }
 }

@@ -34,7 +34,6 @@ main {
 #containerSearchResult {
     width:100%;
     height:95vh;
-    display:inline-grid;
     overflow-y:hidden;
 }
 
@@ -72,6 +71,7 @@ main {
 .shopPage {
     overflow-y:auto;
     align-items: baseline;
+    height:95vh;
 }
 
 
