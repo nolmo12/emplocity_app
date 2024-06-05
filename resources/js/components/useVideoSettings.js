@@ -33,10 +33,11 @@ export default function useVideoSettings() {
                     reference_code: reference_code,
                 });
             } else if (type === "visibility") {
-                await http.post(`/api/video/update`, {
+                const re = await http.post(`/api/video/update`, {
                     visibility: data,
                     reference_code: reference_code,
                 });
+                console.log(re.data);
             } else if (type === "thumbnail") {
                 const formData = new FormData();
                 formData.append("thumbnail", data.get("thumbnail"));
