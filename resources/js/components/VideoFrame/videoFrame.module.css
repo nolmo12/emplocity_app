@@ -274,7 +274,6 @@ main::-webkit-scrollbar-thumb:hover, .similarVideo::-webkit-scrollbar-thumb:hove
         width: 90%;
         height: auto;
         max-height: 100vh;
-        overflow-y: auto;
         margin-top: 2.5%;
         margin-left: 5%;
         box-sizing: border-box;

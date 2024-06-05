@@ -98,21 +98,51 @@
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
     #Popular p {
-        font-size: 0.8em;
+        font-size: 0.6em;
     }
 
     #Popular h1 {
         font-size: 1.5em;
+    }
+
+    #Popular img {
+        width:2em;
+        height:2em;
+    }
+
+    #Popular .image_holder {
+        width:2em;
+        height:2em;
+    }
+
+    #Popular .border {
+        width:2.2em;
+        height:2.2em;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
     #Popular p {
         padding-top: 0.5em;
-        font-size: 0.8em;
+        font-size: 0.6em;
     }
 
     #Popular h1 {
         font-size: 1.3em;
+    }
+
+    #Popular img {
+        width:2em;
+        height:2em;
+    }
+
+    #Popular .image_holder {
+        width:2em;
+        height:2em;
+    }
+
+    #Popular .border {
+        width:2.2em;
+        height:2.2em;
     }
 }
