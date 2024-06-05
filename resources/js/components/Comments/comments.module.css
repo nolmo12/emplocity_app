@@ -253,21 +253,23 @@
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
-    .commentDiv button {
-        width: 30%;
+    .cancelButton {
+        margin-left:3em;
     }
 
-    .commentContainer .replyButton {
-        width: 30%;
-        font-size: 0.7em;
-        margin-right: 1em;
+    .replyButtonsContainer .replyButton {
+        width:5em;
     }
 
     .commentDiv {
-        font-size: 0.7em;
+        height:50%;
+        overflow-y:auto;
+        padding-bottom:0;
     }
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
-
+    .commentDiv {
+        padding-bottom:0;
+    }
 }

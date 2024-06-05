@@ -135,26 +135,21 @@
 
 @media screen and (max-width: 800px) and (orientation: portrait){
     .videoSection {
-        width:27%;
-        height:12%;
-        margin-bottom:-4em;
-    }
-
-    #video {
-        width: 100%;
-        height: 60%;
+        width:12em;
+        height:9em;
     }
 
     .thumbnail {
-        position: absolute;
-        opacity: 0;
         width: 100%; 
         height: 9vh;
     }
 
     .videoStat {
         font-size:0.5em;
-        top:5%;
+    }
+
+    .videoStat .videoInfo .videoTitle {
+        font-size:2em;
     }
 
     
@@ -162,27 +157,16 @@
 
 @media screen and (max-width: 800px) and (orientation: landscape){
     .videoSection {
-        height:30%;
-    }
-
-    #video {
-        width: 100%;
-        height: 40%;
-    }
-
-    .videoStat {
-        position:relative;
-        top:25%;
-    }
-
-    .videoInfo {
-        font-size:0.6em;
+        width:20em;
+        height:12em;
     }
 
     .thumbnail {
-        position: absolute;
-        opacity: 0;
-        width: 100%; 
-        height: 17vh;
+        width:15em;
+        height:9em;
+    }
+
+    .videoInfo {
+        font-size:0.8em;
     }
 }
