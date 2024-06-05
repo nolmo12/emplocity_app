@@ -1,8 +1,6 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import authUser from "../authUser";
-import config from "../../config";
 import fetchImgFromStorage from "../fetchImgFromStorage";
 import styles from "./LoginPage.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,12 +15,12 @@ export default function LoginPage() {
     const [loginValidation, setLoginValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
     const { http, setToken, setError } = authUser();
+    const { fetchImage } = fetchImgFromStorage();
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
-            const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);
