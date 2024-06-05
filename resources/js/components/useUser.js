@@ -21,7 +21,7 @@ export default function useUser() {
             await http.delete(`/api/video/delete`, {
                 params: { reference_code: reference_code },
             });
-            navigate("/home");
+            navigate("/account");
         } catch (error) {
             console.log(error);
         }
@@ -34,7 +34,7 @@ export default function useUser() {
             });
             console.log(response.data);
 
-            if (response.data && !adminFlag) {
+            if (response.status === 200 && !adminFlag) {
                 logout(true);
             }
         } catch (error) {

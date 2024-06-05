@@ -32,7 +32,7 @@
 }
 
 .uploadForm::-webkit-scrollbar{
-    width: 0.2em; 
+    width: 0.8em; 
 }
 
 .uploadForm::-webkit-scrollbar-track{
@@ -303,54 +303,20 @@
 
 @media only screen and (max-width: 800px) and (orientation: portrait) {
     .uploadForm {
-        width: 100%;
-        padding: 6%;
-    }
-
-    .uploadForm .uploadIcon {
-        width: 30%;
-        height: 30%;
-        transform: translate(120%);
-    }
-
-    .uploadForm .uploadFormCloseIcon {
-        left:95%;
-    }
-
-    .uploadForm .clearThumbnailButton {
-        font-size:0.7em;
-    }
-}
-
-@media only screen and (max-width: 800px) and (orientation: landscape) {
-    .uploadForm {
-        width: 100%;
-    }
-
-    .uploadForm .uploadArea {
-        position:relative;
-        left:0.5em;
-    }
-
-    .uploadForm input,
-    .uploadForm button {
-        width: 90%;
-    }
-
-    .uploadForm .uploadIcon {
-        width: 40%;
-    }
-
-    .uploadForm .uploadFormIcon {
-        left: 6%;
-        top:1.8em;
+        width: 80%;
     }
 
     .uploadForm .uploadFormCloseIcon {
         left:100%;
     }
+}
 
-    .uploadForm .clearThumbnailButton {
-        font-size:0.7em;
+@media only screen and (max-width: 800px) and (orientation: landscape) {
+    .uploadForm {
+        width: 70%;
+    }
+
+    .uploadForm .uploadFormCloseIcon {
+        left:100%;
     }
 }

@@ -1,6 +1,6 @@
 import React from "react";
-import { useState, useRef } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import _ from "lodash";
 import Video from "../Video/Video";
 import useFetchSimilarVideos from "../useFetchSimilarVideos";
@@ -13,6 +13,7 @@ import styles from "./videoSection.module.css";
 export default function VideoSection({ sectionType }) {
     const { reference_code } = useParams();
     const [pageNumber, setPageNumber] = useState(1);
+    const [adminFlag, setAdminFlag] = useState(false);
     const username = useRef("");
     const [hasScrolledPast85, setHasScrolledPast85] = useState(false);
     const { videos, isLoading, fetchNextVideos, tagCount } =
@@ -25,7 +26,26 @@ export default function VideoSection({ sectionType }) {
     const { calculateLikeRatio } = useLikeCalculation();
     const { tag } = useParams();
     const { userId } = useParams();
-    const [testKey, setTestKey] = useState(0);
+    const [testKey] = useState(0);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        checkAdminFlag();
+    }, [userId]);
+
+    const checkAdminFlag = async () => {
+        const response = await isAdmin();
+        if (response === true) {
+            setAdminFlag(true);
+        } else {
+            setAdminFlag(false);
+        }
+    };
+
+    const removeUserAndNavigate = async (id, flag) => {
+        await removeUser(id, flag);
+        navigate("/account");
+    };
 
     const similarVideosObj = useFetchSimilarVideos({
         reference_code,
@@ -130,10 +150,10 @@ export default function VideoSection({ sectionType }) {
             }
             view = (
                 <>
-                    {isAdmin() === true && (
+                    {adminFlag === true && (
                         <button
                             style={{ zIndex: 999 }}
-                            // onClick={(e) => removeUser(userId)}
+                            onClick={() => removeUserAndNavigate(userId, true)}
                         >
                             Remove user
                         </button>
