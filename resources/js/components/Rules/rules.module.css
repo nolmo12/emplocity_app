@@ -1,5 +1,22 @@
 .rules {
-    height:85vh;
+    height:95vh;
+    overflow-y: auto;
+}
+
+.rules::-webkit-scrollbar {
+    width: 0.2em; 
+}
+
+.rules::-webkit-scrollbar-track {
+    background: rgba(229, 229, 229, 0.8);
+}
+
+.rules::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.rules::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
 
 .rules .rulesh2{
