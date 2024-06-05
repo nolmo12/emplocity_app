@@ -137,7 +137,6 @@ export default function VideoSettings() {
                             <input
                                 type="text"
                                 onChange={(e) => handleChangeTitle(e)}
-                                defaultValue={videoObj.title}
                             ></input>
                             <button
                                 onClick={(e) =>
@@ -145,6 +144,7 @@ export default function VideoSettings() {
                                         "title",
                                         reference_code,
                                         data.title,
+                                        setData,
                                         e
                                     )
                                 }
@@ -163,7 +163,6 @@ export default function VideoSettings() {
                             <textarea
                                 type="text"
                                 onChange={(e) => handleChangeDescription(e)}
-                                defaultValue={videoObj.description}
                                 rows="5"
                             ></textarea>
                             <button
@@ -172,6 +171,7 @@ export default function VideoSettings() {
                                         "description",
                                         reference_code,
                                         data.description,
+                                        setData,
                                         e
                                     )
                                 }
