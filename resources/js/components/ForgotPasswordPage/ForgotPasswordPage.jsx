@@ -18,11 +18,11 @@ export default function ForgotPasswordPage() {
     const [passwordSent, setPasswordSent] = useState(false);
     const [emailValidation, setEmailValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
+    const { fetchImage } = fetchImgFromStorage();
     const { http } = authUser();
 
     useEffect(() => {
         const fetchData = async () => {
-            const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);
