@@ -20,12 +20,11 @@ export default function RegisterPage() {
     const [iconPath, setIconPath] = useState("");
     const [validationInfo, setValidationInfo] = useState(null);
     const { http, setError } = authUser();
-
+    const { fetchImage } = fetchImgFromStorage();
     const { validateForm } = useValidation();
 
     useEffect(() => {
         const fetchData = async () => {
-            const { fetchImage } = await fetchImgFromStorage();
             try {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);
