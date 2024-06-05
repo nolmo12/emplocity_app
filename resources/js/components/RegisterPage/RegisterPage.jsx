@@ -19,7 +19,7 @@ export default function RegisterPage() {
     const [emailVerification, setEmailVerification] = useState(false);
     const [iconPath, setIconPath] = useState("");
     const [validationInfo, setValidationInfo] = useState(null);
-    const { http } = authUser();
+    const { http, setError } = authUser();
 
     const { validateForm } = useValidation();
 
@@ -30,7 +30,7 @@ export default function RegisterPage() {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);
             } catch (error) {
-                console.error(error);
+                setError(error);
             }
         };
         fetchData();
@@ -61,7 +61,7 @@ export default function RegisterPage() {
             });
             setEmailVerification(true);
         } catch (error) {
-            // console.log(error);
+            setError(error);
             const errors = error.response.data.errors;
             const validationResult = validateForm("register", errors);
             setValidationInfo(validationResult);

@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function ResetPasswordPage() {
-    const { http, getCsrfToken } = authUser();
+    const { http, setError } = authUser();
     const [data, setData] = useState({
         email: "",
         password: "",
@@ -47,7 +47,7 @@ export default function ResetPasswordPage() {
                 setIsReset(true);
             })
             .catch((error) => {
-                console.log(error);
+                setError(error);
                 setPasswordValidation(true);
             });
     };

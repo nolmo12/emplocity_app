@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import config from "../config";
 
 export default function useAuth() {
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const { baseUrl } = config();
 
@@ -37,7 +38,7 @@ export default function useAuth() {
                 const response = await http.get("/api/user");
                 return response.data;
             } catch (error) {
-                console.log(error);
+                setError(error);
             }
         }
     };
@@ -56,7 +57,7 @@ export default function useAuth() {
             );
             return response.data;
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -90,7 +91,6 @@ export default function useAuth() {
     };
 
     const logout = (flag = false) => {
-        console.log("logout");
         Cookies.remove("token");
         setToken(null);
         if (flag) navigate("/login");
@@ -105,6 +105,8 @@ export default function useAuth() {
         getToken,
         getUser,
         http,
+        setError,
+        error,
         isLogged,
     };
 }

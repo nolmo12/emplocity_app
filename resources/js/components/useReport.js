@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import authUser from "./authUser";
 export default function useReport() {
-    const { http } = authUser();
+    const { http, setError } = authUser();
     const navigate = useNavigate();
     const sendReport = async (type, reference_code, content) => {
         try {
@@ -22,7 +22,7 @@ export default function useReport() {
                 navigateUser(response, type, reference_code);
             }
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 

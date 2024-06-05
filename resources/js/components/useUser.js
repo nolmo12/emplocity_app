@@ -2,7 +2,7 @@ import authUser from "./authUser";
 import useComments from "./useComments";
 import { useNavigate } from "react-router-dom";
 export default function useUser() {
-    const { http, isLogged, logout, getUser } = authUser();
+    const { http, isLogged, logout, getUser, setError } = authUser();
     const { deleteComment } = useComments();
     const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ export default function useUser() {
             });
             navigate("/account");
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -32,13 +32,12 @@ export default function useUser() {
             const response = await http.delete(`/api/auth/delete`, {
                 params: { user_id: id },
             });
-            console.log(response.data);
 
             if (response.status === 200 && !adminFlag) {
                 logout(true);
             }
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -47,7 +46,7 @@ export default function useUser() {
             await deleteComment(id);
             setRenderKey((prev) => prev + 1);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 

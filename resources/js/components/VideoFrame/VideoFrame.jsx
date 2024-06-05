@@ -46,7 +46,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
     const actualTime = useRef(0);
     const videoOwnerBorder = useRef("");
     const { isLogged, getUser } = authUser();
-    const { isAdmin, removeVideo, removeUser } = useUser();
+    const { isAdmin, removeVideo, removeUser, setError } = useUser();
     const { sendToHistory } = useFetchVideosSearch();
     const { likeCountFunction } = useLikeCalculation();
     const { fetchLikes } = useLike();
@@ -210,7 +210,7 @@ export default function VideoFrame({ mainRef, setFrameISLoaded }) {
                 }
             }
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 

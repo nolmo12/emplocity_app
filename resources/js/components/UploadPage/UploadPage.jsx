@@ -29,7 +29,7 @@ export default function UploadPage() {
         visibility: "Public",
     });
     const [validationInfo, setValidationInfo] = useState(null);
-    const { http, isLogged } = authUser();
+    const { http, isLogged, setError } = authUser();
     const { validateForm } = useValidation();
 
     const handleDrop = (e) => {
@@ -83,7 +83,7 @@ export default function UploadPage() {
                 const validationResult = validateForm("upload", errors);
                 setValidationInfo(validationResult);
             } else {
-                console.error("Error occurred, but no error data was received");
+                setError(error);
             }
         }
     };

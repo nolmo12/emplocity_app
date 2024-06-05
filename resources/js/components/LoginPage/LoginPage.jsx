@@ -16,7 +16,7 @@ export default function LoginPage() {
     });
     const [loginValidation, setLoginValidation] = useState(false);
     const [iconPath, setIconPath] = useState("");
-    const { http, setToken } = authUser();
+    const { http, setToken, setError } = authUser();
 
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ export default function LoginPage() {
                 const iconPath = await fetchImage("ico.png");
                 setIconPath(iconPath);
             } catch (error) {
-                console.error(error);
+                setError(error);
             }
         };
         fetchData();
@@ -53,7 +53,7 @@ export default function LoginPage() {
                 navigate("/account");
             })
             .catch((error) => {
-                if (error.response.status === 401) console.log(error);
+                if (error.response.status === 401) setError(error);
                 setLoginValidation(true);
             });
     };

@@ -1,6 +1,6 @@
 import authUser from "./authUser";
 export default function useVideoSettings() {
-    const { http } = authUser();
+    const { http, setError } = authUser();
     const sendData = async (type, reference_code, data, e) => {
         e.preventDefault();
         try {
@@ -35,7 +35,7 @@ export default function useVideoSettings() {
                 });
             }
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
     return { sendData };

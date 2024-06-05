@@ -2,10 +2,8 @@ import axios from "axios";
 import authUser from "./authUser";
 import { useState, useEffect } from "react";
 export default function useFetchVideosSearch() {
-    const [videosHistory, setVideosHistory] = useState([]);
-    const [likedVideos, setLikedVideos] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const { http, isLogged, getUser } = authUser();
+    const { http, isLogged, setError } = authUser();
 
     const fetchVideosHistory = async () => {
         try {
@@ -13,7 +11,7 @@ export default function useFetchVideosSearch() {
             setIsLoading(false);
             return response.data;
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
     const fetchLikedVideos = async () => {
@@ -22,7 +20,7 @@ export default function useFetchVideosSearch() {
             setIsLoading(false);
             return response.data;
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -34,7 +32,7 @@ export default function useFetchVideosSearch() {
             setIsLoading(false);
             return response.data;
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 
@@ -49,7 +47,7 @@ export default function useFetchVideosSearch() {
         try {
             await http.post(`/api/history/${reference_code}`);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 

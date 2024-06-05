@@ -86,7 +86,7 @@ export default function SearchResult({ searchType }) {
         isLoading,
         setIsLoading,
     } = useFetchVideosSearch();
-    const { http } = authUser();
+    const { http, setError } = authUser();
 
     const searchedVideos = async (sortType) => {
         const response = await fetchSearchedVideos(
@@ -160,7 +160,7 @@ export default function SearchResult({ searchType }) {
             const response = await http.get(`/api/auth/followed`);
             setVideos(response.data);
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
     };
 

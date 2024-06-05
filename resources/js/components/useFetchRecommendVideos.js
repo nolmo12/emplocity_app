@@ -8,7 +8,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
     const [isLoading, setIsLoading] = useState(true);
     const { tag } = useParams();
     const { userId } = useParams();
-    const { http } = authUser();
+    const { http, setError } = authUser();
     useEffect(() => {
         setVideos([]);
         const fetchVideos = async () => {
@@ -22,7 +22,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
                 });
                 // setIsLoading(false);
             } catch (error) {
-                console.log(error);
+                setError(error);
             }
             setIsLoading(false);
         };
@@ -37,7 +37,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
                 setVideos(tempVideos);
                 // setIsLoading(false);
             } catch (error) {
-                console.log(error);
+                setError(error);
             }
             setIsLoading(false);
         };
@@ -55,7 +55,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
                 if (tagResponse.data) setTagCount(tagResponse.data.video_count);
                 setIsLoading(false);
             } catch (error) {
-                console.log(error);
+                setError(error);
             }
         };
         if (userId) {
@@ -89,7 +89,7 @@ export default function useFetchRecommendVideos({ pageNumber }) {
                 }
             }
         } catch (error) {
-            console.log(error);
+            setError(error);
         }
         setIsLoading(false);
     };
