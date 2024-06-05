@@ -8,7 +8,7 @@
         <div id="root">
             <h1>Video Title: {{ $video->languages()->first()->pivot->title }}</h1>
             <br>
-            <h2>Video: <a href = '{{ url('video/'.$video->reference_code) }}'>Click here to watch</a></h2>
+            <h2>Video: <a href = 'https://sznyctube.eu/video/{{$video->reference_code }}'>Click here to watch</a></h2>
             <br>
             Description: {{ $video->languages()->first()->pivot->description }}
         </div>

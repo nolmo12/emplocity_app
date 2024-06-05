@@ -32,8 +32,6 @@ export default function useUser() {
             const response = await http.delete(`/api/auth/delete`, {
                 params: { user_id: id },
             });
-            console.log(response.data);
-
             if (response.status === 200 && !adminFlag) {
                 logout(true);
             }
