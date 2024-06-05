@@ -181,6 +181,10 @@
 }
 
 @media screen and (max-width: 800px) and (orientation: portrait) {
+    .searchResultsDiv {
+        height:95vh;
+    }
+
     .searchResultsDiv .thumbnailContainer {
         width:15em;
         height:8em;
@@ -204,6 +208,10 @@
 }
 
 @media screen and (max-width: 800px) and (orientation: landscape) {
+    .searchResultsDiv {
+        height:95vh;
+    }
+
     .searchResultsDiv .thumbnailContainer {
         width:15em;
         height:8em;
