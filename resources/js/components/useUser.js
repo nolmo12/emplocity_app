@@ -32,7 +32,9 @@ export default function useUser() {
             const response = await http.delete(`/api/auth/delete`, {
                 params: { user_id: id },
             });
+            console.log(response.data, response.status, adminFlag);
             if (response.status === 200 && !adminFlag) {
+               console.log("2: ", response.status, adminFlag)
                 logout(true);
             }
         } catch (error) {
