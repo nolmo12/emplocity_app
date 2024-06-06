@@ -48,12 +48,14 @@ export default function Header() {
         if (isLogged()) {
             setTimeout(async () => {
                 const user = await getUser();
-                userId.current = user.id;
-                setUserAvatar(user.avatar);
-                setIsFetched((prev) => ({ ...prev, avatar: true }));
-                if (user.current_border) {
-                    setUserBorder(user.current_border.type);
-                    setIsFetched((prev) => ({ ...prev, border: true }));
+                if (user) {
+                    userId.current = user.id;
+                    setUserAvatar(user.avatar);
+                    setIsFetched((prev) => ({ ...prev, avatar: true }));
+                    if (user.current_border) {
+                        setUserBorder(user.current_border.type);
+                        setIsFetched((prev) => ({ ...prev, border: true }));
+                    }
                 }
             }, 1000);
 

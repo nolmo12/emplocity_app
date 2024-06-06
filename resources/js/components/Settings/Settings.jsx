@@ -31,9 +31,12 @@ export default function Settings() {
                 // wait for token update
                 await new Promise((resolve) => setTimeout(resolve, 50));
                 const user = await getUser();
-                setHistoryPath(`/history/${user.id}`);
-                setLikedPath(`/user-likes/${user.id}`);
-                setFollowsPath(`/follows/${user.id}`);
+
+                if (user) {
+                    setHistoryPath(`/history/${user.id}`);
+                    setLikedPath(`/user-likes/${user.id}`);
+                    setFollowsPath(`/follows/${user.id}`);
+                }
             };
             getUserData();
         }
