@@ -91,12 +91,10 @@ export default function useAuth() {
     };
 
     const logout = (flag = false) => {
+        if (!flag) navigate("/login");
+        if (flag) navigate("/home");
         Cookies.remove("token");
         setToken(null);
-        setTimeout(() => {
-            if (!flag) navigate("/login");
-            if (flag) navigate("/home");
-        }, 2000);
     };
 
     const isLogged = () => !!token;
