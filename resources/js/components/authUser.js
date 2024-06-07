@@ -33,7 +33,8 @@ export default function useAuth() {
     );
 
     const getUser = async () => {
-        if (isLogged()) {
+        if (isLogged() && getToken()) {
+            console.log("Getting user");
             try {
                 const response = await http.get("/api/user");
                 return response.data;
