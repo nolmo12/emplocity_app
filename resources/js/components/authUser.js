@@ -93,8 +93,10 @@ export default function useAuth() {
     const logout = (flag = false) => {
         Cookies.remove("token");
         setToken(null);
-        if (flag) navigate("/login");
-        if (!flag) navigate("/home");
+        setTimeout(() => {
+            if (!flag) navigate("/login");
+            if (flag) navigate("/home");
+        }, 2000);
     };
 
     const isLogged = () => !!token;

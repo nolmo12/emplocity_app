@@ -5,20 +5,20 @@
     border: solid 2px black;
     background-color: rgba(229, 229, 229, 0.8);
     padding: 5%;
-    width: 15%;
+    width: 25%;
     max-width: 300px;
-    color:black;
+    color: black;
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 15px 25px rgba(0,0,0,.6);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
     border-radius: 10px;
 }
 
 .postSendMessage p {
-    text-align:center;
-    margin-bottom:1em;
+    text-align: center;
+    margin-bottom: 1em;
 }
 
 .postSendMessage button {
@@ -31,7 +31,7 @@
     cursor: pointer;
     border: solid 2px #a0a0a0;
     background-color: white;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .postSendMessage button:hover {
@@ -45,7 +45,7 @@
 @media only screen and (max-width: 800px) and (orientation: portrait) {
     .postSendMessage {
         width: 90%;
-        height:20%;
+        height: 20%;
     }
 }
 
