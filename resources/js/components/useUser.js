@@ -34,6 +34,7 @@ export default function useUser() {
             });
             console.log(response.data, response.status, adminFlag);
             if (response.status === 200 && !adminFlag) {
+                logout();
             }
         } catch (error) {
             setError(error);
