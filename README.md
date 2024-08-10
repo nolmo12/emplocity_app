@@ -19,5 +19,3 @@ Aplikacja stworzona na przedmiot "Projekt Zespołowy" dla firmy Emplocity. Aplik
 - **FrontEnd:** Piotr Marcińczuk, Bartosz Purzycki
 - **BackEnd, Database & Team Leader:** Paweł Bąk
 - **BackEnd:** Andrzej Pliszka
-
-Aplikacja ma na celu stworzenie przyjaznej platformy dla użytkowników do dzielenia się swoimi materiałami wideo i budowania społeczności opartej na wspólnych zainteresowaniach.
