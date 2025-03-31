@@ -19,3 +19,5 @@ Aplikacja stworzona na przedmiot "Projekt Zespołowy" dla firmy Emplocity. Aplik
 - **FrontEnd:** Piotr Marcińczuk, Bartosz Purzycki
 - **BackEnd, Database & Team Leader:** Paweł Bąk
 - **BackEnd:** Andrzej Pliszka
+
+![image](https://github.com/user-attachments/assets/eb17242d-8744-4eee-bdda-7a66aba4ec87)
